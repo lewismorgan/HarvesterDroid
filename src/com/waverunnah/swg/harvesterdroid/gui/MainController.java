@@ -4,8 +4,8 @@ import com.waverunnah.swg.harvesterdroid.HarvesterDroid;
 import com.waverunnah.swg.harvesterdroid.data.resources.GalaxyResource;
 import com.waverunnah.swg.harvesterdroid.data.schematics.Schematic;
 import com.waverunnah.swg.harvesterdroid.gui.dialog.SchematicDialog;
-import com.waverunnah.swg.harvesterdroid.xml.app.SchematicsXml;
 import com.waverunnah.swg.harvesterdroid.utils.Downloader;
+import javafx.beans.Observable;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
@@ -20,30 +20,34 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class MainController implements Initializable {
+	// TODO Split each panel into it's own component (inventory, schematics, best resources)
 
 	private List<GalaxyResource> galaxyResourceList;
 	private Map<String, ResourceListItem> resourceListItemCache = new HashMap<>();
 
+	private ObservableList<Schematic> schematicsList;
+	private FilteredList<Schematic> filteredSchematicList;
+
 	@FXML
-	ListView<Schematic> schematicsList;
+	ListView<Schematic> schematicsListView;
 	@FXML
-	ListView<String> inventoryList;
+	ListView<String> inventoryListView;
 	@FXML
-	ListView<ResourceListItem> bestResourcesList; // TODO: Use filters instead of adding/removing
+	ListView<ResourceListItem> bestResourcesListView; // TODO: Use filters instead of adding/removing
 	@FXML
 	ComboBox<String> professionComboBox;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		ObservableList<ResourceListItem> resourceListItems = bestResourcesList.getItems();
-
 		galaxyResourceList = HarvesterDroid.getGalaxyResources();
 
-		ObservableList<Schematic> data = FXCollections.observableArrayList(HarvesterDroid.getSchematics());
+		initSchematics();
+		initGroups();
 
-		FilteredList<Schematic> filteredSchematicList = new FilteredList<>(data, schematic -> true);
-		schematicsList.setItems(filteredSchematicList);
+		// TODO List top 10 current spawned resources based on stats closest to cap
+	}
 
+	private void initGroups() {
 		professionComboBox.setItems(FXCollections.observableArrayList(HarvesterDroid.getProfessions()));
 		professionComboBox.getItems().add(0, "any"); // Any filter
 		professionComboBox.getSelectionModel().select(0);
@@ -58,12 +62,14 @@ public class MainController implements Initializable {
 				filteredSchematicList.setPredicate(s -> s.getGroup().equals(filter));
 			}
 		});
+	}
 
-		schematicsList.getSelectionModel().getSelectedItems().addListener(new ListChangeListener<Schematic>() {
+	private void initSchematics() {
+		schematicsListView.getSelectionModel().getSelectedItems().addListener(new ListChangeListener<Schematic>() {
 			@Override
 			public void onChanged(Change<? extends Schematic> c) {
 				cacheNewResourceListItems();
-				bestResourcesList.getItems().clear();
+				bestResourcesListView.getItems().clear();
 
 				while (c.next()) {
 					if (c.wasAdded()) {
@@ -76,47 +82,48 @@ public class MainController implements Initializable {
 			}
 		});
 
-		for (int i = 0; i < 10; i++) {
-			GalaxyResource galaxyResource = galaxyResourceList.get(i);
-			ResourceListItem item = new ResourceListItem();
-			item.setGalaxyResource(galaxyResource);
-			resourceListItems.add(item);
-		}
+		schematicsList = FXCollections.observableArrayList(schematic -> new Observable[]{schematic.nameProperty()});
+		schematicsList.setAll(HarvesterDroid.getSchematics());
+
+		filteredSchematicList = new FilteredList<>(schematicsList, schematic -> true);
+		schematicsListView.setItems(filteredSchematicList);
 	}
 
 	public void editSelectedSchematic() {
-		if (schematicsList.getSelectionModel().getSelectedItem() == null)
+		if (schematicsListView.getSelectionModel().getSelectedItem() == null)
 			return;
 
-		displaySchematicDialog(schematicsList.getSelectionModel().getSelectedItem());
+		displaySchematicDialog(schematicsListView.getSelectionModel().getSelectedItem());
 	}
 
 	public void displaySchematicDialog() {
 		SchematicDialog dialog = new SchematicDialog();
+		dialog.setTitle("Create Schematic");
 		Optional<Schematic> result = dialog.showAndWait();
 		if (!result.isPresent())
 			return;
 
-		schematicsList.getItems().add(result.get());
+		schematicsList.add(result.get());
 	}
 
 	public void displaySchematicDialog(Schematic schematic) {
 		SchematicDialog dialog = new SchematicDialog(schematic);
+		dialog.setTitle("Edit Schematic");
 		dialog.showAndWait();
 	}
 
 	private void cacheNewResourceListItems() {
-		bestResourcesList.getItems().forEach(resourceListItem -> {
+		bestResourcesListView.getItems().forEach(resourceListItem -> {
 			if (!resourceListItemCache.containsKey(resourceListItem.getGalaxyResource().getName()))
 				resourceListItemCache.put(resourceListItem.getGalaxyResource().getName(), resourceListItem);
 		});
 	}
 
 	private void updateBestResourceList(List<? extends Schematic> schematics) {
-		schematics.forEach(schematic -> schematic.getResources().keySet().forEach(id -> {
+		schematics.forEach(schematic -> schematic.getResources().forEach(id -> {
 			List<GalaxyResource> matchedResources = findGalaxyResourcesById(id);
 			if (matchedResources != null) {
-				GalaxyResource bestResource = collectBestResourceForSchematic(schematic, matchedResources, schematic.getResources().get(id));
+				GalaxyResource bestResource = collectBestResourceForSchematic(schematic, matchedResources);
 				if (bestResource != null) {
 					createResourceListItem(bestResource);
 				} else {
@@ -127,12 +134,12 @@ public class MainController implements Initializable {
 	}
 
 	private void clearBestResourceList() {
-		bestResourcesList.getItems().clear();
+		bestResourcesListView.getItems().clear();
 	}
 
 	private void createResourceListItem(GalaxyResource galaxyResource) {
 		// Don't need any duplicates!
-		for (ResourceListItem resourceListItem : bestResourcesList.getItems()) {
+		for (ResourceListItem resourceListItem : bestResourcesListView.getItems()) {
 			if (resourceListItem.getGalaxyResource() == galaxyResource) {
 				return;
 			}
@@ -141,21 +148,21 @@ public class MainController implements Initializable {
 			System.out.println("Creating resourceListItem for " + galaxyResource);
 			ResourceListItem item = new ResourceListItem();
 			item.setGalaxyResource(galaxyResource);
-			bestResourcesList.getItems().add(item);
+			bestResourcesListView.getItems().add(item);
 		} else {
-			bestResourcesList.getItems().add(resourceListItemCache.get(galaxyResource.getName()));
+			bestResourcesListView.getItems().add(resourceListItemCache.get(galaxyResource.getName()));
 		}
 	}
 
-	private GalaxyResource collectBestResourceForSchematic(Schematic schematic, List<GalaxyResource> galaxyResources, int count) {
+	private GalaxyResource collectBestResourceForSchematic(Schematic schematic, List<GalaxyResource> galaxyResources) {
 		// TODO: Account for resources in "inventory"
 
 		GalaxyResource ret = null;
 		float weightedAvg = -1;
-		Map<String, Float> modifiers = schematic.getModifiers();
+		List<Schematic.Modifier> modifiers = schematic.getModifiers();
 
 		for (GalaxyResource galaxyResource : galaxyResources) {
-			float galaxyResourceAvg = getResourceWeightedAverage(modifiers, galaxyResource, count);
+			float galaxyResourceAvg = getResourceWeightedAverage(modifiers, galaxyResource);
 			// TODO Check if resource has all attributes
 			if (ret == null || weightedAvg == -1) {
 				ret = galaxyResource;
@@ -169,24 +176,16 @@ public class MainController implements Initializable {
 		return ret;
 	}
 
-	private float getResourceWeightedAverage(Map<String, Float> attributes, GalaxyResource resource, int count) {
+	private float getResourceWeightedAverage(List<Schematic.Modifier> modifierList, GalaxyResource resource) {
 		// TODO Calculate w/ expertise resource bonus (+40 pts) if have it
 
 		// TODO Account for resource caps
 
-		Map<String, Integer> calcWeights = new HashMap<>();
-		attributes.forEach((attribute, weight) -> {
-			if (resource.hasAttribute(attribute)) {
-				int result = ((resource.getAttribute(attribute) * count) / count);
-
-				calcWeights.put(attribute, result);
-			}
-		});
-
-
 		float average = 0;
-		for (Map.Entry<String, Integer> entry : calcWeights.entrySet()) {
-			average = average + attributes.get(entry.getKey()) * entry.getValue();
+		for (Schematic.Modifier modifier : modifierList) {
+			if (resource.hasAttribute(modifier.getName())) {
+				average = average + (resource.getAttribute(modifier.getName()) * modifier.getValue());
+			}
 		}
 
 		return average;

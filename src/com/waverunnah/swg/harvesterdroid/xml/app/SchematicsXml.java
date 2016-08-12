@@ -80,8 +80,8 @@ public class SchematicsXml extends BaseXml {
 			if (!child.getNodeName().equals("modifier"))
 				return;
 
-			schematic.getModifiers().put(((Element) child).getAttribute("id"),
-					Float.valueOf(((Element) child).getAttribute("value")) / 100.0f);
+			schematic.getModifiers().add(new Schematic.Modifier(((Element) child).getAttribute("id"),
+					Float.parseFloat(((Element) child).getAttribute("value"))));
 		});
 	}
 
@@ -98,8 +98,7 @@ public class SchematicsXml extends BaseXml {
 			if (!child.getNodeName().equals("resource"))
 				continue;
 
-			schematic.getResources().put(((Element) child).getAttribute("id"),
-					Integer.valueOf(((Element) child).getAttribute("count")));
+			schematic.getResources().add(((Element) child).getAttribute("id"));
 		}
 	}
 

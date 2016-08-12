@@ -54,7 +54,7 @@
                      <content>
                         <VBox spacing="5.0">
                            <children>
-                              <ListView fx:id="inventoryList" VBox.vgrow="ALWAYS" />
+                              <ListView fx:id="inventoryListView" VBox.vgrow="ALWAYS" />
                               <ButtonBar prefHeight="40.0" prefWidth="200.0">
                                 <buttons>
                                   <Button mnemonicParsing="false" text="Remove" />
@@ -77,7 +77,7 @@
                         <VBox alignment="TOP_RIGHT" spacing="5.0">
                            <children>
                               <ComboBox fx:id="professionComboBox" nodeOrientation="LEFT_TO_RIGHT" VBox.vgrow="ALWAYS" />
-                              <ListView fx:id="schematicsList" VBox.vgrow="ALWAYS" />
+                              <ListView fx:id="schematicsListView" VBox.vgrow="ALWAYS" />
                               <ButtonBar prefHeight="40.0" prefWidth="200.0">
                                 <buttons>
                                     <Button layoutX="243.0" layoutY="10.0" mnemonicParsing="false" text="Remove" />
@@ -104,7 +104,7 @@
                         <VBox>
                            <children>
                               <Label text="Best Resources for this Schematic:" />
-                              <ListView fx:id="bestResourcesList" VBox.vgrow="ALWAYS" />
+                              <ListView fx:id="bestResourcesListView" VBox.vgrow="ALWAYS" />
                            </children>
                         </VBox>
                      </content>

@@ -1,85 +1,46 @@
 <schematics>
-    <schematic name="Advanced Blaster Pistol Barrel" prof="weaponsmith">
+    <schematic name="Advanced Components" prof="weaponsmith">
         <resources>
-            <resource id="steel_rhodium" count="26"/>
-            <resource id="steel_duralloy" count="20"/>
-            <resource id="amorphous_ryll" count="6"/>
-            <resource id="metal" count="30"/>
+            <resource id="steel_rhodium"/>
+            <resource id="steel_duralloy"/>
+            <resource id="amorphous_ryll"/>
+            <resource id="metal"/>
+            <resource id="steel_duranium"/>
+            <resource id="wood_deciduous_corellia"/>
+            <resource id="aluminum_linksteel"/>
+            <resource id="petrochem_inert_polymer"/>
+            <resource id="copper_polysteel"/>
+            <resource id="steel_carbonite"/>
+            <resource id="gemstone_crystalline"/>
+            <resource id="aluminum_chromium"/>
+            <resource id="crystalline_green_diamond"/>
         </resources>
         <modifiers>
             <modifier id="overall_quality" value="33"/>
             <modifier id="shock_resistance" value="66"/>
         </modifiers>
     </schematic>
-	<schematic name="Jinsu Lightsaber" prof="jedi">
+	<schematic name="Crafting Tools" prof="artisan">
+		<resources>
+            <resource id="metal"/>
+            <resource id="mineral"/>
+            <resource id="chemical"/>
+        </resources>
+        <modifiers>
+            <modifier id="conductivity" value="100"/>
+        </modifiers>
+	</schematic>
+    <schematic name="Lightsabers" prof="jedi">
         <resources>
-            <resource id="steel_ditanium" count="1"/>
-            <resource id="copper_platinite" count="1"/>
-            <resource id="gas_inert_mirth" count="1"/>
-            <resource id="aluminum_linksteel" count="1"/>
-			<resource id="petrochem_inert_polymer" count="1"/>
+            <resource id="steel_ditanium"/>
+            <resource id="copper_platinite"/>
+            <resource id="gas_inert_mirth"/>
+            <resource id="aluminum_linksteel"/>
+            <resource id="petrochem_inert_polymer"/>
         </resources>
         <modifiers>
             <modifier id="conductivity" value="33"/>
             <modifier id="overall_quality" value="66"/>
         </modifiers>
     </schematic>
-	<schematic name="Advanced Blaster Rifle Barrel" prof="weaponsmith">
-        <resources>
-            <resource id="steel_rhodium" count="45"/>
-            <resource id="steel_duralloy" count="36"/>
-			<resource id="steel_duranium" count="34"/>
-            <resource id="amorphous_ryll" count="12"/>
-            <resource id="metal" count="18"/>
-        </resources>
-        <modifiers>
-            <modifier id="overall_quality" value="33"/>
-            <modifier id="shock_resistance" value="66"/>
-        </modifiers>
-    </schematic>
-	    <schematic name="Advanced Ranged Weapon Core" prof="weaponsmith">
-        <resources>
-            <resource id="petrochem_inert_polymer" count="55"/>
-            <resource id="copper_polysteel" count="95"/>
-            <resource id="steel_carbonite" count="55"/>
-            <resource id="gemstone_crystalline" count="12"/>
-        </resources>
-        <modifiers>
-            <modifier id="conductivity" value="50"/>
-            <modifier id="shock_resistance" value="50"/>
-        </modifiers>
-    </schematic>
-	<schematic name="Advanced Weapon Stock" prof="weaponsmith">
-		<resources>
-			<resource id="wood_deciduous_corellia" count="35"/>
-			<resource id="aluminum_linksteel" count="15"/>
-			<resource id="steel_duralloy" count="15"/>
-		</resources>
-		<modifiers>
-			<modifier id="overall_quality" value="33"/>
-			<modifier id="shock_resistance" value="66"/>
-		</modifiers>
-	</schematic>
-		<schematic name="Advanced Weapon Scope" prof="weaponsmith">
-        <resources>
-            <resource id="aluminum_chromium" count="18"/>
-			<resource id="petrochem_inert_polymer" count="10"/>
-			<resource id="aluminum_linksteel" count="8"/>
-			<resource id="crystalline_green_diamond" count="16"/>
-        </resources>
-        <modifiers>
-            <modifier id="overall_quality" value="33"/>
-            <modifier id="shock_resistance" value="66"/>
-        </modifiers>
-	</schematic>
-	<schematic name="Crafting Tools" prof="artisan">
-		<resources>
-            <resource id="metal" count="16"/>
-            <resource id="mineral" count="8"/>
-            <resource id="chemical" count="10"/>
-        </resources>
-        <modifiers>
-            <modifier id="conductivity" value="100"/>
-        </modifiers>
-	</schematic>
 </schematics>

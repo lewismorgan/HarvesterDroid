@@ -6,7 +6,6 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
-<?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.TitledPane?>
@@ -28,8 +27,11 @@
                <HBox.margin>
                   <Insets top="5.0" />
                </HBox.margin>
+               <padding>
+                  <Insets left="5.0" />
+               </padding>
             </Label>
-            <ComboBox fx:id="professionComboBox" prefWidth="150.0" />
+            <TextField fx:id="professionField" />
          </children>
       </HBox>
       <HBox layoutX="10.0" layoutY="10.0" spacing="5.0">
@@ -62,12 +64,16 @@
                      <children>
                         <VBox layoutX="9.600000381469727" layoutY="9.600000381469727" spacing="5.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <children>
-                              <TableView fx:id="attributesTable">
-                                <columns>
-                                  <TableColumn editable="false" prefWidth="150.0" text="Attribute" />
-                                  <TableColumn maxWidth="1.7976931348623157E308" minWidth="-1.0" prefWidth="40.0" text="\%" />
-                                </columns>
-                              </TableView>
+                              <TableView fx:id="attributesTable" editable="true" tableMenuButtonVisible="true">
+                                 <columnResizePolicy>
+                                    <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                 </columnResizePolicy></TableView>
+                              <HBox alignment="CENTER" nodeOrientation="LEFT_TO_RIGHT" spacing="15.0" VBox.vgrow="ALWAYS">
+                                 <children>
+                                    <ComboBox fx:id="addModifierComboBox" prefWidth="150.0" HBox.hgrow="ALWAYS" />
+                                    <Button mnemonicParsing="false" onAction="#addModifier" text="Add" />
+                                 </children>
+                              </HBox>
                            </children>
                         </VBox>
                      </children>

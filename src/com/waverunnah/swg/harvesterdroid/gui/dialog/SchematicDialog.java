@@ -7,6 +7,7 @@ import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
 import javafx.scene.layout.VBox;
+import javafx.util.Callback;
 
 import java.io.IOException;
 
@@ -15,15 +16,19 @@ public class SchematicDialog extends Dialog<Schematic> {
 	private static SchematicDialogController controller;
 
 	public SchematicDialog() {
-		setTitle("Edit Schematic");
-		setupView();
-		setupButtons();
+		this(new Schematic());
 	}
 
 	public SchematicDialog(Schematic schematic) {
-		this();
+		init();
 		if (controller != null)
 			controller.readSchematic(schematic);
+	}
+
+	private void init() {
+		setTitle("Schematic Editor");
+		setupView();
+		setupButtons();
 	}
 
 	private void setupView() {
