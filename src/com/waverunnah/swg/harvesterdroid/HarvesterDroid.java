@@ -13,7 +13,10 @@ import javafx.stage.Stage;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.transform.TransformerException;
+import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,6 +55,14 @@ public class HarvesterDroid extends Application {
         primaryStage.setTitle("Harvester Droid");
         primaryStage.setScene(new Scene(root));
         primaryStage.show();
+    }
+
+    public static void save() {
+	    try {
+		    instance.schematicsXml.save(new File("data/user/schematics.xml"));
+	    } catch (TransformerException | FileNotFoundException e) {
+		    e.printStackTrace();
+	    }
     }
 
     public static void main(String[] args) {

@@ -1,5 +1,7 @@
 package com.waverunnah.swg.harvesterdroid.xml;
 
+import com.sun.org.apache.xml.internal.serialize.OutputFormat;
+import jdk.internal.util.xml.impl.XMLWriter;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -8,9 +10,10 @@ import org.xml.sax.SAXException;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.ParserConfigurationException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import javax.xml.transform.*;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+import java.io.*;
 
 public abstract class BaseXml {
 
@@ -29,14 +32,24 @@ public abstract class BaseXml {
 			read(document.getDocumentElement());
 	}
 
-	// TODO XML Writing
-	public OutputStream getOutputStream() {
-		return null;
+	public final void save(File file) throws TransformerException, FileNotFoundException {
+		Document saveDoc = documentBuilder.newDocument();
+
+		write(saveDoc);
+
+		TransformerFactory transformerFactory = TransformerFactory.newInstance();
+		Transformer transformer = transformerFactory.newTransformer();
+		transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+		transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
+		DOMSource source = new DOMSource(saveDoc);
+		StreamResult result = new StreamResult(file);
+		//StreamResult result =  new StreamResult(System.out);
+
+		transformer.transform(source, result);
 	}
 
 	protected abstract void read(Element root) throws IOException, ParserConfigurationException, SAXException;
-	protected abstract void write(OutputStream outputStream);
-
+	protected abstract void write(Document document);
 
 	public final void processElement(Node node, Processor processor) {
 		NodeList children = node.getChildNodes();

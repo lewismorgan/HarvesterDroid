@@ -1,46 +1,47 @@
 <schematics>
-    <schematic name="Advanced Components" prof="weaponsmith">
-        <resources>
-            <resource id="steel_rhodium"/>
-            <resource id="steel_duralloy"/>
-            <resource id="amorphous_ryll"/>
-            <resource id="metal"/>
-            <resource id="steel_duranium"/>
-            <resource id="wood_deciduous_corellia"/>
-            <resource id="aluminum_linksteel"/>
-            <resource id="petrochem_inert_polymer"/>
-            <resource id="copper_polysteel"/>
-            <resource id="steel_carbonite"/>
-            <resource id="gemstone_crystalline"/>
-            <resource id="aluminum_chromium"/>
-            <resource id="crystalline_green_diamond"/>
-        </resources>
-        <modifiers>
-            <modifier id="overall_quality" value="33"/>
-            <modifier id="shock_resistance" value="66"/>
-        </modifiers>
-    </schematic>
-	<schematic name="Crafting Tools" prof="artisan">
-		<resources>
-            <resource id="metal"/>
-            <resource id="mineral"/>
-            <resource id="chemical"/>
-        </resources>
-        <modifiers>
-            <modifier id="conductivity" value="100"/>
-        </modifiers>
-	</schematic>
-    <schematic name="Lightsabers" prof="jedi">
-        <resources>
-            <resource id="steel_ditanium"/>
-            <resource id="copper_platinite"/>
-            <resource id="gas_inert_mirth"/>
-            <resource id="aluminum_linksteel"/>
-            <resource id="petrochem_inert_polymer"/>
-        </resources>
-        <modifiers>
-            <modifier id="conductivity" value="33"/>
-            <modifier id="overall_quality" value="66"/>
-        </modifiers>
-    </schematic>
+<schematic name="Advanced Components" prof="weaponsmith">
+<resources>
+<resource id="steel_rhodium"/>
+<resource id="steel_duralloy"/>
+<resource id="amorphous_ryll"/>
+<resource id="metal"/>
+<resource id="steel_duranium"/>
+<resource id="wood_deciduous_corellia"/>
+<resource id="aluminum_linksteel"/>
+<resource id="petrochem_inert_polymer"/>
+<resource id="copper_polysteel"/>
+<resource id="steel_carbonite"/>
+<resource id="gemstone_crystalline"/>
+<resource id="aluminum_chromium"/>
+<resource id="crystalline_green_diamond"/>
+</resources>
+<modifiers>
+<modifier id="overall_quality" value="33.0"/>
+<modifier id="shock_resistance" value="66.0"/>
+</modifiers>
+</schematic>
+<schematic name="Crafting Tools" prof="artisan">
+<resources>
+<resource id="metal"/>
+<resource id="mineral"/>
+<resource id="chemical"/>
+<resource id="softwood_evergreen"/>
+</resources>
+<modifiers>
+<modifier id="conductivity" value="100.0"/>
+</modifiers>
+</schematic>
+<schematic name="Lightsabers" prof="jedi">
+<resources>
+<resource id="steel_ditanium"/>
+<resource id="copper_platinite"/>
+<resource id="gas_inert_mirth"/>
+<resource id="aluminum_linksteel"/>
+<resource id="petrochem_inert_polymer"/>
+</resources>
+<modifiers>
+<modifier id="conductivity" value="33.0"/>
+<modifier id="overall_quality" value="66.0"/>
+</modifiers>
+</schematic>
 </schematics>

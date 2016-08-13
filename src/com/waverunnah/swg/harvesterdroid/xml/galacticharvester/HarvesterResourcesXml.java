@@ -4,6 +4,7 @@ import com.waverunnah.swg.harvesterdroid.data.resources.GalaxyResource;
 import com.waverunnah.swg.harvesterdroid.data.resources.Planet;
 import com.waverunnah.swg.harvesterdroid.xml.BaseXml;
 
+import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
@@ -43,7 +44,8 @@ public final class HarvesterResourcesXml extends BaseXml {
 	}
 
 	@Override
-	protected void write(OutputStream outputStream) {
+	protected void write(Document document) {
+
 	}
 
 	private GalaxyResource parseGalaxyResource(Node node) {

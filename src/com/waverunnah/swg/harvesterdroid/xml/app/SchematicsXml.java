@@ -3,16 +3,13 @@ package com.waverunnah.swg.harvesterdroid.xml.app;
 import com.waverunnah.swg.harvesterdroid.data.schematics.Schematic;
 import com.waverunnah.swg.harvesterdroid.xml.BaseXml;
 
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
+import org.w3c.dom.*;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.ParserConfigurationException;
 
 import java.io.IOException;
-import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,8 +40,39 @@ public class SchematicsXml extends BaseXml {
 	}
 
 	@Override
-	protected void write(OutputStream outputStream) {
-		// TODO Write method for writing schematics xml
+	protected void write(Document document) {
+		Element root = document.createElement("schematics");
+		schematicsList.forEach(schematic -> createSchematicElement(document, root, schematic));
+		document.appendChild(root);
+	}
+
+	private void createSchematicElement(Document document, Element root, Schematic schematic) {
+		Element self = document.createElement("schematic");
+		self.setAttribute("name", schematic.getName());
+		self.setAttribute("prof", schematic.getGroup());
+
+		Element resources = document.createElement("resources");
+		schematic.getResources().forEach(resource -> createResourceElement(document, resources, resource));
+
+		Element modifiers = document.createElement("modifiers");
+		schematic.getModifiers().forEach(modifier -> createModifierElement(document, modifiers, modifier));
+
+		root.appendChild(self); // <schematic>
+		self.appendChild(resources); // <resources>...</resources>
+		self.appendChild(modifiers); // <modifiers>...</modifiers>
+	}
+
+	private void createModifierElement(Document document, Element modifiers, Schematic.Modifier modifier) {
+		Element self = document.createElement("modifier");
+		self.setAttribute("id", modifier.getName());
+		self.setAttribute("value", Float.toString(modifier.getValue()));
+		modifiers.appendChild(self);
+	}
+
+	private void createResourceElement(Document document, Element resources, String resource) {
+		Element self = document.createElement("resource");
+		self.setAttribute("id", resource);
+		resources.appendChild(self);
 	}
 
 	private Schematic parseSchematic(Node node) {

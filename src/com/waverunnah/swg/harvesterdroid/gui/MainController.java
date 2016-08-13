@@ -207,6 +207,10 @@ public class MainController implements Initializable {
 		}
 	}
 
+	public void save() {
+		HarvesterDroid.save();
+	}
+
 	public void updateStatusBar(String status) {
 		statusBar.setText(status);
 		statusBar.setProgress(-1);
