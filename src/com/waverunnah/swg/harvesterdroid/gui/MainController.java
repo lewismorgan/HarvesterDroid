@@ -14,6 +14,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListView;
+import org.controlsfx.control.StatusBar;
 
 import java.net.URL;
 import java.util.*;
@@ -21,10 +22,11 @@ import java.util.stream.Collectors;
 
 public class MainController implements Initializable {
 	// TODO Split each panel into it's own component (inventory, schematics, best resources)
+	// TODO Move intensive methods to a Task
 
-	// TODO FilteredList for galaxyResourceList
-	private List<GalaxyResource> galaxyResourceList;
-	private Map<String, ResourceListItem> resourceListItemCache = new HashMap<>();
+	private List<String> loadedResources = new ArrayList<>();
+	private ObservableList<ResourceListItem> resourceListItems;
+	private FilteredList<ResourceListItem> filteredResourceListItems;
 
 	private ObservableList<Schematic> schematicsList;
 	private FilteredList<Schematic> filteredSchematicList;
@@ -37,15 +39,21 @@ public class MainController implements Initializable {
 	ListView<ResourceListItem> bestResourcesListView;
 	@FXML
 	ComboBox<String> professionComboBox;
+	@FXML
+	StatusBar statusBar;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		galaxyResourceList = HarvesterDroid.getGalaxyResources();
-
+		initResources();
 		initSchematics();
 		initGroups();
+	}
 
-		// TODO List top 10 current spawned resources based on stats closest to cap
+	private void initResources() {
+		resourceListItems = FXCollections.observableArrayList();
+
+		filteredResourceListItems = new FilteredList<>(resourceListItems, resourceListItem -> false);
+		bestResourcesListView.setItems(filteredResourceListItems);
 	}
 
 	private void initGroups() {
@@ -74,7 +82,7 @@ public class MainController implements Initializable {
 						List<? extends Schematic> change = c.getAddedSubList();
 						change.forEach(schematic -> updateBestResourceList(schematic));
 					} else if (c.wasRemoved()) {
-						clearBestResourceList();
+						schematicsListView.getSelectionModel().clearSelection();
 					}
 				}
 			}
@@ -111,50 +119,38 @@ public class MainController implements Initializable {
 		result.ifPresent(this::updateBestResourceList);
 	}
 
-	private void cacheNewResourceListItems() {
-		bestResourcesListView.getItems().forEach(resourceListItem -> {
-			if (!resourceListItemCache.containsKey(resourceListItem.getGalaxyResource().getName()))
-				resourceListItemCache.put(resourceListItem.getGalaxyResource().getName(), resourceListItem);
-		});
-	}
-
 	private void updateBestResourceList(Schematic schematic) {
-		// TODO: Refactor to use FilterList
+		updateStatusBar("Updating Best Resources List");
 		bestResourcesListView.setDisable(false);
-		clearBestResourceList();
 
+		List<GalaxyResource> bestResources = new ArrayList<>(schematic.getResources().size());
 		schematic.getResources().forEach(id -> {
 			List<GalaxyResource> matchedResources = findGalaxyResourcesById(id);
 			if (matchedResources != null) {
 				GalaxyResource bestResource = collectBestResourceForSchematic(schematic, matchedResources);
 				if (bestResource != null) {
-					createResourceListItem(bestResource);
+					bestResources.add(bestResource);
 				} else {
 					System.out.println("No resource is available for " + id);
 				}
 			}
 		});
+
+		createResourceListItems(bestResources);
+		filteredResourceListItems.setPredicate(resourceListItem -> bestResources.contains(resourceListItem.getGalaxyResource()));
+		refreshStatusBar();
 	}
 
-	private void clearBestResourceList() {
-		cacheNewResourceListItems();
-		bestResourcesListView.getItems().clear();
-	}
+	private void createResourceListItems(List<GalaxyResource> galaxyResources) {
+		for (GalaxyResource galaxyResource : galaxyResources) {
+			if (loadedResources.contains(galaxyResource.getName()))
+				continue;
 
-	private void createResourceListItem(GalaxyResource galaxyResource) {
-		// Don't need any duplicates!
-		for (ResourceListItem resourceListItem : bestResourcesListView.getItems()) {
-			if (resourceListItem.getGalaxyResource() == galaxyResource) {
-				return;
-			}
-		}
-		if (!resourceListItemCache.containsKey(galaxyResource.getName())) {
 			System.out.println("Creating resourceListItem for " + galaxyResource);
 			ResourceListItem item = new ResourceListItem();
 			item.setGalaxyResource(galaxyResource);
-			bestResourcesListView.getItems().add(item);
-		} else {
-			bestResourcesListView.getItems().add(resourceListItemCache.get(galaxyResource.getName()));
+			resourceListItems.add(item);
+			loadedResources.add(galaxyResource.getName());
 		}
 	}
 
@@ -199,13 +195,25 @@ public class MainController implements Initializable {
 		if (resourceGroups != null) {
 			List<GalaxyResource> master = new ArrayList<>();
 			for (String group : resourceGroups) {
-				master.addAll(galaxyResourceList.stream().filter(galaxyResource -> galaxyResource.getResourceType().startsWith(group)).collect(Collectors.toList()));
+				master.addAll(HarvesterDroid.getGalaxyResources().stream()
+						.filter(galaxyResource -> galaxyResource.getResourceType().startsWith(group))
+						.collect(Collectors.toList()));
 			}
 			return master;
 		} else {
-			return galaxyResourceList.stream().filter(galaxyResource ->
+			return HarvesterDroid.getGalaxyResources().stream().filter(galaxyResource ->
 					galaxyResource.getResourceType().equals(id) || galaxyResource.getResourceType().startsWith(id)
 			).collect(Collectors.toList());
 		}
+	}
+
+	public void updateStatusBar(String status) {
+		statusBar.setText(status);
+		statusBar.setProgress(-1);
+	}
+
+	public void refreshStatusBar() {
+		statusBar.setText("Idle");
+		statusBar.setProgress(0);
 	}
 }
