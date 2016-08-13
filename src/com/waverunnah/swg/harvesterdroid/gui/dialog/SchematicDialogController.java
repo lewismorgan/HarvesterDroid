@@ -1,9 +1,8 @@
 package com.waverunnah.swg.harvesterdroid.gui.dialog;
 
+import com.waverunnah.swg.harvesterdroid.HarvesterDroid;
 import com.waverunnah.swg.harvesterdroid.data.schematics.Schematic;
 import com.waverunnah.swg.harvesterdroid.gui.FloatTextField;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
@@ -11,10 +10,10 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.VBox;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -33,9 +32,9 @@ public class SchematicDialogController extends VBox implements Initializable {
 	@FXML
 	TextField professionField;
 	@FXML
-	ListView<String> resourceList;
+	ListView<String> resourceListView;
 	@FXML
-	TableView<Schematic.Modifier> attributesTable;
+	TableView<Schematic.Modifier> attributesTableView;
 	@FXML
 	ComboBox<String> addModifierComboBox;
 
@@ -47,9 +46,9 @@ public class SchematicDialogController extends VBox implements Initializable {
 		this.schematic = schematic;
 
 		nameField.textProperty().bindBidirectional(schematic.nameProperty());
-		resourceList.itemsProperty().bindBidirectional(schematic.resourcesProperty());
+		resourceListView.itemsProperty().bindBidirectional(schematic.resourcesProperty());
 		professionField.textProperty().bindBidirectional(schematic.groupProperty());
-		attributesTable.itemsProperty().bindBidirectional(schematic.modifiersProperty());
+		attributesTableView.itemsProperty().bindBidirectional(schematic.modifiersProperty());
 
 		addModifierComboBox.setItems(availableModifiers);
 		addModifierComboBox.getSelectionModel().select(0);
@@ -79,6 +78,30 @@ public class SchematicDialogController extends VBox implements Initializable {
 				}
 			}
 		});
+	}
+
+	public void addResource() {
+		List<String> choices = new ArrayList<>();
+		HarvesterDroid.getResourceTypes().stream().filter(type -> !schematic.getResources().contains(type))
+				.forEach(choices::add);
+		ChoiceDialog<String> dialog = new ChoiceDialog<>(choices.get(0), choices);
+		dialog.setTitle("Add New Resource");
+		dialog.setHeaderText("Select the resource to add to this schematic");
+		Optional<String> result = dialog.showAndWait();
+
+		result.ifPresent(choice -> {
+			if (!schematic.getResources().contains(choice))
+				schematic.getResources().add(choice);
+		});
+	}
+
+	public void removeResource() {
+		String resource = resourceListView.getSelectionModel().getSelectedItem();
+		if (resource == null || !schematic.getResources().contains(resource))
+			return;
+
+		resourceListView.getSelectionModel().clearSelection();
+		schematic.getResources().remove(resource);
 	}
 
 	public void addModifier() {
@@ -117,7 +140,7 @@ public class SchematicDialogController extends VBox implements Initializable {
 			}
 		});
 
-		attributesTable.getColumns().addAll(attributeColumn, percentColumn);
+		attributesTableView.getColumns().addAll(attributeColumn, percentColumn);
 	}
 
 	private boolean isModifiersAboveCap(List<Schematic.Modifier> modifiers, float newVal, Schematic.Modifier change) {
@@ -185,9 +208,7 @@ public class SchematicDialogController extends VBox implements Initializable {
 			});
 			textField.setValue(getItem());
 			textField.setMinWidth(this.getWidth() - this.getGraphicTextGap() * 2);
-			textField.setOnAction((e) -> {
-				commitEdit(textField.getValue());
-			});
+			textField.setOnAction((e) -> commitEdit(textField.getValue()));
 		}
 
 	}

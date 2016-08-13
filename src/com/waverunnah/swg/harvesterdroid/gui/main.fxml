@@ -4,7 +4,6 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ButtonBar?>
 <?import javafx.scene.control.ComboBox?>
-<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
@@ -17,6 +16,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import org.controlsfx.control.StatusBar?>
 
+<?import javafx.scene.control.Label?>
 <VBox prefHeight="585.0" prefWidth="680.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.waverunnah.swg.harvesterdroid.gui.MainController">
    <children>
       <MenuBar VBox.vgrow="ALWAYS">
@@ -24,11 +24,6 @@
           <Menu mnemonicParsing="false" text="File">
             <items>
               <MenuItem mnemonicParsing="false" text="Close" />
-            </items>
-          </Menu>
-          <Menu mnemonicParsing="false" text="Edit">
-            <items>
-              <MenuItem mnemonicParsing="false" text="Delete" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Help">
@@ -103,8 +98,11 @@
                      <content>
                         <VBox>
                            <children>
-                              <Label text="Best Resources for this Schematic:" />
-                              <ListView fx:id="bestResourcesListView" VBox.vgrow="ALWAYS" />
+                              <ListView fx:id="bestResourcesListView" VBox.vgrow="ALWAYS" disable="true">
+                                  <placeholder>
+                                      <Label text="No Schematic Selected"/>
+                                  </placeholder>
+                              </ListView>
                            </children>
                         </VBox>
                      </content>
@@ -119,6 +117,6 @@
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
          </VBox.margin>
       </GridPane>
-      <StatusBar text="Galactic Resource Utility Ready for Use" VBox.vgrow="SOMETIMES" />
+      <StatusBar text="Idle" VBox.vgrow="SOMETIMES" />
    </children>
 </VBox>

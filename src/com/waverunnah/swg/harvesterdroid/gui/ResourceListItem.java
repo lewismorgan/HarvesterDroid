@@ -1,6 +1,5 @@
 package com.waverunnah.swg.harvesterdroid.gui;
 
-import com.sun.javaws.Main;
 import com.waverunnah.swg.harvesterdroid.data.resources.GalaxyResource;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.fxml.FXML;
@@ -11,7 +10,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 
@@ -92,7 +90,7 @@ public class ResourceListItem extends HBox {
 		// TODO Update image using group id
 		resourceName.setText(val.getName());
 		resourceType.setText(val.getResourceType());
-		resourceImage.setImage(getImage(val.getGroupId()));
+		resourceImage.setImage(getImage(val.getContainer()));
 
 		val.getAttributes().keySet().forEach(attr -> {
 			int value = val.getAttribute(attr);
@@ -139,11 +137,11 @@ public class ResourceListItem extends HBox {
 		attrLabel.setText(String.valueOf(value));
 	}
 
-	private Image getImage(String groupId) {
-		URL url = getClass().getResource("images/resources/" + groupId + ".png");
+	private Image getImage(String container) {
+		URL url = getClass().getResource("images/resources/" + container + ".png");
 		if (url == null) {
-			groupId = groupId.split("_")[0];
-			url = getClass().getResource("images/resources/" + groupId + ".png");
+			container = container.split("_")[0];
+			url = getClass().getResource("images/resources/" + container + ".png");
 			if (url == null)
 				return null;
 		}

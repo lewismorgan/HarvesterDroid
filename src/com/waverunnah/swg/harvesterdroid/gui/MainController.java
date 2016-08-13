@@ -22,6 +22,7 @@ import java.util.stream.Collectors;
 public class MainController implements Initializable {
 	// TODO Split each panel into it's own component (inventory, schematics, best resources)
 
+	// TODO FilteredList for galaxyResourceList
 	private List<GalaxyResource> galaxyResourceList;
 	private Map<String, ResourceListItem> resourceListItemCache = new HashMap<>();
 
@@ -33,7 +34,7 @@ public class MainController implements Initializable {
 	@FXML
 	ListView<String> inventoryListView;
 	@FXML
-	ListView<ResourceListItem> bestResourcesListView; // TODO: Use filters instead of adding/removing
+	ListView<ResourceListItem> bestResourcesListView;
 	@FXML
 	ComboBox<String> professionComboBox;
 
@@ -68,13 +69,10 @@ public class MainController implements Initializable {
 		schematicsListView.getSelectionModel().getSelectedItems().addListener(new ListChangeListener<Schematic>() {
 			@Override
 			public void onChanged(Change<? extends Schematic> c) {
-				cacheNewResourceListItems();
-				bestResourcesListView.getItems().clear();
-
 				while (c.next()) {
-					if (c.wasAdded()) {
+					if (c.wasAdded() && c.getAddedSize() == 1) {
 						List<? extends Schematic> change = c.getAddedSubList();
-						updateBestResourceList(change);
+						change.forEach(schematic -> updateBestResourceList(schematic));
 					} else if (c.wasRemoved()) {
 						clearBestResourceList();
 					}
@@ -109,7 +107,8 @@ public class MainController implements Initializable {
 	public void displaySchematicDialog(Schematic schematic) {
 		SchematicDialog dialog = new SchematicDialog(schematic);
 		dialog.setTitle("Edit Schematic");
-		dialog.showAndWait();
+		Optional<Schematic> result = dialog.showAndWait();
+		result.ifPresent(this::updateBestResourceList);
 	}
 
 	private void cacheNewResourceListItems() {
@@ -119,8 +118,12 @@ public class MainController implements Initializable {
 		});
 	}
 
-	private void updateBestResourceList(List<? extends Schematic> schematics) {
-		schematics.forEach(schematic -> schematic.getResources().forEach(id -> {
+	private void updateBestResourceList(Schematic schematic) {
+		// TODO: Refactor to use FilterList
+		bestResourcesListView.setDisable(false);
+		clearBestResourceList();
+
+		schematic.getResources().forEach(id -> {
 			List<GalaxyResource> matchedResources = findGalaxyResourcesById(id);
 			if (matchedResources != null) {
 				GalaxyResource bestResource = collectBestResourceForSchematic(schematic, matchedResources);
@@ -130,10 +133,11 @@ public class MainController implements Initializable {
 					System.out.println("No resource is available for " + id);
 				}
 			}
-		}));
+		});
 	}
 
 	private void clearBestResourceList() {
+		cacheNewResourceListItems();
 		bestResourcesListView.getItems().clear();
 	}
 
@@ -163,7 +167,6 @@ public class MainController implements Initializable {
 
 		for (GalaxyResource galaxyResource : galaxyResources) {
 			float galaxyResourceAvg = getResourceWeightedAverage(modifiers, galaxyResource);
-			// TODO Check if resource has all attributes
 			if (ret == null || weightedAvg == -1) {
 				ret = galaxyResource;
 				weightedAvg = galaxyResourceAvg;

@@ -14,6 +14,7 @@ import javafx.stage.Stage;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.FileInputStream;
+import java.util.ArrayList;
 import java.util.List;
 
 public class HarvesterDroid extends Application {
@@ -61,6 +62,9 @@ public class HarvesterDroid extends Application {
 		return stage;
 	}
 
+	public static List<String> getResourceTypes() {
+		return instance.harvesterResourcesXml.getTypes();
+	}
 	public static List<GalaxyResource> getGalaxyResources() {
 		// TODO Abstraction for other data sources
 		return instance.harvesterResourcesXml.getGalaxyResourceList();

@@ -9,7 +9,7 @@ public class GalaxyResource {
     private String name;
     private String date;
     private String resourceType;
-    private String groupId;
+    private String container;
 
     private List<Planet> planets = new ArrayList<>();
 
@@ -39,12 +39,12 @@ public class GalaxyResource {
         this.resourceType = resourceType;
     }
 
-    public String getGroupId() {
-        return groupId;
+    public String getContainer() {
+        return container;
     }
 
-    public void setGroupId(String groupId) {
-        this.groupId = groupId;
+    public void setContainer(String container) {
+        this.container = container;
     }
 
     public int getAttribute(String attr) {
@@ -80,7 +80,7 @@ public class GalaxyResource {
         return "GalaxyResource{" +
                 "name='" + name + '\'' +
                 ", resourceType='" + resourceType + '\'' +
-                ", groupId='" + groupId + '\'' +
+                ", container='" + container + '\'' +
                 '}';
     }
 }

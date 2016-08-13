@@ -19,7 +19,7 @@ import java.util.List;
 public final class HarvesterResourcesXml extends BaseXml {
 	private String timestamp;
 	private List<GalaxyResource> galaxyResourceList = new ArrayList<>();
-
+	private List<String> types = new ArrayList<>();
 
 	public HarvesterResourcesXml(DocumentBuilder documentBuilder) {
 		super(documentBuilder);
@@ -60,8 +60,10 @@ public final class HarvesterResourcesXml extends BaseXml {
 				case "resource_type":
 					galaxyResource.setResourceType(((Element) child).getAttribute("id"));
 					break;
-				case "group_id":
-					galaxyResource.setGroupId(child.getTextContent());
+				case "group_id": // TODO Refactor
+					galaxyResource.setContainer(child.getTextContent());
+					if (!types.contains(child.getTextContent()))
+						types.add(child.getTextContent());
 					break;
 				case "stats":
 					parseResourceStats(child, galaxyResource);
@@ -133,5 +135,9 @@ public final class HarvesterResourcesXml extends BaseXml {
 
 	public List<GalaxyResource> getGalaxyResourceList() {
 		return galaxyResourceList;
+	}
+
+	public List<String> getTypes() {
+		return types;
 	}
 }
