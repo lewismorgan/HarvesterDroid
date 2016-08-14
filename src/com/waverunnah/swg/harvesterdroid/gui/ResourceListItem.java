@@ -3,6 +3,7 @@ package com.waverunnah.swg.harvesterdroid.gui;
 import com.waverunnah.swg.harvesterdroid.HarvesterDroid;
 import com.waverunnah.swg.harvesterdroid.data.resources.GalaxyResource;
 import com.waverunnah.swg.harvesterdroid.gui.converters.ResourceValueConverter;
+import com.waverunnah.swg.harvesterdroid.utils.Attributes;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.FloatProperty;
 import javafx.beans.property.IntegerProperty;
@@ -82,44 +83,9 @@ public class ResourceListItem extends HBox {
 		// Ensures no duplicates are made
 		resourceStatsBox.getChildren().clear();
 
-
-		val.getAttributes().forEach((modifier, value) -> {
-			// TODO Create a 2-way mapping between the name and abbreviated name
-			switch(modifier) {
-				case "entangle_resistance":
-					createAttributeUI("ER", value);
-					break;
-				case "cold_resistance":
-					createAttributeUI("CR", value);
-					break;
-				case "conductivity":
-					createAttributeUI("CD", value);
-					break;
-				case "decay_resistance":
-					createAttributeUI("DR", value);
-					break;
-				case "flavor":
-					createAttributeUI("FL", value);
-					break;
-				case "heat_resistance":
-					createAttributeUI("HR", value);
-					break;
-				case "malleability":
-					createAttributeUI("MA", value);
-					break;
-				case "potential_energy":
-					createAttributeUI("PE", value);
-					break;
-				case "overall_quality":
-					createAttributeUI("OQ", value);
-					break;
-				case "shock_resistance":
-					createAttributeUI("SR", value);
-					break;
-				case "unit_toughness":
-					createAttributeUI("UT", value);
-					break;
-			}
+		Attributes.forEach((primary, secondary) -> {
+			IntegerProperty value = val.getAttributes().get(primary);
+			createAttributeUI(secondary, value);
 		});
 	}
 

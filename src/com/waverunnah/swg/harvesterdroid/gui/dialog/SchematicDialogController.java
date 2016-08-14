@@ -3,6 +3,7 @@ package com.waverunnah.swg.harvesterdroid.gui.dialog;
 import com.waverunnah.swg.harvesterdroid.HarvesterDroid;
 import com.waverunnah.swg.harvesterdroid.data.schematics.Schematic;
 import com.waverunnah.swg.harvesterdroid.gui.FloatTextField;
+import com.waverunnah.swg.harvesterdroid.utils.Attributes;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
@@ -20,7 +21,7 @@ import java.util.ResourceBundle;
 
 public class SchematicDialogController extends VBox implements Initializable {
 
-	private ObservableList<String> availableModifiers = FXCollections.observableArrayList(HarvesterDroid.modifiers);
+	private ObservableList<String> availableModifiers = FXCollections.observableArrayList(Attributes.get());
 
 	@FXML
 	TextField nameField;
@@ -77,7 +78,7 @@ public class SchematicDialogController extends VBox implements Initializable {
 
 	public void addResource() {
 		List<String> choices = new ArrayList<>();
-		HarvesterDroid.getResourceTypes().stream().filter(type -> !schematic.getResources().contains(type))
+		HarvesterDroid.getCurrentResourcesXml().getTypes().stream().filter(type -> !schematic.getResources().contains(type))
 				.forEach(choices::add);
 		ChoiceDialog<String> dialog = new ChoiceDialog<>(choices.get(0), choices);
 		dialog.setTitle("Add New Resource");
@@ -252,7 +253,7 @@ public class SchematicDialogController extends VBox implements Initializable {
 		}
 
 		private void createComboBox() {
-			comboBox = new ComboBox<>(HarvesterDroid.modifiers);
+			comboBox = new ComboBox<>(availableModifiers);
 			comboBox.valueProperty().set(getItem());
 			comboBox.setMinWidth(this.getWidth() - this.getGraphicTextGap() * 2);
 			comboBox.setOnAction((e) -> commitEdit(comboBox.getSelectionModel().getSelectedItem()));

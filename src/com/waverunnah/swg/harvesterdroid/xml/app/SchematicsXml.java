@@ -30,6 +30,9 @@ public class SchematicsXml extends BaseXml {
 	protected void read(Element root) throws IOException, ParserConfigurationException, SAXException {
 		schematicsList.clear();
 
+		if (!root.getNodeName().equals("schematics"))
+			return;
+
 		// <schematics>
 		processElement(root, child -> {
 			Schematic schematic = parseSchematic(child); // <schematic>...</schematic>
@@ -76,7 +79,7 @@ public class SchematicsXml extends BaseXml {
 	}
 
 	private Schematic parseSchematic(Node node) {
-		if (node.getAttributes().getLength() != 2)
+		if (!node.getNodeName().equals("schematic") || node.getAttributes().getLength() != 2)
 			return null;
 
 		Schematic schematic = new Schematic();

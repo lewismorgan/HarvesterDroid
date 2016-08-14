@@ -1,6 +1,7 @@
 package com.waverunnah.swg.harvesterdroid.data.resources;
 
 import com.waverunnah.swg.harvesterdroid.HarvesterDroid;
+import com.waverunnah.swg.harvesterdroid.utils.Attributes;
 import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -18,10 +19,8 @@ public class GalaxyResource {
     private ObservableMap<String, IntegerProperty> attributes;
 
 	public GalaxyResource() {
-		Map<String, IntegerProperty> attributesMap = new HashMap<>(HarvesterDroid.modifiers.size());
-		HarvesterDroid.modifiers.forEach(modifier -> {
-			attributesMap.put(modifier, new SimpleIntegerProperty(-1));
-		});
+		Map<String, IntegerProperty> attributesMap = new HashMap<>(Attributes.size());
+		Attributes.forEach((primary, secondary) -> attributesMap.put(primary, new SimpleIntegerProperty(-1)));
 		attributes = FXCollections.observableMap(attributesMap);
 	}
 

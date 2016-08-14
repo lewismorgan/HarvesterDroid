@@ -2,8 +2,8 @@ package com.waverunnah.swg.harvesterdroid.xml.galacticharvester;
 
 import com.waverunnah.swg.harvesterdroid.data.resources.GalaxyResource;
 import com.waverunnah.swg.harvesterdroid.data.resources.Planet;
-import com.waverunnah.swg.harvesterdroid.xml.BaseXml;
 
+import com.waverunnah.swg.harvesterdroid.xml.app.CurrentResourcesXml;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -13,32 +13,25 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.ParserConfigurationException;
 
 import java.io.IOException;
-import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.List;
 
-public final class HarvesterResourcesXml extends BaseXml {
-	private String timestamp;
-	private List<GalaxyResource> galaxyResourceList = new ArrayList<>();
-	private List<String> types = new ArrayList<>();
+public final class HarvesterCurrentResourcesXml extends CurrentResourcesXml {
 
-	public HarvesterResourcesXml(DocumentBuilder documentBuilder) {
+	public HarvesterCurrentResourcesXml(DocumentBuilder documentBuilder) {
 		super(documentBuilder);
 	}
 
 	@Override
 	protected void read(Element root) throws IOException, ParserConfigurationException, SAXException {
-		galaxyResourceList.clear();
 
 		// <resources as_of_date="timestamp">
-		timestamp = root.getAttribute("as_of_date");
+		setTimestamp(root.getAttribute("as_of_date"));
 
 		processElement(root, child -> {
 			// <resource>...</resource>
 
 			GalaxyResource resource = parseGalaxyResource(child);
 			if (resource != null)
-				galaxyResourceList.add(resource);
+				getGalaxyResources().put(resource.getName(), resource);
 		});
 		// </resources>
 	}
@@ -64,8 +57,8 @@ public final class HarvesterResourcesXml extends BaseXml {
 					break;
 				case "group_id": // TODO Refactor
 					galaxyResource.setContainer(child.getTextContent());
-					if (!types.contains(child.getTextContent()))
-						types.add(child.getTextContent());
+					if (!getTypes().contains(child.getTextContent()))
+						getTypes().add(child.getTextContent());
 					break;
 				case "stats":
 					parseResourceStats(child, galaxyResource);
@@ -129,17 +122,5 @@ public final class HarvesterResourcesXml extends BaseXml {
 					break;
 			}
 		});
-	}
-
-	public String getTimestamp() {
-		return timestamp;
-	}
-
-	public List<GalaxyResource> getGalaxyResourceList() {
-		return galaxyResourceList;
-	}
-
-	public List<String> getTypes() {
-		return types;
 	}
 }

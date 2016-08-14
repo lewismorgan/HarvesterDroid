@@ -16,9 +16,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
-import javafx.util.Callback;
 import org.controlsfx.control.StatusBar;
 
 import java.net.URL;
@@ -63,6 +61,42 @@ public class MainController implements Initializable {
 
 		filteredInventoryListItems = new FilteredList<>(inventoryListItems, inventoryListItem -> true);
 		inventoryListView.setItems(filteredInventoryListItems);
+
+		inventoryListItems.addListener((ListChangeListener<? super GalaxyResource>) c -> {
+			while (c.next()) {
+				if (c.wasAdded() && c.getAddedSize() > 0) {
+					List<String> inventoryData = HarvesterDroid.getInventoryXml().getInventory();
+					List<? extends GalaxyResource> added = c.getAddedSubList();
+					added.forEach(galaxyResource -> {
+						if (!inventoryData.contains(galaxyResource.getName()))
+							inventoryData.add(galaxyResource.getName());
+					});
+				} else if (c.wasRemoved() && c.getRemovedSize() > 0) {
+					List<String> inventoryData = HarvesterDroid.getInventoryXml().getInventory();
+					List<? extends GalaxyResource> removed = c.getRemoved();
+					removed.forEach(galaxyResource -> inventoryData.remove(galaxyResource.getName()));
+				}
+			}
+		});
+
+		updateInventoryFromXml();
+	}
+
+	public void updateInventoryFromXml() {
+		List<String> resourceNames = new ArrayList<>(HarvesterDroid.getInventoryXml().getInventory());
+		resourceNames.forEach(name -> {
+			GalaxyResource galaxyResource = HarvesterDroid.getCurrentResourcesXml().getGalaxyResources().get(name);
+			if (galaxyResource != null) {
+				if (!inventoryListItems.contains(galaxyResource)) {
+					inventoryListView.setDisable(false);
+					inventoryListItems.add(galaxyResource);
+					if (!resourceListItems.contains(galaxyResource))
+						resourceListItems.add(galaxyResource);
+				}
+			} else {
+				// TODO Add single resource data retrieval
+			}
+		});
 	}
 
 	private void initResources() {
@@ -74,7 +108,7 @@ public class MainController implements Initializable {
 	}
 
 	private void initGroups() {
-		professionComboBox.setItems(FXCollections.observableArrayList(HarvesterDroid.getProfessions()));
+		professionComboBox.setItems(FXCollections.observableArrayList(HarvesterDroid.getSchematicsXml().getProfessionList()));
 		professionComboBox.getItems().add(0, "any"); // Any filter
 		professionComboBox.getSelectionModel().select(0);
 
@@ -106,7 +140,7 @@ public class MainController implements Initializable {
 		});
 
 		schematicsList = FXCollections.observableArrayList(schematic -> new Observable[]{schematic.nameProperty()});
-		schematicsList.setAll(HarvesterDroid.getSchematics());
+		schematicsList.setAll(HarvesterDroid.getSchematicsXml().getSchematicsList());
 
 		filteredSchematicList = new FilteredList<>(schematicsList, schematic -> true);
 		schematicsListView.setItems(filteredSchematicList);
@@ -167,8 +201,6 @@ public class MainController implements Initializable {
 	}
 
 	private GalaxyResource collectBestResourceForSchematic(Schematic schematic, List<GalaxyResource> galaxyResources) {
-		// TODO: Account for resources in "inventory"
-
 		GalaxyResource ret = null;
 		float weightedAvg = -1;
 		List<Schematic.Modifier> modifiers = schematic.getModifiers();
@@ -205,35 +237,36 @@ public class MainController implements Initializable {
 
 	private List<GalaxyResource> findGalaxyResourcesById(String id) {
 		List<String> resourceGroups = Downloader.getResourceGroups(id);
+		Collection<GalaxyResource> galaxyResourceList = HarvesterDroid.getCurrentResourcesXml().getGalaxyResourceList();
 		if (resourceGroups != null) {
 			List<GalaxyResource> master = new ArrayList<>();
 			for (String group : resourceGroups) {
-				master.addAll(HarvesterDroid.getGalaxyResources().stream()
+				master.addAll(galaxyResourceList.stream()
 						.filter(galaxyResource -> galaxyResource.getResourceType().startsWith(group)
 								|| galaxyResource.getResourceType().equals(group))
 						.collect(Collectors.toList()));
 			}
 			return master;
 		} else {
-			return HarvesterDroid.getGalaxyResources().stream().filter(galaxyResource ->
+			return galaxyResourceList.stream().filter(galaxyResource ->
 					galaxyResource.getResourceType().equals(id) || galaxyResource.getResourceType().startsWith(id)
 			).collect(Collectors.toList());
 		}
 	}
 
 	public void addInventoryResource() {
-		inventoryListView.setDisable(false);
-
 		GalaxyResource selectedItem = bestResourcesListView.getSelectionModel().getSelectedItem();
 		if (selectedItem != null) {
-			inventoryListItems.add(selectedItem);
+			inventoryListView.setDisable(false);
+			if (!inventoryListItems.contains(selectedItem))
+				inventoryListItems.add(selectedItem);
 		} else {
 			ResourceDialog dialog = new ResourceDialog();
 			dialog.setTitle("New Inventory Resource");
 			Optional<GalaxyResource> result = dialog.showAndWait();
-			if (!result.isPresent())
+			if (!result.isPresent() || inventoryListItems.contains(result.get()))
 				return;
-
+			inventoryListView.setDisable(false);
 			inventoryListItems.add(result.get());
 		}
 	}

@@ -3,21 +3,27 @@ package com.waverunnah.swg.harvesterdroid.gui.dialog;
 import com.waverunnah.swg.harvesterdroid.HarvesterDroid;
 import com.waverunnah.swg.harvesterdroid.data.resources.GalaxyResource;
 import com.waverunnah.swg.harvesterdroid.gui.converters.ResourceValueConverter;
+import com.waverunnah.swg.harvesterdroid.utils.Attributes;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.HBox;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public class ResourceDialogController implements Initializable {
 	private ObjectProperty<GalaxyResource> galaxyResource = new SimpleObjectProperty<>();
-
+	private ObservableList<String> resourceTypes = FXCollections.observableArrayList(HarvesterDroid.getCurrentResourcesXml().getTypes());
 	// TODO Figure out easy way to convert data from dialog -> resourceListItem -> galaxyResource
 
 	@FXML
@@ -25,36 +31,17 @@ public class ResourceDialogController implements Initializable {
 	@FXML
 	ComboBox<String> typeComboBox;
 	@FXML
-	TextField erValue;
-	@FXML
-	TextField crValue;
-	@FXML
-	TextField cdValue;
-	@FXML
-	TextField drValue;
-	@FXML
-	TextField flValue;
-	@FXML
-	TextField hrValue;
-	@FXML
-	TextField maValue;
-	@FXML
-	TextField peValue;
-	@FXML
-	TextField oqValue;
-	@FXML
-	TextField srValue;
-	@FXML
-	TextField utValue;
+	FlowPane attributesPane;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		ResourceDialog.setController(this);
-		typeComboBox.setItems(FXCollections.observableArrayList(HarvesterDroid.getResourceTypes()));
+		typeComboBox.setItems(resourceTypes);
 		galaxyResource.addListener((observable, oldValue, newValue) -> {
 			if (newValue != null)
 				populateFromGalaxyResource(newValue);
 		});
+		attributesPane.setPrefWrapLength((55 * Attributes.size()) / 2);
 		editResourceItem(new GalaxyResource());
 	}
 
@@ -65,47 +52,25 @@ public class ResourceDialogController implements Initializable {
 	}
 
 	private void populateFromGalaxyResource(GalaxyResource galaxyResource) {
+		attributesPane.getChildren().clear();
 		nameField.textProperty().bindBidirectional(galaxyResource.nameProperty());
 		galaxyResource.resourceTypeProperty().bind(typeComboBox.getSelectionModel().selectedItemProperty());
-		HarvesterDroid.modifiers.forEach(modifier -> bindAttribute(modifier, galaxyResource.getAttributes().get(modifier)));
+		Attributes.forEach((primary, secondary) -> bindAttribute(primary, galaxyResource.getAttributes().get(primary)));
 	}
 
 	private void bindAttribute(String attribute, IntegerProperty property) {
-		switch(attribute) {
-			case "entangle_resistance":
-				erValue.textProperty().bindBidirectional(property, new ResourceValueConverter());
-				break;
-			case "cold_resistance":
-				crValue.textProperty().bindBidirectional(property, new ResourceValueConverter());
-				break;
-			case "conductivity":
-				cdValue.textProperty().bindBidirectional(property, new ResourceValueConverter());
-				break;
-			case "decay_resistance":
-				drValue.textProperty().bindBidirectional(property, new ResourceValueConverter());
-				break;
-			case "flavor":
-				flValue.textProperty().bindBidirectional(property, new ResourceValueConverter());
-				break;
-			case "heat_resistance":
-				hrValue.textProperty().bindBidirectional(property, new ResourceValueConverter());
-				break;
-			case "malleability":
-				maValue.textProperty().bindBidirectional(property, new ResourceValueConverter());
-				break;
-			case "potential_energy":
-				peValue.textProperty().bindBidirectional(property, new ResourceValueConverter());
-				break;
-			case "overall_quality":
-				oqValue.textProperty().bindBidirectional(property, new ResourceValueConverter());
-				break;
-			case "shock_resistance":
-				srValue.textProperty().bindBidirectional(property, new ResourceValueConverter());
-				break;
-			case "unit_toughness":
-				utValue.textProperty().bindBidirectional(property, new ResourceValueConverter());
-				break;
-		}
+		HBox group = new HBox();
+		group.setAlignment(Pos.CENTER);
+		group.setSpacing(5);
+		Label name = new Label(attribute);
+		group.getChildren().add(name);
+		TextField textField = new TextField();
+		textField.setPrefWidth(25);
+		group.getChildren().add(textField);
+
+		textField.textProperty().bindBidirectional(property, new ResourceValueConverter());
+
+		attributesPane.getChildren().add(group);
 	}
 
 	public GalaxyResource getResourceListItem() {
