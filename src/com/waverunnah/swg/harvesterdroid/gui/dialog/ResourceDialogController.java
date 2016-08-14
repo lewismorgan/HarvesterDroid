@@ -2,9 +2,10 @@ package com.waverunnah.swg.harvesterdroid.gui.dialog;
 
 import com.waverunnah.swg.harvesterdroid.HarvesterDroid;
 import com.waverunnah.swg.harvesterdroid.data.resources.GalaxyResource;
-import com.waverunnah.swg.harvesterdroid.gui.ResourceListItem;
 import com.waverunnah.swg.harvesterdroid.gui.converters.ResourceValueConverter;
 import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -15,7 +16,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class ResourceDialogController implements Initializable {
-	private ResourceListItem resourceListItem;
+	private ObjectProperty<GalaxyResource> galaxyResource = new SimpleObjectProperty<>();
 
 	// TODO Figure out easy way to convert data from dialog -> resourceListItem -> galaxyResource
 
@@ -50,24 +51,17 @@ public class ResourceDialogController implements Initializable {
 	public void initialize(URL location, ResourceBundle resources) {
 		ResourceDialog.setController(this);
 		typeComboBox.setItems(FXCollections.observableArrayList(HarvesterDroid.getResourceTypes()));
-		editResourceItem(new ResourceListItem());
-	}
-
-	public void editResourceItem(ResourceListItem resourceListItem) {
-		if (resourceListItem == null)
-			resourceListItem = new ResourceListItem();
-
-		this.resourceListItem = resourceListItem;
-
-		resourceListItem.galaxyResourceProperty().addListener((observable, oldValue, newValue) -> {
+		galaxyResource.addListener((observable, oldValue, newValue) -> {
 			if (newValue != null)
 				populateFromGalaxyResource(newValue);
 		});
+		editResourceItem(new GalaxyResource());
+	}
 
-		if (resourceListItem.getGalaxyResource() != null)
-			populateFromGalaxyResource(resourceListItem.getGalaxyResource());
-		else
-			resourceListItem.setGalaxyResource(new GalaxyResource());
+	public void editResourceItem(GalaxyResource galaxyResource) {
+		if (galaxyResource == null)
+			galaxyResource = new GalaxyResource();
+		this.galaxyResource.set(galaxyResource);
 	}
 
 	private void populateFromGalaxyResource(GalaxyResource galaxyResource) {
@@ -114,8 +108,8 @@ public class ResourceDialogController implements Initializable {
 		}
 	}
 
-	public ResourceListItem getResourceListItem() {
-		return resourceListItem;
+	public GalaxyResource getResourceListItem() {
+		return galaxyResource.get();
 	}
 
 	public void retrieveStats() {

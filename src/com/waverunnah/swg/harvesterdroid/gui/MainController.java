@@ -3,6 +3,7 @@ package com.waverunnah.swg.harvesterdroid.gui;
 import com.waverunnah.swg.harvesterdroid.HarvesterDroid;
 import com.waverunnah.swg.harvesterdroid.data.resources.GalaxyResource;
 import com.waverunnah.swg.harvesterdroid.data.schematics.Schematic;
+import com.waverunnah.swg.harvesterdroid.gui.callbacks.GalaxyResourceListCell;
 import com.waverunnah.swg.harvesterdroid.gui.dialog.ResourceDialog;
 import com.waverunnah.swg.harvesterdroid.gui.dialog.SchematicDialog;
 import com.waverunnah.swg.harvesterdroid.utils.Downloader;
@@ -15,7 +16,9 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.util.Callback;
 import org.controlsfx.control.StatusBar;
 
 import java.net.URL;
@@ -26,13 +29,11 @@ public class MainController implements Initializable {
 	// TODO Split each panel into it's own component (inventory, schematics, best resources)
 	// TODO Move intensive methods to a Task
 
-	private List<String> loadedResources = new ArrayList<>();
+	private ObservableList<GalaxyResource> inventoryListItems;
+	private FilteredList<GalaxyResource> filteredInventoryListItems;
 
-	private ObservableList<ResourceListItem> inventoryListItems;
-	private FilteredList<ResourceListItem> filteredInventoryListItems;
-
-	private ObservableList<ResourceListItem> resourceListItems;
-	private FilteredList<ResourceListItem> filteredResourceListItems;
+	private ObservableList<GalaxyResource> resourceListItems;
+	private FilteredList<GalaxyResource> filteredResourceListItems;
 
 	private ObservableList<Schematic> schematicsList;
 	private FilteredList<Schematic> filteredSchematicList;
@@ -40,9 +41,9 @@ public class MainController implements Initializable {
 	@FXML
 	ListView<Schematic> schematicsListView;
 	@FXML
-	ListView<ResourceListItem> inventoryListView;
+	ListView<GalaxyResource> inventoryListView;
 	@FXML
-	ListView<ResourceListItem> bestResourcesListView;
+	ListView<GalaxyResource> bestResourcesListView;
 	@FXML
 	ComboBox<String> professionComboBox;
 	@FXML
@@ -57,6 +58,7 @@ public class MainController implements Initializable {
 	}
 
 	private void initInventory() {
+		inventoryListView.setCellFactory(param -> new GalaxyResourceListCell());
 		inventoryListItems = FXCollections.observableArrayList();
 
 		filteredInventoryListItems = new FilteredList<>(inventoryListItems, inventoryListItem -> true);
@@ -64,6 +66,7 @@ public class MainController implements Initializable {
 	}
 
 	private void initResources() {
+		bestResourcesListView.setCellFactory(param -> new GalaxyResourceListCell());
 		resourceListItems = FXCollections.observableArrayList();
 
 		filteredResourceListItems = new FilteredList<>(resourceListItems, resourceListItem -> false);
@@ -142,6 +145,7 @@ public class MainController implements Initializable {
 			if (matchedResources != null) {
 				GalaxyResource bestResource = collectBestResourceForSchematic(schematic, matchedResources);
 				if (bestResource != null) {
+					System.out.println("Adding best resource " + bestResource);
 					bestResources.add(bestResource);
 				} else {
 					System.out.println("No resource is available for " + id);
@@ -154,23 +158,12 @@ public class MainController implements Initializable {
 			bestResourcesListView.setDisable(true);
 		} else {
 			bestResourcesListView.setDisable(false);
-			createResourceListItems(bestResources);
-			filteredResourceListItems.setPredicate(resourceListItem -> bestResources.contains(resourceListItem.getGalaxyResource()));
+			bestResources.stream().filter(galaxyResource -> !resourceListItems.contains(galaxyResource))
+					.forEach(resourceListItems::add);
+			filteredResourceListItems.setPredicate(bestResources::contains);
 		}
 
 		refreshStatusBar();
-	}
-
-	private void createResourceListItems(List<GalaxyResource> galaxyResources) {
-		for (GalaxyResource galaxyResource : galaxyResources) {
-			if (loadedResources.contains(galaxyResource.getName()))
-				continue;
-
-			ResourceListItem item = new ResourceListItem();
-			item.setGalaxyResource(galaxyResource);
-			resourceListItems.add(item);
-			loadedResources.add(galaxyResource.getName());
-		}
 	}
 
 	private GalaxyResource collectBestResourceForSchematic(Schematic schematic, List<GalaxyResource> galaxyResources) {
@@ -231,13 +224,13 @@ public class MainController implements Initializable {
 	public void addInventoryResource() {
 		inventoryListView.setDisable(false);
 
-		ResourceListItem selectedItem = bestResourcesListView.getSelectionModel().getSelectedItem();
+		GalaxyResource selectedItem = bestResourcesListView.getSelectionModel().getSelectedItem();
 		if (selectedItem != null) {
 			inventoryListItems.add(selectedItem);
 		} else {
 			ResourceDialog dialog = new ResourceDialog();
 			dialog.setTitle("New Inventory Resource");
-			Optional<ResourceListItem> result = dialog.showAndWait();
+			Optional<GalaxyResource> result = dialog.showAndWait();
 			if (!result.isPresent())
 				return;
 
@@ -246,7 +239,7 @@ public class MainController implements Initializable {
 	}
 
 	public void removeInventoryResource() {
-		ResourceListItem selectedItem = inventoryListView.getSelectionModel().getSelectedItem();
+		GalaxyResource selectedItem = inventoryListView.getSelectionModel().getSelectedItem();
 		if (selectedItem == null)
 			return;
 

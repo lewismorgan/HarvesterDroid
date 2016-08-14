@@ -55,6 +55,11 @@ public class ResourceListItem extends HBox {
 		});
 	}
 
+	public ResourceListItem(GalaxyResource item) {
+		this();
+		setGalaxyResource(item);
+	}
+
 	public void handleGalaxyResourceSet(GalaxyResource val) {
 		// TODO Update image using group id
 		if (val == null) {
@@ -68,18 +73,10 @@ public class ResourceListItem extends HBox {
 		resourceName.textProperty().bindBidirectional(val.nameProperty());
 		resourceType.textProperty().bindBidirectional(val.resourceTypeProperty());
 
-		resourceImage.imageProperty().set(getImage(val.containerProperty().get()));
-		Bindings.bindBidirectional(val.containerProperty(), resourceImage.imageProperty(), new StringConverter<Image>() {
-			@Override
-			public String toString(Image object) {
-				// proper way to get a URL from an Image (method that exists is deprecated API)?
-				return null;
-			}
-
-			@Override
-			public Image fromString(String string) {
-				return getImage(string);
-			}
+		resourceImage.setImage(getImage(val.containerProperty().get()));
+		val.containerProperty().addListener((observable, oldValue, newValue) -> {
+			if (newValue != null)
+				resourceImage.setImage(getImage(newValue));
 		});
 
 		// Ensures no duplicates are made
