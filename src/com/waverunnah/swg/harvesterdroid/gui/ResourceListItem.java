@@ -82,12 +82,19 @@ public class ResourceListItem extends HBox {
 		}
 
 		galaxyResource.addListener((observable, old, val) -> {
-			handleGalaxyResourceUpdated(val);
+			updateFromGalaxyResource(val);
 		});
 	}
 
-	private void handleGalaxyResourceUpdated(GalaxyResource val) {
+	public void refresh() {
+		updateFromGalaxyResource(galaxyResource.get());
+	}
+
+	public void updateFromGalaxyResource(GalaxyResource val) {
 		// TODO Update image using group id
+		if (val == null)
+			return;
+
 		resourceName.setText(val.getName());
 		resourceType.setText(val.getResourceType());
 		resourceImage.setImage(getImage(val.getContainer()));
@@ -154,5 +161,57 @@ public class ResourceListItem extends HBox {
 
 	public void setGalaxyResource(GalaxyResource galaxyResource) {
 		this.galaxyResource.set(galaxyResource);
+	}
+
+	public Label getResourceName() {
+		return resourceName;
+	}
+
+	public Label getResourceType() {
+		return resourceType;
+	}
+
+	public Label getErValue() {
+		return erValue;
+	}
+
+	public Label getCrValue() {
+		return crValue;
+	}
+
+	public Label getCdValue() {
+		return cdValue;
+	}
+
+	public Label getDrValue() {
+		return drValue;
+	}
+
+	public Label getFlValue() {
+		return flValue;
+	}
+
+	public Label getHrValue() {
+		return hrValue;
+	}
+
+	public Label getMaValue() {
+		return maValue;
+	}
+
+	public Label getPeValue() {
+		return peValue;
+	}
+
+	public Label getOqValue() {
+		return oqValue;
+	}
+
+	public Label getSrValue() {
+		return srValue;
+	}
+
+	public Label getUtValue() {
+		return utValue;
 	}
 }

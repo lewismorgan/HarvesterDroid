@@ -25,7 +25,6 @@
 <resource id="metal"/>
 <resource id="mineral"/>
 <resource id="chemical"/>
-<resource id="softwood_evergreen"/>
 </resources>
 <modifiers>
 <modifier id="conductivity" value="100.0"/>

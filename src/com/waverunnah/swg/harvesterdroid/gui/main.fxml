@@ -54,7 +54,7 @@
                               <ButtonBar prefHeight="40.0" prefWidth="200.0">
                                 <buttons>
                                   <Button mnemonicParsing="false" text="Remove" />
-                                    <Button layoutX="248.0" layoutY="10.0" mnemonicParsing="false" text="Add" />
+                                    <Button layoutX="248.0" layoutY="10.0" mnemonicParsing="false" onAction="#addInventoryResource" text="Add" />
                                 </buttons>
                                  <VBox.margin>
                                     <Insets />

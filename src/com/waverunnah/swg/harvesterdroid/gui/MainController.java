@@ -3,6 +3,7 @@ package com.waverunnah.swg.harvesterdroid.gui;
 import com.waverunnah.swg.harvesterdroid.HarvesterDroid;
 import com.waverunnah.swg.harvesterdroid.data.resources.GalaxyResource;
 import com.waverunnah.swg.harvesterdroid.data.schematics.Schematic;
+import com.waverunnah.swg.harvesterdroid.gui.dialog.ResourceDialog;
 import com.waverunnah.swg.harvesterdroid.gui.dialog.SchematicDialog;
 import com.waverunnah.swg.harvesterdroid.utils.Downloader;
 import javafx.beans.Observable;
@@ -25,6 +26,10 @@ public class MainController implements Initializable {
 	// TODO Move intensive methods to a Task
 
 	private List<String> loadedResources = new ArrayList<>();
+
+	private ObservableList<ResourceListItem> inventoryListItems;
+	private FilteredList<ResourceListItem> filteredInventoryListItems;
+
 	private ObservableList<ResourceListItem> resourceListItems;
 	private FilteredList<ResourceListItem> filteredResourceListItems;
 
@@ -34,7 +39,7 @@ public class MainController implements Initializable {
 	@FXML
 	ListView<Schematic> schematicsListView;
 	@FXML
-	ListView<String> inventoryListView;
+	ListView<ResourceListItem> inventoryListView;
 	@FXML
 	ListView<ResourceListItem> bestResourcesListView;
 	@FXML
@@ -45,8 +50,16 @@ public class MainController implements Initializable {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		initResources();
+		initInventory();
 		initSchematics();
 		initGroups();
+	}
+
+	private void initInventory() {
+		inventoryListItems = FXCollections.observableArrayList();
+
+		filteredInventoryListItems = new FilteredList<>(inventoryListItems, inventoryListItem -> true);
+		inventoryListView.setItems(filteredInventoryListItems);
 	}
 
 	private void initResources() {
@@ -196,7 +209,8 @@ public class MainController implements Initializable {
 			List<GalaxyResource> master = new ArrayList<>();
 			for (String group : resourceGroups) {
 				master.addAll(HarvesterDroid.getGalaxyResources().stream()
-						.filter(galaxyResource -> galaxyResource.getResourceType().startsWith(group))
+						.filter(galaxyResource -> galaxyResource.getResourceType().startsWith(group)
+								|| galaxyResource.getResourceType().equals(group))
 						.collect(Collectors.toList()));
 			}
 			return master;
@@ -205,6 +219,16 @@ public class MainController implements Initializable {
 					galaxyResource.getResourceType().equals(id) || galaxyResource.getResourceType().startsWith(id)
 			).collect(Collectors.toList());
 		}
+	}
+
+	public void addInventoryResource() {
+		ResourceDialog dialog = new ResourceDialog();
+		dialog.setTitle("New Inventory Resource");
+		Optional<ResourceListItem> result = dialog.showAndWait();
+		if (!result.isPresent())
+			return;
+
+		inventoryListItems.add(result.get());
 	}
 
 	public void save() {

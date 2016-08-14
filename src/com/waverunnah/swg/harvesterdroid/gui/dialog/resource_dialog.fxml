@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.waverunnah.swg.harvesterdroid.gui.dialog.ResourceDialogController">
+   <children>
+      <HBox alignment="CENTER" spacing="5.0" VBox.vgrow="ALWAYS">
+         <children>
+            <Label text="Name">
+               <HBox.margin>
+                  <Insets top="5.0" />
+               </HBox.margin>
+            </Label>
+            <TextField fx:id="nameField" />
+            <Label layoutX="10.0" layoutY="10.0" text="Type">
+               <HBox.margin>
+                  <Insets top="5.0" />
+               </HBox.margin>
+            </Label>
+            <ComboBox fx:id="typeComboBox" prefWidth="150.0" />
+            <Button mnemonicParsing="false" onAction="#retrieveStats" text="Retrieve Stats">
+               <HBox.margin>
+                  <Insets left="5.0" />
+               </HBox.margin>
+            </Button>
+         </children>
+         <VBox.margin>
+            <Insets top="5.0" />
+         </VBox.margin>
+      </HBox>
+      <HBox alignment="CENTER" layoutX="10.0" layoutY="10.0" spacing="5.0" VBox.vgrow="ALWAYS">
+         <children>
+            <Label text="entangle_resistance" />
+            <TextField fx:id="erValue" prefWidth="45.0" />
+            <Label text="cold_resistance" />
+            <TextField fx:id="crValue" prefWidth="45.0" />
+            <Label text="conductivity" />
+            <TextField fx:id="cdValue" prefWidth="45.0" />
+            <Label text="decay_resistance" />
+            <TextField fx:id="drValue" prefWidth="45.0" />
+         </children>
+         <VBox.margin>
+            <Insets top="5.0" />
+         </VBox.margin>
+         <padding>
+            <Insets top="5.0" />
+         </padding>
+      </HBox>
+      <HBox alignment="CENTER" layoutX="10.0" layoutY="40.0" spacing="5.0" VBox.vgrow="ALWAYS">
+         <children>
+            <Label text="flavor" />
+            <TextField fx:id="flValue" prefWidth="45.0" />
+            <Label text="heat_resistance" />
+            <TextField fx:id="hrValue" prefWidth="45.0" />
+            <Label text="malleability" />
+            <TextField fx:id="maValue" prefWidth="45.0" />
+            <Label text="potential_energy" />
+            <TextField fx:id="peValue" prefWidth="45.0" />
+         </children>
+         <padding>
+            <Insets top="5.0" />
+         </padding>
+      </HBox>
+      <HBox alignment="CENTER" layoutX="10.0" layoutY="70.0" spacing="5.0" VBox.vgrow="ALWAYS">
+         <padding>
+            <Insets top="5.0" />
+         </padding>
+         <children>
+            <Label text="overall_quality" />
+            <TextField fx:id="oqValue" prefWidth="45.0" />
+            <Label text="shock_resistance" />
+            <TextField fx:id="srValue" prefWidth="45.0" />
+            <Label layoutX="283.0" layoutY="19.0" text="unit_toughness" />
+            <TextField fx:id="utValue" layoutX="376.0" layoutY="15.0" prefWidth="45.0" />
+         </children>
+      </HBox>
+   </children>
+</VBox>
