@@ -1,17 +1,28 @@
 package com.waverunnah.swg.harvesterdroid.gui;
 
+import com.waverunnah.swg.harvesterdroid.HarvesterDroid;
 import com.waverunnah.swg.harvesterdroid.data.resources.GalaxyResource;
+import com.waverunnah.swg.harvesterdroid.gui.converters.ResourceValueConverter;
+import javafx.beans.binding.Bindings;
+import javafx.beans.property.FloatProperty;
+import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.util.StringConverter;
+import javafx.util.converter.NumberStringConverter;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Map;
 
 public class ResourceListItem extends HBox {
 
@@ -23,49 +34,7 @@ public class ResourceListItem extends HBox {
 	@FXML
 	private Label resourceType;
 	@FXML
-	private VBox erGroup;
-	@FXML
-	private VBox crGroup;
-	@FXML
-	private VBox cdGroup;
-	@FXML
-	private VBox drGroup;
-	@FXML
-	private VBox flGroup;
-	@FXML
-	private VBox hrGroup;
-	@FXML
-	private VBox maGroup;
-	@FXML
-	private VBox peGroup;
-	@FXML
-	private VBox oqGroup;
-	@FXML
-	private VBox srGroup;
-	@FXML
-	private VBox utGroup;
-	@FXML
-	private Label erValue;
-	@FXML
-	private Label crValue;
-	@FXML
-	private Label cdValue;
-	@FXML
-	private Label drValue;
-	@FXML
-	private Label flValue;
-	@FXML
-	private Label hrValue;
-	@FXML
-	private Label maValue;
-	@FXML
-	private Label peValue;
-	@FXML
-	private Label oqValue;
-	@FXML
-	private Label srValue;
-	@FXML
-	private Label utValue;
+	private HBox resourceStatsBox;
 	//endregion
 
 	private SimpleObjectProperty<GalaxyResource> galaxyResource = new SimpleObjectProperty<>();
@@ -82,69 +51,103 @@ public class ResourceListItem extends HBox {
 		}
 
 		galaxyResource.addListener((observable, old, val) -> {
-			updateFromGalaxyResource(val);
+			handleGalaxyResourceSet(val);
 		});
 	}
 
-	public void refresh() {
-		updateFromGalaxyResource(galaxyResource.get());
-	}
-
-	public void updateFromGalaxyResource(GalaxyResource val) {
+	public void handleGalaxyResourceSet(GalaxyResource val) {
 		// TODO Update image using group id
-		if (val == null)
+		if (val == null) {
+			resourceName.textProperty().unbind();
+			resourceType.textProperty().unbind();
+			resourceImage.imageProperty().unbind();
+			resourceStatsBox.getChildren().clear();
 			return;
+		}
 
-		resourceName.setText(val.getName());
-		resourceType.setText(val.getResourceType());
-		resourceImage.setImage(getImage(val.getContainer()));
+		resourceName.textProperty().bindBidirectional(val.nameProperty());
+		resourceType.textProperty().bindBidirectional(val.resourceTypeProperty());
 
-		val.getAttributes().keySet().forEach(attr -> {
-			int value = val.getAttribute(attr);
-			switch(attr) {
+		resourceImage.imageProperty().set(getImage(val.containerProperty().get()));
+		Bindings.bindBidirectional(val.containerProperty(), resourceImage.imageProperty(), new StringConverter<Image>() {
+			@Override
+			public String toString(Image object) {
+				// proper way to get a URL from an Image (method that exists is deprecated API)?
+				return null;
+			}
+
+			@Override
+			public Image fromString(String string) {
+				return getImage(string);
+			}
+		});
+
+		// Ensures no duplicates are made
+		resourceStatsBox.getChildren().clear();
+
+
+		val.getAttributes().forEach((modifier, value) -> {
+			// TODO Create a 2-way mapping between the name and abbreviated name
+			switch(modifier) {
 				case "entangle_resistance":
-					updateAttribute(erGroup, erValue, value);
+					createAttributeUI("ER", value);
 					break;
 				case "cold_resistance":
-					updateAttribute(crGroup, crValue, value);
+					createAttributeUI("CR", value);
 					break;
 				case "conductivity":
-					updateAttribute(cdGroup, cdValue, value);
+					createAttributeUI("CD", value);
 					break;
 				case "decay_resistance":
-					updateAttribute(drGroup, drValue, value);
+					createAttributeUI("DR", value);
 					break;
 				case "flavor":
-					updateAttribute(flGroup, flValue, value);
+					createAttributeUI("FL", value);
 					break;
 				case "heat_resistance":
-					updateAttribute(hrGroup, hrValue, value);
+					createAttributeUI("HR", value);
 					break;
 				case "malleability":
-					updateAttribute(maGroup, maValue, value);
+					createAttributeUI("MA", value);
 					break;
 				case "potential_energy":
-					updateAttribute(peGroup, peValue, value);
+					createAttributeUI("PE", value);
 					break;
 				case "overall_quality":
-					updateAttribute(oqGroup, oqValue, value);
+					createAttributeUI("OQ", value);
 					break;
 				case "shock_resistance":
-					updateAttribute(srGroup, srValue, value);
+					createAttributeUI("SR", value);
 					break;
 				case "unit_toughness":
-					updateAttribute(utGroup, utValue, value);
+					createAttributeUI("UT", value);
 					break;
 			}
 		});
 	}
 
-	private void updateAttribute(VBox attrGroup, Label attrLabel, int value) {
-		attrGroup.setDisable(false);
-		attrLabel.setText(String.valueOf(value));
+	private void createAttributeUI(String simple, IntegerProperty valueProperty) {
+		VBox group = new VBox();
+		group.setAlignment(Pos.CENTER);
+		group.setPadding(new Insets(5.0, 0, 0, 0));
+		group.disableProperty().bind(valueProperty.isEqualTo(-1));
+
+		Label nameLabel = new Label(simple);
+		nameLabel.setContentDisplay(ContentDisplay.CENTER);
+		group.getChildren().add(nameLabel);
+
+		Label valueLabel = new Label("--");
+		valueLabel.setContentDisplay(ContentDisplay.CENTER);
+		group.getChildren().add(valueLabel);
+
+		Bindings.bindBidirectional(valueLabel.textProperty(), valueProperty, new ResourceValueConverter());
+
+		resourceStatsBox.getChildren().add(group);
 	}
 
 	private Image getImage(String container) {
+		if (container == null)
+			return null;
 		URL url = getClass().getResource("images/resources/" + container + ".png");
 		if (url == null) {
 			container = container.split("_")[0];
@@ -163,55 +166,7 @@ public class ResourceListItem extends HBox {
 		this.galaxyResource.set(galaxyResource);
 	}
 
-	public Label getResourceName() {
-		return resourceName;
-	}
-
-	public Label getResourceType() {
-		return resourceType;
-	}
-
-	public Label getErValue() {
-		return erValue;
-	}
-
-	public Label getCrValue() {
-		return crValue;
-	}
-
-	public Label getCdValue() {
-		return cdValue;
-	}
-
-	public Label getDrValue() {
-		return drValue;
-	}
-
-	public Label getFlValue() {
-		return flValue;
-	}
-
-	public Label getHrValue() {
-		return hrValue;
-	}
-
-	public Label getMaValue() {
-		return maValue;
-	}
-
-	public Label getPeValue() {
-		return peValue;
-	}
-
-	public Label getOqValue() {
-		return oqValue;
-	}
-
-	public Label getSrValue() {
-		return srValue;
-	}
-
-	public Label getUtValue() {
-		return utValue;
+	public SimpleObjectProperty<GalaxyResource> galaxyResourceProperty() {
+		return galaxyResource;
 	}
 }

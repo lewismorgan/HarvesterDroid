@@ -50,10 +50,14 @@
                      <content>
                         <VBox spacing="5.0">
                            <children>
-                              <ListView fx:id="inventoryListView" VBox.vgrow="ALWAYS" />
+                              <ListView fx:id="inventoryListView" disable="true" VBox.vgrow="ALWAYS">
+                                  <placeholder>
+                                      <Label text="There's no resources in your inventory!" />
+                                  </placeholder>
+                              </ListView>
                               <ButtonBar prefHeight="40.0" prefWidth="200.0">
                                 <buttons>
-                                  <Button mnemonicParsing="false" text="Remove" />
+                                  <Button mnemonicParsing="false" onAction="#removeInventoryResource" text="Remove" />
                                     <Button layoutX="248.0" layoutY="10.0" mnemonicParsing="false" onAction="#addInventoryResource" text="Add" />
                                 </buttons>
                                  <VBox.margin>
@@ -101,7 +105,7 @@
                            <children>
                               <ListView fx:id="bestResourcesListView" disable="true" VBox.vgrow="ALWAYS">
                                   <placeholder>
-                                      <Label text="No Schematic Selected" />
+                                      <Label text="Select a schematic to view the Best Resources" />
                                   </placeholder>
                               </ListView>
                            </children>

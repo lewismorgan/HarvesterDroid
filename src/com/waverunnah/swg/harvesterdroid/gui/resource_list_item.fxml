@@ -2,7 +2,6 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
@@ -11,11 +10,7 @@
 
 <fx:root maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" spacing="2.0" type="HBox" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <ImageView fx:id="resourceImage" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS">
-         <image>
-            <Image url="@images/steel.png" />
-         </image>
-      </ImageView>
+      <ImageView fx:id="resourceImage" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS" />
       <VBox HBox.hgrow="ALWAYS">
          <children>
             <Label fx:id="resourceName" text="resource_name">
@@ -31,119 +26,7 @@
             <Insets left="5.0" right="5.0" />
          </padding>
       </Pane>
-      <HBox alignment="TOP_RIGHT" nodeOrientation="LEFT_TO_RIGHT" spacing="8.0" HBox.hgrow="ALWAYS">
-         <children>
-            <VBox fx:id="erGroup" alignment="CENTER" disable="true">
-               <children>
-                  <Label contentDisplay="CENTER" text="ER" textAlignment="CENTER" />
-                  <Label fx:id="erValue" contentDisplay="CENTER" text="--" textAlignment="CENTER" />
-                  <Label layoutX="10.0" layoutY="45.0" text="--" />
-               </children>
-               <padding>
-                  <Insets top="5.0" />
-               </padding>
-            </VBox>
-            <VBox fx:id="crGroup" alignment="CENTER" disable="true" layoutX="15.0" layoutY="10.0">
-               <children>
-                  <Label contentDisplay="CENTER" text="CR" textAlignment="CENTER" />
-                  <Label fx:id="crValue" contentDisplay="CENTER" text="--" textAlignment="CENTER" />
-                  <Label layoutX="10.0" layoutY="45.0" text="--" />
-               </children>
-               <padding>
-                  <Insets top="5.0" />
-               </padding>
-            </VBox>
-            <VBox fx:id="cdGroup" alignment="CENTER" disable="true" layoutX="50.0" layoutY="10.0">
-               <children>
-                  <Label contentDisplay="CENTER" text="CD" textAlignment="CENTER" />
-                  <Label fx:id="cdValue" contentDisplay="CENTER" text="--" textAlignment="CENTER" />
-                  <Label layoutX="10.0" layoutY="45.0" text="--" />
-               </children>
-               <padding>
-                  <Insets top="5.0" />
-               </padding>
-            </VBox>
-            <VBox fx:id="drGroup" alignment="CENTER" disable="true" layoutX="85.0" layoutY="10.0">
-               <children>
-                  <Label contentDisplay="CENTER" text="DR" textAlignment="CENTER" />
-                  <Label fx:id="drValue" contentDisplay="CENTER" text="--" textAlignment="CENTER" />
-                  <Label layoutX="10.0" layoutY="45.0" text="--" />
-               </children>
-               <padding>
-                  <Insets top="5.0" />
-               </padding>
-            </VBox>
-            <VBox fx:id="flGroup" alignment="CENTER" disable="true" layoutX="120.0" layoutY="10.0">
-               <children>
-                  <Label contentDisplay="CENTER" text="FL" textAlignment="CENTER" />
-                  <Label fx:id="flValue" contentDisplay="CENTER" text="--" textAlignment="CENTER" />
-                  <Label layoutX="10.0" layoutY="45.0" text="--" />
-               </children>
-               <padding>
-                  <Insets top="5.0" />
-               </padding>
-            </VBox>
-            <VBox fx:id="hrGroup" alignment="CENTER" disable="true" layoutX="155.0" layoutY="10.0">
-               <children>
-                  <Label contentDisplay="CENTER" text="HR" textAlignment="CENTER" />
-                  <Label fx:id="hrValue" contentDisplay="CENTER" text="--" textAlignment="CENTER" />
-                  <Label layoutX="10.0" layoutY="45.0" text="--" />
-               </children>
-               <padding>
-                  <Insets top="5.0" />
-               </padding>
-            </VBox>
-            <VBox fx:id="maGroup" alignment="CENTER" disable="true" layoutX="190.0" layoutY="10.0">
-               <children>
-                  <Label contentDisplay="CENTER" text="MA" textAlignment="CENTER" />
-                  <Label fx:id="maValue" contentDisplay="CENTER" text="--" textAlignment="CENTER" />
-                  <Label layoutX="10.0" layoutY="45.0" text="--" />
-               </children>
-               <padding>
-                  <Insets top="5.0" />
-               </padding>
-            </VBox>
-            <VBox fx:id="peGroup" alignment="CENTER" disable="true" layoutX="225.0" layoutY="10.0">
-               <children>
-                  <Label contentDisplay="CENTER" text="PE" textAlignment="CENTER" />
-                  <Label fx:id="peValue" contentDisplay="CENTER" text="--" textAlignment="CENTER" />
-                  <Label layoutX="10.0" layoutY="45.0" text="--" />
-               </children>
-               <padding>
-                  <Insets top="5.0" />
-               </padding>
-            </VBox>
-            <VBox fx:id="oqGroup" alignment="CENTER" disable="true" layoutX="260.0" layoutY="10.0">
-               <children>
-                  <Label contentDisplay="CENTER" text="OQ" textAlignment="CENTER" />
-                  <Label fx:id="oqValue" contentDisplay="CENTER" text="--" textAlignment="CENTER" />
-                  <Label layoutX="10.0" layoutY="45.0" text="--" />
-               </children>
-               <padding>
-                  <Insets top="5.0" />
-               </padding>
-            </VBox>
-            <VBox fx:id="srGroup" alignment="CENTER" disable="true" layoutX="295.0" layoutY="10.0">
-               <children>
-                  <Label contentDisplay="CENTER" text="SR" textAlignment="CENTER" />
-                  <Label fx:id="srValue" contentDisplay="CENTER" text="--" textAlignment="CENTER" />
-                  <Label layoutX="10.0" layoutY="45.0" text="--" />
-               </children>
-               <padding>
-                  <Insets top="5.0" />
-               </padding>
-            </VBox>
-            <VBox fx:id="utGroup" alignment="CENTER" disable="true" layoutX="330.0" layoutY="10.0">
-               <children>
-                  <Label contentDisplay="CENTER" text="UT" textAlignment="CENTER" />
-                  <Label fx:id="utValue" contentDisplay="CENTER" text="--" textAlignment="CENTER" />
-                  <Label layoutX="10.0" layoutY="45.0" text="--" />
-               </children>
-               <padding>
-                  <Insets top="5.0" />
-               </padding>
-            </VBox>
-         </children>
+      <HBox fx:id="resourceStatsBox" alignment="TOP_RIGHT" nodeOrientation="LEFT_TO_RIGHT" spacing="8.0" HBox.hgrow="ALWAYS">
          <padding>
             <Insets left="5.0" />
          </padding>

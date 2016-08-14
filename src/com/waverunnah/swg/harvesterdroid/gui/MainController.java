@@ -14,6 +14,7 @@ import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import org.controlsfx.control.StatusBar;
 
@@ -134,7 +135,6 @@ public class MainController implements Initializable {
 
 	private void updateBestResourceList(Schematic schematic) {
 		updateStatusBar("Updating Best Resources List");
-		bestResourcesListView.setDisable(false);
 
 		List<GalaxyResource> bestResources = new ArrayList<>(schematic.getResources().size());
 		schematic.getResources().forEach(id -> {
@@ -149,8 +149,15 @@ public class MainController implements Initializable {
 			}
 		});
 
-		createResourceListItems(bestResources);
-		filteredResourceListItems.setPredicate(resourceListItem -> bestResources.contains(resourceListItem.getGalaxyResource()));
+		if (bestResources.size() == 0) {
+			bestResourcesListView.setPlaceholder(new Label("No resources are available for this schematic"));
+			bestResourcesListView.setDisable(true);
+		} else {
+			bestResourcesListView.setDisable(false);
+			createResourceListItems(bestResources);
+			filteredResourceListItems.setPredicate(resourceListItem -> bestResources.contains(resourceListItem.getGalaxyResource()));
+		}
+
 		refreshStatusBar();
 	}
 
@@ -159,7 +166,6 @@ public class MainController implements Initializable {
 			if (loadedResources.contains(galaxyResource.getName()))
 				continue;
 
-			System.out.println("Creating resourceListItem for " + galaxyResource);
 			ResourceListItem item = new ResourceListItem();
 			item.setGalaxyResource(galaxyResource);
 			resourceListItems.add(item);
@@ -195,9 +201,10 @@ public class MainController implements Initializable {
 
 		float average = 0;
 		for (Schematic.Modifier modifier : modifierList) {
-			if (resource.hasAttribute(modifier.getName())) {
-				average = average + (resource.getAttribute(modifier.getName()) * modifier.getValue());
-			}
+			int value = resource.getAttribute(modifier.getName());
+			if (value == -1)
+				continue;
+			average = average + (resource.getAttribute(modifier.getName()) * modifier.getValue());
 		}
 
 		return average;
@@ -222,13 +229,30 @@ public class MainController implements Initializable {
 	}
 
 	public void addInventoryResource() {
-		ResourceDialog dialog = new ResourceDialog();
-		dialog.setTitle("New Inventory Resource");
-		Optional<ResourceListItem> result = dialog.showAndWait();
-		if (!result.isPresent())
+		inventoryListView.setDisable(false);
+
+		ResourceListItem selectedItem = bestResourcesListView.getSelectionModel().getSelectedItem();
+		if (selectedItem != null) {
+			inventoryListItems.add(selectedItem);
+		} else {
+			ResourceDialog dialog = new ResourceDialog();
+			dialog.setTitle("New Inventory Resource");
+			Optional<ResourceListItem> result = dialog.showAndWait();
+			if (!result.isPresent())
+				return;
+
+			inventoryListItems.add(result.get());
+		}
+	}
+
+	public void removeInventoryResource() {
+		ResourceListItem selectedItem = inventoryListView.getSelectionModel().getSelectedItem();
+		if (selectedItem == null)
 			return;
 
-		inventoryListItems.add(result.get());
+		if (inventoryListItems.size() - 1 == 0)
+			inventoryListView.setDisable(true);
+		inventoryListItems.remove(selectedItem);
 	}
 
 	public void save() {

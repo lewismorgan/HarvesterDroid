@@ -6,6 +6,8 @@ import com.waverunnah.swg.harvesterdroid.xml.app.SchematicsXml;
 import com.waverunnah.swg.harvesterdroid.utils.Downloader;
 import com.waverunnah.swg.harvesterdroid.xml.galacticharvester.HarvesterResourcesXml;
 import javafx.application.Application;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -21,6 +23,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class HarvesterDroid extends Application {
+
+	public static final ObservableList<String> modifiers = FXCollections.observableArrayList(
+			"entangle_resistance", "cold_resistance", "conductivity", "decay_resistance", "flavor", "heat_resistance",
+			"malleability", "potential_energy", "overall_quality", "shock_resistance", "unit_toughness"
+	);
+
 	private static HarvesterDroid instance;
 
 	private static Stage stage;

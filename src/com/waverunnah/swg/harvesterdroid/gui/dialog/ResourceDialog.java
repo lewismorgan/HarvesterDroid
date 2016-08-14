@@ -48,7 +48,6 @@ public class ResourceDialog extends Dialog<ResourceListItem> {
 		setResultConverter(buttonType -> {
 			if (buttonType != saveButtonType)
 				return null;
-			controller.getResourceListItem().refresh();
 			return controller.getResourceListItem();
 		});
 	}

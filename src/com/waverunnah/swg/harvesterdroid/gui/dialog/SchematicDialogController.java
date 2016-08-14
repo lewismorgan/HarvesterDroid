@@ -20,12 +20,7 @@ import java.util.ResourceBundle;
 
 public class SchematicDialogController extends VBox implements Initializable {
 
-	private static final ObservableList<String> modifiers = FXCollections.observableArrayList(
-			"entangle_resistance", "cold_resistance", "conductivity", "decay_resistance", "flavor", "heat_resistance",
-			"malleability", "potential_energy", "overall_quality", "shock_resistance", "unit_toughness"
-	);
-
-	private ObservableList<String> availableModifiers = FXCollections.observableArrayList(modifiers);
+	private ObservableList<String> availableModifiers = FXCollections.observableArrayList(HarvesterDroid.modifiers);
 
 	@FXML
 	TextField nameField;
@@ -257,7 +252,7 @@ public class SchematicDialogController extends VBox implements Initializable {
 		}
 
 		private void createComboBox() {
-			comboBox = new ComboBox<>(modifiers);
+			comboBox = new ComboBox<>(HarvesterDroid.modifiers);
 			comboBox.valueProperty().set(getItem());
 			comboBox.setMinWidth(this.getWidth() - this.getGraphicTextGap() * 2);
 			comboBox.setOnAction((e) -> commitEdit(comboBox.getSelectionModel().getSelectedItem()));
