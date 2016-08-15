@@ -1,7 +1,6 @@
 package com.waverunnah.swg.harvesterdroid.gui.dialog;
 
 import com.waverunnah.swg.harvesterdroid.data.resources.GalaxyResource;
-import com.waverunnah.swg.harvesterdroid.gui.ResourceListItem;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.ButtonBar;
@@ -16,13 +15,7 @@ public class ResourceDialog extends Dialog<GalaxyResource> {
 	private static ResourceDialogController controller;
 
 	public ResourceDialog() {
-		this(new GalaxyResource());
-	}
-
-	public ResourceDialog(GalaxyResource galaxyResource) {
 		init();
-		if (controller != null)
-			controller.editResourceItem(galaxyResource);
 	}
 
 	private void init() {
@@ -49,7 +42,7 @@ public class ResourceDialog extends Dialog<GalaxyResource> {
 		setResultConverter(buttonType -> {
 			if (buttonType != saveButtonType)
 				return null;
-			return controller.getResourceListItem();
+			return controller.getGalaxyResource();
 		});
 	}
 

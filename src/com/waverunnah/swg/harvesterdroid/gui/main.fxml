@@ -77,7 +77,11 @@
                         <VBox alignment="TOP_RIGHT" spacing="5.0">
                            <children>
                               <ComboBox fx:id="professionComboBox" nodeOrientation="LEFT_TO_RIGHT" VBox.vgrow="ALWAYS" />
-                              <ListView fx:id="schematicsListView" VBox.vgrow="ALWAYS" />
+                              <ListView disable="true" fx:id="schematicsListView" VBox.vgrow="ALWAYS">
+                                  <placeholder>
+                                      <Label text="No schematics have been created"/>
+                                  </placeholder>
+                              </ListView>
                               <ButtonBar prefHeight="40.0" prefWidth="200.0">
                                 <buttons>
                                     <Button layoutX="243.0" layoutY="10.0" mnemonicParsing="false" text="Remove" />
@@ -99,7 +103,7 @@
             </AnchorPane>
             <AnchorPane layoutX="290.0" layoutY="10.0" GridPane.columnSpan="2" GridPane.rowIndex="1">
                <children>
-                  <TitledPane alignment="TOP_LEFT" animated="false" collapsible="false" nodeOrientation="LEFT_TO_RIGHT" text="Best Resources" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <TitledPane fx:id="bestResourcesPane" alignment="TOP_LEFT" animated="false" collapsible="false" nodeOrientation="LEFT_TO_RIGHT" text="Best Resources" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <content>
                         <VBox>
                            <children>

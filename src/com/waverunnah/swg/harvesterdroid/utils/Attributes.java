@@ -39,7 +39,7 @@ public class Attributes {
 	}
 
 	public static void forEachReverseLookup(AttributeListCallback attributeListCallback) {
-		secondary.forEach(attributeListCallback::perform);
+		secondary.forEach((secondary, primary) -> attributeListCallback.perform(primary, secondary));
 	}
 
 	public static List<String> get() {
@@ -48,6 +48,14 @@ public class Attributes {
 
 	public static int size() {
 		return primary.size();
+	}
+
+	public static String getFullName(String abbreviation) {
+		return secondary.get(abbreviation);
+	}
+
+	public static String getAbbreviation(String attribute) {
+		return primary.get(attribute);
 	}
 
 	public interface  AttributeListCallback {

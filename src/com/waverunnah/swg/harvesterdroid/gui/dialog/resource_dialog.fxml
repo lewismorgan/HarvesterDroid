@@ -2,10 +2,8 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
@@ -14,9 +12,9 @@
       <HBox alignment="CENTER" spacing="5.0" VBox.vgrow="ALWAYS">
          <children>
             <Label text="Name" />
-            <TextField fx:id="nameField" />
-            <Label text="Type"/>
-            <ComboBox fx:id="typeComboBox" prefWidth="150.0" />
+            <TextField fx:id="nameField" promptText="Enter a Resource Name" />
+            <Label text="Type" />
+            <TextField fx:id="resourceTypeField" disable="true" editable="false" />
             <Button mnemonicParsing="false" onAction="#retrieveStats" text="Retrieve Stats">
                <HBox.margin>
                   <Insets left="5.0" />
@@ -27,13 +25,23 @@
             <Insets top="5.0" />
          </VBox.margin>
       </HBox>
-      <FlowPane fx:id="attributesPane" columnHalignment="CENTER" hgap="5.0" prefWrapLength="250.0" vgap="5.0" VBox.vgrow="SOMETIMES">
-         <padding>
-            <Insets top="5.0" />
-         </padding>
+      <HBox fx:id="attributesGroup" alignment="CENTER" spacing="15.0">
          <VBox.margin>
             <Insets />
          </VBox.margin>
-      </FlowPane>
+         <padding>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </padding>
+      </HBox>
+      <HBox alignment="CENTER_RIGHT" spacing="5.0">
+         <children>
+            <HBox fx:id="hiddenInfoGroup" spacing="4.0">
+               <children>
+                  <Label fx:id="hiddenInfoGroupLeftLabel" text="Enter a resource name and the stats will be retreived automatically" />
+                  <Label fx:id="hiddenInfoGroupRightLabel" />
+               </children>
+            </HBox>
+         </children>
+      </HBox>
    </children>
 </VBox>

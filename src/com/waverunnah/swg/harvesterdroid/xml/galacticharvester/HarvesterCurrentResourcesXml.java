@@ -36,11 +36,6 @@ public final class HarvesterCurrentResourcesXml extends CurrentResourcesXml {
 		// </resources>
 	}
 
-	@Override
-	protected void write(Document document) {
-
-	}
-
 	private GalaxyResource parseGalaxyResource(Node node) {
 		GalaxyResource galaxyResource = new GalaxyResource();
 
@@ -55,10 +50,8 @@ public final class HarvesterCurrentResourcesXml extends CurrentResourcesXml {
 				case "resource_type":
 					galaxyResource.setResourceType(((Element) child).getAttribute("id"));
 					break;
-				case "group_id": // TODO Refactor
+				case "group_id":
 					galaxyResource.setContainer(child.getTextContent());
-					if (!getTypes().contains(child.getTextContent()))
-						getTypes().add(child.getTextContent());
 					break;
 				case "stats":
 					parseResourceStats(child, galaxyResource);

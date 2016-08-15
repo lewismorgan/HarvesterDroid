@@ -51,9 +51,7 @@ public class ResourceListItem extends HBox {
 			throw new RuntimeException(exception);
 		}
 
-		galaxyResource.addListener((observable, old, val) -> {
-			handleGalaxyResourceSet(val);
-		});
+		galaxyResource.addListener((observable, old, val) -> handleGalaxyResourceSet(val));
 	}
 
 	public ResourceListItem(GalaxyResource item) {

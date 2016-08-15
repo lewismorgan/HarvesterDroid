@@ -1,6 +1,15 @@
 package com.waverunnah.swg.harvesterdroid.utils;
 
+import com.sun.corba.se.spi.orbutil.fsm.Input;
+import com.waverunnah.swg.harvesterdroid.data.resources.GalaxyResource;
+import com.waverunnah.swg.harvesterdroid.xml.app.ResourceXml;
+import com.waverunnah.swg.harvesterdroid.xml.galacticharvester.HarvesterResourceXml;
+import org.xml.sax.SAXException;
+
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import java.io.*;
+import java.net.ConnectException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -11,46 +20,84 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
+import static java.lang.System.in;
+
 public final class Downloader {
-	// TODO: Refactor to allow downloading of different xml files
+	// TODO: Refactor for downloading from other locations
 
 	private static Map<String, List<String>> resourceGroups = new HashMap<>();
+	private static DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
 
-	public static File downloadXmls() throws IOException {
+	public static File downloadCurrentResources() throws IOException {
 		URL website;
 		InputStream in = null;
 
-		if (Files.exists(Paths.get("data/current48.xml")))
-			return new File("data/current48.xml");
+		File file = new File("./data/current_resources.dl");
 		try {
 			website = new URL("http://galaxyharvester.net/exports/current48.xml");
 			in = website.openStream();
 
-			Files.copy(in, Paths.get("data/current48.xml"), StandardCopyOption.REPLACE_EXISTING);
+			Files.copy(in, Paths.get(file.toURI()), StandardCopyOption.REPLACE_EXISTING);
 
 			// Just in-case the user messes with something, we can re-download the XML
-			Watcher.createFileWatcher(new File("current48.xml"), () -> {
+			Watcher.createFileWatcher(new File("current_resources.dl"), () -> {
 				try {
-					downloadXmls();
+					downloadCurrentResources();
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
 			});
 
-		} catch (IOException e) {
-			e.printStackTrace();
+		} catch (ConnectException e) {
+			System.out.println("Connection failed.");
 		} finally {
 			if (in != null) {
 				in.close();
 			}
 		}
-		return new File("data/current48.xml");
+		return file;
+	}
+
+	public static GalaxyResource downloadGalaxyResource(String name) throws IOException {
+		File dir = new File("./data/user/downloaded_resources");
+		if (!dir.exists())
+			dir.createNewFile();
+
+		File file = new File("./data/user/downloaded_resources/" + name + ".dl");
+
+		InputStream stream = null;
+		try {
+			ResourceXml resourceXml = new HarvesterResourceXml(documentBuilderFactory.newDocumentBuilder());
+
+			if (!file.exists()) {
+				stream = downloadFile("getResourceByName.py?name=" + name + "&galaxy=48");
+				Files.copy(stream, Paths.get(file.toURI()), StandardCopyOption.REPLACE_EXISTING);
+				stream.close();
+			}
+
+			stream = new FileInputStream(file);
+
+			resourceXml.load(stream);
+
+			if (resourceXml.getGalaxyResource() == null)
+				file.delete();
+			return resourceXml.getGalaxyResource();
+		} catch (ParserConfigurationException | SAXException e) {
+			e.printStackTrace();
+		} finally {
+			if (stream != null)
+				stream.close();
+		}
+		return null;
+	}
+
+	public static InputStream downloadFile(String url) throws IOException {
+		return new URL("http://galaxyharvester.net/" + url).openStream();
 	}
 
 	public static List<String> getResourceGroups(String group) {
 		return resourceGroups.get(group);
 	}
-
 
 	public static void printInputStream(InputStream inputStream) throws IOException {
 		BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));

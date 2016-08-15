@@ -1,6 +1,5 @@
 package com.waverunnah.swg.harvesterdroid.data.resources;
 
-import com.waverunnah.swg.harvesterdroid.HarvesterDroid;
 import com.waverunnah.swg.harvesterdroid.utils.Attributes;
 import javafx.beans.property.*;
 import javafx.collections.FXCollections;
@@ -14,8 +13,9 @@ public class GalaxyResource {
     private StringProperty date = new SimpleStringProperty();
     private StringProperty resourceType = new SimpleStringProperty();
     private StringProperty container = new SimpleStringProperty();
+	private StringProperty despawnDate = new SimpleStringProperty();
 
-    private ObservableList<Planet> planets = FXCollections.observableArrayList();
+	private ObservableList<Planet> planets = FXCollections.observableArrayList();
     private ObservableMap<String, IntegerProperty> attributes;
 
 	public GalaxyResource() {
@@ -72,13 +72,27 @@ public class GalaxyResource {
 		this.container.set(container);
 	}
 
+	public String getDespawnDate() {
+		return despawnDate.get();
+	}
+
+	public StringProperty despawnDateProperty() {
+		return despawnDate;
+	}
+
+	public void setDespawnDate(String despawnDate) {
+		this.despawnDate.set(despawnDate);
+	}
+
 	public ObservableMap<String, IntegerProperty> getAttributes() {
 		return attributes;
 	}
 
 	public void setAttribute(String attribute, int value) {
 		IntegerProperty property = attributes.get(attribute);
-		property.set(value);
+		if (property != null)
+			property.set(value);
+		else attributes.put(attribute, new SimpleIntegerProperty(value));
 	}
 
 	public ObservableList<Planet> getPlanets() {

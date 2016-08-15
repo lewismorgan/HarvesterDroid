@@ -17,8 +17,10 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TitledPane;
 import org.controlsfx.control.StatusBar;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -36,6 +38,8 @@ public class MainController implements Initializable {
 	private ObservableList<Schematic> schematicsList;
 	private FilteredList<Schematic> filteredSchematicList;
 
+	@FXML
+	TitledPane bestResourcesPane;
 	@FXML
 	ListView<Schematic> schematicsListView;
 	@FXML
@@ -85,21 +89,27 @@ public class MainController implements Initializable {
 	public void updateInventoryFromXml() {
 		List<String> resourceNames = new ArrayList<>(HarvesterDroid.getInventoryXml().getInventory());
 		resourceNames.forEach(name -> {
+			System.out.println(name);
 			GalaxyResource galaxyResource = HarvesterDroid.getCurrentResourcesXml().getGalaxyResources().get(name);
-			if (galaxyResource != null) {
-				if (!inventoryListItems.contains(galaxyResource)) {
-					inventoryListView.setDisable(false);
-					inventoryListItems.add(galaxyResource);
-					if (!resourceListItems.contains(galaxyResource))
-						resourceListItems.add(galaxyResource);
+			if (galaxyResource == null) {
+				try {
+					galaxyResource = Downloader.downloadGalaxyResource(name);
+				} catch (IOException e) {
+					e.printStackTrace();
 				}
-			} else {
-				// TODO Add single resource data retrieval
+			}
+
+			if (!inventoryListItems.contains(galaxyResource)) {
+				inventoryListView.setDisable(false);
+				inventoryListItems.add(galaxyResource);
+				if (!resourceListItems.contains(galaxyResource))
+					resourceListItems.add(galaxyResource);
 			}
 		});
 	}
 
 	private void initResources() {
+		bestResourcesPane.setText("Best Resources as of " + HarvesterDroid.getCurrentResourcesXml().getTimestamp());
 		bestResourcesListView.setCellFactory(param -> new GalaxyResourceListCell());
 		resourceListItems = FXCollections.observableArrayList();
 

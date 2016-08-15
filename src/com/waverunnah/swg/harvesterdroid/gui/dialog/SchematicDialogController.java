@@ -78,7 +78,7 @@ public class SchematicDialogController extends VBox implements Initializable {
 
 	public void addResource() {
 		List<String> choices = new ArrayList<>();
-		HarvesterDroid.getCurrentResourcesXml().getTypes().stream().filter(type -> !schematic.getResources().contains(type))
+		HarvesterDroid.getResourceTypes().stream().filter(type -> !schematic.getResources().contains(type))
 				.forEach(choices::add);
 		ChoiceDialog<String> dialog = new ChoiceDialog<>(choices.get(0), choices);
 		dialog.setTitle("Add New Resource");

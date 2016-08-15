@@ -14,11 +14,15 @@ import javafx.stage.Stage;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.TransformerException;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class HarvesterDroid extends Application {
+	private List<String> resourceTypes = new ArrayList<>();
 	private static HarvesterDroid instance;
 
 	private static Stage stage;
@@ -35,19 +39,32 @@ public class HarvesterDroid extends Application {
 		// TODO Loading Screen w/ proper initializations
 		instance = this;
 
+		BufferedReader bufferedReader = new BufferedReader(new FileReader("./data/types"));
+		resourceTypes = bufferedReader.lines().collect(Collectors.toList());
+
 		DocumentBuilder documentBuilder = factory.newDocumentBuilder();
 
-		Downloader.downloadXmls();
+		Downloader.downloadCurrentResources();
+
+		File user = new File("./data/user");
+		if (!user.exists())
+			user.createNewFile();
 
 		// TODO Preferences determines what CurrentResourcesXml subclass to use
-		currentResourcesXml = new HarvesterCurrentResourcesXml(documentBuilder);
-		currentResourcesXml.load(new FileInputStream("./data/current48.xml"));
+		if (Files.exists(Paths.get("./data/current_resources.dl"))) {
+			currentResourcesXml = new HarvesterCurrentResourcesXml(documentBuilder);
+			currentResourcesXml.load(new FileInputStream("./data/current_resources.dl"));
+		} else {
+			currentResourcesXml = new CurrentResourcesXml();
+		}
 
 		schematicsXml = new SchematicsXml(documentBuilder);
-		schematicsXml.load(new FileInputStream("./data/user/schematics.xml"));
+		if (Files.exists(Paths.get("./data/user/schematics.xml")))
+			schematicsXml.load(new FileInputStream("./data/user/schematics.xml"));
 
 		inventoryXml = new InventoryXml(documentBuilder);
-		inventoryXml.load(new FileInputStream("./data/user/inventory.xml"));
+		if (Files.exists(Paths.get("./data/user/inventory.xml")))
+			inventoryXml.load(new FileInputStream("./data/user/inventory.xml"));
 	}
 
 	@Override
@@ -88,5 +105,9 @@ public class HarvesterDroid extends Application {
 
 	public static InventoryXml getInventoryXml() {
 		return instance.inventoryXml;
+	}
+
+	public static List<String> getResourceTypes() {
+		return instance.resourceTypes;
 	}
 }

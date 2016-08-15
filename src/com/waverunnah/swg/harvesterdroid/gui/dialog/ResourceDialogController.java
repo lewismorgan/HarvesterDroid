@@ -1,85 +1,104 @@
 package com.waverunnah.swg.harvesterdroid.gui.dialog;
 
-import com.waverunnah.swg.harvesterdroid.HarvesterDroid;
 import com.waverunnah.swg.harvesterdroid.data.resources.GalaxyResource;
 import com.waverunnah.swg.harvesterdroid.gui.converters.ResourceValueConverter;
 import com.waverunnah.swg.harvesterdroid.utils.Attributes;
+import com.waverunnah.swg.harvesterdroid.utils.Downloader;
+import javafx.beans.binding.Bindings;
+import javafx.beans.binding.When;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.ComboBox;
+import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public class ResourceDialogController implements Initializable {
 	private ObjectProperty<GalaxyResource> galaxyResource = new SimpleObjectProperty<>();
-	private ObservableList<String> resourceTypes = FXCollections.observableArrayList(HarvesterDroid.getCurrentResourcesXml().getTypes());
-	// TODO Figure out easy way to convert data from dialog -> resourceListItem -> galaxyResource
 
+	@FXML
+	TextField resourceTypeField;
 	@FXML
 	TextField nameField;
 	@FXML
-	ComboBox<String> typeComboBox;
+	HBox attributesGroup;
 	@FXML
-	FlowPane attributesPane;
+	Label hiddenInfoGroupRightLabel;
+	@FXML
+	Label hiddenInfoGroupLeftLabel;
+	@FXML
+	HBox hiddenInfoGroup;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		ResourceDialog.setController(this);
-		typeComboBox.setItems(resourceTypes);
 		galaxyResource.addListener((observable, oldValue, newValue) -> {
 			if (newValue != null)
 				populateFromGalaxyResource(newValue);
 		});
-		attributesPane.setPrefWrapLength((55 * Attributes.size()) / 2);
-		editResourceItem(new GalaxyResource());
-	}
-
-	public void editResourceItem(GalaxyResource galaxyResource) {
-		if (galaxyResource == null)
-			galaxyResource = new GalaxyResource();
-		this.galaxyResource.set(galaxyResource);
 	}
 
 	private void populateFromGalaxyResource(GalaxyResource galaxyResource) {
-		attributesPane.getChildren().clear();
-		nameField.textProperty().bindBidirectional(galaxyResource.nameProperty());
-		galaxyResource.resourceTypeProperty().bind(typeComboBox.getSelectionModel().selectedItemProperty());
+		System.out.println("Populating from resource: " + galaxyResource);
+		attributesGroup.getChildren().clear();
+		resourceTypeField.textProperty().bind(galaxyResource.resourceTypeProperty());
 		Attributes.forEach((primary, secondary) -> bindAttribute(primary, galaxyResource.getAttributes().get(primary)));
+
+		When whenUnavailable = Bindings.when(galaxyResource.despawnDateProperty().isNotEmpty());
+		hiddenInfoGroup.visibleProperty().bind(galaxyResource.despawnDateProperty().isNotEmpty());
+		hiddenInfoGroupLeftLabel.textProperty().bind(whenUnavailable.then("Despawned on").otherwise(""));
+		hiddenInfoGroupRightLabel.textProperty().bind(whenUnavailable.then(galaxyResource.dateProperty()).otherwise(""));
 	}
 
 	private void bindAttribute(String attribute, IntegerProperty property) {
-		HBox group = new HBox();
+		VBox group = new VBox();
 		group.setAlignment(Pos.CENTER);
-		group.setSpacing(5);
-		Label name = new Label(attribute);
-		group.getChildren().add(name);
-		TextField textField = new TextField();
-		textField.setPrefWidth(25);
-		group.getChildren().add(textField);
+		group.setPadding(new Insets(5.0, 0, 0, 0));
+		group.disableProperty().bind(property.isEqualTo(-1));
 
-		textField.textProperty().bindBidirectional(property, new ResourceValueConverter());
+		Label nameLabel = new Label(Attributes.getAbbreviation(attribute));
+		nameLabel.setContentDisplay(ContentDisplay.CENTER);
+		group.getChildren().add(nameLabel);
 
-		attributesPane.getChildren().add(group);
+		Label valueLabel = new Label("--");
+		valueLabel.setContentDisplay(ContentDisplay.CENTER);
+		group.getChildren().add(valueLabel);
+
+		Bindings.bindBidirectional(valueLabel.textProperty(), property, new ResourceValueConverter());
+
+		attributesGroup.getChildren().add(group);
 	}
 
-	public GalaxyResource getResourceListItem() {
+	public GalaxyResource getGalaxyResource() {
 		return galaxyResource.get();
 	}
 
 	public void retrieveStats() {
 		// TODO Retrieve stats from site that HarvesterDroid is configured to use
 		// TODO Disable editing for value boxes once properly integrated
-	}
+		try {
+			GalaxyResource galaxyResource = Downloader.downloadGalaxyResource(nameField.getText());
+			if (galaxyResource == null) {
+				nameField.setText(null);
+				hiddenInfoGroup.setVisible(true);
+				hiddenInfoGroupLeftLabel.setText("Couldn't find resource");
+				hiddenInfoGroupRightLabel.textProperty().bind(nameField.textProperty());
+				return;
+			}
 
+			this.galaxyResource.set(galaxyResource);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 }
