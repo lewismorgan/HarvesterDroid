@@ -28,6 +28,9 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class HarvesterDroid extends Application {
+	private static String XML_SCHEMATICS = "./data/user/schematics.xml";
+	private static String XML_INVENTORY = "./data/user/inventory.xml";
+
 	private List<String> resourceTypes = new ArrayList<>();
 	private static HarvesterDroid instance;
 
@@ -52,10 +55,6 @@ public class HarvesterDroid extends Application {
 
 		Downloader.downloadCurrentResources();
 
-		File user = new File("./data/user");
-		if (!user.exists())
-			user.createNewFile();
-
 		// TODO Preferences determines what CurrentResourcesXml subclass to use
 		if (Files.exists(Paths.get("./data/current_resources.dl"))) {
 			currentResourcesXml = new HarvesterCurrentResourcesXml(documentBuilder);
@@ -65,12 +64,12 @@ public class HarvesterDroid extends Application {
 		}
 
 		schematicsXml = new SchematicsXml(documentBuilder);
-		if (Files.exists(Paths.get("./data/user/schematics.xml")))
-			schematicsXml.load(new FileInputStream("./data/user/schematics.xml"));
+		if (Files.exists(Paths.get(XML_SCHEMATICS)))
+			schematicsXml.load(new FileInputStream(XML_SCHEMATICS));
 
 		inventoryXml = new InventoryXml(documentBuilder);
-		if (Files.exists(Paths.get("./data/user/inventory.xml")))
-			inventoryXml.load(new FileInputStream("./data/user/inventory.xml"));
+		if (Files.exists(Paths.get(XML_INVENTORY)))
+			inventoryXml.load(new FileInputStream(XML_INVENTORY));
 	}
 
 	@Override
@@ -93,7 +92,7 @@ public class HarvesterDroid extends Application {
 	    try {
 		    instance.schematicsXml.save(new File("data/user/schematics.xml"));
 		    instance.inventoryXml.save(new File("data/user/inventory.xml"));
-	    } catch (TransformerException | FileNotFoundException e) {
+	    } catch (TransformerException | IOException e) {
 		    ExceptionDialog.display(e);
 	    }
     }

@@ -30,6 +30,7 @@ import java.util.stream.Collectors;
 public class MainController implements Initializable {
 	// TODO Split each panel into it's own component (inventory, schematics, best resources)
 	// TODO Move intensive methods to a Task
+	// TODO Move business logic to it's own class independent of the controller -- controller only for binding
 
 	private ObservableList<GalaxyResource> inventoryListItems;
 	private FilteredList<GalaxyResource> filteredInventoryListItems;
