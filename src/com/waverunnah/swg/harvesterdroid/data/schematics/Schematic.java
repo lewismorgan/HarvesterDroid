@@ -62,6 +62,11 @@ public class Schematic {
 		this.modifiers.set(modifiers);
 	}
 
+	public boolean isIncomplete() {
+		return getName() == null || getGroup() == null || getResources() == null || getModifiers() == null
+				|| getResources().isEmpty() || getModifiers().isEmpty();
+	}
+
 	@Override
 	public String toString() {
 		return getName();

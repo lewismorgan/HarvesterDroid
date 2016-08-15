@@ -76,10 +76,10 @@
                      <content>
                         <VBox alignment="TOP_RIGHT" spacing="5.0">
                            <children>
-                              <ComboBox fx:id="professionComboBox" nodeOrientation="LEFT_TO_RIGHT" VBox.vgrow="ALWAYS" />
-                              <ListView disable="true" fx:id="schematicsListView" VBox.vgrow="ALWAYS">
+                              <ComboBox fx:id="groupComboBox" nodeOrientation="LEFT_TO_RIGHT" VBox.vgrow="ALWAYS" />
+                              <ListView fx:id="schematicsListView" disable="true" VBox.vgrow="ALWAYS">
                                   <placeholder>
-                                      <Label text="No schematics have been created"/>
+                                      <Label text="No schematics have been created" />
                                   </placeholder>
                               </ListView>
                               <ButtonBar prefHeight="40.0" prefWidth="200.0">

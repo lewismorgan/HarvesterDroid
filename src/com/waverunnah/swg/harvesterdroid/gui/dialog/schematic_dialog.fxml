@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="555.0" spacing="10.0" xmlns="http://javafx.com/javafx/8.0.91" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.waverunnah.swg.harvesterdroid.gui.dialog.SchematicDialogController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" spacing="10.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.waverunnah.swg.harvesterdroid.gui.dialog.SchematicDialogController">
    <children>
       <HBox spacing="5.0">
          <children>
@@ -23,7 +23,7 @@
                </HBox.margin>
             </Label>
             <TextField fx:id="nameField" />
-            <Label text="Profession">
+            <Label text="Group">
                <HBox.margin>
                   <Insets top="5.0" />
                </HBox.margin>
@@ -31,18 +31,22 @@
                   <Insets left="5.0" />
                </padding>
             </Label>
-            <TextField fx:id="professionField" />
+            <TextField fx:id="groupField" />
          </children>
       </HBox>
       <HBox layoutX="10.0" layoutY="10.0" spacing="5.0">
          <children>
-            <TitledPane collapsible="false" prefHeight="250.0" text="Resources">
+            <TitledPane fx:id="resourcesPane" collapsible="false" prefHeight="250.0" text="Resources">
                <content>
                   <AnchorPane>
                      <children>
                         <VBox layoutX="9.600000381469727" layoutY="9.600000381469727" spacing="5.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <children>
-                              <ListView fx:id="resourceListView" prefHeight="250.0" />
+                              <ListView fx:id="resourceListView">
+                                 <placeholder>
+                                    <Label text="No resources have been added" />
+                                 </placeholder>
+                              </ListView>
                               <ButtonBar>
                                 <buttons>
                                     <Button layoutX="184.0" layoutY="18.0" mnemonicParsing="false" onAction="#removeResource" text="Remove" />
@@ -58,7 +62,7 @@
                   </AnchorPane>
                </content>
             </TitledPane>
-            <TitledPane collapsible="false" layoutX="10.0" layoutY="10.0" prefHeight="250.0" prefWidth="270.0" text="Modifers">
+            <TitledPane fx:id="attributesPane" collapsible="false" layoutX="10.0" layoutY="10.0" prefHeight="250.0" text="Attributes">
                <content>
                   <AnchorPane>
                      <children>
@@ -67,7 +71,11 @@
                               <TableView fx:id="attributesTableView" editable="true" tableMenuButtonVisible="true">
                                  <columnResizePolicy>
                                     <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-                                 </columnResizePolicy></TableView>
+                                 </columnResizePolicy>
+                                 <placeholder>
+                                    <Label text="No attributes have been added" />
+                                 </placeholder>
+                              </TableView>
                               <HBox alignment="CENTER" nodeOrientation="LEFT_TO_RIGHT" spacing="15.0" VBox.vgrow="ALWAYS">
                                  <children>
                                     <ComboBox fx:id="addModifierComboBox" prefWidth="150.0" HBox.hgrow="ALWAYS" />

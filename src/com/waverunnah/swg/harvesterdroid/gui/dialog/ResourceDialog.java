@@ -31,7 +31,7 @@ public class ResourceDialog extends Dialog<GalaxyResource> {
 
 			getDialogPane().setContent(root);
 		} catch (IOException e) {
-			e.printStackTrace();
+			ExceptionDialog.display(e);
 		}
 	}
 

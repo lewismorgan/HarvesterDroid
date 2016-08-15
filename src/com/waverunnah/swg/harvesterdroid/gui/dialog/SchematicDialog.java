@@ -39,7 +39,7 @@ public class SchematicDialog extends Dialog<Schematic> {
 
 			getDialogPane().setContent(root);
 		} catch (IOException e) {
-			e.printStackTrace();
+			ExceptionDialog.display(e);
 		}
 	}
 

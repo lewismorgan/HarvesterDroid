@@ -2,6 +2,7 @@ package com.waverunnah.swg.harvesterdroid.utils;
 
 import com.sun.corba.se.spi.orbutil.fsm.Input;
 import com.waverunnah.swg.harvesterdroid.data.resources.GalaxyResource;
+import com.waverunnah.swg.harvesterdroid.gui.dialog.ExceptionDialog;
 import com.waverunnah.swg.harvesterdroid.xml.app.ResourceXml;
 import com.waverunnah.swg.harvesterdroid.xml.galacticharvester.HarvesterResourceXml;
 import org.xml.sax.SAXException;
@@ -44,7 +45,7 @@ public final class Downloader {
 				try {
 					downloadCurrentResources();
 				} catch (IOException e) {
-					e.printStackTrace();
+					ExceptionDialog.display(e);
 				}
 			});
 
@@ -83,7 +84,7 @@ public final class Downloader {
 				file.delete();
 			return resourceXml.getGalaxyResource();
 		} catch (ParserConfigurationException | SAXException e) {
-			e.printStackTrace();
+			ExceptionDialog.display(e);
 		} finally {
 			if (stream != null)
 				stream.close();
@@ -123,7 +124,7 @@ public final class Downloader {
 					stream.forEach(resourceGroup::add);
 				}
 			} catch (IOException e) {
-				e.printStackTrace();
+				ExceptionDialog.display(e);
 			}
 			resourceGroups.put(file.getName(), resourceGroup);
 		}

@@ -21,6 +21,7 @@ public class SchematicsXml extends BaseXml {
 
 	private List<Schematic> schematicsList = new ArrayList<>();
 	private List<String> professionList = new ArrayList<>();
+	private List<Schematic> schematics;
 
 	public SchematicsXml(DocumentBuilder documentBuilder) {
 		super(documentBuilder);
@@ -139,5 +140,9 @@ public class SchematicsXml extends BaseXml {
 
 	public List<String> getProfessionList() {
 		return professionList;
+	}
+
+	public void setSchematics(List<Schematic> schematics) {
+		this.schematics = schematics;
 	}
 }

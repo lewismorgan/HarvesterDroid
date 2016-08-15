@@ -2,6 +2,7 @@ package com.waverunnah.swg.harvesterdroid.xml.galacticharvester;
 
 import com.waverunnah.swg.harvesterdroid.data.resources.GalaxyResource;
 import com.waverunnah.swg.harvesterdroid.data.resources.Planet;
+import com.waverunnah.swg.harvesterdroid.gui.dialog.ExceptionDialog;
 import com.waverunnah.swg.harvesterdroid.utils.Attributes;
 import com.waverunnah.swg.harvesterdroid.xml.app.ResourceXml;
 import org.w3c.dom.Element;
@@ -80,7 +81,7 @@ public class HarvesterResourceXml extends ResourceXml {
 			int value = Integer.parseInt(text);
 			galaxyResource.setAttribute(Attributes.getFullName(node.getNodeName()), value);
 		} catch (NumberFormatException e) {
-			e.printStackTrace();
+			ExceptionDialog.display(e);
 		}
 	}
 }

@@ -46,7 +46,7 @@ public class CurrentResourcesXml extends BaseXml {
 		return galaxyResources.values();
 	}
 
-	public void setGalaxyResources(Map<String, GalaxyResource> galaxyResources) {
+	protected void setGalaxyResources(Map<String, GalaxyResource> galaxyResources) {
 		this.galaxyResources = galaxyResources;
 	}
 

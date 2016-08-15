@@ -60,7 +60,6 @@ public class ResourceListItem extends HBox {
 	}
 
 	public void handleGalaxyResourceSet(GalaxyResource val) {
-		// TODO Update image using group id
 		if (val == null) {
 			resourceName.textProperty().unbind();
 			resourceType.textProperty().unbind();

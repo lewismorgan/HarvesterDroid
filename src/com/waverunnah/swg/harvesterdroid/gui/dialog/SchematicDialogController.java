@@ -4,6 +4,9 @@ import com.waverunnah.swg.harvesterdroid.HarvesterDroid;
 import com.waverunnah.swg.harvesterdroid.data.schematics.Schematic;
 import com.waverunnah.swg.harvesterdroid.gui.FloatTextField;
 import com.waverunnah.swg.harvesterdroid.utils.Attributes;
+import javafx.beans.binding.Bindings;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
@@ -26,24 +29,26 @@ public class SchematicDialogController extends VBox implements Initializable {
 	@FXML
 	TextField nameField;
 	@FXML
-	TextField professionField;
+	TextField groupField;
 	@FXML
 	ListView<String> resourceListView;
 	@FXML
 	TableView<Schematic.Modifier> attributesTableView;
 	@FXML
 	ComboBox<String> addModifierComboBox;
+	@FXML
+	TitledPane attributesPane;
+	@FXML
+	TitledPane resourcesPane;
 
-	private Schematic schematic;
+	private ObjectProperty<Schematic> schematic = new SimpleObjectProperty<>(null);
 
 	public void readSchematic(Schematic schematic) {
-		if (schematic == null) // We can't edit a schematic that doesn't exist!
-			schematic = new Schematic();
-		this.schematic = schematic;
+		this.schematic.set(schematic);
 
 		nameField.textProperty().bindBidirectional(schematic.nameProperty());
 		resourceListView.itemsProperty().bindBidirectional(schematic.resourcesProperty());
-		professionField.textProperty().bindBidirectional(schematic.groupProperty());
+		groupField.textProperty().bindBidirectional(schematic.groupProperty());
 		attributesTableView.itemsProperty().bindBidirectional(schematic.modifiersProperty());
 
 		addModifierComboBox.setItems(availableModifiers);
@@ -77,6 +82,8 @@ public class SchematicDialogController extends VBox implements Initializable {
 	}
 
 	public void addResource() {
+		Schematic schematic = getSchematic();
+
 		List<String> choices = new ArrayList<>();
 		HarvesterDroid.getResourceTypes().stream().filter(type -> !schematic.getResources().contains(type))
 				.forEach(choices::add);
@@ -92,6 +99,8 @@ public class SchematicDialogController extends VBox implements Initializable {
 	}
 
 	public void removeResource() {
+		Schematic schematic = getSchematic();
+
 		String resource = resourceListView.getSelectionModel().getSelectedItem();
 		if (resource == null || !schematic.getResources().contains(resource))
 			return;
@@ -101,6 +110,10 @@ public class SchematicDialogController extends VBox implements Initializable {
 	}
 
 	public void addModifier() {
+		Schematic schematic = getSchematic();
+		if (schematic == null)
+			return;
+
 		String modifier = addModifierComboBox.getSelectionModel().getSelectedItem();
 		if (modifier == null || modifier.isEmpty())
 			return;
@@ -115,6 +128,8 @@ public class SchematicDialogController extends VBox implements Initializable {
 
 	@SuppressWarnings("unchecked")
 	private void createColumns() {
+		Schematic schematic = getSchematic();
+
 		TableColumn<Schematic.Modifier, String> attributeColumn = new TableColumn<>("Attribute");
 		TableColumn<Schematic.Modifier, Float> percentColumn = new TableColumn<>("Value");
 
@@ -151,6 +166,10 @@ public class SchematicDialogController extends VBox implements Initializable {
 	public void initialize(URL location, ResourceBundle resources) {
 		SchematicDialog.setController(this);
 		createColumns();
+	}
+
+	public Schematic getSchematic() {
+		return schematic.get();
 	}
 
 	class PercentEditingCell extends TableCell<Schematic.Modifier, Float> {
@@ -260,7 +279,4 @@ public class SchematicDialogController extends VBox implements Initializable {
 		}
 	}
 
-	public Schematic getSchematic() {
-		return schematic;
-	}
 }

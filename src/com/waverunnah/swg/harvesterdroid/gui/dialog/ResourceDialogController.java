@@ -49,7 +49,6 @@ public class ResourceDialogController implements Initializable {
 	}
 
 	private void populateFromGalaxyResource(GalaxyResource galaxyResource) {
-		System.out.println("Populating from resource: " + galaxyResource);
 		attributesGroup.getChildren().clear();
 		resourceTypeField.textProperty().bind(galaxyResource.resourceTypeProperty());
 		Attributes.forEach((primary, secondary) -> bindAttribute(primary, galaxyResource.getAttributes().get(primary)));
@@ -84,8 +83,6 @@ public class ResourceDialogController implements Initializable {
 	}
 
 	public void retrieveStats() {
-		// TODO Retrieve stats from site that HarvesterDroid is configured to use
-		// TODO Disable editing for value boxes once properly integrated
 		try {
 			GalaxyResource galaxyResource = Downloader.downloadGalaxyResource(nameField.getText());
 			if (galaxyResource == null) {
@@ -98,7 +95,7 @@ public class ResourceDialogController implements Initializable {
 
 			this.galaxyResource.set(galaxyResource);
 		} catch (IOException e) {
-			e.printStackTrace();
+			ExceptionDialog.display(e);
 		}
 	}
 }

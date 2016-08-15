@@ -1,11 +1,15 @@
 package com.waverunnah.swg.harvesterdroid;
 
+import com.waverunnah.swg.harvesterdroid.data.resources.GalaxyResource;
+import com.waverunnah.swg.harvesterdroid.data.schematics.Schematic;
+import com.waverunnah.swg.harvesterdroid.gui.dialog.ExceptionDialog;
 import com.waverunnah.swg.harvesterdroid.xml.app.CurrentResourcesXml;
 import com.waverunnah.swg.harvesterdroid.xml.app.InventoryXml;
 import com.waverunnah.swg.harvesterdroid.xml.app.SchematicsXml;
 import com.waverunnah.swg.harvesterdroid.utils.Downloader;
 import com.waverunnah.swg.harvesterdroid.xml.galacticharvester.HarvesterCurrentResourcesXml;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -18,7 +22,9 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class HarvesterDroid extends Application {
@@ -71,11 +77,16 @@ public class HarvesterDroid extends Application {
     public void start(Stage primaryStage) throws Exception {
 	    stage = primaryStage;
 
-
         Parent root = FXMLLoader.load(getClass().getResource("gui/main.fxml"));
         primaryStage.setTitle("Harvester Droid");
         primaryStage.setScene(new Scene(root));
         primaryStage.show();
+
+		primaryStage.setOnCloseRequest(e -> {
+			save();
+			Platform.exit();
+			System.exit(0);
+		});
     }
 
     public static void save() {
@@ -83,11 +94,16 @@ public class HarvesterDroid extends Application {
 		    instance.schematicsXml.save(new File("data/user/schematics.xml"));
 		    instance.inventoryXml.save(new File("data/user/inventory.xml"));
 	    } catch (TransformerException | FileNotFoundException e) {
-		    e.printStackTrace();
+		    ExceptionDialog.display(e);
 	    }
     }
 
     public static void main(String[] args) {
+	    Thread.setDefaultUncaughtExceptionHandler((t, e) -> {
+		    ExceptionDialog exceptionDialog = new ExceptionDialog(e);
+		    exceptionDialog.showAndWait();
+	    });
+
         launch(args);
     }
 
@@ -95,19 +111,32 @@ public class HarvesterDroid extends Application {
 		return stage;
 	}
 
-	public static CurrentResourcesXml getCurrentResourcesXml() {
-		return instance.currentResourcesXml;
+	public static Collection<GalaxyResource> getCurrentResources() {
+		return instance.currentResourcesXml.getGalaxyResourceList();
 	}
 
-	public static SchematicsXml getSchematicsXml() {
-		return instance.schematicsXml;
+	public static Map<String, GalaxyResource> getCurrentResourcesMap() {
+		return instance.currentResourcesXml.getGalaxyResources();
 	}
 
-	public static InventoryXml getInventoryXml() {
-		return instance.inventoryXml;
+	public static String getLastUpdate() {
+		return instance.currentResourcesXml.getTimestamp();
+	}
+
+	public static List<Schematic> getSchematics() {
+		return instance.schematicsXml.getSchematicsList();
+	}
+
+	public static List<String> getInventory() {
+		return instance.inventoryXml.getInventory();
 	}
 
 	public static List<String> getResourceTypes() {
 		return instance.resourceTypes;
+	}
+
+	public static void save(List<String> inventoryListItems, List<Schematic> schematicsList) {
+		instance.schematicsXml.setSchematics(schematicsList);
+		instance.inventoryXml.setInventory(inventoryListItems);
 	}
 }

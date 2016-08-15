@@ -4,10 +4,12 @@ import com.waverunnah.swg.harvesterdroid.HarvesterDroid;
 import com.waverunnah.swg.harvesterdroid.data.resources.GalaxyResource;
 import com.waverunnah.swg.harvesterdroid.data.schematics.Schematic;
 import com.waverunnah.swg.harvesterdroid.gui.callbacks.GalaxyResourceListCell;
+import com.waverunnah.swg.harvesterdroid.gui.dialog.ExceptionDialog;
 import com.waverunnah.swg.harvesterdroid.gui.dialog.ResourceDialog;
 import com.waverunnah.swg.harvesterdroid.gui.dialog.SchematicDialog;
 import com.waverunnah.swg.harvesterdroid.utils.Downloader;
 import javafx.beans.Observable;
+import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
@@ -38,6 +40,8 @@ public class MainController implements Initializable {
 	private ObservableList<Schematic> schematicsList;
 	private FilteredList<Schematic> filteredSchematicList;
 
+	private ObservableList<String> groupsList;
+
 	@FXML
 	TitledPane bestResourcesPane;
 	@FXML
@@ -47,7 +51,7 @@ public class MainController implements Initializable {
 	@FXML
 	ListView<GalaxyResource> bestResourcesListView;
 	@FXML
-	ComboBox<String> professionComboBox;
+	ComboBox<String> groupComboBox;
 	@FXML
 	StatusBar statusBar;
 
@@ -60,42 +64,27 @@ public class MainController implements Initializable {
 	}
 
 	private void initInventory() {
-		inventoryListView.setCellFactory(param -> new GalaxyResourceListCell());
 		inventoryListItems = FXCollections.observableArrayList();
+
+		inventoryListView.setCellFactory(param -> new GalaxyResourceListCell());
+		inventoryListView.disableProperty().bind(Bindings.isEmpty(inventoryListItems));
 
 		filteredInventoryListItems = new FilteredList<>(inventoryListItems, inventoryListItem -> true);
 		inventoryListView.setItems(filteredInventoryListItems);
 
-		inventoryListItems.addListener((ListChangeListener<? super GalaxyResource>) c -> {
-			while (c.next()) {
-				if (c.wasAdded() && c.getAddedSize() > 0) {
-					List<String> inventoryData = HarvesterDroid.getInventoryXml().getInventory();
-					List<? extends GalaxyResource> added = c.getAddedSubList();
-					added.forEach(galaxyResource -> {
-						if (!inventoryData.contains(galaxyResource.getName()))
-							inventoryData.add(galaxyResource.getName());
-					});
-				} else if (c.wasRemoved() && c.getRemovedSize() > 0) {
-					List<String> inventoryData = HarvesterDroid.getInventoryXml().getInventory();
-					List<? extends GalaxyResource> removed = c.getRemoved();
-					removed.forEach(galaxyResource -> inventoryData.remove(galaxyResource.getName()));
-				}
-			}
-		});
-
-		updateInventoryFromXml();
+		updateInventory();
 	}
 
-	public void updateInventoryFromXml() {
-		List<String> resourceNames = new ArrayList<>(HarvesterDroid.getInventoryXml().getInventory());
+	public void updateInventory() {
+		List<String> resourceNames = new ArrayList<>(HarvesterDroid.getInventory());
+
 		resourceNames.forEach(name -> {
-			System.out.println(name);
-			GalaxyResource galaxyResource = HarvesterDroid.getCurrentResourcesXml().getGalaxyResources().get(name);
+			GalaxyResource galaxyResource = HarvesterDroid.getCurrentResourcesMap().get(name);
 			if (galaxyResource == null) {
 				try {
 					galaxyResource = Downloader.downloadGalaxyResource(name);
 				} catch (IOException e) {
-					e.printStackTrace();
+					ExceptionDialog.display(e);
 				}
 			}
 
@@ -109,21 +98,47 @@ public class MainController implements Initializable {
 	}
 
 	private void initResources() {
-		bestResourcesPane.setText("Best Resources as of " + HarvesterDroid.getCurrentResourcesXml().getTimestamp());
-		bestResourcesListView.setCellFactory(param -> new GalaxyResourceListCell());
 		resourceListItems = FXCollections.observableArrayList();
+
+		bestResourcesPane.setText("Best Resources as of " + HarvesterDroid.getLastUpdate());
+		bestResourcesListView.disableProperty().bind(Bindings.isEmpty(resourceListItems));
+		bestResourcesListView.setCellFactory(param -> new GalaxyResourceListCell());
 
 		filteredResourceListItems = new FilteredList<>(resourceListItems, resourceListItem -> false);
 		bestResourcesListView.setItems(filteredResourceListItems);
 	}
 
 	private void initGroups() {
-		professionComboBox.setItems(FXCollections.observableArrayList(HarvesterDroid.getSchematicsXml().getProfessionList()));
-		professionComboBox.getItems().add(0, "any"); // Any filter
-		professionComboBox.getSelectionModel().select(0);
+		groupsList = FXCollections.observableArrayList();
+		schematicsList.addListener((ListChangeListener<? super Schematic>) c -> {
+			while (c.next()) {
+				if (c.wasAdded()) {
+					List<? extends Schematic> addedSubList = c.getAddedSubList();
+					addedSubList.stream().filter(schematic -> !groupsList.contains(schematic.getGroup()))
+							.forEach(match -> groupsList.add(match.getGroup()));
+				} else if (c.wasRemoved()) {
+					List<? extends Schematic> removed = c.getRemoved();
+					Map<String, Integer> toRemove = new HashMap<>(removed.size());
+					for (Schematic schematic : removed) {
+						int count = 0;
+						if (toRemove.containsKey(schematic.getGroup()))
+							count = toRemove.get(schematic.getGroup());
+						toRemove.put(schematic.getGroup(), count++);
+					}
+					toRemove.forEach((group, count) -> {
+						if (count > 1)
+							groupsList.remove(group);
+					});
+				}
+			}
+		});
 
-		professionComboBox.getSelectionModel().selectedItemProperty().addListener(observable -> {
-			String filter = professionComboBox.getSelectionModel().getSelectedItem();
+		groupComboBox.setItems(groupsList);
+		groupComboBox.getItems().add(0, "any"); // Any filter
+		groupComboBox.getSelectionModel().select(0);
+
+		groupComboBox.getSelectionModel().selectedItemProperty().addListener(observable -> {
+			String filter = groupComboBox.getSelectionModel().getSelectedItem();
 
 			if(filter == null || filter.length() == 0 || filter.equals("any")) {
 				filteredSchematicList.setPredicate(s -> true);
@@ -135,6 +150,10 @@ public class MainController implements Initializable {
 	}
 
 	private void initSchematics() {
+		schematicsList = FXCollections.observableArrayList(schematic -> new Observable[]{schematic.nameProperty()});
+		schematicsList.setAll(HarvesterDroid.getSchematics());
+
+		schematicsListView.disableProperty().bind(Bindings.isEmpty(schematicsList));
 		schematicsListView.getSelectionModel().getSelectedItems().addListener(new ListChangeListener<Schematic>() {
 			@Override
 			public void onChanged(Change<? extends Schematic> c) {
@@ -148,9 +167,6 @@ public class MainController implements Initializable {
 				}
 			}
 		});
-
-		schematicsList = FXCollections.observableArrayList(schematic -> new Observable[]{schematic.nameProperty()});
-		schematicsList.setAll(HarvesterDroid.getSchematicsXml().getSchematicsList());
 
 		filteredSchematicList = new FilteredList<>(schematicsList, schematic -> true);
 		schematicsListView.setItems(filteredSchematicList);
@@ -169,8 +185,10 @@ public class MainController implements Initializable {
 		Optional<Schematic> result = dialog.showAndWait();
 		if (!result.isPresent())
 			return;
-
-		schematicsList.add(result.get());
+		Schematic schematic = result.get();
+		if (!schematic.isIncomplete())
+			schematicsList.add(schematic);
+		else updateInfoText("Could not save schematic as it was missing some entries!");
 	}
 
 	public void displaySchematicDialog(Schematic schematic) {
@@ -181,27 +199,23 @@ public class MainController implements Initializable {
 	}
 
 	private void updateBestResourceList(Schematic schematic) {
-		updateStatusBar("Updating Best Resources List");
+		if (schematic == null || schematic.isIncomplete())
+			return;
 
+		updateStatusBar("Updating Best Resources List");
 		List<GalaxyResource> bestResources = new ArrayList<>(schematic.getResources().size());
 		schematic.getResources().forEach(id -> {
 			List<GalaxyResource> matchedResources = findGalaxyResourcesById(id);
 			if (matchedResources != null) {
 				GalaxyResource bestResource = collectBestResourceForSchematic(schematic, matchedResources);
-				if (bestResource != null) {
-					System.out.println("Adding best resource " + bestResource);
+				if (bestResource != null)
 					bestResources.add(bestResource);
-				} else {
-					System.out.println("No resource is available for " + id);
-				}
 			}
 		});
 
 		if (bestResources.size() == 0) {
 			bestResourcesListView.setPlaceholder(new Label("No resources are available for this schematic"));
-			bestResourcesListView.setDisable(true);
 		} else {
-			bestResourcesListView.setDisable(false);
 			bestResources.stream().filter(galaxyResource -> !resourceListItems.contains(galaxyResource))
 					.forEach(resourceListItems::add);
 			filteredResourceListItems.setPredicate(bestResources::contains);
@@ -247,7 +261,7 @@ public class MainController implements Initializable {
 
 	private List<GalaxyResource> findGalaxyResourcesById(String id) {
 		List<String> resourceGroups = Downloader.getResourceGroups(id);
-		Collection<GalaxyResource> galaxyResourceList = HarvesterDroid.getCurrentResourcesXml().getGalaxyResourceList();
+		Collection<GalaxyResource> galaxyResourceList = HarvesterDroid.getCurrentResources();
 		if (resourceGroups != null) {
 			List<GalaxyResource> master = new ArrayList<>();
 			for (String group : resourceGroups) {
@@ -267,7 +281,6 @@ public class MainController implements Initializable {
 	public void addInventoryResource() {
 		GalaxyResource selectedItem = bestResourcesListView.getSelectionModel().getSelectedItem();
 		if (selectedItem != null) {
-			inventoryListView.setDisable(false);
 			if (!inventoryListItems.contains(selectedItem))
 				inventoryListItems.add(selectedItem);
 		} else {
@@ -276,7 +289,6 @@ public class MainController implements Initializable {
 			Optional<GalaxyResource> result = dialog.showAndWait();
 			if (!result.isPresent() || inventoryListItems.contains(result.get()))
 				return;
-			inventoryListView.setDisable(false);
 			inventoryListItems.add(result.get());
 		}
 	}
@@ -286,18 +298,22 @@ public class MainController implements Initializable {
 		if (selectedItem == null)
 			return;
 
-		if (inventoryListItems.size() - 1 == 0)
-			inventoryListView.setDisable(true);
 		inventoryListItems.remove(selectedItem);
 	}
 
 	public void save() {
-		HarvesterDroid.save();
+		HarvesterDroid.save(
+				inventoryListItems.stream().map(GalaxyResource::getName).collect(Collectors.toList()), schematicsList);
 	}
 
 	public void updateStatusBar(String status) {
 		statusBar.setText(status);
 		statusBar.setProgress(-1);
+	}
+
+	public void updateInfoText(String info) {
+		statusBar.setText(info);
+		statusBar.setProgress(0);
 	}
 
 	public void refreshStatusBar() {
