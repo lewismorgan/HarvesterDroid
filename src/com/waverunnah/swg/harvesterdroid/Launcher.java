@@ -1,6 +1,6 @@
 package com.waverunnah.swg.harvesterdroid;
 
-import com.waverunnah.swg.harvesterdroid.app.HarvesterDroidApp;
+import com.waverunnah.swg.harvesterdroid.app.HarvesterDroid;
 import com.waverunnah.swg.harvesterdroid.data.resources.GalaxyResource;
 import com.waverunnah.swg.harvesterdroid.data.schematics.Schematic;
 import com.waverunnah.swg.harvesterdroid.gui.dialog.ExceptionDialog;
@@ -32,12 +32,12 @@ import java.time.ZoneId;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class HarvesterDroid extends Application {
+public class Launcher extends Application {
 	private static String XML_SCHEMATICS = "./data/user/schematics.xml";
 	private static String XML_INVENTORY = "./data/user/inventory.xml";
 
 	private List<String> resourceTypes = new ArrayList<>();
-	private static HarvesterDroid instance;
+	private static Launcher instance;
 
 	private static Stage stage;
 
@@ -47,7 +47,7 @@ public class HarvesterDroid extends Application {
 
 	private SchematicsXml schematicsXml;
 	private InventoryXml inventoryXml;
-	private HarvesterDroidApp app;
+	private HarvesterDroid app;
 
 	@Override
 	public void init() throws Exception {
@@ -77,7 +77,7 @@ public class HarvesterDroid extends Application {
 		if (Files.exists(Paths.get(XML_INVENTORY)))
 			inventoryXml.load(new FileInputStream(XML_INVENTORY));
 
-		app = new HarvesterDroidApp(getSchematics(), getCurrentResources(), getInventoryGalaxyResources());
+		app = new HarvesterDroid(getSchematics(), getCurrentResources(), getInventoryGalaxyResources());
 	}
 
 	private void checkResourcesTimestamp() throws ParseException, IOException, SAXException, ParserConfigurationException {
@@ -182,7 +182,7 @@ public class HarvesterDroid extends Application {
 		instance.inventoryXml.setInventory(inventoryListItems);
 	}
 
-	public static HarvesterDroidApp getApp() {
+	public static HarvesterDroid getApp() {
 		return instance.app;
 	}
 }

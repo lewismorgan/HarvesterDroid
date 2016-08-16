@@ -1,10 +1,9 @@
 package com.waverunnah.swg.harvesterdroid.gui.dialog;
 
-import com.waverunnah.swg.harvesterdroid.HarvesterDroid;
+import com.waverunnah.swg.harvesterdroid.Launcher;
 import com.waverunnah.swg.harvesterdroid.data.schematics.Schematic;
 import com.waverunnah.swg.harvesterdroid.gui.FloatTextField;
 import com.waverunnah.swg.harvesterdroid.utils.Attributes;
-import javafx.beans.binding.Bindings;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
@@ -85,7 +84,7 @@ public class SchematicDialogController extends VBox implements Initializable {
 		Schematic schematic = getSchematic();
 
 		List<String> choices = new ArrayList<>();
-		HarvesterDroid.getResourceTypes().stream().filter(type -> !schematic.getResources().contains(type))
+		Launcher.getResourceTypes().stream().filter(type -> !schematic.getResources().contains(type))
 				.forEach(choices::add);
 		ChoiceDialog<String> dialog = new ChoiceDialog<>(choices.get(0), choices);
 		dialog.setTitle("Add New Resource");

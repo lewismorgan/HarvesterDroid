@@ -1,6 +1,6 @@
 package com.waverunnah.swg.harvesterdroid.app;
 
-import com.waverunnah.swg.harvesterdroid.HarvesterDroid;
+import com.waverunnah.swg.harvesterdroid.Launcher;
 import com.waverunnah.swg.harvesterdroid.data.resources.GalaxyResource;
 import com.waverunnah.swg.harvesterdroid.data.schematics.Schematic;
 import com.waverunnah.swg.harvesterdroid.utils.Downloader;
@@ -14,7 +14,7 @@ import javafx.collections.transformation.FilteredList;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class HarvesterDroidApp {
+public class HarvesterDroid {
 	// TODO Status messages
 	// TODO Move intensive methods to a Task
 
@@ -30,11 +30,11 @@ public class HarvesterDroidApp {
 	private StringProperty activeGroup;
 	private ObjectProperty<Schematic> selectedSchematic;
 
-	public HarvesterDroidApp() {
+	public HarvesterDroid() {
 		this(new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
 	}
 
-	public HarvesterDroidApp(Collection<Schematic> schematics, Collection<GalaxyResource> resources, Collection<GalaxyResource> inventory) {
+	public HarvesterDroid(Collection<Schematic> schematics, Collection<GalaxyResource> resources, Collection<GalaxyResource> inventory) {
 		init(schematics, resources, inventory);
 		createListeners();
 	}
@@ -187,7 +187,7 @@ public class HarvesterDroidApp {
 
 	public List<GalaxyResource> findGalaxyResourcesById(String id) {
 		List<String> resourceGroups = Downloader.getResourceGroups(id);
-		Collection<GalaxyResource> galaxyResourceList = HarvesterDroid.getCurrentResources();
+		Collection<GalaxyResource> galaxyResourceList = Launcher.getCurrentResources();
 		if (resourceGroups != null) {
 			List<GalaxyResource> master = new ArrayList<>();
 			for (String group : resourceGroups) {
@@ -205,7 +205,7 @@ public class HarvesterDroidApp {
 	}
 
 	public void save() {
-		HarvesterDroid.save(inventory.stream().map(GalaxyResource::getName).collect(Collectors.toList()), schematics);
+		Launcher.save(inventory.stream().map(GalaxyResource::getName).collect(Collectors.toList()), schematics);
 	}
 
 	public ObservableList<GalaxyResource> getInventory() {

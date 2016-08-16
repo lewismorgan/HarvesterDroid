@@ -6,12 +6,12 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-public class HarvesterDroidAppTest {
-	HarvesterDroidApp app;
+public class HarvesterDroidTest {
+	HarvesterDroid app;
 
 	@Before
 	public void setUp() throws Exception {
-		app = new HarvesterDroidApp();
+		app = new HarvesterDroid();
 	}
 
 	@Test

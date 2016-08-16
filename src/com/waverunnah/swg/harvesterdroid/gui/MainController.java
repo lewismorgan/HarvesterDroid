@@ -1,37 +1,27 @@
 package com.waverunnah.swg.harvesterdroid.gui;
 
-import com.waverunnah.swg.harvesterdroid.HarvesterDroid;
-import com.waverunnah.swg.harvesterdroid.app.HarvesterDroidApp;
+import com.waverunnah.swg.harvesterdroid.Launcher;
+import com.waverunnah.swg.harvesterdroid.app.HarvesterDroid;
 import com.waverunnah.swg.harvesterdroid.data.resources.GalaxyResource;
 import com.waverunnah.swg.harvesterdroid.data.schematics.Schematic;
 import com.waverunnah.swg.harvesterdroid.gui.callbacks.GalaxyResourceListCell;
-import com.waverunnah.swg.harvesterdroid.gui.dialog.ExceptionDialog;
 import com.waverunnah.swg.harvesterdroid.gui.dialog.ResourceDialog;
 import com.waverunnah.swg.harvesterdroid.gui.dialog.SchematicDialog;
-import com.waverunnah.swg.harvesterdroid.utils.Downloader;
-import javafx.beans.Observable;
-import javafx.beans.binding.Bindings;
-import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
-import javafx.collections.ObservableList;
-import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TitledPane;
 import org.controlsfx.control.StatusBar;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class MainController implements Initializable {
 	// TODO Split each panel into it's own component (inventory, schematics, best resources)
 
-	private HarvesterDroidApp app;
+	private HarvesterDroid app;
 
 	@FXML
 	TitledPane bestResourcesPane;
@@ -48,7 +38,7 @@ public class MainController implements Initializable {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		app = HarvesterDroid.getApp();
+		app = Launcher.getApp();
 		initResources();
 		initInventory();
 		initSchematics();
@@ -63,7 +53,7 @@ public class MainController implements Initializable {
 	}
 
 	private void initResources() {
-		bestResourcesPane.setText("Best Resources as of " + HarvesterDroid.getLastUpdate());
+		bestResourcesPane.setText("Best Resources as of " + Launcher.getLastUpdate());
 		bestResourcesListView.disableProperty().bind(app.resourcesProperty().emptyProperty());
 		bestResourcesListView.setCellFactory(param -> new GalaxyResourceListCell());
 		bestResourcesListView.setItems(app.getFilteredResources());
