@@ -14,6 +14,15 @@ public class Schematic {
 	private ListProperty<String> resources = new SimpleListProperty<>(FXCollections.observableArrayList());
 	private ListProperty<Modifier> modifiers = new SimpleListProperty<>(FXCollections.observableArrayList());
 
+	public static Schematic getDefault() {
+		Schematic schematic = new Schematic();
+		schematic.setName("Default");
+		schematic.setGroup("Default");
+		schematic.getResources().add("iron");
+		schematic.getModifiers().add(new Modifier("overall_quality", 33f));
+		return schematic;
+	}
+
 	public String getName() {
 		return name.get();
 	}

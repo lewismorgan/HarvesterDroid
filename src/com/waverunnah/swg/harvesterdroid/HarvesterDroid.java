@@ -100,7 +100,7 @@ public class HarvesterDroid extends Application {
     public static void main(String[] args) {
 	    Thread.setDefaultUncaughtExceptionHandler((t, e) -> {
 		    ExceptionDialog exceptionDialog = new ExceptionDialog(e);
-		    exceptionDialog.showAndWait();
+		    exceptionDialog.show();
 	    });
 
         launch(args);
