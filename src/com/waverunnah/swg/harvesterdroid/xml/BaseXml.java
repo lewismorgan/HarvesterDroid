@@ -27,7 +27,6 @@ public abstract class BaseXml {
 
 	public final void load(InputStream xmlStream) throws IOException, SAXException, ParserConfigurationException {
 		document = documentBuilder.parse(xmlStream);
-		xmlStream.close();
 		if (document != null)
 			read(document.getDocumentElement());
 	}

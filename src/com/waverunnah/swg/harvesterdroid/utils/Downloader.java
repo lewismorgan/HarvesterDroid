@@ -1,6 +1,7 @@
 package com.waverunnah.swg.harvesterdroid.utils;
 
 import com.sun.corba.se.spi.orbutil.fsm.Input;
+import com.waverunnah.swg.harvesterdroid.Launcher;
 import com.waverunnah.swg.harvesterdroid.data.resources.GalaxyResource;
 import com.waverunnah.swg.harvesterdroid.gui.dialog.ExceptionDialog;
 import com.waverunnah.swg.harvesterdroid.xml.app.ResourceXml;
@@ -12,14 +13,15 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.io.*;
 import java.net.ConnectException;
 import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
+import java.nio.file.*;
+import java.security.CodeSource;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 import static java.lang.System.in;
 
@@ -33,7 +35,7 @@ public final class Downloader {
 		URL website;
 		InputStream in = null;
 
-		File file = new File("./data/current_resources.dl");
+		File file = new File(Launcher.ROOT_DIR + "/current_resources.dl");
 		try {
 			website = new URL("http://galaxyharvester.net/exports/current48.xml");
 			in = website.openStream();
@@ -41,7 +43,7 @@ public final class Downloader {
 			Files.copy(in, Paths.get(file.toURI()), StandardCopyOption.REPLACE_EXISTING);
 
 			// Just in-case the user messes with something, we can re-download the XML
-			Watcher.createFileWatcher(new File("current_resources.dl"), () -> {
+			Watcher.createFileWatcher(new File(Launcher.ROOT_DIR + "/current_resources.dl"), () -> {
 				try {
 					downloadCurrentResources();
 				} catch (IOException e) {
@@ -60,11 +62,11 @@ public final class Downloader {
 	}
 
 	public static GalaxyResource downloadGalaxyResource(String name) throws IOException {
-		File dir = new File("./data/user/downloaded_resources");
+		File dir = new File(Launcher.ROOT_DIR + "/downloaded_resources");
 		if (!dir.exists())
-			dir.createNewFile();
+			dir.mkdirs();
 
-		File file = new File("./data/user/downloaded_resources/" + name + ".dl");
+		File file = new File(Launcher.ROOT_DIR + "/downloaded_resources/" + name + ".dl");
 
 		InputStream stream = null;
 		try {
@@ -114,19 +116,41 @@ public final class Downloader {
 	// TODO Remove static initialization
 	static {
 		// This only needs to be done for the resources that do not follow the proper hierarchy naming convention
-		File dir = new File("./data/groups");
-		//noinspection ConstantConditions
-		for (File file : dir.listFiles()) {
-			List<String> resourceGroup = new ArrayList<>();
-			resourceGroup.add(file.getName());
-			try {
-				try (Stream<String> stream = Files.lines(file.toPath())) {
-					stream.forEach(resourceGroup::add);
+		try {
+			CodeSource src = Launcher.class.getProtectionDomain().getCodeSource();
+			String path = "com/waverunnah/swg/harvesterdroid/data/raw/groups/";
+			if (src != null) {
+				ZipInputStream zip = new ZipInputStream(src.getLocation().openStream());
+				ZipEntry entry = zip.getNextEntry();
+
+				if (entry == null) {
+					File dir = new File(src.getLocation().getPath() + path);
+					File[] files = dir.listFiles();
+					for (File file : files != null ? files : new File[0]) {
+						populateResourceGroup(file.getAbsolutePath());
+					}
+				} else {
+					while (entry != null) {
+						populateResourceGroup(entry.getName());
+						entry = zip.getNextEntry();
+					}
 				}
-			} catch (IOException e) {
-				ExceptionDialog.display(e);
 			}
-			resourceGroups.put(file.getName(), resourceGroup);
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
+	}
+
+	private static void populateResourceGroup(String file) {
+		List<String> resourceGroup = new ArrayList<>();
+		resourceGroup.add(file.substring(file.lastIndexOf("\\") + 1));
+		try {
+			try (Stream<String> stream = Files.lines(Paths.get(file))) {
+				stream.forEach(resourceGroup::add);
+			}
+		} catch (IOException e) {
+			ExceptionDialog.display(e);
+		}
+		resourceGroups.put(file.substring(file.lastIndexOf("\\") + 1), resourceGroup);
 	}
 }

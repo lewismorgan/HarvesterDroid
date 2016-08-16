@@ -18,10 +18,7 @@ import java.util.List;
  * Class for reading and saving schematic xml's unique to this program
  */
 public class SchematicsXml extends BaseXml {
-
-	private List<Schematic> schematicsList = new ArrayList<>();
-	private List<String> professionList = new ArrayList<>();
-	private List<Schematic> schematics;
+	private List<Schematic> schematics = new ArrayList<>();
 
 	public SchematicsXml(DocumentBuilder documentBuilder) {
 		super(documentBuilder);
@@ -29,7 +26,7 @@ public class SchematicsXml extends BaseXml {
 
 	@Override
 	protected void read(Element root) throws IOException, ParserConfigurationException, SAXException {
-		schematicsList.clear();
+		schematics.clear();
 
 		if (!root.getNodeName().equals("schematics"))
 			return;
@@ -38,7 +35,7 @@ public class SchematicsXml extends BaseXml {
 		processElement(root, child -> {
 			Schematic schematic = parseSchematic(child); // <schematic>...</schematic>
 			if (schematic != null)
-				schematicsList.add(schematic);
+				schematics.add(schematic);
 		});
 		// </schematics>
 	}
@@ -46,7 +43,7 @@ public class SchematicsXml extends BaseXml {
 	@Override
 	protected void write(Document document) {
 		Element root = document.createElement("schematics");
-		schematicsList.forEach(schematic -> createSchematicElement(document, root, schematic));
+		schematics.forEach(schematic -> createSchematicElement(document, root, schematic));
 		document.appendChild(root);
 	}
 
@@ -87,9 +84,6 @@ public class SchematicsXml extends BaseXml {
 		schematic.setName(node.getAttributes().getNamedItem("name").getTextContent());
 		String profession = node.getAttributes().getNamedItem("prof").getTextContent();
 		schematic.setGroup(profession);
-
-		if (!professionList.contains(profession))
-			professionList.add(profession);
 
 		processElement(node, child -> {
 			switch(child.getNodeName()) {
@@ -134,12 +128,8 @@ public class SchematicsXml extends BaseXml {
 		}
 	}
 
-	public List<Schematic> getSchematicsList() {
-		return schematicsList;
-	}
-
-	public List<String> getProfessionList() {
-		return professionList;
+	public List<Schematic> getSchematics() {
+		return schematics;
 	}
 
 	public void setSchematics(List<Schematic> schematics) {

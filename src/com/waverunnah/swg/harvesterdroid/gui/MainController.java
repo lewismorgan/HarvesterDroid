@@ -5,6 +5,7 @@ import com.waverunnah.swg.harvesterdroid.app.HarvesterDroid;
 import com.waverunnah.swg.harvesterdroid.data.resources.GalaxyResource;
 import com.waverunnah.swg.harvesterdroid.data.schematics.Schematic;
 import com.waverunnah.swg.harvesterdroid.gui.callbacks.GalaxyResourceListCell;
+import com.waverunnah.swg.harvesterdroid.gui.dialog.ExceptionDialog;
 import com.waverunnah.swg.harvesterdroid.gui.dialog.ResourceDialog;
 import com.waverunnah.swg.harvesterdroid.gui.dialog.SchematicDialog;
 import javafx.collections.ListChangeListener;
@@ -15,6 +16,8 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TitledPane;
 import org.controlsfx.control.StatusBar;
 
+import javax.xml.transform.TransformerException;
+import java.io.IOException;
 import java.net.URL;
 import java.util.*;
 
@@ -163,6 +166,10 @@ public class MainController implements Initializable {
 	}
 
 	public void save() {
-		app.save();
+		try {
+			app.save();
+		} catch (IOException | TransformerException e) {
+			new ExceptionDialog(e).show();
+		}
 	}
 }

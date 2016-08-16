@@ -11,6 +11,8 @@ import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 
+import javax.xml.transform.TransformerException;
+import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -132,9 +134,8 @@ public class HarvesterDroid {
 			return;
 
 		List<GalaxyResource> bestResources = getBestResourcesList(schematic);
-		if (bestResources.size() > 1)
-			filteredResources.setPredicate(bestResources::contains);
-		else filteredResources.setPredicate(resource -> false);
+		filteredResources.setPredicate(bestResources::contains);
+
 	}
 
 	private List<GalaxyResource> getBestResourcesList(Schematic schematic) {
@@ -204,8 +205,8 @@ public class HarvesterDroid {
 		}
 	}
 
-	public void save() {
-		Launcher.save(inventory.stream().map(GalaxyResource::getName).collect(Collectors.toList()), schematics);
+	public void save() throws IOException, TransformerException {
+		Launcher.save(inventory.stream().map(GalaxyResource::getName).collect(Collectors.toList()), schematics.get());
 	}
 
 	public ObservableList<GalaxyResource> getInventory() {

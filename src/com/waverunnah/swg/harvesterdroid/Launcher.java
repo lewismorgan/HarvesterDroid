@@ -33,8 +33,9 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class Launcher extends Application {
-	private static String XML_SCHEMATICS = "./data/user/schematics.xml";
-	private static String XML_INVENTORY = "./data/user/inventory.xml";
+	public static String ROOT_DIR = System.getProperty("user.home").replace("\\", "/") + "/.harvesterdroid";
+	private static String XML_SCHEMATICS = ROOT_DIR + "/schematics.xml";
+	private static String XML_INVENTORY = ROOT_DIR + "/inventory.xml";
 
 	private List<String> resourceTypes = new ArrayList<>();
 	private static Launcher instance;
@@ -51,47 +52,50 @@ public class Launcher extends Application {
 
 	@Override
 	public void init() throws Exception {
-		// TODO Loading Screen w/ proper initializations
+		updateLoadingProgress("Setting up bare essentials...", 0.1);
 		instance = this;
 
-		BufferedReader bufferedReader = new BufferedReader(new FileReader("./data/types"));
+		if (!new File(ROOT_DIR).exists())
+			new File(ROOT_DIR).mkdirs();
+
+		BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(
+				getClass().getResourceAsStream("/com/waverunnah/swg/harvesterdroid/data/raw/types")));
 		resourceTypes = bufferedReader.lines().collect(Collectors.toList());
 
-		DocumentBuilder documentBuilder = factory.newDocumentBuilder();
+		updateLoadingProgress("Finding the latest resources...", 0.5);
+		currentResourcesXml = new HarvesterCurrentResourcesXml(factory.newDocumentBuilder());
 
 		// TODO Preferences determines what CurrentResourcesXml subclass to use
-		if (!Files.exists(Paths.get("./data/current_resources.dl"))) {
-			Downloader.downloadCurrentResources();
+		if (Files.exists(Paths.get(ROOT_DIR + "/current_resources.dl"))) {
+			currentResourcesXml.load(new FileInputStream(ROOT_DIR + "/current_resources.dl"));
+			if (resourcesNeedUpdate(currentResourcesXml.getTimestamp()))
+				Downloader.downloadCurrentResources();
 		} else {
-			checkResourcesTimestamp();
+			Downloader.downloadCurrentResources();
 		}
 
-		currentResourcesXml = new HarvesterCurrentResourcesXml(documentBuilder);
-		currentResourcesXml.load(new FileInputStream("./data/current_resources.dl"));
+		currentResourcesXml.load(new FileInputStream(ROOT_DIR + "/current_resources.dl"));
 
-		schematicsXml = new SchematicsXml(documentBuilder);
+		updateLoadingProgress("Grabbing your preferences...", 1);
+		schematicsXml = new SchematicsXml(factory.newDocumentBuilder());
 		if (Files.exists(Paths.get(XML_SCHEMATICS)))
 			schematicsXml.load(new FileInputStream(XML_SCHEMATICS));
 
-		inventoryXml = new InventoryXml(documentBuilder);
+		inventoryXml = new InventoryXml(factory.newDocumentBuilder());
 		if (Files.exists(Paths.get(XML_INVENTORY)))
 			inventoryXml.load(new FileInputStream(XML_INVENTORY));
 
+		updateLoadingProgress("Loading...", -1.0);
 		app = new HarvesterDroid(getSchematics(), getCurrentResources(), getInventoryGalaxyResources());
 	}
 
-	private void checkResourcesTimestamp() throws ParseException, IOException, SAXException, ParserConfigurationException {
+	private boolean resourcesNeedUpdate(String time) throws ParseException, IOException, SAXException, ParserConfigurationException {
 		DateFormat dateFormat = new SimpleDateFormat("E, dd MMMM yyyy HH:mm:ss Z");
-		Date timestamp = dateFormat.parse(currentResourcesXml.getTimestamp());
-		System.out.println(timestamp.toString());
+		Date timestamp = dateFormat.parse(time);
 		LocalDateTime now = LocalDateTime.now();
 		LocalDateTime from = LocalDateTime.ofInstant(timestamp.toInstant(), ZoneId.systemDefault());
 		LocalDateTime plusHours = from.plusHours(12);
-		if (now.isAfter(plusHours)) {
-			System.out.println("+12 hours, downloading a new xml");
-			Downloader.downloadCurrentResources();
-			currentResourcesXml.load(new FileInputStream("./data/current_resources.dl"));
-		}
+		return now.isAfter(plusHours);
 	}
 
 	@Override
@@ -112,8 +116,8 @@ public class Launcher extends Application {
 
     public static void save() {
 	    try {
-		    instance.schematicsXml.save(new File("data/user/schematics.xml"));
-		    instance.inventoryXml.save(new File("data/user/inventory.xml"));
+		    instance.schematicsXml.save(new File(XML_SCHEMATICS));
+		    instance.inventoryXml.save(new File(XML_INVENTORY));
 	    } catch (TransformerException | IOException e) {
 		    ExceptionDialog.display(e);
 	    }
@@ -132,6 +136,10 @@ public class Launcher extends Application {
 
         launch(args);
     }
+
+	private void updateLoadingProgress(String status, double value) {
+		notifyPreloader(new PreloaderStatusNotification(status, value));
+	}
 
 	private List<GalaxyResource> getInventoryGalaxyResources() {
 		List<GalaxyResource> inventory = new ArrayList<>();
@@ -166,7 +174,7 @@ public class Launcher extends Application {
 	}
 
 	public static List<Schematic> getSchematics() {
-		return instance.schematicsXml.getSchematicsList();
+		return instance.schematicsXml.getSchematics();
 	}
 
 	public static List<String> getInventory() {
@@ -177,9 +185,12 @@ public class Launcher extends Application {
 		return instance.resourceTypes;
 	}
 
-	public static void save(List<String> inventoryListItems, List<Schematic> schematicsList) {
+	public static void save(List<String> inventoryListItems, List<Schematic> schematicsList) throws IOException, TransformerException {
 		instance.schematicsXml.setSchematics(schematicsList);
 		instance.inventoryXml.setInventory(inventoryListItems);
+
+		instance.schematicsXml.save(new File(XML_SCHEMATICS));
+		instance.inventoryXml.save(new File(XML_INVENTORY));
 	}
 
 	public static HarvesterDroid getApp() {
