@@ -30,7 +30,6 @@ import java.util.stream.Collectors;
 
 public class MainController implements Initializable {
 	// TODO Split each panel into it's own component (inventory, schematics, best resources)
-	// TODO Move intensive methods to a Task
 
 	private HarvesterDroidApp app;
 
@@ -49,7 +48,7 @@ public class MainController implements Initializable {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		app = new HarvesterDroidApp();
+		app = HarvesterDroid.getApp();
 		initResources();
 		initInventory();
 		initSchematics();
@@ -76,7 +75,6 @@ public class MainController implements Initializable {
 
 		// Select a group if it's added to the list, change selected group if existing was deleted
 		groupComboBox.getItems().addListener((ListChangeListener<? super String>) c -> {
-			System.out.println("CHANGE");
 			while (c.next()) {
 				String selected = groupComboBox.getSelectionModel().getSelectedItem();
 				if (c.wasAdded() && selected == null && groupComboBox.getItems().size() > 0) {
@@ -96,24 +94,29 @@ public class MainController implements Initializable {
 		app.selectedSchematicProperty().bind(schematicsListView.getSelectionModel().selectedItemProperty());
 
 		// Clear the selected item and jump to the next available item to select
-		schematicsListView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-			int size = schematicsListView.getItems().size();
-			if (size != 0) {
-				schematicsListView.getSelectionModel().select(size - 1);
-			} else {
-				// Nothing to select
-				schematicsListView.getSelectionModel().clearSelection();
+		schematicsListView.getItems().addListener((ListChangeListener<? super Schematic>) c -> {
+			while (c.next()) {
+				if (c.wasRemoved()) {
+					List<? extends Schematic> removed = c.getRemoved();
+					int size = schematicsListView.getItems().size();
+					int selected = schematicsListView.getSelectionModel().getSelectedIndex();
+					if (size != 0 && selected > size) {
+						schematicsListView.getSelectionModel().select(selected - removed.size());
+					} else {
+						// Nothing to select
+						schematicsListView.getSelectionModel().clearSelection();
+					}
+				}
 			}
 		});
-
 		schematicsListView.setItems(app.getFilteredSchematics());
 	}
 
 	public void editSelectedSchematic() {
 		if (schematicsListView.getSelectionModel().getSelectedItem() == null)
-			return;
-
-		displaySchematicDialog(schematicsListView.getSelectionModel().getSelectedItem());
+			displaySchematicDialog();
+		else
+			displaySchematicDialog(schematicsListView.getSelectionModel().getSelectedItem());
 	}
 
 	public void displaySchematicDialog() {
@@ -123,7 +126,9 @@ public class MainController implements Initializable {
 		if (!result.isPresent())
 			return;
 
-		app.addSchematic(Schematic.getDefault());
+		Schematic schematic = result.get();
+		if (schematic != null && !schematic.isIncomplete())
+			app.getSchematics().add(schematic);
 	}
 
 	public void displaySchematicDialog(Schematic schematic) {
@@ -133,13 +138,19 @@ public class MainController implements Initializable {
 		if (!result.isPresent())
 			return;
 
-		app.updateBestResourceList(schematic);
+		Schematic changed = result.get();
+		if (changed == schematic && schematic != null && !schematic.isIncomplete()) {
+			app.getSchematics().add(schematic);
+		} else {
+			app.getSchematics().remove(schematic);
+			app.getSchematics().add(changed);
+		}
 	}
 
 	public void addInventoryResource() {
 		GalaxyResource selectedItem = bestResourcesListView.getSelectionModel().getSelectedItem();
-		if (selectedItem != null) {
-			app.addInventoryResource(selectedItem);
+		if (selectedItem != null && !app.getInventory().contains(selectedItem)) {
+			app.getInventory().add(selectedItem);
 		} else {
 			ResourceDialog dialog = new ResourceDialog();
 			dialog.setTitle("New Inventory Resource");
@@ -147,7 +158,9 @@ public class MainController implements Initializable {
 			if (!result.isPresent())
 				return;
 
-			app.addInventoryResource(result.get());
+			GalaxyResource galaxyResource = result.get();
+			if (galaxyResource != null && !galaxyResource.getName().isEmpty() && !galaxyResource.getResourceType().isEmpty())
+				app.getInventory().add(galaxyResource);
 		}
 	}
 
@@ -161,20 +174,5 @@ public class MainController implements Initializable {
 
 	public void save() {
 		app.save();
-	}
-
-	public void updateStatusBar(String status) {
-		statusBar.setText(status);
-		statusBar.setProgress(-1);
-	}
-
-	public void updateInfoText(String info) {
-		statusBar.setText(info);
-		statusBar.setProgress(0);
-	}
-
-	public void refreshStatusBar() {
-		statusBar.setText("Idle");
-		statusBar.setProgress(0);
 	}
 }

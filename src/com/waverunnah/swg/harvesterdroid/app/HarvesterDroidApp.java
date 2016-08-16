@@ -16,6 +16,7 @@ import java.util.stream.Collectors;
 
 public class HarvesterDroidApp {
 	// TODO Status messages
+	// TODO Move intensive methods to a Task
 
 	private ListProperty<GalaxyResource> inventory;
 	private ListProperty<GalaxyResource> resources;
@@ -30,57 +31,88 @@ public class HarvesterDroidApp {
 	private ObjectProperty<Schematic> selectedSchematic;
 
 	public HarvesterDroidApp() {
-		init();
+		this(new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+	}
+
+	public HarvesterDroidApp(Collection<Schematic> schematics, Collection<GalaxyResource> resources, Collection<GalaxyResource> inventory) {
+		init(schematics, resources, inventory);
 		createListeners();
 	}
 
-	private void init() {
-		inventory = new SimpleListProperty<>(FXCollections.observableArrayList());
-		filteredInventory = new FilteredList<>(inventory.get(), galaxyResource -> true);
-		resources = new SimpleListProperty<>(FXCollections.observableArrayList());
-		filteredResources = new FilteredList<>(resources.get(), galaxyResource -> true);
-		schematics = new SimpleListProperty<>(FXCollections.observableArrayList(schematic -> new javafx.beans.Observable[]{schematic.nameProperty()}));
-		filteredSchematics = new FilteredList<>(schematics.get(), schematic -> true);
+	private void init(Collection<Schematic> schematics, Collection<GalaxyResource> resources, Collection<GalaxyResource> inventory) {
+		this.inventory = new SimpleListProperty<>(FXCollections.observableArrayList(inventory));
+		filteredInventory = new FilteredList<>(this.inventory.get(), galaxyResource -> true);
+		this.resources = new SimpleListProperty<>(FXCollections.observableArrayList(resources));
+		filteredResources = new FilteredList<>(this.resources.get(), galaxyResource -> false);
+		this.schematics = new SimpleListProperty<>(FXCollections.observableArrayList(schematic -> new javafx.beans.Observable[]{schematic.nameProperty()}));
+		this.schematics.addAll(schematics);
+		filteredSchematics = new FilteredList<>(this.schematics.get(), schematic -> true);
+		selectedSchematic = new SimpleObjectProperty<>(null);
+		initGroups();
+	}
+
+	private void initGroups() {
 		groups = new SimpleListProperty<>(FXCollections.observableArrayList());
 		activeGroup = new SimpleStringProperty(null);
-		selectedSchematic = new SimpleObjectProperty<>(null);
+
+		schematics.forEach(schematic -> {
+			if (!groups.contains(schematic.getGroup()))
+				groups.add(schematic.getGroup());
+		});
 	}
 
 	private void createListeners() {
 		activeGroup.addListener(this::onActiveGroupChanged);
 		selectedSchematic.addListener(this::onSchematicSelected);
-		schematics.addListener(getSchematicsListChangeListener());
-	}
-
-	private ListChangeListener<? super Schematic> getSchematicsListChangeListener() {
-		return c -> {
+		schematics.addListener((ListChangeListener<? super Schematic>) c -> {
 			while (c.next()) {
 				if (c.wasAdded()) {
-					// Add new schematic groups to the groups list
-					List<? extends Schematic> addedSubList = c.getAddedSubList();
-					addedSubList.stream().filter(schematic -> !groups.contains(schematic.getGroup()))
-							.forEach(match -> groups.add(match.getGroup()));
+					onSchematicsAdded(c.getAddedSubList());
 				} else if (c.wasRemoved()) {
-					// Remove groups that are no longer required if only being used by deleted schematics
-					List<? extends Schematic> removed = c.getRemoved();
-					Map<String, Integer> toRemove = new HashMap<>(removed.size());
-					for (Schematic schematic : removed) {
-						int count = 0;
-						if (toRemove.containsKey(schematic.getGroup()))
-							count = toRemove.get(schematic.getGroup());
-						toRemove.put(schematic.getGroup(), count++);
-					}
-					toRemove.forEach((group, count) -> {
-						if (count > 1)
-							groups.remove(group);
+					onSchematicsRemoved(c.getRemoved());
+				}
+			}
+		});
+		inventory.addListener((ListChangeListener<? super GalaxyResource>) c -> {
+			while (c.next()) {
+				if (c.wasAdded()) {
+					c.getAddedSubList().forEach(galaxyResource -> {
+						if (!resources.contains(galaxyResource))
+							resources.add(galaxyResource);
 					});
 				}
 			}
-		};
+		});
+	}
+
+	private void onSchematicsAdded(List<? extends Schematic> addedSchematics) {
+		addedSchematics.stream().filter(schematic -> !groups.contains(schematic.getGroup()))
+				.forEach(match -> groups.add(match.getGroup()));
+		filterResourcesForSchematic(selectedSchematic.get());
+		if (activeGroup.get() != null && groups.size() > 1 && schematics.size() > 1)
+			filteredSchematics.setPredicate(schematic -> schematic.getGroup().equals(activeGroup.get()));
+	}
+
+	private void onSchematicsRemoved(List<? extends Schematic> removedSchematics) {
+		Map<String, Integer> toRemove = new HashMap<>(removedSchematics.size());
+
+		int count = 0;
+		for (Schematic schematic : removedSchematics) {
+			if (count > 1) count = 0;
+			if (toRemove.containsKey(schematic.getGroup()))
+				count = toRemove.get(schematic.getGroup());
+			toRemove.put(schematic.getGroup(), count++);
+		}
+
+		toRemove.forEach((group, occurrence) -> {
+			if (occurrence == 1)
+				groups.remove(group);
+		});
 	}
 
 	private void onSchematicSelected(ObservableValue<? extends Schematic> observable, Schematic oldValue, Schematic newValue) {
-		updateBestResourceList(newValue);
+		if (newValue != null)
+			filterResourcesForSchematic(newValue);
 	}
 
 	private void onActiveGroupChanged(ObservableValue<? extends String> observable, String oldValue, String newValue) {
@@ -95,11 +127,17 @@ public class HarvesterDroidApp {
 		}
 	}
 
-	public void updateBestResourceList(Schematic schematic) {
-		if (schematic == null || schematic.isIncomplete())
+	private void filterResourcesForSchematic(Schematic schematic) {
+		if (schematic == null || schematic.isIncomplete() || resources.isEmpty())
 			return;
 
-		//updateStatusBar("Updating Best Resources List");
+		List<GalaxyResource> bestResources = getBestResourcesList(schematic);
+		if (bestResources.size() > 1)
+			filteredResources.setPredicate(bestResources::contains);
+		else filteredResources.setPredicate(resource -> false);
+	}
+
+	private List<GalaxyResource> getBestResourcesList(Schematic schematic) {
 		List<GalaxyResource> bestResources = new ArrayList<>(schematic.getResources().size());
 		schematic.getResources().forEach(id -> {
 			List<GalaxyResource> matchedResources = findGalaxyResourcesById(id);
@@ -109,10 +147,7 @@ public class HarvesterDroidApp {
 					bestResources.add(bestResource);
 			}
 		});
-
-		bestResources.stream().filter(galaxyResource -> !resources.contains(galaxyResource))
-				.forEach(resources::add);
-		filteredResources.setPredicate(bestResources::contains);
+		return bestResources;
 	}
 
 	public GalaxyResource collectBestResourceForSchematic(Schematic schematic, List<GalaxyResource> galaxyResources) {
@@ -169,6 +204,10 @@ public class HarvesterDroidApp {
 		}
 	}
 
+	public void save() {
+		HarvesterDroid.save(inventory.stream().map(GalaxyResource::getName).collect(Collectors.toList()), schematics);
+	}
+
 	public ObservableList<GalaxyResource> getInventory() {
 		return inventory.get();
 	}
@@ -223,22 +262,5 @@ public class HarvesterDroidApp {
 
 	public void removeInventoryResource(GalaxyResource galaxyResource) {
 		// TODO remove inventory resource logic
-	}
-
-	public void addSchematic(Schematic schematic) {
-		if (schematic == null)
-			return;
-
-		schematics.get().add(Schematic.getDefault());
-		System.out.println("Added " + schematic);
-	}
-
-	public void addInventoryResource(GalaxyResource galaxyResource) {
-		// TODO add inventory resource logic
-
-	}
-
-	public void save() {
-		HarvesterDroid.save(inventory.stream().map(GalaxyResource::getName).collect(Collectors.toList()), schematics);
 	}
 }
