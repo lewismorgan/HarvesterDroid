@@ -44,6 +44,10 @@ public final class Watcher {
 		threadPool.submit(thread);
 	}
 
+	public static void shutdown() {
+		threadPool.shutdownNow();
+	}
+
 	static class WatcherThread implements Runnable {
 		private AtomicBoolean running = new AtomicBoolean(true);
 

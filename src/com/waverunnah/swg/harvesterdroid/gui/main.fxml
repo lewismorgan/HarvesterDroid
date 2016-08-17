@@ -24,12 +24,12 @@
           <Menu mnemonicParsing="false" text="File">
             <items>
                   <MenuItem mnemonicParsing="false" onAction="#save" text="Save" />
-              <MenuItem mnemonicParsing="false" text="Close" />
+              <MenuItem mnemonicParsing="false" onAction="#close" text="Close" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Help">
             <items>
-              <MenuItem mnemonicParsing="false" text="About" />
+              <MenuItem mnemonicParsing="false" onAction="#about" text="About" />
             </items>
           </Menu>
         </menus>
@@ -57,7 +57,7 @@
                               </ListView>
                               <ButtonBar prefHeight="40.0" prefWidth="200.0">
                                 <buttons>
-                                  <Button mnemonicParsing="false" onAction="#removeInventoryResource" text="Remove" />
+                                  <Button fx:id="removeInventoryButton" mnemonicParsing="false" onAction="#removeInventoryResource" text="Remove" />
                                     <Button layoutX="248.0" layoutY="10.0" mnemonicParsing="false" onAction="#addInventoryResource" text="Add" />
                                 </buttons>
                                  <VBox.margin>
@@ -76,7 +76,14 @@
                      <content>
                         <VBox alignment="TOP_RIGHT" spacing="5.0">
                            <children>
-                              <ComboBox fx:id="groupComboBox" nodeOrientation="LEFT_TO_RIGHT" VBox.vgrow="ALWAYS" />
+                              <AnchorPane nodeOrientation="LEFT_TO_RIGHT" VBox.vgrow="ALWAYS">
+                                 <children>
+                                    <ComboBox fx:id="groupComboBox" nodeOrientation="LEFT_TO_RIGHT" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </AnchorPane>
                               <ListView fx:id="schematicsListView" disable="true" VBox.vgrow="ALWAYS">
                                   <placeholder>
                                       <Label text="No schematics have been created" />
@@ -84,8 +91,8 @@
                               </ListView>
                               <ButtonBar prefHeight="40.0" prefWidth="200.0">
                                 <buttons>
-                                    <Button layoutX="243.0" layoutY="10.0" mnemonicParsing="false" text="Remove" />
-                                    <Button layoutX="158.0" layoutY="10.0" mnemonicParsing="false" onAction="#editSelectedSchematic" text="Edit" />
+                                    <Button fx:id="removeSchematicButton" layoutX="243.0" layoutY="10.0" mnemonicParsing="false" onAction="#removeSelectedSchematic" text="Remove" />
+                                    <Button fx:id="editSchematicButton" layoutX="158.0" layoutY="10.0" mnemonicParsing="false" onAction="#editSelectedSchematic" text="Edit" />
                                     <Button layoutX="243.0" layoutY="10.0" mnemonicParsing="false" onAction="#displaySchematicDialog" text="Add" />
                                 </buttons>
                                  <VBox.margin>

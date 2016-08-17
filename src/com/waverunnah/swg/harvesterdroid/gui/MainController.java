@@ -5,15 +5,20 @@ import com.waverunnah.swg.harvesterdroid.app.HarvesterDroid;
 import com.waverunnah.swg.harvesterdroid.data.resources.GalaxyResource;
 import com.waverunnah.swg.harvesterdroid.data.schematics.Schematic;
 import com.waverunnah.swg.harvesterdroid.gui.callbacks.GalaxyResourceListCell;
+import com.waverunnah.swg.harvesterdroid.gui.dialog.AboutDialog;
 import com.waverunnah.swg.harvesterdroid.gui.dialog.ExceptionDialog;
 import com.waverunnah.swg.harvesterdroid.gui.dialog.ResourceDialog;
 import com.waverunnah.swg.harvesterdroid.gui.dialog.SchematicDialog;
+import javafx.beans.binding.Bindings;
 import javafx.collections.ListChangeListener;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TitledPane;
+import javafx.stage.WindowEvent;
 import org.controlsfx.control.StatusBar;
 
 import javax.xml.transform.TransformerException;
@@ -38,6 +43,12 @@ public class MainController implements Initializable {
 	ComboBox<String> groupComboBox;
 	@FXML
 	StatusBar statusBar;
+	@FXML
+	Button removeSchematicButton;
+	@FXML
+	Button editSchematicButton;
+	@FXML
+	Button removeInventoryButton;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -53,17 +64,19 @@ public class MainController implements Initializable {
 
 		inventoryListView.disableProperty().bind(app.inventoryProperty().emptyProperty());
 		inventoryListView.setItems(app.getFilteredInventory());
+		removeInventoryButton.disableProperty().bind(app.inventoryProperty().emptyProperty());
 	}
 
 	private void initResources() {
-		bestResourcesPane.setText("Best Resources as of " + Launcher.getLastUpdate());
-		bestResourcesListView.disableProperty().bind(app.resourcesProperty().emptyProperty());
+		bestResourcesPane.setText("Best Resources as of " + Launcher.getLastUpdate() + " according to your inventory and the current resource spawns");
+		bestResourcesListView.disableProperty().bind(Bindings.isEmpty(app.getFilteredResources()));
 		bestResourcesListView.setCellFactory(param -> new GalaxyResourceListCell());
 		bestResourcesListView.setItems(app.getFilteredResources());
 	}
 
 	private void initGroups() {
 		groupComboBox.itemsProperty().bind(app.groupsProperty());
+		groupComboBox.disableProperty().bind(app.groupsProperty().emptyProperty());
 		app.activeGroupProperty().bind(groupComboBox.getSelectionModel().selectedItemProperty());
 
 		// Select a group if it's added to the list, change selected group if existing was deleted
@@ -83,6 +96,8 @@ public class MainController implements Initializable {
 	}
 
 	private void initSchematics() {
+		removeSchematicButton.disableProperty().bind(app.schematicsProperty().emptyProperty());
+		editSchematicButton.disableProperty().bind(app.schematicsProperty().emptyProperty());
 		schematicsListView.disableProperty().bind(app.schematicsProperty().emptyProperty());
 		app.selectedSchematicProperty().bind(schematicsListView.getSelectionModel().selectedItemProperty());
 
@@ -159,10 +174,10 @@ public class MainController implements Initializable {
 
 	public void removeInventoryResource() {
 		GalaxyResource selectedItem = inventoryListView.getSelectionModel().getSelectedItem();
-		if (selectedItem == null)
+		if (selectedItem == null || !app.getInventory().contains(selectedItem))
 			return;
 
-		app.removeInventoryResource(selectedItem);
+		app.getInventory().remove(selectedItem);
 	}
 
 	public void save() {
@@ -171,5 +186,21 @@ public class MainController implements Initializable {
 		} catch (IOException | TransformerException e) {
 			new ExceptionDialog(e).show();
 		}
+	}
+
+	public void close() {
+		Launcher.getStage().fireEvent(new WindowEvent(Launcher.getStage(), WindowEvent.WINDOW_CLOSE_REQUEST));
+	}
+
+	public void removeSelectedSchematic() {
+		Schematic selectedSchematic = schematicsListView.getSelectionModel().getSelectedItem();
+		if (selectedSchematic == null || !app.getSchematics().contains(selectedSchematic))
+			return;
+
+		app.getSchematics().remove(selectedSchematic);
+	}
+
+	public void about() {
+		new AboutDialog().show();
 	}
 }

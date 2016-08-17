@@ -38,6 +38,8 @@ public class SchematicDialog extends Dialog<Schematic> {
 				return;
 
 			getDialogPane().setContent(root);
+			getDialogPane().heightProperty().addListener((observable, oldValue, newValue) -> getDialogPane().getScene().getWindow().sizeToScene());
+			getDialogPane().widthProperty().addListener((observable, oldValue, newValue) -> getDialogPane().getScene().getWindow().sizeToScene());
 		} catch (IOException e) {
 			ExceptionDialog.display(e);
 		}

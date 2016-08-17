@@ -33,11 +33,11 @@ public class ResourceDialogController implements Initializable {
 	@FXML
 	HBox attributesGroup;
 	@FXML
-	Label hiddenInfoGroupRightLabel;
+	Label infoRightLabel;
 	@FXML
-	Label hiddenInfoGroupLeftLabel;
+	Label infoLeftLabel;
 	@FXML
-	HBox hiddenInfoGroup;
+	HBox infoGroup;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -54,9 +54,8 @@ public class ResourceDialogController implements Initializable {
 		Attributes.forEach((primary, secondary) -> bindAttribute(primary, galaxyResource.getAttributes().get(primary)));
 
 		When whenUnavailable = Bindings.when(galaxyResource.despawnDateProperty().isNotEmpty());
-		hiddenInfoGroup.visibleProperty().bind(galaxyResource.despawnDateProperty().isNotEmpty());
-		hiddenInfoGroupLeftLabel.textProperty().bind(whenUnavailable.then("Despawned on").otherwise(""));
-		hiddenInfoGroupRightLabel.textProperty().bind(whenUnavailable.then(galaxyResource.dateProperty()).otherwise(""));
+		infoLeftLabel.textProperty().bind(whenUnavailable.then("Despawned on").otherwise("Available since"));
+		infoRightLabel.textProperty().bind(whenUnavailable.then(galaxyResource.despawnDateProperty()).otherwise(galaxyResource.dateProperty()));
 	}
 
 	private void bindAttribute(String attribute, IntegerProperty property) {
@@ -86,10 +85,10 @@ public class ResourceDialogController implements Initializable {
 		try {
 			GalaxyResource galaxyResource = Downloader.downloadGalaxyResource(nameField.getText());
 			if (galaxyResource == null) {
+				infoLeftLabel.setText("Couldn't find resource");
+				infoRightLabel.textProperty().unbind();
+				infoRightLabel.setText(nameField.getText());
 				nameField.setText(null);
-				hiddenInfoGroup.setVisible(true);
-				hiddenInfoGroupLeftLabel.setText("Couldn't find resource");
-				hiddenInfoGroupRightLabel.textProperty().bind(nameField.textProperty());
 				return;
 			}
 

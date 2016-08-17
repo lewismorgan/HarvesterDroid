@@ -4,6 +4,7 @@ import com.waverunnah.swg.harvesterdroid.app.HarvesterDroid;
 import com.waverunnah.swg.harvesterdroid.data.resources.GalaxyResource;
 import com.waverunnah.swg.harvesterdroid.data.schematics.Schematic;
 import com.waverunnah.swg.harvesterdroid.gui.dialog.ExceptionDialog;
+import com.waverunnah.swg.harvesterdroid.utils.Watcher;
 import com.waverunnah.swg.harvesterdroid.xml.app.CurrentResourcesXml;
 import com.waverunnah.swg.harvesterdroid.xml.app.InventoryXml;
 import com.waverunnah.swg.harvesterdroid.xml.app.SchematicsXml;
@@ -14,6 +15,7 @@ import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import org.xml.sax.SAXException;
 
@@ -105,12 +107,17 @@ public class Launcher extends Application {
         Parent root = FXMLLoader.load(getClass().getResource("gui/main.fxml"));
         primaryStage.setTitle("Harvester Droid");
         primaryStage.setScene(new Scene(root));
+		primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("gui/images/icon.png")));
         primaryStage.show();
 
 		primaryStage.setOnCloseRequest(e -> {
+			Watcher.shutdown();
+			try {
+				app.save();
+			} catch (IOException | TransformerException e1) {
+				e1.printStackTrace();
+			}
 			save();
-			Platform.exit();
-			System.exit(0);
 		});
     }
 
@@ -143,8 +150,9 @@ public class Launcher extends Application {
 
 	private List<GalaxyResource> getInventoryGalaxyResources() {
 		List<GalaxyResource> inventory = new ArrayList<>();
+		Map<String, GalaxyResource> currentResources = getCurrentResourcesMap();
 		inventoryXml.getInventory().forEach(name -> {
-			if (!getCurrentResourcesMap().containsKey(name)) {
+			if (!currentResources.containsKey(name)) {
 				try {
 					GalaxyResource galaxyResource = Downloader.downloadGalaxyResource(name);
 					if (galaxyResource != null && galaxyResource.getName().equals(name))
@@ -152,6 +160,8 @@ public class Launcher extends Application {
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
+			} else {
+				inventory.add(currentResources.get(name));
 			}
 		});
 		return inventory;

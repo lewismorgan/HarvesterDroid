@@ -35,10 +35,10 @@
       </HBox>
       <HBox alignment="CENTER_RIGHT" spacing="5.0">
          <children>
-            <HBox fx:id="hiddenInfoGroup" spacing="4.0">
+            <HBox fx:id="infoGroup" spacing="4.0">
                <children>
-                  <Label fx:id="hiddenInfoGroupLeftLabel" text="Enter a resource name and the stats will be retreived automatically" />
-                  <Label fx:id="hiddenInfoGroupRightLabel" />
+                  <Label fx:id="infoLeftLabel" text="Enter a resource name and the stats will be retreived automatically" />
+                  <Label fx:id="infoRightLabel" />
                </children>
             </HBox>
          </children>

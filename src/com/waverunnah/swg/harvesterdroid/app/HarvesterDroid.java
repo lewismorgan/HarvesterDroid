@@ -15,6 +15,7 @@ import javax.xml.transform.TransformerException;
 import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class HarvesterDroid {
 	// TODO Status messages
@@ -96,25 +97,19 @@ public class HarvesterDroid {
 	}
 
 	private void onSchematicsRemoved(List<? extends Schematic> removedSchematics) {
-		Map<String, Integer> toRemove = new HashMap<>(removedSchematics.size());
+		List<String> used = new ArrayList<>();
 
-		int count = 0;
-		for (Schematic schematic : removedSchematics) {
-			if (count > 1) count = 0;
-			if (toRemove.containsKey(schematic.getGroup()))
-				count = toRemove.get(schematic.getGroup());
-			toRemove.put(schematic.getGroup(), count++);
+		schematics.forEach(schematic -> used.add(schematic.getGroup()));
+		List<String> toRemove = groups.stream().filter(group -> !used.contains(group)).collect(Collectors.toList());
+		if (!toRemove.isEmpty()) {
+			toRemove.forEach(groups::remove);
 		}
-
-		toRemove.forEach((group, occurrence) -> {
-			if (occurrence == 1)
-				groups.remove(group);
-		});
 	}
 
 	private void onSchematicSelected(ObservableValue<? extends Schematic> observable, Schematic oldValue, Schematic newValue) {
 		if (newValue != null)
 			filterResourcesForSchematic(newValue);
+		else filteredResources.setPredicate(galaxyResource -> false);
 	}
 
 	private void onActiveGroupChanged(ObservableValue<? extends String> observable, String oldValue, String newValue) {
@@ -259,9 +254,5 @@ public class HarvesterDroid {
 
 	public ObjectProperty<Schematic> selectedSchematicProperty() {
 		return selectedSchematic;
-	}
-
-	public void removeInventoryResource(GalaxyResource galaxyResource) {
-		// TODO remove inventory resource logic
 	}
 }

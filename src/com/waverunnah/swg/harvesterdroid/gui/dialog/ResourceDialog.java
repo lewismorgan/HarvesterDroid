@@ -15,6 +15,7 @@ public class ResourceDialog extends Dialog<GalaxyResource> {
 	private static ResourceDialogController controller;
 
 	public ResourceDialog() {
+		super();
 		init();
 	}
 
@@ -30,6 +31,11 @@ public class ResourceDialog extends Dialog<GalaxyResource> {
 				return;
 
 			getDialogPane().setContent(root);
+			getDialogPane().heightProperty().addListener((observable, oldValue, newValue) -> getDialogPane().getScene().getWindow().sizeToScene());
+			getDialogPane().widthProperty().addListener((observable, oldValue, newValue) -> getDialogPane().getScene().getWindow().sizeToScene());
+
+			//vBox.heightProperty().addListener((observable, oldValue, newValue) -> getDialogPane().getScene().getWindow().sizeToScene());
+			//vBox.widthProperty().addListener((observable, oldValue, newValue) -> getDialogPane().getScene().getWindow().sizeToScene());
 		} catch (IOException e) {
 			ExceptionDialog.display(e);
 		}
