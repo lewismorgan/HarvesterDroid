@@ -63,7 +63,7 @@ public class Launcher extends Application {
 		BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(
 				getClass().getResourceAsStream("/com/waverunnah/swg/harvesterdroid/data/raw/types")));
 		resourceTypes = bufferedReader.lines().collect(Collectors.toList());
-
+		Collections.sort(resourceTypes);
 		updateLoadingProgress("Finding the latest resources...", 0.5);
 		currentResourcesXml = new HarvesterCurrentResourcesXml(factory.newDocumentBuilder());
 

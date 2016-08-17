@@ -49,7 +49,7 @@
                               </ListView>
                               <ButtonBar>
                                 <buttons>
-                                    <Button layoutX="184.0" layoutY="18.0" mnemonicParsing="false" onAction="#removeResource" text="Remove" />
+                                    <Button fx:id="removeResourceButton" layoutX="184.0" layoutY="18.0" mnemonicParsing="false" onAction="#removeResource" text="Remove" />
                                   <Button mnemonicParsing="false" onAction="#addResource" text="Add" />
                                 </buttons>
                                  <VBox.margin>
@@ -79,7 +79,8 @@
                               <HBox alignment="CENTER" nodeOrientation="LEFT_TO_RIGHT" spacing="15.0" VBox.vgrow="ALWAYS">
                                  <children>
                                     <ComboBox fx:id="addModifierComboBox" prefWidth="150.0" HBox.hgrow="ALWAYS" />
-                                    <Button mnemonicParsing="false" onAction="#addModifier" text="Add" />
+                                    <Button fx:id="removeAttributeButton" layoutX="198.0" layoutY="10.0" mnemonicParsing="false" onAction="#removeAttribute" text="Remove" />
+                                    <Button fx:id="addAttributeButton" mnemonicParsing="false" onAction="#addAttribute" text="Add" />
                                  </children>
                               </HBox>
                            </children>

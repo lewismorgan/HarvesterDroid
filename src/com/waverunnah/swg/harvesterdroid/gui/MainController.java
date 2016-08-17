@@ -64,7 +64,7 @@ public class MainController implements Initializable {
 
 		inventoryListView.disableProperty().bind(app.inventoryProperty().emptyProperty());
 		inventoryListView.setItems(app.getFilteredInventory());
-		removeInventoryButton.disableProperty().bind(app.inventoryProperty().emptyProperty());
+		removeInventoryButton.disableProperty().bind(Bindings.isEmpty(inventoryListView.getSelectionModel().getSelectedItems()));
 	}
 
 	private void initResources() {
@@ -96,8 +96,8 @@ public class MainController implements Initializable {
 	}
 
 	private void initSchematics() {
-		removeSchematicButton.disableProperty().bind(app.schematicsProperty().emptyProperty());
-		editSchematicButton.disableProperty().bind(app.schematicsProperty().emptyProperty());
+		removeSchematicButton.disableProperty().bind(Bindings.isEmpty(schematicsListView.getSelectionModel().getSelectedItems()));
+		editSchematicButton.disableProperty().bind(Bindings.isEmpty(schematicsListView.getSelectionModel().getSelectedItems()));
 		schematicsListView.disableProperty().bind(app.schematicsProperty().emptyProperty());
 		app.selectedSchematicProperty().bind(schematicsListView.getSelectionModel().selectedItemProperty());
 

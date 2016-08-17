@@ -4,6 +4,7 @@ import com.waverunnah.swg.harvesterdroid.Launcher;
 import com.waverunnah.swg.harvesterdroid.data.schematics.Schematic;
 import com.waverunnah.swg.harvesterdroid.gui.IntegerTextField;
 import com.waverunnah.swg.harvesterdroid.utils.Attributes;
+import javafx.beans.binding.Bindings;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
@@ -39,6 +40,12 @@ public class SchematicDialogController extends VBox implements Initializable {
 	TitledPane attributesPane;
 	@FXML
 	TitledPane resourcesPane;
+	@FXML
+	Button addAttributeButton;
+	@FXML
+	Button removeAttributeButton;
+	@FXML
+	Button removeResourceButton;
 
 	private ObjectProperty<Schematic> schematic = new SimpleObjectProperty<>(null);
 
@@ -50,8 +57,13 @@ public class SchematicDialogController extends VBox implements Initializable {
 		groupField.textProperty().bindBidirectional(schematic.groupProperty());
 		attributesTableView.itemsProperty().bindBidirectional(schematic.modifiersProperty());
 
+		removeAttributeButton.disableProperty().bind(Bindings.isEmpty(attributesTableView.getSelectionModel().getSelectedItems()));
+		addAttributeButton.disableProperty().bind(Bindings.isEmpty(availableModifiers));
 		addModifierComboBox.setItems(availableModifiers);
-		addModifierComboBox.getSelectionModel().select(0);
+		addModifierComboBox.disableProperty().bind(Bindings.isEmpty(availableModifiers));
+		addModifierComboBox.getSelectionModel().select(availableModifiers.size() - 1);
+
+		removeResourceButton.disableProperty().bind(Bindings.isEmpty(resourceListView.getSelectionModel().getSelectedItems()));
 
 		// Remove modifiers that are being used by the schematic
 		schematic.getModifiers().stream()
@@ -69,12 +81,21 @@ public class SchematicDialogController extends VBox implements Initializable {
 		// listener for modifier list that will remove/add modifier names that are used/unused by schematic
 		schematic.getModifiers().addListener((ListChangeListener<? super Schematic.Modifier>) c -> {
 			while (c.next()) {
+				String selectedItem = addModifierComboBox.getSelectionModel().getSelectedItem();
 				if (c.wasAdded()) {
 					c.getAddedSubList().stream()
 							.filter(modifier -> availableModifiers.contains(modifier.getName()))
-							.forEach(modifier -> availableModifiers.remove(modifier.getName()));
+							.forEach(modifier -> {
+								if (selectedItem.equals(modifier.getName()))
+									addModifierComboBox.getSelectionModel().select(availableModifiers.size() - 1);
+								availableModifiers.remove(modifier.getName());
+							});
 				} else if (c.wasRemoved()) {
-					c.getRemoved().forEach(modifier -> availableModifiers.add(modifier.getName()));
+					c.getRemoved().forEach(modifier ->  {
+						availableModifiers.add(modifier.getName());
+						if (selectedItem == null)
+							addModifierComboBox.getSelectionModel().select(0);
+					});
 				}
 			}
 		});
@@ -108,7 +129,7 @@ public class SchematicDialogController extends VBox implements Initializable {
 		schematic.getResources().remove(resource);
 	}
 
-	public void addModifier() {
+	public void addAttribute() {
 		Schematic schematic = getSchematic();
 		if (schematic == null)
 			return;
@@ -125,6 +146,17 @@ public class SchematicDialogController extends VBox implements Initializable {
 		schematic.getModifiers().add(new Schematic.Modifier(modifier, 0f));
 	}
 
+	public void removeAttribute() {
+		Schematic schematic = getSchematic();
+		if (schematic == null)
+			return;
+
+		Schematic.Modifier selected = attributesTableView.getSelectionModel().getSelectedItem();
+		if (selected == null)
+			return;
+
+		schematic.getModifiers().remove(selected);
+	}
 	@SuppressWarnings("unchecked")
 	private void createColumns() {
 		Schematic schematic = getSchematic();
