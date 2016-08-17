@@ -2,7 +2,7 @@ package com.waverunnah.swg.harvesterdroid.gui.dialog;
 
 import com.waverunnah.swg.harvesterdroid.Launcher;
 import com.waverunnah.swg.harvesterdroid.data.schematics.Schematic;
-import com.waverunnah.swg.harvesterdroid.gui.FloatTextField;
+import com.waverunnah.swg.harvesterdroid.gui.IntegerTextField;
 import com.waverunnah.swg.harvesterdroid.utils.Attributes;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
@@ -172,7 +172,7 @@ public class SchematicDialogController extends VBox implements Initializable {
 	}
 
 	class PercentEditingCell extends TableCell<Schematic.Modifier, Float> {
-		private FloatTextField textField;
+		private IntegerTextField textField;
 
 		@Override
 		public void startEdit() {
@@ -214,7 +214,7 @@ public class SchematicDialogController extends VBox implements Initializable {
 		}
 
 		private void createTextField() {
-			textField = new FloatTextField(0, 100, 0);
+			textField = new IntegerTextField(0, 100, 0);
 			textField.focusedProperty().addListener((observable, oldValue, newValue) -> {
 				if (newValue)
 					return;
