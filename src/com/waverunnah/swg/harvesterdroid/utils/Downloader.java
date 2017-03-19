@@ -131,7 +131,8 @@ public final class Downloader {
 					}
 				} else {
 					while (entry != null) {
-						populateResourceGroup(entry.getName());
+						if (entry.getName() != null)
+							populateResourceGroup(entry.getName());
 						entry = zip.getNextEntry();
 					}
 				}

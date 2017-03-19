@@ -1,5 +1,6 @@
 package com.waverunnah.swg.harvesterdroid.gui.dialog;
 
+import javafx.application.Platform;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
@@ -42,6 +43,7 @@ public class ExceptionDialog extends Alert{
 	}
 
 	public static void display(Throwable throwable) {
-		new ExceptionDialog(throwable).showAndWait();
+		if (Platform.isFxApplicationThread())
+			new ExceptionDialog(throwable).showAndWait();
 	}
 }
