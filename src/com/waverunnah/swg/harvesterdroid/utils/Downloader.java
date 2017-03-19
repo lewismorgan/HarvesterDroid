@@ -1,6 +1,5 @@
 package com.waverunnah.swg.harvesterdroid.utils;
 
-import com.sun.corba.se.spi.orbutil.fsm.Input;
 import com.waverunnah.swg.harvesterdroid.Launcher;
 import com.waverunnah.swg.harvesterdroid.data.resources.GalaxyResource;
 import com.waverunnah.swg.harvesterdroid.gui.dialog.ExceptionDialog;
@@ -22,8 +21,6 @@ import java.util.Map;
 import java.util.stream.Stream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
-
-import static java.lang.System.in;
 
 public final class Downloader {
 	// TODO: Refactor for downloading from other locations

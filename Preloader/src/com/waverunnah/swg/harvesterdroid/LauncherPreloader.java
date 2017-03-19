@@ -25,6 +25,7 @@ public class LauncherPreloader extends Preloader {
 	Stage stage;
 
 	private Scene createPreloaderScene() {
+		// TODO: Move to an FXML
 		VBox container = new VBox();
 		container.setAlignment(Pos.CENTER);
 		container.setBackground(new Background(new BackgroundFill(Color.WHITE, null, null)));

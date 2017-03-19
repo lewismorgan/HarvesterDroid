@@ -1,4 +1,4 @@
 Manifest-Version: 1.0
-Class-Path: controlsfx-8.40.11.jar
-Main-Class: com.waverunnah.swg.harvesterdroid.Launcher
 JavaFX-Class-Path: Preloader.jar
+Main-Class: com.waverunnah.swg.harvesterdroid.Launcher
+

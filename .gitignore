@@ -2,7 +2,6 @@
 *.iml
 /out
 
-*.jar
 
 /data/current_resources.dl
 /data/user
