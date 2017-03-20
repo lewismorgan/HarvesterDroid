@@ -95,17 +95,14 @@ public class SchematicDialogController extends VBox implements Initializable {
 		Schematic schematic = getSchematic();
 
 		List<String> choices = new ArrayList<>();
-		Launcher.getResourceTypes().stream().filter(type -> !schematic.getResources().contains(type))
-				.forEach(choices::add);
-		ChoiceDialog<String> dialog = new ChoiceDialog<>(choices.get(0), choices);
-		dialog.setTitle("Add New Resource");
-		dialog.setHeaderText("Select the resource to add to this schematic");
-		Optional<String> result = dialog.showAndWait();
+		Launcher.getResourceTypes().stream().filter(type -> !schematic.getResources().contains(type)).forEach(choices::add);
+		AddResourceTypeDialog dialog = new AddResourceTypeDialog(choices);
 
-		result.ifPresent(choice -> {
-			if (!schematic.getResources().contains(choice))
-				schematic.getResources().add(choice);
-		});
+		Optional<List<String>> result = dialog.showAndWait();
+		result.ifPresent(selection -> selection.forEach(type -> {
+            if (!schematic.getResources().contains(type))
+                schematic.getResources().add(type);
+        }));
 	}
 
 	public void removeResource() {
