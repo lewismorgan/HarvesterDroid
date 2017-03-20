@@ -8,7 +8,7 @@ import com.waverunnah.swg.harvesterdroid.utils.Watcher;
 import com.waverunnah.swg.harvesterdroid.xml.app.CurrentResourcesXml;
 import com.waverunnah.swg.harvesterdroid.xml.app.InventoryXml;
 import com.waverunnah.swg.harvesterdroid.xml.app.SchematicsXml;
-import com.waverunnah.swg.harvesterdroid.utils.Downloader;
+import com.waverunnah.swg.harvesterdroid.downloaders.GalaxyHarvesterDownloader;
 import com.waverunnah.swg.harvesterdroid.xml.galacticharvester.HarvesterCurrentResourcesXml;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -19,7 +19,6 @@ import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import org.xml.sax.SAXException;
 
-import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
@@ -71,9 +70,9 @@ public class Launcher extends Application {
 		if (Files.exists(Paths.get(ROOT_DIR + "/current_resources.dl"))) {
 			currentResourcesXml.load(new FileInputStream(ROOT_DIR + "/current_resources.dl"));
 			if (resourcesNeedUpdate(currentResourcesXml.getTimestamp()))
-				Downloader.downloadCurrentResources();
+				GalaxyHarvesterDownloader.downloadCurrentResources();
 		} else {
-			Downloader.downloadCurrentResources();
+			GalaxyHarvesterDownloader.downloadCurrentResources();
 		}
 
 		currentResourcesXml.load(new FileInputStream(ROOT_DIR + "/current_resources.dl"));
@@ -154,7 +153,7 @@ public class Launcher extends Application {
 		inventoryXml.getInventory().forEach(name -> {
 			if (!currentResources.containsKey(name)) {
 				try {
-					GalaxyResource galaxyResource = Downloader.downloadGalaxyResource(name);
+					GalaxyResource galaxyResource = GalaxyHarvesterDownloader.downloadGalaxyResource(name);
 					if (galaxyResource != null && galaxyResource.getName().equals(name))
 						inventory.add(galaxyResource);
 				} catch (IOException e) {

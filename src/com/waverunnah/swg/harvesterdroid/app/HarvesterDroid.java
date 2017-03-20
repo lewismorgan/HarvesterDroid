@@ -3,7 +3,7 @@ package com.waverunnah.swg.harvesterdroid.app;
 import com.waverunnah.swg.harvesterdroid.Launcher;
 import com.waverunnah.swg.harvesterdroid.data.resources.GalaxyResource;
 import com.waverunnah.swg.harvesterdroid.data.schematics.Schematic;
-import com.waverunnah.swg.harvesterdroid.utils.Downloader;
+import com.waverunnah.swg.harvesterdroid.downloaders.GalaxyHarvesterDownloader;
 import javafx.beans.property.*;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -15,7 +15,6 @@ import javax.xml.transform.TransformerException;
 import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class HarvesterDroid {
 	// TODO Status messages
@@ -182,7 +181,7 @@ public class HarvesterDroid {
 	}
 
 	public List<GalaxyResource> findGalaxyResourcesById(String id) {
-		List<String> resourceGroups = Downloader.getResourceGroups(id);
+		List<String> resourceGroups = GalaxyHarvesterDownloader.getResourceGroups(id);
 		Collection<GalaxyResource> galaxyResourceList = Launcher.getCurrentResources();
 		if (resourceGroups != null) {
 			List<GalaxyResource> master = new ArrayList<>();

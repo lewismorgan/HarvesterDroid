@@ -3,7 +3,7 @@ package com.waverunnah.swg.harvesterdroid.gui.dialog;
 import com.waverunnah.swg.harvesterdroid.data.resources.GalaxyResource;
 import com.waverunnah.swg.harvesterdroid.gui.converters.ResourceValueConverter;
 import com.waverunnah.swg.harvesterdroid.utils.Attributes;
-import com.waverunnah.swg.harvesterdroid.utils.Downloader;
+import com.waverunnah.swg.harvesterdroid.downloaders.GalaxyHarvesterDownloader;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.When;
 import javafx.beans.property.IntegerProperty;
@@ -83,7 +83,7 @@ public class ResourceDialogController implements Initializable {
 
 	public void retrieveStats() {
 		try {
-			GalaxyResource galaxyResource = Downloader.downloadGalaxyResource(nameField.getText());
+			GalaxyResource galaxyResource = GalaxyHarvesterDownloader.downloadGalaxyResource(nameField.getText());
 			if (galaxyResource == null) {
 				infoLeftLabel.setText("Couldn't find resource");
 				infoRightLabel.textProperty().unbind();

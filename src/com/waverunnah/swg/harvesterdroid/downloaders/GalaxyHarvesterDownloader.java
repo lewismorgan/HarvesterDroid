@@ -1,8 +1,9 @@
-package com.waverunnah.swg.harvesterdroid.utils;
+package com.waverunnah.swg.harvesterdroid.downloaders;
 
 import com.waverunnah.swg.harvesterdroid.Launcher;
 import com.waverunnah.swg.harvesterdroid.data.resources.GalaxyResource;
 import com.waverunnah.swg.harvesterdroid.gui.dialog.ExceptionDialog;
+import com.waverunnah.swg.harvesterdroid.utils.Watcher;
 import com.waverunnah.swg.harvesterdroid.xml.app.ResourceXml;
 import com.waverunnah.swg.harvesterdroid.xml.galacticharvester.HarvesterResourceXml;
 import org.xml.sax.SAXException;
@@ -22,7 +23,7 @@ import java.util.stream.Stream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
-public final class Downloader {
+public final class GalaxyHarvesterDownloader {
 	// TODO: Refactor for downloading from other locations
 
 	private static Map<String, List<String>> resourceGroups = new HashMap<>();
