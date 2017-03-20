@@ -1,25 +1,22 @@
 package com.waverunnah.swg.harvesterdroid.downloaders;
 
 import com.waverunnah.swg.harvesterdroid.data.resources.GalaxyResource;
-import com.waverunnah.swg.harvesterdroid.gui.dialog.ExceptionDialog;
-import com.waverunnah.swg.harvesterdroid.xml.app.ResourceXml;
 import com.waverunnah.swg.harvesterdroid.xml.galaxyharvester.HarvesterCurrentResourcesXml;
 import com.waverunnah.swg.harvesterdroid.xml.galaxyharvester.HarvesterResourceXml;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import java.io.*;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
-import java.nio.file.*;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.*;
-
-import static com.waverunnah.swg.harvesterdroid.Launcher.ROOT_DIR;
+import java.util.Date;
 
 public final class GalaxyHarvesterDownloader extends Downloader {
+
 	private DocumentBuilderFactory xmlFactory = DocumentBuilderFactory.newInstance();
 	private HarvesterCurrentResourcesXml currentResourcesXml;
 
@@ -39,12 +36,29 @@ public final class GalaxyHarvesterDownloader extends Downloader {
 		}
 	}
 
-	@Override
+    @Override
+    protected GalaxyResource parseGalaxyResource(InputStream galaxyResourceStream) {
+        try {
+            HarvesterResourceXml resourceXml = new HarvesterResourceXml(xmlFactory.newDocumentBuilder());
+            resourceXml.load(galaxyResourceStream);
+            return resourceXml.getGalaxyResource();
+        } catch (ParserConfigurationException | SAXException | IOException e1) {
+            e1.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
 	public InputStream getCurrentResourcesStream() throws IOException {
 		return getInputStreamFromUrl("exports/current48.xml");
 	}
 
-	@Override
+    @Override
+    protected InputStream getGalaxyResourceStream(String resource) throws IOException {
+        return getInputStreamFromUrl("getResourceByName.py?name=" + resource + "&galaxy=48");
+    }
+
+    @Override
 	public Date getCurrentResourcesTimestamp() {
 		if (currentResourcesXml == null || currentResourcesXml.getTimestamp() == null
 				|| currentResourcesXml.getTimestamp().isEmpty())
@@ -54,40 +68,6 @@ public final class GalaxyHarvesterDownloader extends Downloader {
 			return dateFormat.parse(currentResourcesXml.getTimestamp());
 		} catch (ParseException e) {
 			e.printStackTrace();
-		}
-		return null;
-	}
-
-	// TODO Refactor into generic Downloader class
-	public GalaxyResource downloadGalaxyResource(String name) throws IOException {
-		File dir = new File(ROOT_DIR + "/downloaded_resources");
-		if (!dir.exists())
-			dir.mkdirs();
-
-		File file = new File(ROOT_DIR + "/downloaded_resources/" + name + ".dl");
-
-		InputStream stream = null;
-		try {
-			ResourceXml resourceXml = new HarvesterResourceXml(xmlFactory.newDocumentBuilder());
-
-			if (!file.exists()) {
-				stream = download("getResourceByName.py?name=" + name + "&galaxy=48");
-				Files.copy(stream, Paths.get(file.toURI()), StandardCopyOption.REPLACE_EXISTING);
-				stream.close();
-			}
-
-			stream = new FileInputStream(file);
-
-			resourceXml.load(stream);
-
-			if (resourceXml.getGalaxyResource() == null)
-				file.delete();
-			return resourceXml.getGalaxyResource();
-		} catch (ParserConfigurationException | SAXException e) {
-			ExceptionDialog.display(e);
-		} finally {
-			if (stream != null)
-				stream.close();
 		}
 		return null;
 	}

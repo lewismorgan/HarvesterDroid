@@ -6,6 +6,7 @@ import com.waverunnah.swg.harvesterdroid.utils.Attributes;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.StringProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
@@ -77,11 +78,12 @@ public class ResourceListItem extends HBox {
 
 		Attributes.forEach((primary, secondary) -> {
 			IntegerProperty value = val.getAttributes().get(primary);
-			createAttributeUI(secondary, value);
+			StringProperty percentage = val.getPercentageCap(primary);
+			createAttributeUI(secondary, value, percentage);
 		});
 	}
 
-	private void createAttributeUI(String simple, IntegerProperty valueProperty) {
+	private void createAttributeUI(String simple, IntegerProperty valueProperty, StringProperty percentage) {
 		VBox group = new VBox();
 		group.setAlignment(Pos.CENTER);
 		group.setPadding(new Insets(5.0, 0, 0, 0));
@@ -95,7 +97,12 @@ public class ResourceListItem extends HBox {
 		valueLabel.setContentDisplay(ContentDisplay.CENTER);
 		group.getChildren().add(valueLabel);
 
+		Label percentageLabel = new Label("(%)");
+		percentageLabel.setContentDisplay(ContentDisplay.CENTER);
+		group.getChildren().add(percentageLabel);
+
 		Bindings.bindBidirectional(valueLabel.textProperty(), valueProperty, new ResourceValueConverter());
+		percentageLabel.textProperty().bind(percentage);
 
 		resourceStatsBox.getChildren().add(group);
 	}

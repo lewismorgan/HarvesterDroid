@@ -4,10 +4,16 @@ import com.waverunnah.swg.harvesterdroid.Launcher;
 import com.waverunnah.swg.harvesterdroid.data.resources.GalaxyResource;
 import com.waverunnah.swg.harvesterdroid.data.schematics.Schematic;
 import com.waverunnah.swg.harvesterdroid.downloaders.Downloader;
-import com.waverunnah.swg.harvesterdroid.downloaders.GalaxyHarvesterDownloader;
 import com.waverunnah.swg.harvesterdroid.xml.app.InventoryXml;
 import com.waverunnah.swg.harvesterdroid.xml.app.SchematicsXml;
-import javafx.beans.property.*;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.ListProperty;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleListProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
@@ -23,7 +29,11 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class HarvesterDroid {
@@ -220,15 +230,27 @@ public class HarvesterDroid {
 				return galaxyResource;
 		}
 		// Doesn't exist, have to download it...
-		try {
-			return ((GalaxyHarvesterDownloader) downloader).downloadGalaxyResource(name);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return null;
+		return downloadGalaxyResource(name);
 	}
 
-	public String getLastUpdate() {
+    private GalaxyResource downloadGalaxyResource(String name) {
+        GalaxyResource downloaded = downloader.downloadGalaxyResource(name);
+        if (downloaded != null) {
+
+            GalaxyResource toDelete = null;
+            for (GalaxyResource resource : resources) {
+                if (Objects.equals(resource.getName(), downloaded.getName())) {
+                    toDelete = resource;
+                    break;
+                }
+            }
+            resources.remove(toDelete);
+            resources.add(downloaded);
+        }
+        return downloaded;
+    }
+
+    public String getLastUpdate() {
 		if (downloader.getCurrentResourcesTimestamp() == null)
 			return null;
 		return downloader.getCurrentResourcesTimestamp().toString();
@@ -284,15 +306,11 @@ public class HarvesterDroid {
 		Map<String, GalaxyResource> currentResources = downloader.getCurrentResourcesMap();
 		xml.getInventory().forEach(name -> {
 			if (!currentResources.containsKey(name)) {
-				try {
-					// TODO Use a generic downloadGalaxyResource method
-					GalaxyResource dlGalaxyResource = ((GalaxyHarvesterDownloader) downloader).downloadGalaxyResource(name);
-					if (dlGalaxyResource != null && dlGalaxyResource.getName().equals(name))
-						inventory.add(dlGalaxyResource);
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			} else {
+                // TODO Use a generic downloadGalaxyResource method
+                GalaxyResource dlGalaxyResource = downloader.downloadGalaxyResource(name);
+                if (dlGalaxyResource != null && dlGalaxyResource.getName().equals(name))
+                    inventory.add(dlGalaxyResource);
+            } else {
 				inventory.add(currentResources.get(name));
 			}
 		});

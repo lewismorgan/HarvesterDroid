@@ -41,8 +41,11 @@ public abstract class Downloader {
 	}
 
 	protected abstract void parseCurrentResources(InputStream currentResourcesStream) throws IOException;
+    protected abstract GalaxyResource parseGalaxyResource(InputStream galaxyResourceStream);
 
 	protected abstract InputStream getCurrentResourcesStream() throws IOException;
+    protected abstract InputStream getGalaxyResourceStream(String resource) throws IOException;
+
 	public abstract Date getCurrentResourcesTimestamp();
 
 	public final DownloadResult downloadCurrentResources() throws IOException {
@@ -87,7 +90,27 @@ public abstract class Downloader {
 		return DownloadResult.SUCCESS;
 	}
 
-	protected final void populateCurrentResourcesMap(Map<String, GalaxyResource> parsedCurrentResources) {
+	public final GalaxyResource downloadGalaxyResource(String resource) {
+	    InputStream in;
+
+	    File file = new File(getRootDownloadsPath() + resource + ".dl");
+        if (!file.exists())
+            file.mkdirs();
+
+        try {
+            in = getGalaxyResourceStream(resource);
+
+            Files.copy(in, Paths.get(file.toURI()), StandardCopyOption.REPLACE_EXISTING);
+
+            return parseGalaxyResource(new FileInputStream(file));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    protected final void populateCurrentResourcesMap(Map<String, GalaxyResource> parsedCurrentResources) {
 		currentResources.clear();
 		currentResources.putAll(parsedCurrentResources);
 	}

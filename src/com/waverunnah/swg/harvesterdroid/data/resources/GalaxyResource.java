@@ -18,6 +18,8 @@ public class GalaxyResource {
 	private ObservableList<Planet> planets = FXCollections.observableArrayList();
     private ObservableMap<String, IntegerProperty> attributes;
 
+    private Map<String, Integer> capAttributesMap = new HashMap<>();
+
 	public GalaxyResource() {
 		Map<String, IntegerProperty> attributesMap = new HashMap<>(Attributes.size());
 		Attributes.forEach((primary, secondary) -> attributesMap.put(primary, new SimpleIntegerProperty(-1)));
@@ -88,7 +90,32 @@ public class GalaxyResource {
 		return attributes;
 	}
 
-	public void setAttribute(String attribute, int value) {
+	public void setCapAttribute(String minMaxAttribute, int value) {
+	    capAttributesMap.put(minMaxAttribute, value);
+	}
+
+    public StringProperty getPercentageCap(String attribute) {
+	    attribute = Attributes.getAbbreviation(attribute);
+	    if (!capAttributesMap.containsKey(attribute + "max")) {
+            return new SimpleStringProperty("(%)");
+        }
+
+	    float max = capAttributesMap.get(attribute + "max");
+        if (max <= 0)
+            return new SimpleStringProperty("(%)");
+
+        float min = capAttributesMap.get(attribute + "min");
+
+        float value = getAttribute(Attributes.getFullName(attribute));
+
+        float result = ((value-min)/(max-min))*100;
+
+        StringProperty percentageProperty = new SimpleStringProperty();
+        percentageProperty.set("(" + String.valueOf(Math.round(result) + "%" + ")"));
+        return percentageProperty;
+    }
+
+    public void setAttribute(String attribute, int value) {
 		IntegerProperty property = attributes.get(attribute);
 		if (property != null)
 			property.set(value);

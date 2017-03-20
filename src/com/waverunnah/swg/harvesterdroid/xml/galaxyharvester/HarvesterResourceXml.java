@@ -63,6 +63,29 @@ public class HarvesterResourceXml extends ResourceXml {
 				case "ER":
 					parseAttributes(galaxyResource, node);
 					break;
+                case "CRmin":
+                case "CDmin":
+                case "DRmin":
+                case "FLmin":
+                case "HRmin":
+                case "MAmin":
+                case "PEmin":
+                case "OQmin":
+                case "SRmin":
+                case "UTmin":
+                case "ERmin":
+                case "CRmax":
+                case "CDmax":
+                case "DRmax":
+                case "FLmax":
+                case "HRmax":
+                case "MAmax":
+                case "PEmax":
+                case "OQmax":
+                case "SRmax":
+                case "UTmax":
+                case "ERmax":
+                    parseMinMaxCaps(galaxyResource, node);
 				default:
 					break;
 			}
@@ -72,7 +95,16 @@ public class HarvesterResourceXml extends ResourceXml {
 			setGalaxyResource(galaxyResource);
 	}
 
-	private void parseAttributes(GalaxyResource galaxyResource, Node node) {
+    private void parseMinMaxCaps(GalaxyResource galaxyResource, Node node) {
+        String text = node.getTextContent();
+        if (text.isEmpty())
+            return;
+
+        int value = Integer.parseInt(text);
+        galaxyResource.setCapAttribute(node.getNodeName(), value);
+    }
+
+    private void parseAttributes(GalaxyResource galaxyResource, Node node) {
 		String text = node.getTextContent();
 		if (text.equals("None") || text.isEmpty())
 			return;
