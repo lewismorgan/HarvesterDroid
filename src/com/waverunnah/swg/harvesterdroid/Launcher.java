@@ -3,35 +3,32 @@ package com.waverunnah.swg.harvesterdroid;
 import com.waverunnah.swg.harvesterdroid.app.HarvesterDroid;
 import com.waverunnah.swg.harvesterdroid.data.resources.GalaxyResource;
 import com.waverunnah.swg.harvesterdroid.data.schematics.Schematic;
+import com.waverunnah.swg.harvesterdroid.downloaders.Downloader;
 import com.waverunnah.swg.harvesterdroid.gui.dialog.ExceptionDialog;
 import com.waverunnah.swg.harvesterdroid.utils.Watcher;
-import com.waverunnah.swg.harvesterdroid.xml.app.CurrentResourcesXml;
 import com.waverunnah.swg.harvesterdroid.xml.app.InventoryXml;
 import com.waverunnah.swg.harvesterdroid.xml.app.SchematicsXml;
 import com.waverunnah.swg.harvesterdroid.downloaders.GalaxyHarvesterDownloader;
-import com.waverunnah.swg.harvesterdroid.xml.galacticharvester.HarvesterCurrentResourcesXml;
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.collections.ObservableMap;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
-import org.xml.sax.SAXException;
 
 import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
+import java.security.CodeSource;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 public class Launcher extends Application {
 	public static String ROOT_DIR = System.getProperty("user.home").replace("\\", "/") + "/.harvesterdroid";
@@ -45,11 +42,13 @@ public class Launcher extends Application {
 
 	private DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 
-	private CurrentResourcesXml currentResourcesXml;
+	private Downloader downloader;
 
 	private SchematicsXml schematicsXml;
 	private InventoryXml inventoryXml;
 	private HarvesterDroid app;
+
+	private static final Map<String, List<String>> resourceGroups = new HashMap<>();
 
 	@Override
 	public void init() throws Exception {
@@ -64,18 +63,8 @@ public class Launcher extends Application {
 		resourceTypes = bufferedReader.lines().collect(Collectors.toList());
 		Collections.sort(resourceTypes);
 		updateLoadingProgress("Finding the latest resources...", 0.5);
-		currentResourcesXml = new HarvesterCurrentResourcesXml(factory.newDocumentBuilder());
 
-		// TODO Preferences determines what CurrentResourcesXml subclass to use
-		if (Files.exists(Paths.get(ROOT_DIR + "/current_resources.dl"))) {
-			currentResourcesXml.load(new FileInputStream(ROOT_DIR + "/current_resources.dl"));
-			if (resourcesNeedUpdate(currentResourcesXml.getTimestamp()))
-				GalaxyHarvesterDownloader.downloadCurrentResources();
-		} else {
-			GalaxyHarvesterDownloader.downloadCurrentResources();
-		}
-
-		currentResourcesXml.load(new FileInputStream(ROOT_DIR + "/current_resources.dl"));
+		testDownloadData(); // TODO Use preferences to specify downloader class
 
 		updateLoadingProgress("Grabbing your preferences...", 1);
 		schematicsXml = new SchematicsXml(factory.newDocumentBuilder());
@@ -87,16 +76,16 @@ public class Launcher extends Application {
 			inventoryXml.load(new FileInputStream(XML_INVENTORY));
 
 		updateLoadingProgress("Loading...", -1.0);
-		app = new HarvesterDroid(getSchematics(), getCurrentResources(), getInventoryGalaxyResources());
+		app = new HarvesterDroid(getSchematics(), downloader.getCurrentResources(), getInventoryGalaxyResources());
 	}
 
-	private boolean resourcesNeedUpdate(String time) throws ParseException, IOException, SAXException, ParserConfigurationException {
-		DateFormat dateFormat = new SimpleDateFormat("E, dd MMMM yyyy HH:mm:ss Z");
-		Date timestamp = dateFormat.parse(time);
-		LocalDateTime now = LocalDateTime.now();
-		LocalDateTime from = LocalDateTime.ofInstant(timestamp.toInstant(), ZoneId.systemDefault());
-		LocalDateTime plusHours = from.plusHours(12);
-		return now.isAfter(plusHours);
+	private void testDownloadData() {
+		downloader = new GalaxyHarvesterDownloader();
+		try {
+			downloader.downloadCurrentResources();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override
@@ -149,11 +138,12 @@ public class Launcher extends Application {
 
 	private List<GalaxyResource> getInventoryGalaxyResources() {
 		List<GalaxyResource> inventory = new ArrayList<>();
-		Map<String, GalaxyResource> currentResources = getCurrentResourcesMap();
+		Map<String, GalaxyResource> currentResources = downloader.getCurrentResourcesMap();
 		inventoryXml.getInventory().forEach(name -> {
 			if (!currentResources.containsKey(name)) {
 				try {
-					GalaxyResource galaxyResource = GalaxyHarvesterDownloader.downloadGalaxyResource(name);
+					// TODO Use a generic downloadGalaxyResource method
+					GalaxyResource galaxyResource = ((GalaxyHarvesterDownloader) downloader).downloadGalaxyResource(name);
 					if (galaxyResource != null && galaxyResource.getName().equals(name))
 						inventory.add(galaxyResource);
 				} catch (IOException e) {
@@ -171,15 +161,23 @@ public class Launcher extends Application {
 	}
 
 	public static Collection<GalaxyResource> getCurrentResources() {
-		return instance.currentResourcesXml.getGalaxyResourceList();
-	}
-
-	public static Map<String, GalaxyResource> getCurrentResourcesMap() {
-		return instance.currentResourcesXml.getGalaxyResources();
+		return instance.downloader.getCurrentResources();
 	}
 
 	public static String getLastUpdate() {
-		return instance.currentResourcesXml.getTimestamp();
+		if (instance.downloader.getCurrentResourcesTimestamp() == null)
+			return null;
+		return instance.downloader.getCurrentResourcesTimestamp().toString();
+	}
+
+	// TODO Delete method once abstraction is finished on Downloader class
+	public static GalaxyResource downloadGalaxyResource(String galaxyResource) {
+		try {
+			return ((GalaxyHarvesterDownloader) instance.downloader).downloadGalaxyResource(galaxyResource);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	public static List<Schematic> getSchematics() {
@@ -204,5 +202,51 @@ public class Launcher extends Application {
 
 	public static HarvesterDroid getApp() {
 		return instance.app;
+	}
+
+	// TODO Refactor resource groups
+	static {
+		// This only needs to be done for the resources that do not follow the proper hierarchy naming convention
+		try {
+			CodeSource src = Launcher.class.getProtectionDomain().getCodeSource();
+			String path = "com/waverunnah/swg/harvesterdroid/data/raw/groups/";
+			if (src != null) {
+				ZipInputStream zip = new ZipInputStream(src.getLocation().openStream());
+				ZipEntry entry = zip.getNextEntry();
+
+				if (entry == null) {
+					File dir = new File(src.getLocation().getPath() + path);
+					File[] files = dir.listFiles();
+					for (File file : files != null ? files : new File[0]) {
+						populateResourceGroup(file.getAbsolutePath());
+					}
+				} else {
+					while (entry != null) {
+						if (entry.getName() != null)
+							populateResourceGroup(entry.getName());
+						entry = zip.getNextEntry();
+					}
+				}
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private static void populateResourceGroup(String file) {
+		List<String> resourceGroup = new ArrayList<>();
+		resourceGroup.add(file.substring(file.lastIndexOf("\\") + 1));
+		try {
+			try (Stream<String> stream = Files.lines(Paths.get(file))) {
+				stream.forEach(resourceGroup::add);
+			}
+		} catch (IOException e) {
+			ExceptionDialog.display(e);
+		}
+		resourceGroups.put(file.substring(file.lastIndexOf("\\") + 1), resourceGroup);
+	}
+
+	public static List<String> getResourceGroups(String group) {
+		return resourceGroups.get(group);
 	}
 }

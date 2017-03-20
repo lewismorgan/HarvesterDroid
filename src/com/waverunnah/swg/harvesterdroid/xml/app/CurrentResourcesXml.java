@@ -16,10 +16,6 @@ public class CurrentResourcesXml extends BaseXml {
 	private String timestamp;
 	private Map<String, GalaxyResource> galaxyResources = new HashMap<>();
 
-	public CurrentResourcesXml() {
-		super(null);
-	}
-
 	public CurrentResourcesXml(DocumentBuilder documentBuilder) {
 		super(documentBuilder);
 	}

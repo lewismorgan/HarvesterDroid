@@ -3,6 +3,7 @@ package com.waverunnah.swg.harvesterdroid.app;
 import com.waverunnah.swg.harvesterdroid.Launcher;
 import com.waverunnah.swg.harvesterdroid.data.resources.GalaxyResource;
 import com.waverunnah.swg.harvesterdroid.data.schematics.Schematic;
+import com.waverunnah.swg.harvesterdroid.downloaders.Downloader;
 import com.waverunnah.swg.harvesterdroid.downloaders.GalaxyHarvesterDownloader;
 import javafx.beans.property.*;
 import javafx.beans.value.ObservableValue;
@@ -19,6 +20,8 @@ import java.util.stream.Collectors;
 public class HarvesterDroid {
 	// TODO Status messages
 	// TODO Move intensive methods to a Task
+
+	private Downloader downloader;
 
 	private ListProperty<GalaxyResource> inventory;
 	private ListProperty<GalaxyResource> resources;
@@ -181,7 +184,7 @@ public class HarvesterDroid {
 	}
 
 	public List<GalaxyResource> findGalaxyResourcesById(String id) {
-		List<String> resourceGroups = GalaxyHarvesterDownloader.getResourceGroups(id);
+		List<String> resourceGroups = Launcher.getResourceGroups(id);
 		Collection<GalaxyResource> galaxyResourceList = Launcher.getCurrentResources();
 		if (resourceGroups != null) {
 			List<GalaxyResource> master = new ArrayList<>();
