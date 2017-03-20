@@ -20,7 +20,6 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -49,7 +48,7 @@ public class HarvesterDroid {
 	private FilteredList<Schematic> filteredSchematics;
 
 	private StringProperty activeGroup;
-	private ObjectProperty<Schematic> selectedSchematic;
+	private ObjectProperty<Schematic> activeSchematic;
 
 	public HarvesterDroid(String schematicsXmlPath, String inventoryXmlPath, Downloader downloader) {
 		this.schematicsXmlPath = schematicsXmlPath;
@@ -67,23 +66,19 @@ public class HarvesterDroid {
 		this.schematics = new SimpleListProperty<>(FXCollections.observableArrayList(schematic -> new javafx.beans.Observable[]{schematic.nameProperty()}));
 		this.schematics.addAll(schematics);
 		filteredSchematics = new FilteredList<>(this.schematics.get(), schematic -> true);
-		selectedSchematic = new SimpleObjectProperty<>(null);
+		activeSchematic = new SimpleObjectProperty<>(null);
 		initGroups();
 	}
 
 	private void initGroups() {
 		groups = new SimpleListProperty<>(FXCollections.observableArrayList());
-		activeGroup = new SimpleStringProperty(null);
-
-		schematics.forEach(schematic -> {
-			if (!groups.contains(schematic.getGroup()))
-				groups.add(schematic.getGroup());
-		});
+		groups.add("All");
+		activeGroup = new SimpleStringProperty();
 	}
 
 	private void createListeners() {
 		activeGroup.addListener(this::onActiveGroupChanged);
-		selectedSchematic.addListener(this::onSchematicSelected);
+		activeSchematic.addListener(this::onSchematicSelected);
 		schematics.addListener((ListChangeListener<? super Schematic>) c -> {
 			while (c.next()) {
 				if (c.wasAdded()) {
@@ -108,7 +103,7 @@ public class HarvesterDroid {
 	private void onSchematicsAdded(List<? extends Schematic> addedSchematics) {
 		addedSchematics.stream().filter(schematic -> !groups.contains(schematic.getGroup()))
 				.forEach(match -> groups.add(match.getGroup()));
-		filterResourcesForSchematic(selectedSchematic.get());
+		filterResourcesForSchematic(activeSchematic.get());
 		if (activeGroup.get() != null && groups.size() > 1 && schematics.size() > 1)
 			filteredSchematics.setPredicate(schematic -> schematic.getGroup().equals(activeGroup.get()));
 	}
@@ -130,11 +125,8 @@ public class HarvesterDroid {
 	}
 
 	private void onActiveGroupChanged(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-		if (oldValue == null)
-			return;
-
 		// Filtered list doesn't like to be sorted when there is only one item in it, it'll throw index exceptions
-		if(newValue == null || (newValue.length() == 0 && schematics.size() > 1)) {
+		if(newValue == null || newValue.equals("All") || (newValue.length() == 0 && schematics.size() > 1)) {
 			filteredSchematics.setPredicate(schematic -> true);
 		} else if (schematics.size() > 1) {
 			filteredSchematics.setPredicate(schematic -> schematic.getGroup().equals(newValue));
@@ -326,10 +318,6 @@ public class HarvesterDroid {
 		return schematics;
 	}
 
-	public ObservableList<String> getGroups() {
-		return groups.get();
-	}
-
 	public ListProperty<String> groupsProperty() {
 		return groups;
 	}
@@ -350,7 +338,7 @@ public class HarvesterDroid {
 		return activeGroup;
 	}
 
-	public ObjectProperty<Schematic> selectedSchematicProperty() {
-		return selectedSchematic;
+	public ObjectProperty<Schematic> activeSchematicProperty() {
+		return activeSchematic;
 	}
 }

@@ -18,6 +18,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import org.controlsfx.control.StatusBar?>
 
+<?import com.waverunnah.swg.harvesterdroid.gui.components.schematics.SchematicsControl?>
 <VBox prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.waverunnah.swg.harvesterdroid.gui.MainController">
    <children>
       <MenuBar VBox.vgrow="ALWAYS">
@@ -62,33 +63,7 @@
                <children>
                   <TitledPane alignment="TOP_LEFT" animated="false" collapsible="false" nodeOrientation="LEFT_TO_RIGHT" text="Schematics" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <content>
-                        <VBox alignment="TOP_RIGHT" spacing="5.0">
-                           <children>
-                              <AnchorPane nodeOrientation="LEFT_TO_RIGHT" VBox.vgrow="ALWAYS">
-                                 <children>
-                                    <ComboBox fx:id="groupComboBox" nodeOrientation="LEFT_TO_RIGHT" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                                 </children>
-                                 <padding>
-                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                                 </padding>
-                              </AnchorPane>
-                              <ListView fx:id="schematicsListView" disable="true" VBox.vgrow="ALWAYS">
-                                  <placeholder>
-                                      <Label text="No schematics have been created" />
-                                  </placeholder>
-                              </ListView>
-                              <ButtonBar prefHeight="40.0" prefWidth="200.0">
-                                <buttons>
-                                    <Button fx:id="removeSchematicButton" layoutX="243.0" layoutY="10.0" mnemonicParsing="false" onAction="#removeSelectedSchematic" text="Remove" />
-                                    <Button fx:id="editSchematicButton" layoutX="158.0" layoutY="10.0" mnemonicParsing="false" onAction="#editSelectedSchematic" text="Edit" />
-                                    <Button layoutX="243.0" layoutY="10.0" mnemonicParsing="false" onAction="#displaySchematicDialog" text="Add" />
-                                </buttons>
-                                 <VBox.margin>
-                                    <Insets />
-                                 </VBox.margin>
-                              </ButtonBar>
-                           </children>
-                        </VBox>
+                        <SchematicsControl fx:id="schematicsControl"/>
                      </content>
                   </TitledPane>
                </children>
