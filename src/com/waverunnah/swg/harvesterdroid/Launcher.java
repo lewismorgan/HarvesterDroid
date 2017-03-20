@@ -1,8 +1,6 @@
 package com.waverunnah.swg.harvesterdroid;
 
 import com.waverunnah.swg.harvesterdroid.app.HarvesterDroid;
-import com.waverunnah.swg.harvesterdroid.data.resources.GalaxyResource;
-import com.waverunnah.swg.harvesterdroid.data.schematics.Schematic;
 import com.waverunnah.swg.harvesterdroid.downloaders.Downloader;
 import com.waverunnah.swg.harvesterdroid.gui.dialog.ExceptionDialog;
 import com.waverunnah.swg.harvesterdroid.utils.Watcher;
@@ -27,6 +25,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 public class Launcher extends Application {
+	private static final boolean DEBUG_MODE = true;
 	// TODO Refactor some methods into HarvesterDroid class
 
 	public static String ROOT_DIR = System.getProperty("user.home").replace("\\", "/") + "/.harvesterdroid";
@@ -93,7 +92,7 @@ public class Launcher extends Application {
 
 	public static void main(String[] args) {
 	    Thread.setDefaultUncaughtExceptionHandler((t, e) -> {
-	    	if (Platform.isFxApplicationThread()) {
+	    	if (Platform.isFxApplicationThread() && !DEBUG_MODE) {
 			    ExceptionDialog exceptionDialog = new ExceptionDialog(e);
 			    exceptionDialog.show();
 		    } else {

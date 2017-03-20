@@ -5,13 +5,13 @@ import com.waverunnah.swg.harvesterdroid.app.HarvesterDroid;
 import com.waverunnah.swg.harvesterdroid.data.resources.GalaxyResource;
 import com.waverunnah.swg.harvesterdroid.data.schematics.Schematic;
 import com.waverunnah.swg.harvesterdroid.gui.callbacks.GalaxyResourceListCell;
+import com.waverunnah.swg.harvesterdroid.gui.components.inventory.InventoryControl;
 import com.waverunnah.swg.harvesterdroid.gui.dialog.AboutDialog;
 import com.waverunnah.swg.harvesterdroid.gui.dialog.ExceptionDialog;
 import com.waverunnah.swg.harvesterdroid.gui.dialog.ResourceDialog;
 import com.waverunnah.swg.harvesterdroid.gui.dialog.SchematicDialog;
 import javafx.beans.binding.Bindings;
 import javafx.collections.ListChangeListener;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -32,11 +32,11 @@ public class MainController implements Initializable {
 	private HarvesterDroid app;
 
 	@FXML
+	InventoryControl inventoryControl;
+	@FXML
 	TitledPane bestResourcesPane;
 	@FXML
 	ListView<Schematic> schematicsListView;
-	@FXML
-	ListView<GalaxyResource> inventoryListView;
 	@FXML
 	ListView<GalaxyResource> bestResourcesListView;
 	@FXML
@@ -47,8 +47,6 @@ public class MainController implements Initializable {
 	Button removeSchematicButton;
 	@FXML
 	Button editSchematicButton;
-	@FXML
-	Button removeInventoryButton;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -60,11 +58,8 @@ public class MainController implements Initializable {
 	}
 
 	private void initInventory() {
-		inventoryListView.setCellFactory(param -> new GalaxyResourceListCell());
-
-		inventoryListView.disableProperty().bind(app.inventoryProperty().emptyProperty());
-		inventoryListView.setItems(app.getFilteredInventory());
-		removeInventoryButton.disableProperty().bind(Bindings.isEmpty(inventoryListView.getSelectionModel().getSelectedItems()));
+		inventoryControl.setInventoryList(app.getFilteredInventory());
+		inventoryControl.disableInventoryItemsProperty().bind(app.inventoryProperty().emptyProperty());
 	}
 
 	private void initResources() {
@@ -153,31 +148,6 @@ public class MainController implements Initializable {
 			app.getSchematics().remove(schematic);
 			app.getSchematics().add(changed);
 		}
-	}
-
-	public void addInventoryResource() {
-		GalaxyResource selectedItem = bestResourcesListView.getSelectionModel().getSelectedItem();
-		if (selectedItem != null && !app.getInventory().contains(selectedItem)) {
-			app.getInventory().add(selectedItem);
-		} else {
-			ResourceDialog dialog = new ResourceDialog();
-			dialog.setTitle("New Inventory Resource");
-			Optional<GalaxyResource> result = dialog.showAndWait();
-			if (!result.isPresent())
-				return;
-
-			GalaxyResource galaxyResource = result.get();
-			if (!galaxyResource.getName().isEmpty() && !galaxyResource.getResourceType().isEmpty())
-				app.getInventory().add(galaxyResource);
-		}
-	}
-
-	public void removeInventoryResource() {
-		GalaxyResource selectedItem = inventoryListView.getSelectionModel().getSelectedItem();
-		if (selectedItem == null || !app.getInventory().contains(selectedItem))
-			return;
-
-		app.getInventory().remove(selectedItem);
 	}
 
 	public void save() {
