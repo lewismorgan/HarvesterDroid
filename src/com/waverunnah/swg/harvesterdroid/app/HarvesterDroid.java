@@ -5,15 +5,25 @@ import com.waverunnah.swg.harvesterdroid.data.resources.GalaxyResource;
 import com.waverunnah.swg.harvesterdroid.data.schematics.Schematic;
 import com.waverunnah.swg.harvesterdroid.downloaders.Downloader;
 import com.waverunnah.swg.harvesterdroid.downloaders.GalaxyHarvesterDownloader;
+import com.waverunnah.swg.harvesterdroid.xml.app.InventoryXml;
+import com.waverunnah.swg.harvesterdroid.xml.app.SchematicsXml;
 import javafx.beans.property.*;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
+import org.xml.sax.SAXException;
 
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -21,7 +31,13 @@ public class HarvesterDroid {
 	// TODO Status messages
 	// TODO Move intensive methods to a Task
 
-	private Downloader downloader;
+	private final String schematicsXmlPath;
+	private final String inventoryXmlPath;
+
+	private final Downloader downloader;
+
+	private SchematicsXml schematicsXml;
+	private InventoryXml inventoryXml;
 
 	private ListProperty<GalaxyResource> inventory;
 	private ListProperty<GalaxyResource> resources;
@@ -35,12 +51,11 @@ public class HarvesterDroid {
 	private StringProperty activeGroup;
 	private ObjectProperty<Schematic> selectedSchematic;
 
-	public HarvesterDroid() {
-		this(new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
-	}
-
-	public HarvesterDroid(Collection<Schematic> schematics, Collection<GalaxyResource> resources, Collection<GalaxyResource> inventory) {
-		init(schematics, resources, inventory);
+	public HarvesterDroid(String schematicsXmlPath, String inventoryXmlPath, Downloader downloader) {
+		this.schematicsXmlPath = schematicsXmlPath;
+		this.inventoryXmlPath = inventoryXmlPath;
+		this.downloader = downloader;
+		init(new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
 		createListeners();
 	}
 
@@ -185,7 +200,7 @@ public class HarvesterDroid {
 
 	public List<GalaxyResource> findGalaxyResourcesById(String id) {
 		List<String> resourceGroups = Launcher.getResourceGroups(id);
-		Collection<GalaxyResource> galaxyResourceList = Launcher.getCurrentResources();
+		Collection<GalaxyResource> galaxyResourceList = downloader.getCurrentResources();
 		if (resourceGroups != null) {
 			List<GalaxyResource> master = new ArrayList<>();
 			for (String group : resourceGroups) {
@@ -202,8 +217,89 @@ public class HarvesterDroid {
 		}
 	}
 
+	public GalaxyResource getGalaxyResourceByName(String name) {
+		for (GalaxyResource galaxyResource : resources) {
+			if (galaxyResource.getName().equals(name))
+				return galaxyResource;
+		}
+		// Doesn't exist, have to download it...
+		try {
+			return ((GalaxyHarvesterDownloader) downloader).downloadGalaxyResource(name);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	public String getLastUpdate() {
+		if (downloader.getCurrentResourcesTimestamp() == null)
+			return null;
+		return downloader.getCurrentResourcesTimestamp().toString();
+	}
+
 	public void save() throws IOException, TransformerException {
-		Launcher.save(inventory.stream().map(GalaxyResource::getName).collect(Collectors.toList()), schematics.get());
+		schematicsXml.setSchematics(getSchematics());
+		inventoryXml.setInventory(getInventory().stream().map(GalaxyResource::getName).collect(Collectors.toList()));
+
+		schematicsXml.save(new File(schematicsXmlPath));
+		inventoryXml.save(new File(inventoryXmlPath));
+	}
+
+	public void updateResources() {
+		try {
+			downloader.downloadCurrentResources();
+
+			Map<String, GalaxyResource> currentResources = downloader.getCurrentResourcesMap();
+			List<GalaxyResource> galaxyResources = new ArrayList<>(downloader.getCurrentResources());
+
+			// Keep despawned resources in the list (current resources only provides spawned resources !)
+			for (GalaxyResource galaxyResource : resources) {
+				if (!currentResources.containsKey(galaxyResource.getName()))
+					galaxyResources.add(galaxyResource);
+			}
+			resources.clear();
+			resources.addAll(galaxyResources);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void loadSavedData() {
+		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+		try {
+			schematicsXml = new SchematicsXml(factory.newDocumentBuilder());
+			inventoryXml = new InventoryXml(factory.newDocumentBuilder());
+
+			if (Files.exists(Paths.get(schematicsXmlPath)))
+				schematicsXml.load(new FileInputStream(schematicsXmlPath));
+			if (Files.exists(Paths.get(inventoryXmlPath)))
+				inventoryXml.load(new FileInputStream(inventoryXmlPath));
+		} catch (ParserConfigurationException | IOException | SAXException e) {
+			e.printStackTrace();
+		}
+
+		schematics.setAll(schematicsXml.getSchematics());
+		inventory.setAll(getInventoryGalaxyResourcesFromXml(inventoryXml));
+	}
+
+	private List<GalaxyResource> getInventoryGalaxyResourcesFromXml(InventoryXml xml) {
+		List<GalaxyResource> inventory = new ArrayList<>();
+		Map<String, GalaxyResource> currentResources = downloader.getCurrentResourcesMap();
+		xml.getInventory().forEach(name -> {
+			if (!currentResources.containsKey(name)) {
+				try {
+					// TODO Use a generic downloadGalaxyResource method
+					GalaxyResource dlGalaxyResource = ((GalaxyHarvesterDownloader) downloader).downloadGalaxyResource(name);
+					if (dlGalaxyResource != null && dlGalaxyResource.getName().equals(name))
+						inventory.add(dlGalaxyResource);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			} else {
+				inventory.add(currentResources.get(name));
+			}
+		});
+		return inventory;
 	}
 
 	public ObservableList<GalaxyResource> getInventory() {

@@ -68,7 +68,7 @@ public class MainController implements Initializable {
 	}
 
 	private void initResources() {
-		bestResourcesPane.setText("Best Resources as of " + Launcher.getLastUpdate() + " according to your inventory and the current resource spawns");
+		bestResourcesPane.setText("Best Resources as of " + Launcher.getApp().getLastUpdate() + " according to your inventory and the current resource spawns");
 		bestResourcesListView.disableProperty().bind(Bindings.isEmpty(app.getFilteredResources()));
 		bestResourcesListView.setCellFactory(param -> new GalaxyResourceListCell());
 		bestResourcesListView.setItems(app.getFilteredResources());
@@ -135,7 +135,7 @@ public class MainController implements Initializable {
 			return;
 
 		Schematic schematic = result.get();
-		if (schematic != null && !schematic.isIncomplete())
+		if (!schematic.isIncomplete())
 			app.getSchematics().add(schematic);
 	}
 
@@ -147,7 +147,7 @@ public class MainController implements Initializable {
 			return;
 
 		Schematic changed = result.get();
-		if (changed == schematic && schematic != null && !schematic.isIncomplete()) {
+		if (changed == schematic && !schematic.isIncomplete()) {
 			app.getSchematics().add(schematic);
 		} else {
 			app.getSchematics().remove(schematic);
@@ -167,7 +167,7 @@ public class MainController implements Initializable {
 				return;
 
 			GalaxyResource galaxyResource = result.get();
-			if (galaxyResource != null && !galaxyResource.getName().isEmpty() && !galaxyResource.getResourceType().isEmpty())
+			if (!galaxyResource.getName().isEmpty() && !galaxyResource.getResourceType().isEmpty())
 				app.getInventory().add(galaxyResource);
 		}
 	}

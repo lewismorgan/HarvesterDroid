@@ -4,7 +4,6 @@ import com.waverunnah.swg.harvesterdroid.Launcher;
 import com.waverunnah.swg.harvesterdroid.data.resources.GalaxyResource;
 import com.waverunnah.swg.harvesterdroid.gui.converters.ResourceValueConverter;
 import com.waverunnah.swg.harvesterdroid.utils.Attributes;
-import com.waverunnah.swg.harvesterdroid.downloaders.GalaxyHarvesterDownloader;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.When;
 import javafx.beans.property.IntegerProperty;
@@ -20,7 +19,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -83,7 +81,7 @@ public class ResourceDialogController implements Initializable {
 	}
 
 	public void retrieveStats() {
-		GalaxyResource galaxyResource = Launcher.downloadGalaxyResource(nameField.getText());
+		GalaxyResource galaxyResource = Launcher.getApp().getGalaxyResourceByName(nameField.getText());
 		if (galaxyResource == null) {
 			infoLeftLabel.setText("Couldn't find resource");
 			infoRightLabel.textProperty().unbind();
