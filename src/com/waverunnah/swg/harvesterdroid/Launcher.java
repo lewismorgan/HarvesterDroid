@@ -25,8 +25,8 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 public class Launcher extends Application {
-	private static final boolean DEBUG_MODE = true;
-	// TODO Refactor some methods into HarvesterDroid class
+	private static final boolean IGNORE_UNCAUGHT_EXCEPTIONS = false;
+	// TODO Finish refactoring business logic into HarvesterDroid
 
 	public static String ROOT_DIR = System.getProperty("user.home").replace("\\", "/") + "/.harvesterdroid";
 	private static String XML_SCHEMATICS = ROOT_DIR + "/schematics.xml";
@@ -92,7 +92,7 @@ public class Launcher extends Application {
 
 	public static void main(String[] args) {
 	    Thread.setDefaultUncaughtExceptionHandler((t, e) -> {
-	    	if (Platform.isFxApplicationThread() && !DEBUG_MODE) {
+	    	if (Platform.isFxApplicationThread() && !IGNORE_UNCAUGHT_EXCEPTIONS) {
 			    ExceptionDialog exceptionDialog = new ExceptionDialog(e);
 			    exceptionDialog.show();
 		    } else {

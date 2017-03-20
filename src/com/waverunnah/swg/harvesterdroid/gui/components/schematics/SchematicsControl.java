@@ -121,8 +121,15 @@ public class SchematicsControl extends VBox {
 			return;
 
 		Schematic schematic = result.get();
-		if (!schematic.isIncomplete())
+		if (!schematic.isIncomplete()) {
 			items.add(schematic);
+
+			if (!checkBoxDisableGroups.isSelected() && !schematic.getGroup().equals(activeGroupProperty.get())) {
+				groupComboBox.getSelectionModel().select(schematic.getGroup());
+			}
+
+			schematicsListView.getSelectionModel().select(schematic);
+		}
 	}
 
 	public void displaySchematicDialog(Schematic schematic) {
@@ -132,13 +139,13 @@ public class SchematicsControl extends VBox {
 		if (!result.isPresent())
 			return;
 
-		Schematic changed = result.get();
-		if (changed == schematic && !schematic.isIncomplete()) {
-			items.add(schematic);
-		} else {
-			items.remove(schematic);
-			items.add(changed);
+		Schematic editedSchematic = result.get();
+
+		if (!checkBoxDisableGroups.isSelected() && !editedSchematic.getGroup().equals(activeGroupProperty.get())) {
+			groupComboBox.getSelectionModel().select(editedSchematic.getGroup());
 		}
+
+		schematicsListView.getSelectionModel().select(editedSchematic);
 	}
 
 	@FXML
