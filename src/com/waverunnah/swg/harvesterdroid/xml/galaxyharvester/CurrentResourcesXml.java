@@ -1,4 +1,4 @@
-package com.waverunnah.swg.harvesterdroid.xml.app;
+package com.waverunnah.swg.harvesterdroid.xml.galaxyharvester;
 
 import com.waverunnah.swg.harvesterdroid.data.resources.GalaxyResource;
 import com.waverunnah.swg.harvesterdroid.xml.BaseXml;

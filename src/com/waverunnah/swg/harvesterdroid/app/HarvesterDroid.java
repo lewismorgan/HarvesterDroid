@@ -200,7 +200,7 @@ public class HarvesterDroid {
 
 	public List<GalaxyResource> findGalaxyResourcesById(String id) {
 		List<String> resourceGroups = Launcher.getResourceGroups(id);
-		Collection<GalaxyResource> galaxyResourceList = downloader.getCurrentResources();
+		Collection<GalaxyResource> galaxyResourceList = resources.get();
 		if (resourceGroups != null) {
 			List<GalaxyResource> master = new ArrayList<>();
 			for (String group : resourceGroups) {

@@ -107,8 +107,10 @@ public class ResourceListItem extends HBox {
 		if (url == null) {
 			container = container.split("_")[0];
 			url = getClass().getResource("images/resources/" + container + ".png");
-			if (url == null)
+			if (url == null) {
+				System.out.println("Could not find image images/resources/" + container + ".png");
 				return null;
+			}
 		}
 		return new Image(url.toString());
 	}

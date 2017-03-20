@@ -3,8 +3,8 @@ package com.waverunnah.swg.harvesterdroid.downloaders;
 import com.waverunnah.swg.harvesterdroid.data.resources.GalaxyResource;
 import com.waverunnah.swg.harvesterdroid.gui.dialog.ExceptionDialog;
 import com.waverunnah.swg.harvesterdroid.xml.app.ResourceXml;
-import com.waverunnah.swg.harvesterdroid.xml.galacticharvester.HarvesterCurrentResourcesXml;
-import com.waverunnah.swg.harvesterdroid.xml.galacticharvester.HarvesterResourceXml;
+import com.waverunnah.swg.harvesterdroid.xml.galaxyharvester.HarvesterCurrentResourcesXml;
+import com.waverunnah.swg.harvesterdroid.xml.galaxyharvester.HarvesterResourceXml;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.DocumentBuilderFactory;
