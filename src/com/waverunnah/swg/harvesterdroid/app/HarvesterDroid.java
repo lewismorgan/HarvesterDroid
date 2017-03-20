@@ -112,8 +112,6 @@ public class HarvesterDroid {
 		addedSchematics.stream().filter(schematic -> !groups.contains(schematic.getGroup()))
 				.forEach(match -> groups.add(match.getGroup()));
 		filterResourcesForSchematic(activeSchematic.get());
-		if (activeGroup.get() != null && groups.size() > 1 && schematics.size() > 1)
-			filteredSchematics.setPredicate(schematic -> schematic.getGroup().equals(activeGroup.get()));
 	}
 
 	private void onSchematicsRemoved(List<? extends Schematic> removedSchematics) {
