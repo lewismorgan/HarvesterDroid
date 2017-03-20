@@ -15,7 +15,7 @@ import java.util.List;
 
 
 /**
- * Class for reading and saving schematic xml's unique to this program
+ * Class for reading and saving Harvester Droid Schematic XML's
  */
 public class SchematicsXml extends BaseXml {
 	private List<Schematic> schematics = new ArrayList<>();
@@ -66,7 +66,7 @@ public class SchematicsXml extends BaseXml {
 	private void createModifierElement(Document document, Element modifiers, Schematic.Modifier modifier) {
 		Element self = document.createElement("modifier");
 		self.setAttribute("id", modifier.getName());
-		self.setAttribute("value", Float.toString(modifier.getValue()));
+		self.setAttribute("value", Integer.toString(modifier.getValue()));
 		modifiers.appendChild(self);
 	}
 
@@ -107,7 +107,7 @@ public class SchematicsXml extends BaseXml {
 				return;
 
 			schematic.getModifiers().add(new Schematic.Modifier(((Element) child).getAttribute("id"),
-					Float.parseFloat(((Element) child).getAttribute("value"))));
+					Integer.parseInt(((Element) child).getAttribute("value"))));
 		});
 	}
 

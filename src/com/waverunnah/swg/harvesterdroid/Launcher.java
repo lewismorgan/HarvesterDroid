@@ -25,7 +25,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 public class Launcher extends Application {
-	private static final boolean IGNORE_UNCAUGHT_EXCEPTIONS = false;
+	private static final boolean IGNORE_UNCAUGHT_EXCEPTIONS = true;
 	// TODO Finish refactoring business logic into HarvesterDroid
 
 	public static String ROOT_DIR = System.getProperty("user.home").replace("\\", "/") + "/.harvesterdroid";
@@ -73,7 +73,7 @@ public class Launcher extends Application {
         Parent root = FXMLLoader.load(getClass().getResource("gui/main.fxml"));
         primaryStage.setTitle("Harvester Droid");
         primaryStage.setScene(new Scene(root));
-		primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("gui/images/icon.png")));
+		primaryStage.getIcons().add(getAppIcon());
         primaryStage.show();
 
 		primaryStage.setOnCloseRequest(e -> {
@@ -165,4 +165,8 @@ public class Launcher extends Application {
 	public static List<String> getResourceGroups(String group) {
 		return resourceGroups.get(group);
 	}
+
+    public static Image getAppIcon() {
+        return new Image(Launcher.class.getResourceAsStream("gui/images/icon.png"));
+    }
 }

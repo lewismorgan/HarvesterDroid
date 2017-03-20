@@ -10,10 +10,13 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 
 import java.net.URL;
@@ -24,7 +27,7 @@ import java.util.ResourceBundle;
 
 public class SchematicDialogController extends VBox implements Initializable {
 
-	private ObservableList<String> availableModifiers = FXCollections.observableArrayList(Attributes.get());
+	private FilteredList<String> availableModifiers = new FilteredList<>(FXCollections.observableArrayList(Attributes.get()));
 
 	@FXML
 	TextField nameField;
@@ -50,6 +53,8 @@ public class SchematicDialogController extends VBox implements Initializable {
 	private ObjectProperty<Schematic> schematic = new SimpleObjectProperty<>(null);
 
 	public void readSchematic(Schematic schematic) {
+		if (schematic == null)
+			System.err.println("Trying to read a null schematic!");
 		this.schematic.set(schematic);
 
 		nameField.textProperty().bindBidirectional(schematic.nameProperty());
@@ -65,40 +70,25 @@ public class SchematicDialogController extends VBox implements Initializable {
 
 		removeResourceButton.disableProperty().bind(Bindings.isEmpty(resourceListView.getSelectionModel().getSelectedItems()));
 
-		// Remove modifiers that are being used by the schematic
-		schematic.getModifiers().stream()
-				.filter(modifier -> availableModifiers.contains(modifier.getName()))
-				.forEach(modifier -> availableModifiers.remove(modifier.getName()));
-
-		// listen to property change for already existing entries
-		schematic.getModifiers().forEach(modifier -> modifier.nameProperty().addListener((observable, oldValue, newValue) -> {
-			if (!oldValue.equals(newValue)) {
-				availableModifiers.add(oldValue);
-				availableModifiers.remove(newValue);
-			}
-		}));
-
-		// listener for modifier list that will remove/add modifier names that are used/unused by schematic
 		schematic.getModifiers().addListener((ListChangeListener<? super Schematic.Modifier>) c -> {
 			while (c.next()) {
-				String selectedItem = addModifierComboBox.getSelectionModel().getSelectedItem();
-				if (c.wasAdded()) {
-					c.getAddedSubList().stream()
-							.filter(modifier -> availableModifiers.contains(modifier.getName()))
-							.forEach(modifier -> {
-								if (selectedItem.equals(modifier.getName()))
-									addModifierComboBox.getSelectionModel().select(availableModifiers.size() - 1);
-								availableModifiers.remove(modifier.getName());
-							});
-				} else if (c.wasRemoved()) {
-					c.getRemoved().forEach(modifier ->  {
-						availableModifiers.add(modifier.getName());
-						if (selectedItem == null)
-							addModifierComboBox.getSelectionModel().select(0);
-					});
-				}
+				filterModifiers((ObservableList<Schematic.Modifier>) c.getList());
 			}
 		});
+
+		filterModifiers(schematic.getModifiers());
+	}
+
+	private void filterModifiers(ObservableList<Schematic.Modifier> modifiers) {
+		addModifierComboBox.getSelectionModel().clearSelection();
+		availableModifiers.setPredicate(avail -> {
+			for (Schematic.Modifier modifier : modifiers) {
+				if (modifier.getName().equals(avail))
+					return false;
+			}
+			return true;
+		});
+		addModifierComboBox.getSelectionModel().selectFirst();
 	}
 
 	public void addResource() {
@@ -143,7 +133,7 @@ public class SchematicDialogController extends VBox implements Initializable {
 				return;
 		}
 
-		schematic.getModifiers().add(new Schematic.Modifier(modifier, 0f));
+		schematic.getModifiers().add(new Schematic.Modifier(modifier, 0));
 	}
 
 	public void removeAttribute() {
@@ -159,51 +149,63 @@ public class SchematicDialogController extends VBox implements Initializable {
 	}
 	@SuppressWarnings("unchecked")
 	private void createColumns() {
-		Schematic schematic = getSchematic();
-
 		TableColumn<Schematic.Modifier, String> attributeColumn = new TableColumn<>("Attribute");
-		TableColumn<Schematic.Modifier, Float> percentColumn = new TableColumn<>("Value");
+		TableColumn<Schematic.Modifier, Integer> valueColumn = new TableColumn<>("Value");
 
 		attributeColumn.setOnEditCommit((TableColumn.CellEditEvent<Schematic.Modifier, String> val) -> {
-			Optional<Schematic.Modifier> existing = schematic.getModifiers().stream().filter(modifier -> modifier.getName().equals(val.getNewValue())).findFirst();
-			if (!existing.isPresent())
+			Optional<Schematic.Modifier> existing = getSchematic().getModifiers().stream().filter(modifier -> modifier.getName().equals(val.getNewValue())).findFirst();
+			if (!existing.isPresent()) {
 				val.getTableView().getItems().get(val.getTablePosition().getRow()).setName(val.getNewValue());
+				filterModifiers(val.getTableView().getItems());
+			}
 		});
 
 		attributeColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
 		attributeColumn.setCellFactory(param -> new ModifierBoxEditingCell());
 
-		percentColumn.setCellValueFactory(new PropertyValueFactory<>("value"));
-		percentColumn.setCellFactory(param -> new PercentEditingCell());
+		valueColumn.setCellValueFactory(new PropertyValueFactory<>("value"));
+		valueColumn.setCellFactory(param -> new PercentEditingCell());
 
-		percentColumn.setOnEditCommit(val -> {
-			if (!isModifiersAboveCap(val.getTableView().getItems(), val.getNewValue(), val.getRowValue())) {
+		valueColumn.setOnEditCommit(val -> {
+			if (isModifiersBetweenCap(val.getTableView().getItems(), val.getNewValue(), val.getRowValue())) {
 				val.getTableView().getItems().get(val.getTablePosition().getRow()).setValue(val.getNewValue());
 			}
 		});
 
-		attributesTableView.getColumns().addAll(attributeColumn, percentColumn);
+		attributesTableView.getColumns().addAll(attributeColumn, valueColumn);
 	}
 
-	private boolean isModifiersAboveCap(List<Schematic.Modifier> modifiers, float newVal, Schematic.Modifier change) {
-		float total = (newVal - change.getValue());
+	private boolean isModifiersBetweenCap(List<Schematic.Modifier> modifiers, int newVal, Schematic.Modifier change) {
+		int total = (newVal - change.getValue());
 		for (Schematic.Modifier modifier : modifiers) {
 			total += modifier.getValue();
 		}
-		return total > 100.0f;
+		return total >= 100 || total <= 100;
 	}
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		SchematicDialog.setController(this);
+		createAttributesTable();
+	}
+
+	private void createAttributesTable() {
 		createColumns();
+
+		attributesTableView.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+			if (event.getButton() != MouseButton.PRIMARY)
+				return;
+
+			TablePosition focusedCellPosition = attributesTableView.getFocusModel().getFocusedCell();
+			attributesTableView.edit(focusedCellPosition.getRow(), focusedCellPosition.getTableColumn());
+		});
 	}
 
 	public Schematic getSchematic() {
 		return schematic.get();
 	}
 
-	class PercentEditingCell extends TableCell<Schematic.Modifier, Float> {
+	class PercentEditingCell extends TableCell<Schematic.Modifier, Integer> {
 		private IntegerTextField textField;
 
 		@Override
@@ -226,7 +228,7 @@ public class SchematicDialogController extends VBox implements Initializable {
 		}
 
 		@Override
-		public void updateItem(Float item, boolean empty) {
+		public void updateItem(Integer item, boolean empty) {
 			super.updateItem(item, empty);
 
 			if (empty) {

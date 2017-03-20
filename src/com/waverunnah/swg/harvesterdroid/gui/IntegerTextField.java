@@ -1,11 +1,12 @@
 package com.waverunnah.swg.harvesterdroid.gui;
 
-import javafx.beans.property.FloatProperty;
 import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleFloatProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
+
+import java.text.NumberFormat;
+import java.text.ParseException;
 
 public final class IntegerTextField extends TextField {
 	final private IntegerProperty value;
@@ -13,7 +14,7 @@ public final class IntegerTextField extends TextField {
 	final private float maxValue;
 
 	// expose an integer value property for the text field.
-	public float  getValue()                 { return value.getValue(); }
+	public int  getValue()                 { return value.getValue(); }
 	public void setValue(float newValue)     { value.setValue(newValue); }
 	public IntegerProperty valueProperty() { return value; }
 
@@ -35,7 +36,7 @@ public final class IntegerTextField extends TextField {
 		this.minValue = minValue;
 		this.maxValue = maxValue;
 		value = new SimpleIntegerProperty(initialValue);
-		setText(initialValue + "");
+		setText(String.valueOf(initialValue));
 
 		final IntegerTextField integerTextField = this;
 
@@ -75,13 +76,17 @@ public final class IntegerTextField extends TextField {
 				return;
 			}
 
-			final float floatValue = Float.parseFloat(newValue);
-
-			if (integerTextField.minValue > floatValue || floatValue > integerTextField.maxValue) {
+			int intValue = Integer.parseInt(newValue);
+			if (integerTextField.minValue > intValue || intValue > integerTextField.maxValue) {
 				textProperty().setValue(oldValue);
 			}
 
-			value.set(Integer.parseInt(newValue));
+			try {
+				int finalValue = NumberFormat.getInstance().parse(newValue).intValue();
+				value.set(finalValue);
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
 		});
 	}
 }

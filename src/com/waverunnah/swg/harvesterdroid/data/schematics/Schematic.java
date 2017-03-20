@@ -1,11 +1,13 @@
 package com.waverunnah.swg.harvesterdroid.data.schematics;
 
-import javafx.beans.Observable;
-import javafx.beans.property.*;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.ListProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleListProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.collections.ObservableMap;
-import javafx.util.Callback;
 
 public class Schematic {
 
@@ -19,7 +21,7 @@ public class Schematic {
 		schematic.setName("Default");
 		schematic.setGroup("Default");
 		schematic.getResources().add("iron");
-		schematic.getModifiers().add(new Modifier("overall_quality", 33f));
+		schematic.getModifiers().add(new Modifier("overall_quality", 33));
 		return schematic;
 	}
 
@@ -83,9 +85,9 @@ public class Schematic {
 
 	public static class Modifier {
 		private StringProperty name = new SimpleStringProperty();
-		private FloatProperty value = new SimpleFloatProperty();
+		private IntegerProperty value = new SimpleIntegerProperty();
 
-		public Modifier(String name, float value) {
+		public Modifier(String name, int value) {
 			setName(name);
 			setValue(value);
 		}
@@ -102,15 +104,15 @@ public class Schematic {
 			this.name.set(name);
 		}
 
-		public float getValue() {
+		public int getValue() {
 			return value.get();
 		}
 
-		public FloatProperty valueProperty() {
+		public IntegerProperty valueProperty() {
 			return value;
 		}
 
-		public void setValue(float value) {
+		public void setValue(int value) {
 			this.value.set(value);
 		}
 	}
