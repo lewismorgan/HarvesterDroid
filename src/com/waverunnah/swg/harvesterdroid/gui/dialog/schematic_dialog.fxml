@@ -17,13 +17,13 @@
    <children>
       <HBox spacing="5.0">
          <children>
-            <Label text="Name">
+            <Label text="Name" HBox.hgrow="ALWAYS">
                <HBox.margin>
                   <Insets top="5.0" />
                </HBox.margin>
             </Label>
-            <TextField fx:id="nameField" />
-            <Label text="Group">
+            <TextField fx:id="nameField" HBox.hgrow="ALWAYS" />
+            <Label text="Group" HBox.hgrow="ALWAYS">
                <HBox.margin>
                   <Insets top="5.0" />
                </HBox.margin>
@@ -31,7 +31,7 @@
                   <Insets left="5.0" />
                </padding>
             </Label>
-            <TextField fx:id="groupField" />
+            <TextField fx:id="groupField" promptText="Enter a group name" HBox.hgrow="ALWAYS" />
          </children>
       </HBox>
       <HBox layoutX="10.0" layoutY="10.0" spacing="5.0">

@@ -19,7 +19,7 @@ import org.controlsfx.control.StatusBar;
 import javax.xml.transform.TransformerException;
 import java.io.IOException;
 import java.net.URL;
-import java.util.*;
+import java.util.ResourceBundle;
 
 public class MainController implements Initializable {
 	private HarvesterDroid app;

@@ -4,6 +4,7 @@ import com.waverunnah.swg.harvesterdroid.Launcher;
 import com.waverunnah.swg.harvesterdroid.data.schematics.Schematic;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
@@ -50,6 +51,9 @@ public class SchematicDialog extends Dialog<Schematic> {
 	private void setupButtons() {
 		ButtonType saveButtonType = new ButtonType("Save", ButtonBar.ButtonData.APPLY);
 		getDialogPane().getButtonTypes().addAll(saveButtonType, ButtonType.CANCEL);
+
+		Button saveButton = (Button) getDialogPane().lookupButton(saveButtonType);
+		saveButton.setDefaultButton(true);
 
 		setResultConverter(buttonType -> {
 			if (buttonType != saveButtonType)

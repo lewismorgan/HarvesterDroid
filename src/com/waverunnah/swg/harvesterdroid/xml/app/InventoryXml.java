@@ -1,6 +1,5 @@
 package com.waverunnah.swg.harvesterdroid.xml.app;
 
-import com.waverunnah.swg.harvesterdroid.data.resources.GalaxyResource;
 import com.waverunnah.swg.harvesterdroid.xml.BaseXml;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -36,8 +35,6 @@ public class InventoryXml extends BaseXml {
 
 			inventory.add(name.getTextContent());
 		});
-
-		inventory.forEach(System.out::println);
 	}
 
 	@Override

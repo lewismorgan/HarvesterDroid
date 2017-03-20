@@ -61,12 +61,17 @@ public class SchematicDialogController extends VBox implements Initializable {
 		resourceListView.itemsProperty().bindBidirectional(schematic.resourcesProperty());
 		groupField.textProperty().bindBidirectional(schematic.groupProperty());
 		attributesTableView.itemsProperty().bindBidirectional(schematic.modifiersProperty());
+		attributesTableView.disableProperty().bind(Bindings.isEmpty(schematic.getModifiers()));
+
+        resourceListView.itemsProperty().bindBidirectional(schematic.resourcesProperty());
+        resourceListView.disableProperty().bind(Bindings.isEmpty(schematic.getResources()));
 
 		removeAttributeButton.disableProperty().bind(Bindings.isEmpty(attributesTableView.getSelectionModel().getSelectedItems()));
 		addAttributeButton.disableProperty().bind(Bindings.isEmpty(availableModifiers));
+
 		addModifierComboBox.setItems(availableModifiers);
 		addModifierComboBox.disableProperty().bind(Bindings.isEmpty(availableModifiers));
-		addModifierComboBox.getSelectionModel().select(availableModifiers.size() - 1);
+		addModifierComboBox.getSelectionModel().select(0);
 
 		removeResourceButton.disableProperty().bind(Bindings.isEmpty(resourceListView.getSelectionModel().getSelectedItems()));
 
@@ -125,12 +130,24 @@ public class SchematicDialogController extends VBox implements Initializable {
 		if (modifier == null || modifier.isEmpty())
 			return;
 
+		int total = 0;
 		for (Schematic.Modifier existing : schematic.getModifiers()) {
-			if (existing.getName().equals(modifier))
-				return;
+			if (existing.getName().equals(modifier)) {
+                return;
+            }
+            total += existing.getValue();
 		}
 
-		schematic.getModifiers().add(new Schematic.Modifier(modifier, 0));
+		// divide last mod by number mods so total always = 100
+		if (total >= 100) {
+            Schematic.Modifier lastMod = schematic.getModifiers().get(schematic.getModifiers().size() - 1);
+            int oldValue = lastMod.getValue();
+            total -= oldValue;
+            lastMod.setValue(Math.round(lastMod.getValue() / (schematic.getModifiers().size() + 1)));
+            total += lastMod.getValue();
+        }
+
+		schematic.getModifiers().add(new Schematic.Modifier(modifier, 100 - total));
 	}
 
 	public void removeAttribute() {
@@ -142,7 +159,19 @@ public class SchematicDialogController extends VBox implements Initializable {
 		if (selected == null)
 			return;
 
-		schematic.getModifiers().remove(selected);
+		if (schematic.getModifiers().size() > 1) {
+            Schematic.Modifier mod = null;
+            for (Schematic.Modifier modifier : schematic.getModifiers()) {
+                if (modifier != selected) {
+                    mod = modifier;
+                    break;
+                }
+            }
+            if (mod != null)
+                mod.setValue(mod.getValue() + selected.getValue());
+        }
+
+        schematic.getModifiers().remove(selected);
 	}
 	@SuppressWarnings("unchecked")
 	private void createColumns() {
