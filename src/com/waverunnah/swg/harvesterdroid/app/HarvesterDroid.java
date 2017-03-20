@@ -49,6 +49,7 @@ public class HarvesterDroid {
 
 	private StringProperty activeGroup;
 	private ObjectProperty<Schematic> activeSchematic;
+	private BooleanProperty displayingAllGroups;
 
 	public HarvesterDroid(String schematicsXmlPath, String inventoryXmlPath, Downloader downloader) {
 		this.schematicsXmlPath = schematicsXmlPath;
@@ -67,12 +68,12 @@ public class HarvesterDroid {
 		this.schematics.addAll(schematics);
 		filteredSchematics = new FilteredList<>(this.schematics.get(), schematic -> true);
 		activeSchematic = new SimpleObjectProperty<>(null);
+		displayingAllGroups = new SimpleBooleanProperty(true);
 		initGroups();
 	}
 
 	private void initGroups() {
 		groups = new SimpleListProperty<>(FXCollections.observableArrayList());
-		groups.add("All");
 		activeGroup = new SimpleStringProperty();
 	}
 
@@ -96,6 +97,13 @@ public class HarvesterDroid {
 							resources.add(galaxyResource);
 					});
 				}
+			}
+		});
+		displayingAllGroups.addListener((observable, oldValue, newValue) -> {
+			if (newValue)
+				filteredSchematics.setPredicate(schematic -> newValue);
+			else {
+				filteredSchematics.setPredicate(schematic -> schematic.getGroup().equals(activeGroup.get()));
 			}
 		});
 	}
@@ -126,7 +134,7 @@ public class HarvesterDroid {
 
 	private void onActiveGroupChanged(ObservableValue<? extends String> observable, String oldValue, String newValue) {
 		// Filtered list doesn't like to be sorted when there is only one item in it, it'll throw index exceptions
-		if(newValue == null || newValue.equals("All") || (newValue.length() == 0 && schematics.size() > 1)) {
+		if(newValue == null || (newValue.length() == 0 && schematics.size() > 1)) {
 			filteredSchematics.setPredicate(schematic -> true);
 		} else if (schematics.size() > 1) {
 			filteredSchematics.setPredicate(schematic -> schematic.getGroup().equals(newValue));
@@ -139,7 +147,6 @@ public class HarvesterDroid {
 
 		List<GalaxyResource> bestResources = getBestResourcesList(schematic);
 		filteredResources.setPredicate(bestResources::contains);
-
 	}
 
 	private List<GalaxyResource> getBestResourcesList(Schematic schematic) {
@@ -340,5 +347,9 @@ public class HarvesterDroid {
 
 	public ObjectProperty<Schematic> activeSchematicProperty() {
 		return activeSchematic;
+	}
+
+	public BooleanProperty displayingAllGroupsProperty() {
+		return displayingAllGroups;
 	}
 }

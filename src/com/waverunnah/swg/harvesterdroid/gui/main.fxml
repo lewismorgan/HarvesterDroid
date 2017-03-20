@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.waverunnah.swg.harvesterdroid.gui.components.inventory.InventoryControl?>
+<?import com.waverunnah.swg.harvesterdroid.gui.components.schematics.SchematicsControl?>
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ButtonBar?>
-<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.Menu?>
@@ -18,7 +16,6 @@
 <?import javafx.scene.layout.VBox?>
 <?import org.controlsfx.control.StatusBar?>
 
-<?import com.waverunnah.swg.harvesterdroid.gui.components.schematics.SchematicsControl?>
 <VBox prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.waverunnah.swg.harvesterdroid.gui.MainController">
    <children>
       <MenuBar VBox.vgrow="ALWAYS">
@@ -63,7 +60,10 @@
                <children>
                   <TitledPane alignment="TOP_LEFT" animated="false" collapsible="false" nodeOrientation="LEFT_TO_RIGHT" text="Schematics" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <content>
-                        <SchematicsControl fx:id="schematicsControl"/>
+                        <SchematicsControl fx:id="schematicsControl">
+                           <padding>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                           </padding></SchematicsControl>
                      </content>
                   </TitledPane>
                </children>
@@ -75,15 +75,11 @@
                <children>
                   <TitledPane fx:id="bestResourcesPane" alignment="TOP_LEFT" animated="false" collapsible="false" nodeOrientation="LEFT_TO_RIGHT" text="Best Resources" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <content>
-                        <VBox>
-                           <children>
-                              <ListView fx:id="bestResourcesListView" disable="true" VBox.vgrow="ALWAYS">
-                                  <placeholder>
-                                      <Label text="Select a schematic to view the Best Resources" />
-                                  </placeholder>
-                              </ListView>
-                           </children>
-                        </VBox>
+                        <ListView fx:id="bestResourcesListView" disable="true">
+                            <placeholder>
+                                <Label text="Select a schematic to view the Best Resources" />
+                            </placeholder>
+                        </ListView>
                      </content>
                   </TitledPane>
                </children>

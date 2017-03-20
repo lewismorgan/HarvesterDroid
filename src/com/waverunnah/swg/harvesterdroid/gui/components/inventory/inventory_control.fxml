@@ -16,7 +16,7 @@
       </ListView>
       <ButtonBar prefHeight="40.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
         <buttons>
-          <Button fx:id="removeButton" mnemonicParsing="false" text="Remove" onAction="#removeSelectedResource"/>
+          <Button fx:id="removeButton" disable="true" mnemonicParsing="false" text="Remove" onAction="#removeSelectedResource"/>
             <Button fx:id="addButton" layoutX="135.0" layoutY="18.0" mnemonicParsing="false" text="Add" onAction="#addGalaxyResource"/>
         </buttons>
       </ButtonBar>

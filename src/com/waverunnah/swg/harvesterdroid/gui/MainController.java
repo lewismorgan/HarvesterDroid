@@ -22,8 +22,6 @@ import java.net.URL;
 import java.util.*;
 
 public class MainController implements Initializable {
-	// TODO Split each panel into it's own component (inventory, schematics, best resources)
-
 	private HarvesterDroid app;
 
 	@FXML
@@ -43,7 +41,6 @@ public class MainController implements Initializable {
 		initResources();
 		initInventory();
 		initSchematics();
-		initGroups();
 	}
 
 	private void initInventory() {
@@ -58,15 +55,13 @@ public class MainController implements Initializable {
 		bestResourcesListView.setItems(app.getFilteredResources());
 	}
 
-	private void initGroups() {
-		schematicsControl.groupsProperty().bind(app.groupsProperty());
-		app.activeGroupProperty().bind(schematicsControl.activeGroupProperty());
-	}
-
 	private void initSchematics() {
 		app.activeSchematicProperty().bind(schematicsControl.activeSchematicProperty());
-
+		app.activeGroupProperty().bind(schematicsControl.activeGroupProperty());
+		schematicsControl.groupsProperty().bind(app.groupsProperty());
 		schematicsControl.setItems(app.getFilteredSchematics());
+		schematicsControl.disableListViewProperty().bind(app.schematicsProperty().emptyProperty());
+		app.displayingAllGroupsProperty().bind(schematicsControl.disableGroupsProperty());
 	}
 
 	public void save() {

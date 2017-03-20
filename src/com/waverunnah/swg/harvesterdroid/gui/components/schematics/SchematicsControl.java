@@ -2,16 +2,15 @@ package com.waverunnah.swg.harvesterdroid.gui.components.schematics;
 
 import com.waverunnah.swg.harvesterdroid.data.schematics.Schematic;
 import com.waverunnah.swg.harvesterdroid.gui.dialog.SchematicDialog;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.ReadOnlyObjectProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
+import javafx.beans.binding.Bindings;
+import javafx.beans.property.*;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.VBox;
@@ -32,6 +31,8 @@ public class SchematicsControl extends VBox {
 	Button removeSchematicButton;
 	@FXML
 	Button editSchematicButton;
+	@FXML
+	CheckBox checkBoxDisableGroups;
 
 	private ObservableList<Schematic> items;
 	private StringProperty activeGroupProperty = new SimpleStringProperty();
@@ -92,10 +93,15 @@ public class SchematicsControl extends VBox {
 
 			groupComboBox.getSelectionModel().selectFirst();
 		});
+
+		checkBoxDisableGroups.selectedProperty().addListener((observable, oldValue, newValue) -> groupComboBox.disableProperty().set(newValue));
 	}
 
 	private void setup() {
 		createListeners();
+
+		removeSchematicButton.disableProperty().bind(Bindings.isNull(schematicsListView.getSelectionModel().selectedItemProperty()));
+		editSchematicButton.disableProperty().bind(Bindings.isNull(schematicsListView.getSelectionModel().selectedItemProperty()));
 	}
 
 	@FXML
@@ -159,5 +165,17 @@ public class SchematicsControl extends VBox {
 	public void setItems(FilteredList<Schematic> filteredSchematicsList) {
 		this.items = (ObservableList<Schematic>) filteredSchematicsList.getSource();
 		schematicsListView.setItems(filteredSchematicsList);
+	}
+
+	public BooleanProperty disableListViewProperty() {
+		return schematicsListView.disableProperty();
+	}
+
+	public BooleanProperty disableGroupsComboBoxProperty() {
+		return groupComboBox.disableProperty();
+	}
+
+	public BooleanProperty disableGroupsProperty() {
+		return checkBoxDisableGroups.selectedProperty();
 	}
 }
