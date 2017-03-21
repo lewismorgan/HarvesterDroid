@@ -81,7 +81,7 @@ public class ResourceDialogController implements Initializable {
 	}
 
 	public void retrieveStats() {
-		GalaxyResource galaxyResource = Launcher.getApp().getGalaxyResourceByName(nameField.getText());
+		GalaxyResource galaxyResource = Launcher.getApp().retrieveGalaxyResource(nameField.getText());
 		if (galaxyResource == null) {
 			infoLeftLabel.setText("Couldn't find resource");
 			infoRightLabel.textProperty().unbind();

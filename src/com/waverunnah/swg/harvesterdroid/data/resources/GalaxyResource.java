@@ -97,12 +97,12 @@ public class GalaxyResource {
     public StringProperty getPercentageCap(String attribute) {
 	    attribute = Attributes.getAbbreviation(attribute);
 	    if (!capAttributesMap.containsKey(attribute + "max")) {
-            return new SimpleStringProperty("(%)");
+            return new SimpleStringProperty("--");
         }
 
 	    float max = capAttributesMap.get(attribute + "max");
         if (max <= 0)
-            return new SimpleStringProperty("(%)");
+            return new SimpleStringProperty("--");
 
         float min = capAttributesMap.get(attribute + "min");
 

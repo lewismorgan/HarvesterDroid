@@ -32,8 +32,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class HarvesterDroid {
@@ -49,7 +48,7 @@ public class HarvesterDroid {
 	private InventoryXml inventoryXml;
 
 	private ListProperty<GalaxyResource> inventory;
-	private ListProperty<GalaxyResource> resources;
+	private SimpleListProperty<GalaxyResource> resources;
 	private ListProperty<Schematic> schematics;
 	private ListProperty<String> groups;
 
@@ -190,19 +189,18 @@ public class HarvesterDroid {
 	}
 
 	public float getResourceWeightedAverage(List<Schematic.Modifier> modifierList, GalaxyResource resource) {
-		// TODO Calculate w/ expertise resource bonus (+40 pts) if have it
-
-		// TODO Account for resource caps
-
 		float average = 0;
-		for (Schematic.Modifier modifier : modifierList) {
-			int value = resource.getAttribute(modifier.getName());
-			if (value == -1)
-				continue;
-			average = average + (resource.getAttribute(modifier.getName()) * modifier.getValue());
-		}
 
-		return average;
+        for (Schematic.Modifier modifier : modifierList) {
+            float value = resource.getAttribute(modifier.getName());
+            if (value == -1)
+                continue;
+
+            average += (value * (float) modifier.getValue() / 100);
+        }
+
+        average = average / 1000;
+        return average;
 	}
 
 	public List<GalaxyResource> findGalaxyResourcesById(String id) {
@@ -225,30 +223,9 @@ public class HarvesterDroid {
 	}
 
 	public GalaxyResource getGalaxyResourceByName(String name) {
-		for (GalaxyResource galaxyResource : resources) {
-			if (galaxyResource.getName().equals(name))
-				return galaxyResource;
-		}
-		// Doesn't exist, have to download it...
-		return downloadGalaxyResource(name);
+        Optional<GalaxyResource> optional = resources.get().stream().filter(galaxyResource -> galaxyResource.getName().equals(name)).findFirst();
+        return optional.orElse(null);
 	}
-
-    private GalaxyResource downloadGalaxyResource(String name) {
-        GalaxyResource downloaded = downloader.downloadGalaxyResource(name);
-        if (downloaded != null) {
-
-            GalaxyResource toDelete = null;
-            for (GalaxyResource resource : resources) {
-                if (Objects.equals(resource.getName(), downloaded.getName())) {
-                    toDelete = resource;
-                    break;
-                }
-            }
-            resources.remove(toDelete);
-            resources.add(downloaded);
-        }
-        return downloaded;
-    }
 
     public String getLastUpdate() {
 		if (downloader.getCurrentResourcesTimestamp() == null)
@@ -267,17 +244,8 @@ public class HarvesterDroid {
 	public void updateResources() {
 		try {
 			downloader.downloadCurrentResources();
-
-			Map<String, GalaxyResource> currentResources = downloader.getCurrentResourcesMap();
-			List<GalaxyResource> galaxyResources = new ArrayList<>(downloader.getCurrentResources());
-
-			// Keep despawned resources in the list (current resources only provides spawned resources !)
-			for (GalaxyResource galaxyResource : resources) {
-				if (!currentResources.containsKey(galaxyResource.getName()))
-					galaxyResources.add(galaxyResource);
-			}
 			resources.clear();
-			resources.addAll(galaxyResources);
+			resources.addAll(downloader.getCurrentResources());
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -297,27 +265,36 @@ public class HarvesterDroid {
 			e.printStackTrace();
 		}
 
-		schematics.setAll(schematicsXml.getSchematics());
-		inventory.setAll(getInventoryGalaxyResourcesFromXml(inventoryXml));
+        List<GalaxyResource> inventoryResources = new ArrayList<>();
+
+        for (String resource : inventoryXml.getInventory()) {
+            GalaxyResource galaxyResource = getGalaxyResourceByName(resource);
+            if (galaxyResource == null) {
+                GalaxyResource retrievedGalaxyResource = retrieveGalaxyResource(resource);
+                if (retrievedGalaxyResource != null)
+                    inventoryResources.add(retrievedGalaxyResource);
+            }
+        }
+
+        schematics.setAll(schematicsXml.getSchematics());
+        inventory.setAll(inventoryResources);
 	}
 
-	private List<GalaxyResource> getInventoryGalaxyResourcesFromXml(InventoryXml xml) {
-		List<GalaxyResource> inventory = new ArrayList<>();
-		Map<String, GalaxyResource> currentResources = downloader.getCurrentResourcesMap();
-		xml.getInventory().forEach(name -> {
-			if (!currentResources.containsKey(name)) {
-                // TODO Use a generic downloadGalaxyResource method
-                GalaxyResource dlGalaxyResource = downloader.downloadGalaxyResource(name);
-                if (dlGalaxyResource != null && dlGalaxyResource.getName().equals(name))
-                    inventory.add(dlGalaxyResource);
-            } else {
-				inventory.add(currentResources.get(name));
-			}
-		});
-		return inventory;
-	}
+    public GalaxyResource retrieveGalaxyResource(String resource) {
+        GalaxyResource galaxyResource = downloader.downloadGalaxyResource(resource);
+        if (galaxyResource == null)
+            return null;
 
-	public ObservableList<GalaxyResource> getInventory() {
+        GalaxyResource existing = getGalaxyResourceByName(resource);
+        if (existing != null) {
+            resources.remove(existing);
+        }
+
+        resources.add(galaxyResource);
+        return galaxyResource;
+    }
+
+    public ObservableList<GalaxyResource> getInventory() {
 		return inventory.get();
 	}
 
@@ -327,10 +304,6 @@ public class HarvesterDroid {
 
 	public ObservableList<GalaxyResource> getResources() {
 		return resources.get();
-	}
-
-	public ListProperty<GalaxyResource> resourcesProperty() {
-		return resources;
 	}
 
 	public ObservableList<Schematic> getSchematics() {

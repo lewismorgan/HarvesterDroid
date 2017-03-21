@@ -2,28 +2,26 @@ package com.waverunnah.swg.harvesterdroid.data.schematics;
 
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ListProperty;
+import javafx.beans.property.MapProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleListProperty;
+import javafx.beans.property.SimpleMapProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.ObservableMap;
 
 public class Schematic {
-
 	private StringProperty name = new SimpleStringProperty();
 	private StringProperty group = new SimpleStringProperty();
 	private ListProperty<String> resources = new SimpleListProperty<>(FXCollections.observableArrayList());
 	private ListProperty<Modifier> modifiers = new SimpleListProperty<>(FXCollections.observableArrayList());
+	private MapProperty<String, String> resourceWeights = new SimpleMapProperty<>(FXCollections.emptyObservableMap());
 
-	public static Schematic getDefault() {
-		Schematic schematic = new Schematic();
-		schematic.setName("Default");
-		schematic.setGroup("Default");
-		schematic.getResources().add("iron");
-		schematic.getModifiers().add(new Modifier("overall_quality", 33));
-		return schematic;
-	}
+	public Schematic() {
+
+    }
 
 	public String getName() {
 		return name.get();
@@ -78,7 +76,15 @@ public class Schematic {
 				|| getResources().isEmpty() || getModifiers().isEmpty();
 	}
 
-	@Override
+    public ObservableMap<String, String> getResourceWeights() {
+        return resourceWeights.get();
+    }
+
+    public MapProperty<String, String> resourceWeightsProperty() {
+        return resourceWeights;
+    }
+
+    @Override
 	public String toString() {
 		return getName();
 	}

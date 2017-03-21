@@ -1,11 +1,10 @@
 package com.waverunnah.swg.harvesterdroid.app;
 
-import com.waverunnah.swg.harvesterdroid.data.schematics.Schematic;
 import com.waverunnah.swg.harvesterdroid.downloaders.GalaxyHarvesterDownloader;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 public class HarvesterDroidTest {
 	HarvesterDroid app;
@@ -21,8 +20,6 @@ public class HarvesterDroidTest {
 
 	@Test
 	public void addSchematic() throws Exception {
-		app.getSchematics().add(Schematic.getDefault());
-
 		assertTrue(app.getFilteredSchematics().size() == 1);
 	}
 

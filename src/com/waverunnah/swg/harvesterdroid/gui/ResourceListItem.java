@@ -86,7 +86,7 @@ public class ResourceListItem extends HBox {
 	private void createAttributeUI(String simple, IntegerProperty valueProperty, StringProperty percentage) {
 		VBox group = new VBox();
 		group.setAlignment(Pos.CENTER);
-		group.setPadding(new Insets(5.0, 0, 0, 0));
+		group.setPadding(new Insets(5.0, 5, 5, 5));
 		group.disableProperty().bind(valueProperty.isEqualTo(-1));
 
 		Label nameLabel = new Label(simple);
@@ -97,7 +97,7 @@ public class ResourceListItem extends HBox {
 		valueLabel.setContentDisplay(ContentDisplay.CENTER);
 		group.getChildren().add(valueLabel);
 
-		Label percentageLabel = new Label("(%)");
+		Label percentageLabel = new Label("--");
 		percentageLabel.setContentDisplay(ContentDisplay.CENTER);
 		group.getChildren().add(percentageLabel);
 
