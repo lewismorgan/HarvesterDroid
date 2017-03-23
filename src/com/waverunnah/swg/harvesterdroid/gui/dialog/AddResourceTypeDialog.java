@@ -2,7 +2,6 @@ package com.waverunnah.swg.harvesterdroid.gui.dialog;
 
 import com.waverunnah.swg.harvesterdroid.Launcher;
 import javafx.collections.FXCollections;
-import javafx.collections.ListChangeListener;
 import javafx.collections.transformation.FilteredList;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
@@ -22,7 +21,6 @@ import java.util.List;
 public class AddResourceTypeDialog extends Dialog<List<String>> {
     private FilteredList<String> filteredList;
     private CheckListView<String> listView;
-    private TextField searchTermField;
 
     public AddResourceTypeDialog(List<String> resourceTypes) {
         super();
@@ -56,10 +54,8 @@ public class AddResourceTypeDialog extends Dialog<List<String>> {
 
 
         listView = new CheckListView<>();
-        listView.getCheckModel().getCheckedItems().addListener((ListChangeListener<String>) c ->
-                System.out.println(listView.getCheckModel().getCheckedItems()));
 
-        searchTermField = new TextField();
+        TextField searchTermField = new TextField();
         searchTermField.setPromptText("Enter a resource type");
         searchTermField.setPadding(new Insets(5,5,5,5));
         searchTermField.textProperty().addListener((observable, oldValue, newValue) -> {
@@ -67,7 +63,19 @@ public class AddResourceTypeDialog extends Dialog<List<String>> {
                 return;
 
             if (!newValue.isEmpty())
-                filteredList.setPredicate(item -> item.contains(newValue));
+                filteredList.setPredicate(str -> {
+                    if(str == null) return false;
+
+                    final int length = newValue.length();
+                    if (length == 0)
+                        return true;
+
+                    for (int i = str.length() - length; i >= 0; i--) {
+                        if (str.regionMatches(true, i, newValue, 0, length))
+                            return true;
+                    }
+                    return false;
+                });
             else
                 filteredList.setPredicate(item -> true);
         });

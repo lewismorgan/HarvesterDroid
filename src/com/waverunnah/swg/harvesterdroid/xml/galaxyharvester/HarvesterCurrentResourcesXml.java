@@ -45,7 +45,7 @@ public final class HarvesterCurrentResourcesXml extends CurrentResourcesXml {
 					galaxyResource.setDate(child.getTextContent());
 					break;
 				case "resource_type":
-					galaxyResource.setResourceType(((Element) child).getAttribute("id"));
+					galaxyResource.setResourceTypeString(((Element) child).getAttribute("id"));
 					break;
 				case "group_id":
 					galaxyResource.setContainer(child.getTextContent());

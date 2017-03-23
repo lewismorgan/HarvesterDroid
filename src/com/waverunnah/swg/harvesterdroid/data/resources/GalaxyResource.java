@@ -11,7 +11,7 @@ import java.util.*;
 public class GalaxyResource {
     private StringProperty name = new SimpleStringProperty();
     private StringProperty date = new SimpleStringProperty();
-    private StringProperty resourceType = new SimpleStringProperty();
+    private ObjectProperty<ResourceType> resourceType = new SimpleObjectProperty<>();
     private StringProperty container = new SimpleStringProperty();
 	private StringProperty despawnDate = new SimpleStringProperty();
 
@@ -19,6 +19,8 @@ public class GalaxyResource {
     private ObservableMap<String, IntegerProperty> attributes;
 
     private Map<String, Integer> capAttributesMap = new HashMap<>();
+
+    private StringProperty resourceTypeString = new SimpleStringProperty();
 
 	public GalaxyResource() {
 		Map<String, IntegerProperty> attributesMap = new HashMap<>(Attributes.size());
@@ -50,19 +52,31 @@ public class GalaxyResource {
 		this.date.set(date);
 	}
 
-	public String getResourceType() {
-		return resourceType.get();
-	}
+    public ResourceType getResourceType() {
+        return resourceType.get();
+    }
 
-	public StringProperty resourceTypeProperty() {
-		return resourceType;
-	}
+    public ObjectProperty<ResourceType> resourceTypeProperty() {
+        return resourceType;
+    }
 
-	public void setResourceType(String resourceType) {
-		this.resourceType.set(resourceType);
-	}
+    public String getResourceTypeString() {
+        return resourceTypeString.get();
+    }
 
-	public String getContainer() {
+    public StringProperty resourceTypeStringProperty() {
+        return resourceTypeString;
+    }
+
+    public void setResourceTypeString(String resourceTypeString) {
+        this.resourceTypeString.set(resourceTypeString);
+    }
+
+    public void setResourceType(ResourceType resourceType) {
+        this.resourceType.set(resourceType);
+    }
+
+    public String getContainer() {
 		return container.get();
 	}
 
@@ -143,4 +157,8 @@ public class GalaxyResource {
 	public int getAttribute(String name) {
 		return attributes.get(name).getValue();
 	}
+
+    public void setCapAttributesMap(Map<String, Integer> capAttributesMap) {
+        this.capAttributesMap = capAttributesMap;
+    }
 }

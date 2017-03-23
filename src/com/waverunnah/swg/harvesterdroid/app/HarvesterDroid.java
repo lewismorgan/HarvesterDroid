@@ -2,6 +2,7 @@ package com.waverunnah.swg.harvesterdroid.app;
 
 import com.waverunnah.swg.harvesterdroid.Launcher;
 import com.waverunnah.swg.harvesterdroid.data.resources.GalaxyResource;
+import com.waverunnah.swg.harvesterdroid.data.resources.ResourceType;
 import com.waverunnah.swg.harvesterdroid.data.schematics.Schematic;
 import com.waverunnah.swg.harvesterdroid.downloaders.Downloader;
 import com.waverunnah.swg.harvesterdroid.xml.app.InventoryXml;
@@ -32,6 +33,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -45,6 +47,8 @@ public class HarvesterDroid {
 
 	private final String schematicsXmlPath;
 	private final String inventoryXmlPath;
+
+	private final HarvesterDroidData data;
 
 	private final Downloader downloader;
 
@@ -66,9 +70,10 @@ public class HarvesterDroid {
 		this.inventoryXmlPath = inventoryXmlPath;
 		this.downloader = downloader;
 		this.currentResourceTimestamp = new SimpleStringProperty();
+		this.data = new HarvesterDroidData();
 		init(new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
 		createListeners();
-	}
+    }
 
 	private void init(Collection<Schematic> schematics, Collection<GalaxyResource> resources, Collection<GalaxyResource> inventory) {
 		this.inventory = new SimpleListProperty<>(FXCollections.observableArrayList(inventory));
@@ -164,14 +169,14 @@ public class HarvesterDroid {
 			List<GalaxyResource> master = new ArrayList<>();
 			for (String group : resourceGroups) {
 				master.addAll(galaxyResourceList.stream()
-						.filter(galaxyResource -> galaxyResource.getResourceType().startsWith(group)
-								|| galaxyResource.getResourceType().equals(group))
+						.filter(galaxyResource -> galaxyResource.getResourceType().getName().startsWith(group)
+								|| galaxyResource.getResourceType().getName().equals(group))
 						.collect(Collectors.toList()));
 			}
 			return master;
 		} else {
 			return galaxyResourceList.stream().filter(galaxyResource ->
-					galaxyResource.getResourceType().equals(id) || galaxyResource.getResourceType().startsWith(id)
+					galaxyResource.getResourceType().getName().equals(id) || galaxyResource.getResourceType().getName().startsWith(id)
 			).collect(Collectors.toList());
 		}
 	}
@@ -208,7 +213,11 @@ public class HarvesterDroid {
             }
 
 			downloader.downloadCurrentResources();
-			resources.clear();
+            for (GalaxyResource downloadedResource : downloader.getCurrentResources()) {
+                populateResourceFromType(downloadedResource);
+            }
+
+            resources.clear();
 			resources.addAll(downloader.getCurrentResources());
 			currentResourceTimestamp.set(downloader.getCurrentResourcesTimestamp().toString());
 		} catch (IOException e) {
@@ -234,11 +243,10 @@ public class HarvesterDroid {
 
         for (String resource : inventoryXml.getInventory()) {
             GalaxyResource galaxyResource = getGalaxyResourceByName(resource);
-            if (galaxyResource == null) {
-                GalaxyResource retrievedGalaxyResource = retrieveGalaxyResource(resource);
-                if (retrievedGalaxyResource != null)
-                    inventoryResources.add(retrievedGalaxyResource);
-            }
+            if (galaxyResource == null)
+                galaxyResource = retrieveGalaxyResource(resource);
+            if (galaxyResource != null)
+                inventoryResources.add(galaxyResource);
         }
 
         schematics.setAll(schematicsXml.getSchematics());
@@ -246,17 +254,24 @@ public class HarvesterDroid {
 	}
 
     public GalaxyResource retrieveGalaxyResource(String resource) {
+        GalaxyResource existing = getGalaxyResourceByName(resource);
+        if (existing != null) {
+            return existing;
+        }
+
         GalaxyResource galaxyResource = downloader.downloadGalaxyResource(resource);
         if (galaxyResource == null)
             return null;
 
-        GalaxyResource existing = getGalaxyResourceByName(resource);
-        if (existing != null) {
-            resources.remove(existing);
-        }
-
+        populateResourceFromType(galaxyResource);
         resources.add(galaxyResource);
         return galaxyResource;
+    }
+
+    private void populateResourceFromType(GalaxyResource galaxyResource) {
+        ResourceType type = data.getResourceTypeMap().get(galaxyResource.getResourceTypeString());
+        galaxyResource.setCapAttributesMap(type.getMinMaxMap());
+        galaxyResource.setResourceType(type);
     }
 
     public ObservableList<GalaxyResource> getInventory() {
@@ -297,5 +312,11 @@ public class HarvesterDroid {
 
     public ReadOnlyStringProperty currentResourceTimestampProperty() {
         return currentResourceTimestamp;
+    }
+
+    public List<String> getResourceTypes() {
+        List<String> strings = data.getResourceTypeMap().values().stream().map(ResourceType::getFullName).collect(Collectors.toList());
+        Collections.sort(strings);
+        return strings;
     }
 }

@@ -1,6 +1,7 @@
 package com.waverunnah.swg.harvesterdroid.gui;
 
 import com.waverunnah.swg.harvesterdroid.data.resources.GalaxyResource;
+import com.waverunnah.swg.harvesterdroid.data.resources.ResourceType;
 import com.waverunnah.swg.harvesterdroid.gui.converters.ResourceValueConverter;
 import com.waverunnah.swg.harvesterdroid.utils.Attributes;
 import javafx.beans.binding.Bindings;
@@ -17,6 +18,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.util.StringConverter;
 
 import java.io.IOException;
 import java.net.URL;
@@ -64,8 +66,18 @@ public class ResourceListItem extends HBox {
 			return;
 		}
 
-		resourceName.textProperty().bindBidirectional(val.nameProperty());
-		resourceType.textProperty().bindBidirectional(val.resourceTypeProperty());
+		resourceName.textProperty().bind(val.nameProperty());
+		resourceType.textProperty().bindBidirectional(val.resourceTypeProperty(), new StringConverter<ResourceType>() {
+			@Override
+			public String toString(ResourceType object) {
+				return object.getFullName();
+			}
+
+			@Override
+			public ResourceType fromString(String string) {
+				return null;
+			}
+		});
 
 		resourceImage.setImage(getImage(val.containerProperty().get()));
 		val.containerProperty().addListener((observable, oldValue, newValue) -> {

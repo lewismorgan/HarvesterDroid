@@ -16,33 +16,28 @@ import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 import javax.xml.transform.TransformerException;
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.security.CodeSource;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 public class Launcher extends Application {
-	private static final boolean IGNORE_UNCAUGHT_EXCEPTIONS = false;
+	private static final boolean IGNORE_UNCAUGHT_EXCEPTIONS = true;
 	// TODO Finish refactoring business logic into HarvesterDroid
 
 	public static String ROOT_DIR = System.getProperty("user.home").replace("\\", "/") + "/.harvesterdroid";
 	private static String XML_SCHEMATICS = ROOT_DIR + "/schematics.xml";
 	private static String XML_INVENTORY = ROOT_DIR + "/inventory.xml";
 
-	private List<String> resourceTypes = new ArrayList<>();
 	private static Launcher instance;
 
 	private static Stage stage;
@@ -64,14 +59,9 @@ public class Launcher extends Application {
 		if (!new File(ROOT_DIR).exists())
 			new File(ROOT_DIR).mkdir();
 
-		BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(
-				getClass().getResourceAsStream("/com/waverunnah/swg/harvesterdroid/data/raw/types")));
-		resourceTypes = bufferedReader.lines().collect(Collectors.toList());
-		Collections.sort(resourceTypes);
-
 		updateLoadingProgress("Finding the latest resources...", -1);
 		app.updateResources();
-		updateLoadingProgress("Loading saved data...", -1);
+        updateLoadingProgress("Loading saved data...", -1);
 		app.loadSavedData();
 		updateLoadingProgress("Punch it Chewie!", -1.0);
 	}
@@ -101,6 +91,7 @@ public class Launcher extends Application {
             Optional<ButtonType> result = save.showAndWait();
             if (result.isPresent() && result.get().equals(ButtonType.YES))
                 app.save();
+            else System.out.println("Not saving");
 		} catch (IOException | TransformerException e1) {
 			e1.printStackTrace();
 		}
@@ -129,7 +120,7 @@ public class Launcher extends Application {
 	}
 
 	public static List<String> getResourceTypes() {
-		return instance.resourceTypes;
+		return instance.app.getResourceTypes();
 	}
 
 	public static HarvesterDroid getApp() {

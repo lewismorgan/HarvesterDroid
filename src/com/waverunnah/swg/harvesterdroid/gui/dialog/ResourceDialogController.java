@@ -2,6 +2,7 @@ package com.waverunnah.swg.harvesterdroid.gui.dialog;
 
 import com.waverunnah.swg.harvesterdroid.Launcher;
 import com.waverunnah.swg.harvesterdroid.data.resources.GalaxyResource;
+import com.waverunnah.swg.harvesterdroid.data.resources.ResourceType;
 import com.waverunnah.swg.harvesterdroid.gui.converters.ResourceValueConverter;
 import com.waverunnah.swg.harvesterdroid.utils.Attributes;
 import javafx.beans.binding.Bindings;
@@ -18,6 +19,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.util.StringConverter;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -49,7 +51,17 @@ public class ResourceDialogController implements Initializable {
 
 	private void populateFromGalaxyResource(GalaxyResource galaxyResource) {
 		attributesGroup.getChildren().clear();
-		resourceTypeField.textProperty().bind(galaxyResource.resourceTypeProperty());
+		resourceTypeField.textProperty().bindBidirectional(galaxyResource.resourceTypeProperty(), new StringConverter<ResourceType>() {
+			@Override
+			public String toString(ResourceType object) {
+				return object.getFullName();
+			}
+
+			@Override
+			public ResourceType fromString(String string) {
+				return null;
+			}
+		});
 		Attributes.forEach((primary, secondary) -> bindAttribute(primary, galaxyResource.getAttributes().get(primary)));
 
 		When whenUnavailable = Bindings.when(galaxyResource.despawnDateProperty().isNotEmpty());
