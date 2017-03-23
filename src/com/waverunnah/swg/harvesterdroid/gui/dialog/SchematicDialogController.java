@@ -66,15 +66,6 @@ public class SchematicDialogController extends VBox implements Initializable {
         resourceListView.itemsProperty().bindBidirectional(schematic.resourcesProperty());
         resourceListView.disableProperty().bind(Bindings.isEmpty(schematic.getResources()));
 
-		removeAttributeButton.disableProperty().bind(Bindings.isEmpty(attributesTableView.getSelectionModel().getSelectedItems()));
-		addAttributeButton.disableProperty().bind(Bindings.isEmpty(availableModifiers));
-
-		addModifierComboBox.setItems(availableModifiers);
-		addModifierComboBox.disableProperty().bind(Bindings.isEmpty(availableModifiers));
-		addModifierComboBox.getSelectionModel().select(0);
-
-		removeResourceButton.disableProperty().bind(Bindings.isEmpty(resourceListView.getSelectionModel().getSelectedItems()));
-
 		schematic.getModifiers().addListener((ListChangeListener<? super Schematic.Modifier>) c -> {
 			while (c.next()) {
 				filterModifiers((ObservableList<Schematic.Modifier>) c.getList());
@@ -213,7 +204,35 @@ public class SchematicDialogController extends VBox implements Initializable {
 	public void initialize(URL location, ResourceBundle resources) {
 		SchematicDialog.setController(this);
 		createAttributesTable();
-	}
+
+        removeAttributeButton.disableProperty().bind(Bindings.isEmpty(attributesTableView.getSelectionModel().getSelectedItems()));
+        addAttributeButton.disableProperty().bind(Bindings.isEmpty(availableModifiers));
+
+        addModifierComboBox.setItems(availableModifiers);
+        addModifierComboBox.disableProperty().bind(Bindings.isEmpty(availableModifiers));
+        addModifierComboBox.getSelectionModel().select(0);
+
+        removeResourceButton.disableProperty().bind(Bindings.isEmpty(resourceListView.getSelectionModel().getSelectedItems()));
+
+        addModifierComboBox.setCellFactory(param -> new ListCell<String>(){
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty)
+                    setText(null);
+                else setText(Attributes.getLocalizedName(item));
+            }
+        });
+        addModifierComboBox.setButtonCell(new ListCell<String>() {
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty)
+                    setText(null);
+                else setText(Attributes.getLocalizedName(item));
+            }
+        });
+    }
 
 	private void createAttributesTable() {
 		createColumns();

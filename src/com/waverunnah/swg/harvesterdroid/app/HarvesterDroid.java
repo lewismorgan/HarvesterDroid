@@ -163,6 +163,7 @@ public class HarvesterDroid {
 	}
 
 	public List<GalaxyResource> findGalaxyResourcesById(String id) {
+        // TODO Refactor
 		List<String> resourceGroups = Launcher.getResourceGroups(id);
 		Collection<GalaxyResource> galaxyResourceList = resources.get();
 		if (resourceGroups != null) {

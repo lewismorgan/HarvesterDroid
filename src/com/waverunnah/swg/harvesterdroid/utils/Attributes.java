@@ -42,6 +42,23 @@ public class Attributes {
 		secondary.forEach((secondary, primary) -> attributeListCallback.perform(primary, secondary));
 	}
 
+	public static String getLocalizedName(String attribute) {
+	    switch (attribute) {
+            case "entangle_resistance": return "Entangle Resistance";
+            case "cold_resistance": return "Cold Resistance";
+            case "conductivity": return "Conductivity";
+            case "decay_resistance": return "Decay Resistance";
+            case "flavor": return "Flavor";
+            case "heat_resistance": return "Heat Resistance";
+            case "malleability": return "Malleability";
+            case "potential_energy": return "Potential Energy";
+            case "overall_quality": return "Overall Quality";
+            case "shock_resistance": return "Shock Resistance";
+            case "unit_toughness": return "Unit Toughness";
+            default: return null;
+        }
+    }
+
 	public static List<String> get() {
 		return new ArrayList<>(primary.keySet());
 	}

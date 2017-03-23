@@ -91,7 +91,6 @@ public class Launcher extends Application {
             Optional<ButtonType> result = save.showAndWait();
             if (result.isPresent() && result.get().equals(ButtonType.YES))
                 app.save();
-            else System.out.println("Not saving");
 		} catch (IOException | TransformerException e1) {
 			e1.printStackTrace();
 		}
