@@ -5,7 +5,6 @@ import com.waverunnah.swg.harvesterdroid.gui.callbacks.GalaxyResourceListCell;
 import com.waverunnah.swg.harvesterdroid.gui.dialog.ResourceDialog;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.BooleanProperty;
-
 import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;

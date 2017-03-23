@@ -33,7 +33,7 @@
           </Menu>
         </menus>
       </MenuBar>
-      <GridPane>
+      <GridPane VBox.vgrow="ALWAYS">
          <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="50.0" />
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="50.0" />
@@ -43,7 +43,7 @@
             <RowConstraints vgrow="SOMETIMES" />
          </rowConstraints>
          <children>
-            <AnchorPane>
+            <AnchorPane GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
                <children>
                   <TitledPane alignment="TOP_LEFT" animated="false" collapsible="false" nodeOrientation="LEFT_TO_RIGHT" text="Inventory" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <content>
@@ -56,7 +56,7 @@
                   </TitledPane>
                </children>
             </AnchorPane>
-            <AnchorPane layoutX="10.0" layoutY="10.0" GridPane.columnIndex="1">
+            <AnchorPane layoutX="10.0" layoutY="10.0" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
                <children>
                   <TitledPane alignment="TOP_LEFT" animated="false" collapsible="false" nodeOrientation="LEFT_TO_RIGHT" text="Schematics" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <content>
@@ -71,7 +71,7 @@
                   <Insets left="5.0" />
                </GridPane.margin>
             </AnchorPane>
-            <AnchorPane layoutX="290.0" layoutY="10.0" GridPane.columnSpan="2" GridPane.rowIndex="1">
+            <AnchorPane layoutX="290.0" layoutY="10.0" GridPane.columnSpan="2" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
                <children>
                   <TitledPane fx:id="bestResourcesPane" alignment="TOP_LEFT" animated="false" collapsible="false" nodeOrientation="LEFT_TO_RIGHT" text="Best Resources" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <content>

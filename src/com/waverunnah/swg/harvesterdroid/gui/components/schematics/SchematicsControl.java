@@ -58,14 +58,18 @@ public class SchematicsControl extends VBox {
             }
         });
 
-        schematicsTreeView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> setFocusedSchematic(newValue));
+        schematicsTreeView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null && !newValue.getValue().getIdentifier().isEmpty())
+                setFocusedSchematic(newValue);
+            else setFocusedSchematic(null);
+        });
 	}
 
     private void setup() {
 		createListeners();
 
-		removeSchematicButton.disableProperty().bind(Bindings.isNull(schematicsTreeView.getSelectionModel().selectedItemProperty()));
-		editSchematicButton.disableProperty().bind(Bindings.isNull(schematicsTreeView.getSelectionModel().selectedItemProperty()));
+		removeSchematicButton.disableProperty().bind(Bindings.isNull(focusedSchematic));
+		editSchematicButton.disableProperty().bind(Bindings.isNull(focusedSchematic));
 
 		schematicsTreeView.setRoot(createSchematicsTreeItem("root"));
 		schematicsTreeView.disableProperty().bind(Bindings.isEmpty(items));

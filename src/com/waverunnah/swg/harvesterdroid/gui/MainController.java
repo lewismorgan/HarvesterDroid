@@ -13,6 +13,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TitledPane;
+import javafx.scene.input.MouseButton;
 import javafx.stage.WindowEvent;
 import org.controlsfx.control.StatusBar;
 
@@ -53,6 +54,15 @@ public class MainController implements Initializable {
 		bestResourcesListView.disableProperty().bind(Bindings.isEmpty(app.getFilteredResources()));
 		bestResourcesListView.setCellFactory(param -> new GalaxyResourceListCell());
 		bestResourcesListView.setItems(app.getFilteredResources());
+		bestResourcesListView.addEventHandler(javafx.scene.input.MouseEvent.MOUSE_CLICKED, event -> {
+		    if (event.getButton() == MouseButton.PRIMARY) {
+		        if (event.getClickCount() >= 2) {
+                    GalaxyResource selectedItem = bestResourcesListView.getSelectionModel().getSelectedItem();
+                    if (selectedItem != null && !app.getInventory().contains(selectedItem))
+                        app.getInventory().add(selectedItem);
+                }
+            }
+        });
 	}
 
 	private void initSchematics() {

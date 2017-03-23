@@ -8,6 +8,7 @@ import com.waverunnah.swg.harvesterdroid.xml.app.InventoryXml;
 import com.waverunnah.swg.harvesterdroid.xml.app.SchematicsXml;
 import javafx.beans.property.ListProperty;
 import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.ReadOnlyStringProperty;
 import javafx.beans.property.SimpleListProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -115,7 +116,7 @@ public class HarvesterDroid {
 			List<GalaxyResource> matchedResources = findGalaxyResourcesById(id);
 			if (matchedResources != null) {
 				GalaxyResource bestResource = collectBestResourceForSchematic(schematic, matchedResources);
-				if (bestResource != null)
+				if (bestResource != null && !bestResources.contains(bestResource))
 					bestResources.add(bestResource);
 			}
 		});
@@ -294,7 +295,7 @@ public class HarvesterDroid {
         return currentResourceTimestamp.get();
     }
 
-    public StringProperty currentResourceTimestampProperty() {
+    public ReadOnlyStringProperty currentResourceTimestampProperty() {
         return currentResourceTimestamp;
     }
 }
