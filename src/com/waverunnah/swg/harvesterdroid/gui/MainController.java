@@ -49,19 +49,16 @@ public class MainController implements Initializable {
 	}
 
 	private void initResources() {
-		bestResourcesPane.setText("Best Resources as of " + Launcher.getApp().getLastUpdate() + " according to your inventory and the current resource spawns");
+		bestResourcesPane.setText("Best Resources as of " + Launcher.getApp().getLastUpdate());
 		bestResourcesListView.disableProperty().bind(Bindings.isEmpty(app.getFilteredResources()));
 		bestResourcesListView.setCellFactory(param -> new GalaxyResourceListCell());
 		bestResourcesListView.setItems(app.getFilteredResources());
 	}
 
 	private void initSchematics() {
-		app.activeSchematicProperty().bind(schematicsControl.activeSchematicProperty());
-		app.activeGroupProperty().bind(schematicsControl.activeGroupProperty());
-		schematicsControl.groupsProperty().bind(app.groupsProperty());
-		schematicsControl.setItems(app.getFilteredSchematics());
-		schematicsControl.disableListViewProperty().bind(app.schematicsProperty().emptyProperty());
-		app.displayingAllGroupsProperty().bind(schematicsControl.disableGroupsProperty());
+		schematicsControl.focusedSchematicProperty().bindBidirectional(app.activeSchematicProperty());
+		schematicsControl.itemsProperty().bind(app.schematicsProperty());
+		schematicsControl.disableSchematicsViewProperty().bind(app.schematicsProperty().emptyProperty());
 	}
 
 	public void save() {

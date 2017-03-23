@@ -6,14 +6,10 @@ import com.waverunnah.swg.harvesterdroid.data.schematics.Schematic;
 import com.waverunnah.swg.harvesterdroid.downloaders.Downloader;
 import com.waverunnah.swg.harvesterdroid.xml.app.InventoryXml;
 import com.waverunnah.swg.harvesterdroid.xml.app.SchematicsXml;
-import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ListProperty;
 import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleListProperty;
 import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
@@ -50,15 +46,11 @@ public class HarvesterDroid {
 	private ListProperty<GalaxyResource> inventory;
 	private SimpleListProperty<GalaxyResource> resources;
 	private ListProperty<Schematic> schematics;
-	private ListProperty<String> groups;
 
 	private FilteredList<GalaxyResource> filteredInventory;
 	private FilteredList<GalaxyResource> filteredResources;
-	private FilteredList<Schematic> filteredSchematics;
 
-	private StringProperty activeGroup;
 	private ObjectProperty<Schematic> activeSchematic;
-	private BooleanProperty displayingAllGroups;
 
 	public HarvesterDroid(String schematicsXmlPath, String inventoryXmlPath, Downloader downloader) {
 		this.schematicsXmlPath = schematicsXmlPath;
@@ -73,31 +65,13 @@ public class HarvesterDroid {
 		filteredInventory = new FilteredList<>(this.inventory.get(), galaxyResource -> true);
 		this.resources = new SimpleListProperty<>(FXCollections.observableArrayList(resources));
 		filteredResources = new FilteredList<>(this.resources.get(), galaxyResource -> false);
-		this.schematics = new SimpleListProperty<>(FXCollections.observableArrayList(schematic -> new javafx.beans.Observable[]{schematic.nameProperty()}));
-		this.schematics.addAll(schematics);
-		filteredSchematics = new FilteredList<>(this.schematics.get(), schematic -> true);
+		this.schematics = new SimpleListProperty<>(FXCollections.observableArrayList(schematics));
 		activeSchematic = new SimpleObjectProperty<>(null);
-		displayingAllGroups = new SimpleBooleanProperty(true);
-		initGroups();
-	}
-
-	private void initGroups() {
-		groups = new SimpleListProperty<>(FXCollections.observableArrayList());
-		activeGroup = new SimpleStringProperty();
 	}
 
 	private void createListeners() {
-		activeGroup.addListener(this::onActiveGroupChanged);
 		activeSchematic.addListener(this::onSchematicSelected);
-		schematics.addListener((ListChangeListener<? super Schematic>) c -> {
-			while (c.next()) {
-				if (c.wasAdded()) {
-					onSchematicsAdded(c.getAddedSubList());
-				} else if (c.wasRemoved()) {
-					onSchematicsRemoved(c.getRemoved());
-				}
-			}
-		});
+
 		inventory.addListener((ListChangeListener<? super GalaxyResource>) c -> {
 			while (c.next()) {
 				if (c.wasAdded()) {
@@ -108,49 +82,19 @@ public class HarvesterDroid {
 				}
 			}
 		});
-		displayingAllGroups.addListener((observable, oldValue, newValue) -> {
-			if (newValue)
-				filteredSchematics.setPredicate(schematic -> newValue);
-			else {
-				filteredSchematics.setPredicate(schematic -> schematic.getGroup().equals(activeGroup.get()));
-			}
-		});
-	}
-
-	private void onSchematicsAdded(List<? extends Schematic> addedSchematics) {
-		addedSchematics.stream().filter(schematic -> !groups.contains(schematic.getGroup()))
-				.forEach(match -> groups.add(match.getGroup()));
-		filterResourcesForSchematic(activeSchematic.get());
-	}
-
-	private void onSchematicsRemoved(List<? extends Schematic> removedSchematics) {
-		List<String> used = new ArrayList<>();
-
-		schematics.forEach(schematic -> used.add(schematic.getGroup()));
-		List<String> toRemove = groups.stream().filter(group -> !used.contains(group)).collect(Collectors.toList());
-		if (!toRemove.isEmpty()) {
-			toRemove.forEach(groups::remove);
-		}
 	}
 
 	private void onSchematicSelected(ObservableValue<? extends Schematic> observable, Schematic oldValue, Schematic newValue) {
 		if (newValue != null)
-			filterResourcesForSchematic(newValue);
+		    filterResourcesForSchematic(newValue);
 		else filteredResources.setPredicate(galaxyResource -> false);
 	}
 
-	private void onActiveGroupChanged(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-		// Filtered list doesn't like to be sorted when there is only one item in it, it'll throw index exceptions
-		if(newValue == null || (newValue.length() == 0 && schematics.size() > 1)) {
-			filteredSchematics.setPredicate(schematic -> true);
-		} else if (schematics.size() > 1) {
-			filteredSchematics.setPredicate(schematic -> schematic.getGroup().equals(newValue));
-		}
-	}
-
 	private void filterResourcesForSchematic(Schematic schematic) {
-		if (schematic == null || schematic.isIncomplete() || resources.isEmpty())
+		if (schematic == null || schematic.isIncomplete() || resources.isEmpty()) {
+		    filteredResources.setPredicate(param -> false);
 			return;
+		}
 
 		List<GalaxyResource> bestResources = getBestResourcesList(schematic);
 		filteredResources.setPredicate(bestResources::contains);
@@ -314,10 +258,6 @@ public class HarvesterDroid {
 		return schematics;
 	}
 
-	public ListProperty<String> groupsProperty() {
-		return groups;
-	}
-
 	public FilteredList<GalaxyResource> getFilteredInventory() {
 		return filteredInventory;
 	}
@@ -326,19 +266,7 @@ public class HarvesterDroid {
 		return filteredResources;
 	}
 
-	public FilteredList<Schematic> getFilteredSchematics() {
-		return filteredSchematics;
-	}
-
-	public StringProperty activeGroupProperty() {
-		return activeGroup;
-	}
-
 	public ObjectProperty<Schematic> activeSchematicProperty() {
 		return activeSchematic;
-	}
-
-	public BooleanProperty displayingAllGroupsProperty() {
-		return displayingAllGroups;
 	}
 }

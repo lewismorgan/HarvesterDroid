@@ -12,12 +12,16 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.ObservableMap;
 
+import java.util.UUID;
+
 public class Schematic {
 	private StringProperty name = new SimpleStringProperty();
 	private StringProperty group = new SimpleStringProperty();
 	private ListProperty<String> resources = new SimpleListProperty<>(FXCollections.observableArrayList());
 	private ListProperty<Modifier> modifiers = new SimpleListProperty<>(FXCollections.observableArrayList());
 	private MapProperty<String, String> resourceWeights = new SimpleMapProperty<>(FXCollections.emptyObservableMap());
+
+	private String identifier = UUID.randomUUID().toString();
 
 	public Schematic() {
 
@@ -84,12 +88,16 @@ public class Schematic {
         return resourceWeights;
     }
 
+    public String getIdentifier() {
+        return identifier;
+    }
+
     @Override
 	public String toString() {
 		return getName();
 	}
 
-	public static class Modifier {
+    public static class Modifier {
 		private StringProperty name = new SimpleStringProperty();
 		private IntegerProperty value = new SimpleIntegerProperty();
 
