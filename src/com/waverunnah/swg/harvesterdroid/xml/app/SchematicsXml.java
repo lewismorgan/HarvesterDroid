@@ -50,7 +50,7 @@ public class SchematicsXml extends BaseXml {
 	private void createSchematicElement(Document document, Element root, Schematic schematic) {
 		Element self = document.createElement("schematic");
 		self.setAttribute("name", schematic.getName());
-		self.setAttribute("prof", schematic.getGroup());
+		self.setAttribute("group", schematic.getGroup());
 
 		Element resources = document.createElement("resources");
 		schematic.getResources().forEach(resource -> createResourceElement(document, resources, resource));
@@ -82,7 +82,7 @@ public class SchematicsXml extends BaseXml {
 
 		Schematic schematic = new Schematic();
 		schematic.setName(node.getAttributes().getNamedItem("name").getTextContent());
-		String profession = node.getAttributes().getNamedItem("prof").getTextContent();
+		String profession = node.getAttributes().getNamedItem("group").getTextContent();
 		schematic.setGroup(profession);
 
 		processElement(node, child -> {

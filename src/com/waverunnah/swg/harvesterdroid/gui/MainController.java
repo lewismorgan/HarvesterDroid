@@ -49,7 +49,7 @@ public class MainController implements Initializable {
 	}
 
 	private void initResources() {
-		bestResourcesPane.setText("Best Resources as of " + Launcher.getApp().getLastUpdate());
+		bestResourcesPane.textProperty().bind(Bindings.concat("Best Resources as of ").concat(app.currentResourceTimestampProperty()));
 		bestResourcesListView.disableProperty().bind(Bindings.isEmpty(app.getFilteredResources()));
 		bestResourcesListView.setCellFactory(param -> new GalaxyResourceListCell());
 		bestResourcesListView.setItems(app.getFilteredResources());

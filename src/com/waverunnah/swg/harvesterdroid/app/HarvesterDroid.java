@@ -10,6 +10,8 @@ import javafx.beans.property.ListProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleListProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
@@ -25,8 +27,11 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -34,6 +39,8 @@ import java.util.stream.Collectors;
 public class HarvesterDroid {
 	// TODO Status messages
 	// TODO Move intensive methods to a Task
+
+    private final static int DOWNLOAD_HOURS = 2;
 
 	private final String schematicsXmlPath;
 	private final String inventoryXmlPath;
@@ -51,11 +58,13 @@ public class HarvesterDroid {
 	private FilteredList<GalaxyResource> filteredResources;
 
 	private ObjectProperty<Schematic> activeSchematic;
+    private StringProperty currentResourceTimestamp;
 
-	public HarvesterDroid(String schematicsXmlPath, String inventoryXmlPath, Downloader downloader) {
+    public HarvesterDroid(String schematicsXmlPath, String inventoryXmlPath, Downloader downloader) {
 		this.schematicsXmlPath = schematicsXmlPath;
 		this.inventoryXmlPath = inventoryXmlPath;
 		this.downloader = downloader;
+		this.currentResourceTimestamp = new SimpleStringProperty();
 		init(new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
 		createListeners();
 	}
@@ -171,10 +180,14 @@ public class HarvesterDroid {
         return optional.orElse(null);
 	}
 
-    public String getLastUpdate() {
-		if (downloader.getCurrentResourcesTimestamp() == null)
-			return null;
-		return downloader.getCurrentResourcesTimestamp().toString();
+	private boolean needsUpdate(Date timestamp) {
+		if (timestamp == null)
+			return true;
+
+		LocalDateTime now = LocalDateTime.now();
+		LocalDateTime from = LocalDateTime.ofInstant(timestamp.toInstant(), ZoneId.systemDefault());
+		LocalDateTime plusHours = from.plusHours(DOWNLOAD_HOURS);
+		return now.isAfter(plusHours);
 	}
 
 	public void save() throws IOException, TransformerException {
@@ -187,9 +200,16 @@ public class HarvesterDroid {
 
 	public void updateResources() {
 		try {
+		    if (!needsUpdate(downloader.getCurrentResourcesTimestamp())) {
+		        if (downloader.getCurrentResourcesTimestamp().toString().equals(getCurrentResourceTimestamp())) {
+		            currentResourceTimestamp.set(downloader.getCurrentResourcesTimestamp().toString());
+                }
+            }
+
 			downloader.downloadCurrentResources();
 			resources.clear();
 			resources.addAll(downloader.getCurrentResources());
+			currentResourceTimestamp.set(downloader.getCurrentResourcesTimestamp().toString());
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -269,4 +289,12 @@ public class HarvesterDroid {
 	public ObjectProperty<Schematic> activeSchematicProperty() {
 		return activeSchematic;
 	}
+
+    public String getCurrentResourceTimestamp() {
+        return currentResourceTimestamp.get();
+    }
+
+    public StringProperty currentResourceTimestampProperty() {
+        return currentResourceTimestamp;
+    }
 }

@@ -9,7 +9,6 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -27,6 +26,8 @@ public final class GalaxyHarvesterDownloader extends Downloader {
 	@Override
 	protected void parseCurrentResources(InputStream currentResourcesStream) throws IOException {
 		try {
+		    if (xmlFactory == null)
+		        xmlFactory = DocumentBuilderFactory.newInstance();
 			currentResourcesXml = new HarvesterCurrentResourcesXml(xmlFactory.newDocumentBuilder());
 			currentResourcesXml.load(currentResourcesStream);
 
@@ -58,6 +59,7 @@ public final class GalaxyHarvesterDownloader extends Downloader {
         return getInputStreamFromUrl("getResourceByName.py?name=" + resource + "&galaxy=48");
     }
 
+
     @Override
 	public Date getCurrentResourcesTimestamp() {
 		if (currentResourcesXml == null || currentResourcesXml.getTimestamp() == null
@@ -70,9 +72,5 @@ public final class GalaxyHarvesterDownloader extends Downloader {
 			e.printStackTrace();
 		}
 		return null;
-	}
-
-	public InputStream download(String url) throws IOException {
-		return new URL("http://galaxyharvester.net/" + url).openStream();
 	}
 }

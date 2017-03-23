@@ -14,8 +14,6 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
@@ -29,7 +27,6 @@ import java.util.Map;
  * sub-classes to know how the data is stored and convert them to the resources map.
  */
 public abstract class Downloader {
-	private final static int DOWNLOAD_HOURS = 2;
 	private final String baseUrl;
 	private final String identifier;
 
@@ -38,28 +35,32 @@ public abstract class Downloader {
 	protected Downloader(String identifier, String baseUrl) {
 		this.identifier = identifier;
 		this.baseUrl = baseUrl;
+		init();
 	}
+
+	private void init() {
+	    File currentResources = new File(getRootDownloadsPath() + "current_resources.dl");
+	    if (currentResources.exists()) {
+            try {
+                parseCurrentResources(new FileInputStream(currentResources));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
 	protected abstract void parseCurrentResources(InputStream currentResourcesStream) throws IOException;
     protected abstract GalaxyResource parseGalaxyResource(InputStream galaxyResourceStream);
-
 	protected abstract InputStream getCurrentResourcesStream() throws IOException;
     protected abstract InputStream getGalaxyResourceStream(String resource) throws IOException;
-
-	public abstract Date getCurrentResourcesTimestamp();
+    public abstract Date getCurrentResourcesTimestamp();
 
 	public final DownloadResult downloadCurrentResources() throws IOException {
 		InputStream in = null;
 
 		File file = new File(getRootDownloadsPath() + "current_resources.dl");
-		// Don't download if you the timestamp is within 2 hours
-		if (!needsUpdate(getCurrentResourcesTimestamp())) {
-			return DownloadResult.NO_ACTION;
-		} else {
-			if (!file.exists() && !file.mkdirs()) {
-				return DownloadResult.FAILED;
-			}
-		}
+		if (!file.exists() && !file.mkdirs())
+            return DownloadResult.FAILED;
 
 		try {
 			in = getCurrentResourcesStream();
@@ -67,7 +68,7 @@ public abstract class Downloader {
 			Files.copy(in, Paths.get(file.toURI()), StandardCopyOption.REPLACE_EXISTING);
 
 			// Just in-case the user messes with something, we can re-download the XML
-			Watcher.createFileWatcher(new File(getRootDownloadsPath()+ "/current_resources.dl"), () -> {
+			Watcher.createFileWatcher(new File(getRootDownloadsPath()+ "current_resources.dl"), () -> {
 				try {
 					downloadCurrentResources();
 				} catch (IOException e) {
@@ -115,16 +116,6 @@ public abstract class Downloader {
 		currentResources.putAll(parsedCurrentResources);
 	}
 
-	protected final boolean needsUpdate(Date timestamp) {
-		if (timestamp == null)
-			return true;
-
-		LocalDateTime now = LocalDateTime.now();
-		LocalDateTime from = LocalDateTime.ofInstant(timestamp.toInstant(), ZoneId.systemDefault());
-		LocalDateTime plusHours = from.plusHours(DOWNLOAD_HOURS);
-		return now.isAfter(plusHours);
-	}
-
 	public final InputStream getInputStreamFromUrl(String url) throws IOException {
 		return new URL(getBaseUrl() + url).openStream();
 	}
@@ -135,10 +126,6 @@ public abstract class Downloader {
 
 	public final String getIdentifier() {
 		return identifier;
-	}
-
-	public Map<String, GalaxyResource> getCurrentResourcesMap() {
-		return currentResources;
 	}
 
 	public Collection<GalaxyResource> getCurrentResources() {

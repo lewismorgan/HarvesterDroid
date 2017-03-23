@@ -2,14 +2,13 @@ package com.waverunnah.swg.harvesterdroid.xml.galaxyharvester;
 
 import com.waverunnah.swg.harvesterdroid.data.resources.GalaxyResource;
 import com.waverunnah.swg.harvesterdroid.data.resources.Planet;
-
+import com.waverunnah.swg.harvesterdroid.xml.app.CurrentResourcesXml;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.ParserConfigurationException;
-
 import java.io.IOException;
 
 public final class HarvesterCurrentResourcesXml extends CurrentResourcesXml {
