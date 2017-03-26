@@ -247,7 +247,6 @@ public class SchematicDialogController extends VBox implements Initializable {
             @Override
             protected void updateItem(String item, boolean empty) {
                 super.updateItem(item, empty);
-                System.out.println(item);
                 if (item != null) {
                     setText(resourceTypes.get(item));
                 } else {

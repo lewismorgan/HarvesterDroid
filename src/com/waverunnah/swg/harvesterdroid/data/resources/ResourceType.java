@@ -6,15 +6,22 @@ import java.util.Map;
  * Created by Waverunner on 3/23/2017
  */
 public class ResourceType {
+    private String id;
     private String name;
-    private String fullName;
-    private String category;
-    private String group;
     private String container;
-    private String inventoryType;
+    private String group;
+    private boolean recylced;
     private Map<String, Integer> minMaxMap;
 
     public ResourceType() {
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -23,22 +30,6 @@ public class ResourceType {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getFullName() {
-        return fullName;
-    }
-
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
-    }
-
-    public String getCategory() {
-        return category;
-    }
-
-    public void setCategory(String category) {
-        this.category = category;
     }
 
     public String getGroup() {
@@ -61,12 +52,12 @@ public class ResourceType {
         return minMaxMap;
     }
 
-    public String getInventoryType() {
-        return inventoryType;
+    public boolean isRecylced() {
+        return recylced;
     }
 
-    public void setInventoryType(String inventoryType) {
-        this.inventoryType = inventoryType;
+    public void setRecylced(boolean recylced) {
+        this.recylced = recylced;
     }
 
     public void setMinMaxMap(Map<String, Integer> minMaxMap) {

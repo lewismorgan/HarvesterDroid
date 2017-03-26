@@ -54,7 +54,7 @@ public class ResourceDialogController implements Initializable {
 		resourceTypeField.textProperty().bindBidirectional(galaxyResource.resourceTypeProperty(), new StringConverter<ResourceType>() {
 			@Override
 			public String toString(ResourceType object) {
-				return object.getFullName();
+				return object.getName();
 			}
 
 			@Override

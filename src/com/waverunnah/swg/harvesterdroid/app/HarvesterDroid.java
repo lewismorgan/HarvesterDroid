@@ -163,7 +163,7 @@ public class HarvesterDroid {
 	}
 
 	public List<GalaxyResource> findGalaxyResourcesById(String id) {
-		List<String> resourceGroups = data.legacy_getResourceGroups(id);
+		List<String> resourceGroups = data.getResourceGroups(id);
 		Collection<GalaxyResource> galaxyResourceList = resources.get();
 		if (resourceGroups != null) {
 		    // ID that was entered is a group of resources
@@ -172,14 +172,14 @@ public class HarvesterDroid {
 			for (String group : resourceGroups) {
 				System.out.println(group);
 				master.addAll(galaxyResourceList.stream()
-						.filter(galaxyResource -> galaxyResource.getResourceType().getName().startsWith(group)
-								|| galaxyResource.getResourceType().getName().equals(group))
+						.filter(galaxyResource -> galaxyResource.getResourceType().getId().startsWith(group)
+								|| galaxyResource.getResourceType().getId().equals(group))
 						.collect(Collectors.toList()));
 			}
 			return master;
 		} else {
 			return galaxyResourceList.stream().filter(galaxyResource ->
-					galaxyResource.getResourceType().getName().equals(id) || galaxyResource.getResourceType().getName().startsWith(id)
+					galaxyResource.getResourceType().getId().equals(id) || galaxyResource.getResourceType().getId().startsWith(id)
 			).collect(Collectors.toList());
 		}
 	}
@@ -319,7 +319,7 @@ public class HarvesterDroid {
 
     public Map<String, String> getResourceTypes() {
         Map<String, String> types = new HashMap<>();
-        data.getResourceTypeMap().forEach((key, value) -> types.put(key, value.getFullName()));
+        data.getResourceTypeMap().forEach((key, value) -> types.put(key, value.getName()));
         return types;
     }
 }

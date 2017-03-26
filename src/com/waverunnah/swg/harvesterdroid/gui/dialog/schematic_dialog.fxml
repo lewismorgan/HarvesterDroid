@@ -31,7 +31,7 @@
                   <Insets left="5.0" />
                </padding>
             </Label>
-            <TextField fx:id="groupField" promptText="Enter a group name" HBox.hgrow="ALWAYS" />
+            <TextField fx:id="groupField" promptText="Enter a group id" HBox.hgrow="ALWAYS" />
          </children>
       </HBox>
       <HBox layoutX="10.0" layoutY="10.0" spacing="5.0">

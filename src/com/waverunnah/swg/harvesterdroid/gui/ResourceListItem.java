@@ -70,7 +70,7 @@ public class ResourceListItem extends HBox {
 		resourceType.textProperty().bindBidirectional(val.resourceTypeProperty(), new StringConverter<ResourceType>() {
 			@Override
 			public String toString(ResourceType object) {
-				return object.getFullName();
+				return object.getName();
 			}
 
 			@Override
