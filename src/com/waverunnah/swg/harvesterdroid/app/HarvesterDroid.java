@@ -1,6 +1,5 @@
 package com.waverunnah.swg.harvesterdroid.app;
 
-import com.waverunnah.swg.harvesterdroid.Launcher;
 import com.waverunnah.swg.harvesterdroid.data.resources.GalaxyResource;
 import com.waverunnah.swg.harvesterdroid.data.resources.ResourceType;
 import com.waverunnah.swg.harvesterdroid.data.schematics.Schematic;
@@ -33,9 +32,10 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -163,12 +163,14 @@ public class HarvesterDroid {
 	}
 
 	public List<GalaxyResource> findGalaxyResourcesById(String id) {
-        // TODO Refactor
-		List<String> resourceGroups = Launcher.getResourceGroups(id);
+		List<String> resourceGroups = data.legacy_getResourceGroups(id);
 		Collection<GalaxyResource> galaxyResourceList = resources.get();
 		if (resourceGroups != null) {
+		    // ID that was entered is a group of resources
 			List<GalaxyResource> master = new ArrayList<>();
+			System.out.println("~~~" + id + "~~~");
 			for (String group : resourceGroups) {
+				System.out.println(group);
 				master.addAll(galaxyResourceList.stream()
 						.filter(galaxyResource -> galaxyResource.getResourceType().getName().startsWith(group)
 								|| galaxyResource.getResourceType().getName().equals(group))
@@ -315,9 +317,9 @@ public class HarvesterDroid {
         return currentResourceTimestamp;
     }
 
-    public List<String> getResourceTypes() {
-        List<String> strings = data.getResourceTypeMap().values().stream().map(ResourceType::getFullName).collect(Collectors.toList());
-        Collections.sort(strings);
-        return strings;
+    public Map<String, String> getResourceTypes() {
+        Map<String, String> types = new HashMap<>();
+        data.getResourceTypeMap().forEach((key, value) -> types.put(key, value.getFullName()));
+        return types;
     }
 }

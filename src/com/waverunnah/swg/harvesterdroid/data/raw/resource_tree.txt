@@ -1,0 +1,845 @@
+Name	CLASS 1	CLASS 2	CLASS 3	CLASS 4	CLASS 5	CLASS 6	CLASS 7	CLASS 8	Recycled	Cr min	Cr max	Cd min	Cd max	Dr min	Dr max	Fl min	Fl max	Hr min	Hr max	Ma min	Ma max	Pe min	Pe max	Oq min	Oq max	Sr min	Sr max	Ut min	Ut max	Er min	Er max	Resource Container Type
+organic		Organic								0	0	0	0	1	1000	1	1000	0	0	1	1000	1	1000	1	1000	1	1000	1	1000	0	0	object/resource_container/organic_food.iff
+creature_resources			Creature Resources							0	0	0	0	1	1000	1	1000	0	0	1	1000	1	1000	1	1000	1	1000	1	1000	0	0	object/resource_container/organic_food.iff
+creature_food				Creature Food						0	0	0	0	1	1000	1	1000	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_food.iff
+milk					Milk					0	0	0	0	1	1000	1	1000	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_food.iff
+milk_homogenized						Homogenized Milk			1	0	0	0	0	200	200	200	200	0	0	0	0	200	200	200	200	0	0	0	0	0	0	object/resource_container/organic_food.iff
+milk_domesticated						Domesticated Milk				0	0	0	0	1	1000	1	700	0	0	0	0	300	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_bottle_milk.iff
+milk_domesticated_corellia							Corellian Domesticated Milk			0	0	0	0	1	1000	1	700	0	0	0	0	300	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_bottle_milk.iff
+milk_domesticated_dantooine							Dantooine Domesticated Milk			0	0	0	0	1	1000	1	700	0	0	0	0	300	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_bottle_milk.iff
+milk_domesticated_dathomir							Dathomirian  Domesticated Milk			0	0	0	0	1	1000	1	700	0	0	0	0	300	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_bottle_milk.iff
+milk_domesticated_endor							Endorian Domesticated Milk			0	0	0	0	1	1000	1	700	0	0	0	0	300	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_bottle_milk.iff
+milk_domesticated_lok							Lokian Domesticated Milk			0	0	0	0	1	1000	1	700	0	0	0	0	300	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_bottle_milk.iff
+milk_domesticated_naboo							Nabooian Domesticated Milk			0	0	0	0	1	1000	1	700	0	0	0	0	300	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_bottle_milk.iff
+milk_domesticated_rori							Rori Domesticated Milk			0	0	0	0	1	1000	1	700	0	0	0	0	300	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_bottle_milk.iff
+milk_domesticated_talus							Talusian Domesticated Milk			0	0	0	0	1	1000	1	700	0	0	0	0	300	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_bottle_milk.iff
+milk_domesticated_tatooine							Tatooinian Domesticated Milk			0	0	0	0	1	1000	1	700	0	0	0	0	300	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_bottle_milk.iff
+milk_domesticated_yavin4							Yavinian Domesticated Milk			0	0	0	0	1	1000	1	700	0	0	0	0	300	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_bottle_milk.iff
+milk_domesticated_kashyyyk							Kashyyykian Domesticated Milk			0	0	0	0	1	1000	1	700	0	0	0	0	300	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_bottle_milk.iff
+milk_domesticated_mustafar							Mustafarian Domesticated Milk			0	0	0	0	1	1000	1	700	0	0	0	0	300	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_bottle_milk.iff
+milk_wild						Wild Milk				0	0	0	0	1	1000	300	1000	0	0	0	0	1	700	1	1000	0	0	0	0	0	0	object/resource_container/organic_bottle_milk.iff
+milk_wild_corellia							Corellian Wild Milk			0	0	0	0	1	1000	300	1000	0	0	0	0	1	700	1	1000	0	0	0	0	0	0	object/resource_container/organic_bottle_milk.iff
+milk_wild_dantooine							Dantooine Wild Milk			0	0	0	0	1	1000	300	1000	0	0	0	0	1	700	1	1000	0	0	0	0	0	0	object/resource_container/organic_bottle_milk.iff
+milk_wild_dathomir							Dathomirian Wild Milk			0	0	0	0	1	1000	300	1000	0	0	0	0	1	700	1	1000	0	0	0	0	0	0	object/resource_container/organic_bottle_milk.iff
+milk_wild_endor							Endorian Wild Milk			0	0	0	0	1	1000	300	1000	0	0	0	0	1	700	1	1000	0	0	0	0	0	0	object/resource_container/organic_bottle_milk.iff
+milk_wild_lok							Lokian Wild Milk			0	0	0	0	1	1000	300	1000	0	0	0	0	1	700	1	1000	0	0	0	0	0	0	object/resource_container/organic_bottle_milk.iff
+milk_wild_naboo							Nabooian Wild Milk			0	0	0	0	1	1000	300	1000	0	0	0	0	1	700	1	1000	0	0	0	0	0	0	object/resource_container/organic_bottle_milk.iff
+milk_wild_rori							Rori Wild Milk			0	0	0	0	1	1000	300	1000	0	0	0	0	1	700	1	1000	0	0	0	0	0	0	object/resource_container/organic_bottle_milk.iff
+milk_wild_talus							Talusian Wild Milk			0	0	0	0	1	1000	300	1000	0	0	0	0	1	700	1	1000	0	0	0	0	0	0	object/resource_container/organic_bottle_milk.iff
+milk_wild_tatooine							Tatooinian Wild Milk			0	0	0	0	1	1000	300	1000	0	0	0	0	1	700	1	1000	0	0	0	0	0	0	object/resource_container/organic_bottle_milk.iff
+milk_wild_yavin4							Yavin IV Wild Milk			0	0	0	0	1	1000	300	1000	0	0	0	0	1	700	1	1000	0	0	0	0	0	0	object/resource_container/organic_bottle_milk.iff
+milk_wild_kashyyyk							Kashyyykian Wild Milk			0	0	0	0	1	1000	300	1000	0	0	0	0	1	700	1	1000	0	0	0	0	0	0	object/resource_container/organic_bottle_milk.iff
+milk_wild_mustafar							Mustafarian Wild Milk			0	0	0	0	1	1000	300	1000	0	0	0	0	1	700	1	1000	0	0	0	0	0	0	object/resource_container/organic_bottle_milk.iff
+meat					Meat					0	0	0	0	1	1000	1	1000	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_food.iff
+processed_meat						Processed Meat			1	0	0	0	0	200	200	200	200	0	0	0	0	200	200	200	200	0	0	0	0	0	0	object/resource_container/organic_food.iff
+meat_domesticated						Domesticated Meat				0	0	0	0	1	1000	300	1000	0	0	0	0	1	700	1	1000	0	0	0	0	0	0	object/resource_container/organic_food.iff
+meat_domesticated_corellia							Corellian Domesticated Meat			0	0	0	0	1	1000	300	1000	0	0	0	0	1	700	1	1000	0	0	0	0	0	0	object/resource_container/organic_food.iff
+meat_domesticated_dantooine							Dantooine Domesticated Meat			0	0	0	0	1	1000	300	1000	0	0	0	0	1	700	1	1000	0	0	0	0	0	0	object/resource_container/organic_food.iff
+meat_domesticated_dathomir							Dathomirian Domesticated Meat			0	0	0	0	1	1000	300	1000	0	0	0	0	1	700	1	1000	0	0	0	0	0	0	object/resource_container/organic_food.iff
+meat_domesticated_endor							Endorian Domesticated Meat			0	0	0	0	1	1000	300	1000	0	0	0	0	1	700	1	1000	0	0	0	0	0	0	object/resource_container/organic_food.iff
+meat_domesticated_lok							Lokian Domesticated Meat			0	0	0	0	1	1000	300	1000	0	0	0	0	1	700	1	1000	0	0	0	0	0	0	object/resource_container/organic_food.iff
+meat_domesticated_naboo							Nabooian Domesticated Meat			0	0	0	0	1	1000	300	1000	0	0	0	0	1	700	1	1000	0	0	0	0	0	0	object/resource_container/organic_food.iff
+meat_domesticated_rori							Rori Domesticated Meat			0	0	0	0	1	1000	300	1000	0	0	0	0	1	700	1	1000	0	0	0	0	0	0	object/resource_container/organic_food.iff
+meat_domesticated_talus							Talusian Domesticated Meat			0	0	0	0	1	1000	300	1000	0	0	0	0	1	700	1	1000	0	0	0	0	0	0	object/resource_container/organic_food.iff
+meat_domesticated_tatooine							Tatooinian Domesticated Meat			0	0	0	0	1	1000	300	1000	0	0	0	0	1	700	1	1000	0	0	0	0	0	0	object/resource_container/organic_food.iff
+meat_domesticated_yavin4							Yavinian Domesticated Meat			0	0	0	0	1	1000	300	1000	0	0	0	0	1	700	1	1000	0	0	0	0	0	0	object/resource_container/organic_food.iff
+meat_domesticated_kashyyyk							Kashyyykian Domesticated Meat			0	0	0	0	1	1000	300	1000	0	0	0	0	1	700	1	1000	0	0	0	0	0	0	object/resource_container/organic_food.iff
+meat_domesticated_mustafar							Mustafarian Domesticated Meat			0	0	0	0	1	1000	300	1000	0	0	0	0	1	700	1	1000	0	0	0	0	0	0	object/resource_container/organic_food.iff
+meat_wild						Wild Meat				0	0	0	0	1	1000	1	700	0	0	0	0	300	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_food.iff
+meat_wild_corellia							Corellian Wild Meat			0	0	0	0	1	1000	1	700	0	0	0	0	300	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_food.iff
+meat_wild_dantooine							Dantooine Wild Meat			0	0	0	0	1	1000	1	700	0	0	0	0	300	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_food.iff
+meat_wild_dathomir							Dathomirian Wild Meat			0	0	0	0	1	1000	1	700	0	0	0	0	300	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_food.iff
+meat_wild_endor							Endorian Wild Meat			0	0	0	0	1	1000	1	700	0	0	0	0	300	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_food.iff
+meat_wild_lok							Lokian Wild Meat			0	0	0	0	1	1000	1	700	0	0	0	0	300	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_food.iff
+meat_wild_naboo							Nabooian Wild Meat			0	0	0	0	1	1000	1	700	0	0	0	0	300	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_food.iff
+meat_wild_rori							Rori Wild Meat			0	0	0	0	1	1000	1	700	0	0	0	0	300	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_food.iff
+meat_wild_talus							Talusian Wild Meat			0	0	0	0	1	1000	1	700	0	0	0	0	300	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_food.iff
+meat_wild_tatooine							Tatooinian Wild Meat			0	0	0	0	1	1000	1	700	0	0	0	0	300	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_food.iff
+meat_wild_yavin4							Yavinian Wild Meat			0	0	0	0	1	1000	1	700	0	0	0	0	300	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_food.iff
+meat_wild_kashyyyk							Kashyyykian Wild Meat			0	0	0	0	1	1000	1	700	0	0	0	0	300	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_food.iff
+meat_wild_mustafar							Mustafarian Wild Meat			0	0	0	0	1	1000	1	700	0	0	0	0	300	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_food.iff
+meat_herbivore						Herbivore Meat				0	0	0	0	1	1000	1	700	0	0	0	0	1	700	1	1000	0	0	0	0	0	0	object/resource_container/organic_food.iff
+meat_herbivore_corellia							Corellian Herbivore Meat			0	0	0	0	1	1000	1	700	0	0	0	0	1	700	1	1000	0	0	0	0	0	0	object/resource_container/organic_food.iff
+meat_herbivore_dantooine							Dantooine Herbivore Meat			0	0	0	0	1	1000	1	700	0	0	0	0	1	700	1	1000	0	0	0	0	0	0	object/resource_container/organic_food.iff
+meat_herbivore_dathomir							Dathomirian Herbivore Meat			0	0	0	0	1	1000	1	700	0	0	0	0	1	700	1	1000	0	0	0	0	0	0	object/resource_container/organic_food.iff
+meat_herbivore_endor							Endorian Herbivore Meat			0	0	0	0	1	1000	1	700	0	0	0	0	1	700	1	1000	0	0	0	0	0	0	object/resource_container/organic_food.iff
+meat_herbivore_lok							Lokian Herbivore Meat			0	0	0	0	1	1000	1	700	0	0	0	0	1	700	1	1000	0	0	0	0	0	0	object/resource_container/organic_food.iff
+meat_herbivore_naboo							Nabooian Herbivore Meat			0	0	0	0	1	1000	1	700	0	0	0	0	1	700	1	1000	0	0	0	0	0	0	object/resource_container/organic_food.iff
+meat_herbivore_rori							Rori Herbivore Meat			0	0	0	0	1	1000	1	700	0	0	0	0	1	700	1	1000	0	0	0	0	0	0	object/resource_container/organic_food.iff
+meat_herbivore_talus							Talusian Herbivore Meat			0	0	0	0	1	1000	1	700	0	0	0	0	1	700	1	1000	0	0	0	0	0	0	object/resource_container/organic_food.iff
+meat_herbivore_tatooine							Tatooinian Herbivore Meat			0	0	0	0	1	1000	1	700	0	0	0	0	1	700	1	1000	0	0	0	0	0	0	object/resource_container/organic_food.iff
+meat_herbivore_yavin4							Yavinian Herbivore Meat			0	0	0	0	1	1000	1	700	0	0	0	0	1	700	1	1000	0	0	0	0	0	0	object/resource_container/organic_food.iff
+meat_herbivore_kashyyyk							Kashyyykian Herbivore Meat			0	0	0	0	1	1000	1	700	0	0	0	0	1	700	1	1000	0	0	0	0	0	0	object/resource_container/organic_food.iff
+meat_herbivore_mustafar							Mustafarian Herbivore Meat			0	0	0	0	1	1000	1	700	0	0	0	0	1	700	1	1000	0	0	0	0	0	0	object/resource_container/organic_food.iff
+meat_carnivore						Carnivore Meat				0	0	0	0	1	1000	300	1000	0	0	0	0	300	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_food.iff
+meat_carnivore_corellia							Corellian Carnivore Meat			0	0	0	0	1	1000	300	1000	0	0	0	0	300	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_food.iff
+meat_carnivore_dantooine							Dantooine Carnivore Meat			0	0	0	0	1	1000	300	1000	0	0	0	0	300	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_food.iff
+meat_carnivore_dathomir							Dathomirian Carnivore Meat			0	0	0	0	1	1000	300	1000	0	0	0	0	300	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_food.iff
+meat_carnivore_endor							Endorian Carnivore Meat			0	0	0	0	1	1000	300	1000	0	0	0	0	300	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_food.iff
+meat_carnivore_lok							Lokian Carnivore Meat			0	0	0	0	1	1000	300	1000	0	0	0	0	300	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_food.iff
+meat_carnivore_naboo							Nabooian Carnivore Meat			0	0	0	0	1	1000	300	1000	0	0	0	0	300	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_food.iff
+meat_carnivore_rori							Rori Carnivore Meat			0	0	0	0	1	1000	300	1000	0	0	0	0	300	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_food.iff
+meat_carnivore_talus							Talusian Carnivore Meat			0	0	0	0	1	1000	300	1000	0	0	0	0	300	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_food.iff
+meat_carnivore_tatooine							Tatooinian Carnivore Meat			0	0	0	0	1	1000	300	1000	0	0	0	0	300	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_food.iff
+meat_carnivore_yavin4							Yavinian Carnivore Meat			0	0	0	0	1	1000	300	1000	0	0	0	0	300	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_food.iff
+meat_carnivore_kashyyyk							Kashyyykian Carnivore Meat			0	0	0	0	1	1000	300	1000	0	0	0	0	300	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_food.iff
+meat_carnivore_mustafar							Mustafarian Carnivore Meat			0	0	0	0	1	1000	300	1000	0	0	0	0	300	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_food.iff
+meat_reptillian						Reptillian Meat				0	0	0	0	1	1000	1	1000	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_food.iff
+meat_reptilian_corellia							Corellian Reptillian Meat			0	0	0	0	1	1000	1	1000	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_food.iff
+meat_reptilian_dantooine							Dantooine Reptillian Meat			0	0	0	0	1	1000	1	1000	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_food.iff
+meat_reptilian_dathomir							Dathomirian Reptillian Meat			0	0	0	0	1	1000	1	1000	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_food.iff
+meat_reptilian_endor							Endorian Reptillian Meat			0	0	0	0	1	1000	1	1000	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_food.iff
+meat_reptilian_lok							Lokian Reptillian Meat			0	0	0	0	1	1000	1	1000	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_food.iff
+meat_reptilian_naboo							Nabooian Reptillian Meat			0	0	0	0	1	1000	1	1000	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_food.iff
+meat_reptilian_rori							Rori Reptillian Meat			0	0	0	0	1	1000	1	1000	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_food.iff
+meat_reptilian_talus							Talusian Reptillian Meat			0	0	0	0	1	1000	1	1000	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_food.iff
+meat_reptilian_tatooine							Tatooinian Reptillian Meat			0	0	0	0	1	1000	1	1000	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_food.iff
+meat_reptilian_yavin4							Yavinian Reptillian Meat			0	0	0	0	1	1000	1	1000	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_food.iff
+meat_reptilian_kashyyyk							Kashyyykian Reptilian Meat			0	0	0	0	1	1000	1	1000	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_food.iff
+meat_reptilian_mustafar							Mustafarian Reptilian Meat			0	0	0	0	1	1000	1	1000	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_food.iff
+meat_avian						Avian Meat				0	0	0	0	1	1000	1	700	0	0	0	0	300	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_food.iff
+meat_avian_corellia							Corellian Avian Meat			0	0	0	0	1	1000	1	700	0	0	0	0	300	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_food.iff
+meat_avian_dantooine							Dantooine Avian Meat			0	0	0	0	1	1000	1	700	0	0	0	0	300	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_food.iff
+meat_avian_dathomir							Dathomirian Avian Meat			0	0	0	0	1	1000	1	700	0	0	0	0	300	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_food.iff
+meat_avian_endor							Endorian Avian Meat			0	0	0	0	1	1000	1	700	0	0	0	0	300	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_food.iff
+meat_avian_lok							Lokian Avian Meat			0	0	0	0	1	1000	1	700	0	0	0	0	300	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_food.iff
+meat_avian_naboo							Nabooian Avian Meat			0	0	0	0	1	1000	1	700	0	0	0	0	300	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_food.iff
+meat_avian_rori							Rori Avian Meat			0	0	0	0	1	1000	1	700	0	0	0	0	300	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_food.iff
+meat_avian_talus							Talusian Avian Meat			0	0	0	0	1	1000	1	700	0	0	0	0	300	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_food.iff
+meat_avian_tatooine							Tatooinian Avian Meat			0	0	0	0	1	1000	1	700	0	0	0	0	300	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_food.iff
+meat_avian_yavin4							Yavinian Avian Meat			0	0	0	0	1	1000	1	700	0	0	0	0	300	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_food.iff
+meat_avian_kashyyyk							Kashyyykian Avian Meat			0	0	0	0	1	1000	1	700	0	0	0	0	300	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_food.iff
+meat_avian_mustafar							Mustafarian Avian Meat			0	0	0	0	1	1000	1	700	0	0	0	0	300	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_food.iff
+meat_egg						Egg				0	0	0	0	1	1000	1	1000	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_food.iff
+meat_egg_corellia							Corellian Egg			0	0	0	0	1	1000	1	1000	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_food.iff
+meat_egg_dantooine							Dantooine Egg			0	0	0	0	1	1000	1	1000	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_food.iff
+meat_egg_dathomir							Dathomirian Egg			0	0	0	0	1	1000	1	1000	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_food.iff
+meat_egg_endor							Endorian Egg			0	0	0	0	1	1000	1	1000	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_food.iff
+meat_egg_lok							Lokian Egg			0	0	0	0	1	1000	1	1000	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_food.iff
+meat_egg_naboo							Nabooian Egg			0	0	0	0	1	1000	1	1000	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_food.iff
+meat_egg_rori							Rori Egg			0	0	0	0	1	1000	1	1000	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_food.iff
+meat_egg_talus							Talusian Egg			0	0	0	0	1	1000	1	1000	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_food.iff
+meat_egg_tatooine							Tatooinian Egg			0	0	0	0	1	1000	1	1000	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_food.iff
+meat_egg_yavin4							Yavinian Egg			0	0	0	0	1	1000	1	1000	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_food.iff
+meat_egg_kashyyyk							Kashyyykian Egg			0	0	0	0	1	1000	1	1000	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_food.iff
+meat_egg_mustafar							Mustafarian Egg			0	0	0	0	1	1000	1	1000	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_food.iff
+meat_insect						Insect Meat				0	0	0	0	1	1000	1	1000	0	0	0	0	300	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_food.iff
+meat_insect_corellia							Corellian Insect Meat			0	0	0	0	1	1000	1	1000	0	0	0	0	300	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_food.iff
+meat_insect_dantooine							Dantooine Insect Meat			0	0	0	0	1	1000	1	1000	0	0	0	0	300	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_food.iff
+meat_insect_dathomir							Dathomirian Insect Meat			0	0	0	0	1	1000	1	1000	0	0	0	0	300	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_food.iff
+meat_insect_endor							Endorian Insect Meat			0	0	0	0	1	1000	1	1000	0	0	0	0	300	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_food.iff
+meat_insect_lok							Lokian Insect Meat			0	0	0	0	1	1000	1	1000	0	0	0	0	300	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_food.iff
+meat_insect_naboo							Nabooian Insect Meat			0	0	0	0	1	1000	1	1000	0	0	0	0	300	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_food.iff
+meat_insect_rori							Rori Insect Meat			0	0	0	0	1	1000	1	1000	0	0	0	0	300	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_food.iff
+meat_insect_talus							Talusian Insect Meat			0	0	0	0	1	1000	1	1000	0	0	0	0	300	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_food.iff
+meat_insect_tatooine							Tatooinian Insect Meat			0	0	0	0	1	1000	1	1000	0	0	0	0	300	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_food.iff
+meat_insect_yavin4							Yavinian Insect Meat			0	0	0	0	1	1000	1	1000	0	0	0	0	300	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_food.iff
+meat_insect_kashyyyk							Kashyyykian Insect Meat			0	0	0	0	1	1000	1	1000	0	0	0	0	300	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_food.iff
+meat_insect_mustafar							Mustafarian Insect Meat			0	0	0	0	1	1000	1	1000	0	0	0	0	300	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_food.iff
+seafood						Seafood				0	0	0	0	1	1000	1	1000	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_food.iff
+processed_seafood							Processed Seafood		1	0	0	0	0	200	200	200	200	0	0	0	0	200	200	200	200	0	0	0	0	0	0	object/resource_container/organic_food.iff
+seafood_fish							Fish			0	0	0	0	1	1000	1	1000	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_food.iff
+seafood_fish_corellia								Corellian Fish Meat		0	0	0	0	1	1000	1	1000	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_food.iff
+seafood_fish_dantooine								Dantooine Fish Meat		0	0	0	0	1	1000	1	1000	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_food.iff
+seafood_fish_dathomir								Dathomirian Fish Meat		0	0	0	0	1	1000	1	1000	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_food.iff
+seafood_fish_endor								Endorian Fish Meat		0	0	0	0	1	1000	1	1000	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_food.iff
+seafood_fish_lok								Lokian Fish Meat		0	0	0	0	1	1000	1	1000	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_food.iff
+seafood_fish_naboo								Nabooian Fish Meat		0	0	0	0	1	1000	1	1000	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_food.iff
+seafood_fish_rori								Rori Fish Meat		0	0	0	0	1	1000	1	1000	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_food.iff
+seafood_fish_talus								Talusian Fish Meat		0	0	0	0	1	1000	1	1000	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_food.iff
+seafood_fish_tatooine								Tatooinian Fish Meat		0	0	0	0	1	1000	1	1000	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_food.iff
+seafood_fish_yavin4								Yavinian Fish Meat		0	0	0	0	1	1000	1	1000	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_food.iff
+seafood_fish_kashyyyk								Kashyyykian Fish Meat		0	0	0	0	1	1000	1	1000	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_food.iff
+seafood_fish_mustafar								Mustafarian Fish Meat		0	0	0	0	1	1000	1	1000	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_food.iff
+seafood_crustacean							Crustacean			0	0	0	0	1	1000	1	1000	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_food.iff
+seafood_crustacean_corellia								Corellia Crustacean Meat		0	0	0	0	1	1000	1	1000	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_food.iff
+seafood_crustacean_dantooine								Dantooine Crustacean Meat		0	0	0	0	1	1000	1	1000	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_food.iff
+seafood_crustacean_dathomir								Dathomirian Crustacean Meat		0	0	0	0	1	1000	1	1000	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_food.iff
+seafood_crustacean_endor								Endorian Crustacean Meat		0	0	0	0	1	1000	1	1000	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_food.iff
+seafood_crustacean_lok								Lokian Crustacean Meat		0	0	0	0	1	1000	1	1000	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_food.iff
+seafood_crustacean_naboo								Nabooian Crustacean Meat		0	0	0	0	1	1000	1	1000	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_food.iff
+seafood_crustacean_rori								Rori Crustacean Meat		0	0	0	0	1	1000	1	1000	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_food.iff
+seafood_crustacean_talus								Talusian Crustacean Meat		0	0	0	0	1	1000	1	1000	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_food.iff
+seafood_crustacean_tatooine								Tatooinian Crustacean Meat		0	0	0	0	1	1000	1	1000	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_food.iff
+seafood_crustacean_yavin4								Yavinian Crustacean Meat		0	0	0	0	1	1000	1	1000	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_food.iff
+seafood_crustacean_kashyyyk								Kashyyykian Crustacean Meat		0	0	0	0	1	1000	1	1000	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_food.iff
+seafood_crustacean_mustafar								Mustafarian Crustacean Meat		0	0	0	0	1	1000	1	1000	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_food.iff
+seafood_mollusk							Mollusk			0	0	0	0	1	1000	1	1000	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_food.iff
+seafood_mollusk_corellia								Corellia Mollusk Meat		0	0	0	0	1	1000	1	1000	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_food.iff
+seafood_mollusk_dantooine								Dantooine Mollusk Meat		0	0	0	0	1	1000	1	1000	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_food.iff
+seafood_mollusk_dathomir								Dathomirian Mollusk Meat		0	0	0	0	1	1000	1	1000	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_food.iff
+seafood_mollusk_endor								Endorian Mollusk Meat		0	0	0	0	1	1000	1	1000	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_food.iff
+seafood_mollusk_lok								Lokian Mollusk Meat		0	0	0	0	1	1000	1	1000	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_food.iff
+seafood_mollusk_naboo								Nabooian Mollusk Meat		0	0	0	0	1	1000	1	1000	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_food.iff
+seafood_mollusk_rori								Rori Mollusk Meat		0	0	0	0	1	1000	1	1000	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_food.iff
+seafood_mollusk_talus								Talusian Mollusk Meat		0	0	0	0	1	1000	1	1000	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_food.iff
+seafood_mollusk_tatooine								Tatooinian Mollusk Meat		0	0	0	0	1	1000	1	1000	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_food.iff
+seafood_mollusk_yavin4								Yavinian Mollusk Meat		0	0	0	0	1	1000	1	1000	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_food.iff
+seafood_mollusk_kashyyyk								Kashyyykian Mollusk Meat		0	0	0	0	1	1000	1	1000	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_food.iff
+seafood_mollusk_mustafar								Mustafarian Mollusk Meat		0	0	0	0	1	1000	1	1000	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_food.iff
+creature_structural				Creature Structural						0	0	0	0	1	1000	0	0	0	0	1	1000	0	0	1	1000	1	1000	1	1000	0	0	object/resource_container/organic_structure.iff
+bone					Bone					0	0	0	0	1	1000	0	0	0	0	1	600	0	0	1	1000	100	1000	1	1000	0	0	object/resource_container/organic_structure.iff
+ground_bones						Ground Bones			1	0	0	0	0	200	200	0	0	0	0	200	200	0	0	200	200	200	200	200	200	0	0	object/resource_container/organic_structure.iff
+bone_mammal_corellia						Corellian Animal Bones				0	0	0	0	300	1000	0	0	0	0	1	500	0	0	1	1000	400	1000	1	1000	0	0	object/resource_container/organic_structure.iff
+bone_mammal_dantooine						Dantooine Animal Bones				0	0	0	0	300	1000	0	0	0	0	1	500	0	0	1	1000	400	1000	1	1000	0	0	object/resource_container/organic_structure.iff
+bone_mammal_dathomir						Dathomirian Animal Bones				0	0	0	0	300	1000	0	0	0	0	1	500	0	0	1	1000	400	1000	1	1000	0	0	object/resource_container/organic_structure.iff
+bone_mammal_endor						Endorian Animal Bones				0	0	0	0	300	1000	0	0	0	0	1	500	0	0	1	1000	400	1000	1	1000	0	0	object/resource_container/organic_structure.iff
+bone_mammal_lok						Lokian  Animal Bones				0	0	0	0	300	1000	0	0	0	0	1	500	0	0	1	1000	400	1000	1	1000	0	0	object/resource_container/organic_structure.iff
+bone_mammal_naboo						Nabooian  Animal Bones				0	0	0	0	300	1000	0	0	0	0	1	500	0	0	1	1000	400	1000	1	1000	0	0	object/resource_container/organic_structure.iff
+bone_mammal_rori						Rori  Animal Bones				0	0	0	0	300	1000	0	0	0	0	1	500	0	0	1	1000	400	1000	1	1000	0	0	object/resource_container/organic_structure.iff
+bone_mammal_talus						Talusian  Animal Bones				0	0	0	0	300	1000	0	0	0	0	1	500	0	0	1	1000	400	1000	1	1000	0	0	object/resource_container/organic_structure.iff
+bone_mammal_tatooine						Tatooinian  Animal Bones				0	0	0	0	300	1000	0	0	0	0	1	500	0	0	1	1000	400	1000	1	1000	0	0	object/resource_container/organic_structure.iff
+bone_mammal_yavin4						Yavinian  Animal Bones				0	0	0	0	300	1000	0	0	0	0	1	500	0	0	1	1000	400	1000	1	1000	0	0	object/resource_container/organic_structure.iff
+bone_mammal_kashyyyk						Kashyyykian Animal Bones				0	0	0	0	300	1000	0	0	0	0	1	500	0	0	1	1000	400	1000	1	1000	0	0	object/resource_container/organic_structure.iff
+bone_mammal_mustafar						Mustafarian Animal Bones				0	0	0	0	300	1000	0	0	0	0	1	500	0	0	1	1000	400	1000	1	1000	0	0	object/resource_container/organic_structure.iff
+bone_avian						Avian bone				0	0	0	0	1	700	0	0	0	0	1	600	0	0	1	1000	100	500	1	500	0	0	object/resource_container/organic_structure.iff
+bone_avian_corellia							Corellian Avian Bones			0	0	0	0	1	700	0	0	0	0	1	600	0	0	1	1000	100	500	1	500	0	0	object/resource_container/organic_structure.iff
+bone_avian_dantooine							Dantooine Avian Bones			0	0	0	0	1	700	0	0	0	0	1	600	0	0	1	1000	100	500	1	500	0	0	object/resource_container/organic_structure.iff
+bone_avian_dathomir							Dathomirian Avian Bones			0	0	0	0	1	700	0	0	0	0	1	600	0	0	1	1000	100	500	1	500	0	0	object/resource_container/organic_structure.iff
+bone_avian_endor							Endorian Avian Bones			0	0	0	0	1	700	0	0	0	0	1	600	0	0	1	1000	100	500	1	500	0	0	object/resource_container/organic_structure.iff
+bone_avian_lok							Lokian Avian Bones			0	0	0	0	1	700	0	0	0	0	1	600	0	0	1	1000	100	500	1	500	0	0	object/resource_container/organic_structure.iff
+bone_avian_naboo							Nabooian Avian Bones			0	0	0	0	1	700	0	0	0	0	1	600	0	0	1	1000	100	500	1	500	0	0	object/resource_container/organic_structure.iff
+bone_avian_rori							Rori Avian Bones			0	0	0	0	1	700	0	0	0	0	1	600	0	0	1	1000	100	500	1	500	0	0	object/resource_container/organic_structure.iff
+bone_avian_talus							Talusian Avian Bones			0	0	0	0	1	700	0	0	0	0	1	600	0	0	1	1000	100	500	1	500	0	0	object/resource_container/organic_structure.iff
+bone_avian_tatooine							Tatooinian Avian Bones			0	0	0	0	1	700	0	0	0	0	1	600	0	0	1	1000	100	500	1	500	0	0	object/resource_container/organic_structure.iff
+bone_avian_yavin4							Yavinian Avian Bones			0	0	0	0	1	700	0	0	0	0	1	600	0	0	1	1000	100	500	1	500	0	0	object/resource_container/organic_structure.iff
+bone_avian_kashyyyk							Kashyyykian Avian Bones			0	0	0	0	1	700	0	0	0	0	1	600	0	0	1	1000	100	500	1	500	0	0	object/resource_container/organic_structure.iff
+bone_avian_mustafar							Mustafarian Avian Bones			0	0	0	0	1	700	0	0	0	0	1	600	0	0	1	1000	100	500	1	500	0	0	object/resource_container/organic_structure.iff
+bone_horn					Horn					0	0	0	0	200	1000	0	0	0	0	1	500	0	0	1	1000	200	700	1	500	0	0	object/resource_container/organic_structure.iff
+bone_horn_ground						Ground Horn			1	0	0	0	0	200	200	0	0	0	0	200	200	0	0	200	200	200	200	200	200	0	0	object/resource_container/organic_structure.iff
+bone_horn_corellia						Corellian Horn				0	0	0	0	200	1000	0	0	0	0	1	500	0	0	1	1000	300	700	1	500	0	0	object/resource_container/organic_structure.iff
+bone_horn_dantooine						Dantooine Horn				0	0	0	0	200	1000	0	0	0	0	1	500	0	0	1	1000	300	700	1	500	0	0	object/resource_container/organic_structure.iff
+bone_horn_dathomir						Dothomirian Horn				0	0	0	0	200	1000	0	0	0	0	1	500	0	0	1	1000	300	700	1	500	0	0	object/resource_container/organic_structure.iff
+bone_horn_endor						Endorian Horn				0	0	0	0	200	1000	0	0	0	0	1	500	0	0	1	1000	300	700	1	500	0	0	object/resource_container/organic_structure.iff
+bone_horn_lok						Lokian Horn				0	0	0	0	200	1000	0	0	0	0	1	500	0	0	1	1000	300	700	1	500	0	0	object/resource_container/organic_structure.iff
+bone_horn_naboo						Nabooian Horn				0	0	0	0	200	1000	0	0	0	0	1	500	0	0	1	1000	300	700	1	500	0	0	object/resource_container/organic_structure.iff
+bone_horn_rori						Rori Horn				0	0	0	0	200	1000	0	0	0	0	1	500	0	0	1	1000	300	700	1	500	0	0	object/resource_container/organic_structure.iff
+bone_horn_talus						Talusian Horn				0	0	0	0	200	1000	0	0	0	0	1	500	0	0	1	1000	300	700	1	500	0	0	object/resource_container/organic_structure.iff
+bone_horn_tatooine						Tatooinian Horn				0	0	0	0	200	1000	0	0	0	0	1	500	0	0	1	1000	300	700	1	500	0	0	object/resource_container/organic_structure.iff
+bone_horn_yavin4						Yavinian Horn				0	0	0	0	200	1000	0	0	0	0	1	500	0	0	1	1000	300	700	1	500	0	0	object/resource_container/organic_structure.iff
+bone_horn_kashyyyk						Kashyyykian Horn				0	0	0	0	200	1000	0	0	0	0	1	500	0	0	1	1000	300	700	1	500	0	0	object/resource_container/organic_structure.iff
+bone_horn_mustafar						Mustafarian Horn				0	0	0	0	200	1000	0	0	0	0	1	500	0	0	1	1000	300	700	1	500	0	0	object/resource_container/organic_structure.iff
+hide					Hide					0	0	0	0	1	1000	0	0	0	0	1	1000	0	0	1	1000	1	1000	1	1000	0	0	object/resource_container/organic_leathery_hide.iff
+synthesized_hides						Synthesized Hides			1	0	0	0	0	200	200	0	0	0	0	200	200	0	0	200	200	200	200	200	200	0	0	object/resource_container/organic_hide.iff
+hide_wooly						Wooly Hide				0	0	0	0	1	1000	0	0	0	0	1	1000	0	0	1	1000	1	1000	1	1000	0	0	object/resource_container/organic_wooly_hide.iff
+hide_wooly_corellia							Corellian Wooly Hide			0	0	0	0	1	1000	0	0	0	0	1	1000	0	0	1	1000	1	1000	1	1000	0	0	object/resource_container/organic_wooly_hide.iff
+hide_wooly_dantooine							Dantooine Wooly Hide			0	0	0	0	1	1000	0	0	0	0	1	1000	0	0	1	1000	1	1000	1	1000	0	0	object/resource_container/organic_wooly_hide.iff
+hide_wooly_dathomir							Dathomirian Wooly Hide			0	0	0	0	1	1000	0	0	0	0	1	1000	0	0	1	1000	1	1000	1	1000	0	0	object/resource_container/organic_wooly_hide.iff
+hide_wooly_endor							Endorian Wooly Hide			0	0	0	0	1	1000	0	0	0	0	1	1000	0	0	1	1000	1	1000	1	1000	0	0	object/resource_container/organic_wooly_hide.iff
+hide_wooly_lok							Lokian Wooly Hide			0	0	0	0	1	1000	0	0	0	0	1	1000	0	0	1	1000	1	1000	1	1000	0	0	object/resource_container/organic_wooly_hide.iff
+hide_wooly_naboo							Nabooian Wooly Hide			0	0	0	0	1	1000	0	0	0	0	1	1000	0	0	1	1000	1	1000	1	1000	0	0	object/resource_container/organic_wooly_hide.iff
+hide_wooly_rori							Rori Wooly Hide			0	0	0	0	1	1000	0	0	0	0	1	1000	0	0	1	1000	1	1000	1	1000	0	0	object/resource_container/organic_wooly_hide.iff
+hide_wooly_talus							Talusian Wooly Hide			0	0	0	0	1	1000	0	0	0	0	1	1000	0	0	1	1000	1	1000	1	1000	0	0	object/resource_container/organic_wooly_hide.iff
+hide_wooly_tatooine							Tatooinian Wooly Hide			0	0	0	0	1	1000	0	0	0	0	1	1000	0	0	1	1000	1	1000	1	1000	0	0	object/resource_container/organic_wooly_hide.iff
+hide_wooly_yavin4							Yavinian Wooly Hide			0	0	0	0	1	1000	0	0	0	0	1	1000	0	0	1	1000	1	1000	1	1000	0	0	object/resource_container/organic_wooly_hide.iff
+hide_wooly_kashyyyk							Kashyyykian Wooly Hide			0	0	0	0	1	1000	0	0	0	0	1	1000	0	0	1	1000	1	1000	1	1000	0	0	object/resource_container/organic_wooly_hide.iff
+hide_wooly_mustafar							Mustafarian Wooly Hide			0	0	0	0	1	1000	0	0	0	0	1	1000	0	0	1	1000	1	1000	1	1000	0	0	object/resource_container/organic_wooly_hide.iff
+hide_bristley						Bristley Hide				0	0	0	0	1	1000	0	0	0	0	1	1000	0	0	1	1000	1	1000	1	1000	0	0	object/resource_container/organic_bristley_hide.iff
+hide_bristley_corellia							Corellian Bristley Hide			0	0	0	0	1	1000	0	0	0	0	1	1000	0	0	1	1000	1	1000	1	1000	0	0	object/resource_container/organic_bristley_hide.iff
+hide_bristley_dantooine							Dantooine Bristley Hide			0	0	0	0	1	1000	0	0	0	0	1	1000	0	0	1	1000	1	1000	1	1000	0	0	object/resource_container/organic_bristley_hide.iff
+hide_bristley_dathomir							Dathomirian Bristley Hide			0	0	0	0	1	1000	0	0	0	0	1	1000	0	0	1	1000	1	1000	1	1000	0	0	object/resource_container/organic_bristley_hide.iff
+hide_bristley_endor							Endorian Bristley Hide			0	0	0	0	1	1000	0	0	0	0	1	1000	0	0	1	1000	1	1000	1	1000	0	0	object/resource_container/organic_bristley_hide.iff
+hide_bristley_lok							Lokian Bristley Hide			0	0	0	0	1	1000	0	0	0	0	1	1000	0	0	1	1000	1	1000	1	1000	0	0	object/resource_container/organic_bristley_hide.iff
+hide_bristley_naboo							Nabooian Bristley Hide			0	0	0	0	1	1000	0	0	0	0	1	1000	0	0	1	1000	1	1000	1	1000	0	0	object/resource_container/organic_bristley_hide.iff
+hide_bristley_rori							Rori Bristley Hide			0	0	0	0	1	1000	0	0	0	0	1	1000	0	0	1	1000	1	1000	1	1000	0	0	object/resource_container/organic_bristley_hide.iff
+hide_bristley_talus							Talusian Bristley Hide			0	0	0	0	1	1000	0	0	0	0	1	1000	0	0	1	1000	1	1000	1	1000	0	0	object/resource_container/organic_bristley_hide.iff
+hide_bristley_tatooine							Tatooinian Bristley Hide			0	0	0	0	1	1000	0	0	0	0	1	1000	0	0	1	1000	1	1000	1	1000	0	0	object/resource_container/organic_bristley_hide.iff
+hide_bristley_yavin4							Yavinian Bristley Hide			0	0	0	0	1	1000	0	0	0	0	1	1000	0	0	1	1000	1	1000	1	1000	0	0	object/resource_container/organic_bristley_hide.iff
+hide_bristley_kashyyyk							Kashyyykian Bristley Hide			0	0	0	0	1	1000	0	0	0	0	1	1000	0	0	1	1000	1	1000	1	1000	0	0	object/resource_container/organic_bristley_hide.iff
+hide_bristley_mustafar							Mustafarian Bristley Hide			0	0	0	0	1	1000	0	0	0	0	1	1000	0	0	1	1000	1	1000	1	1000	0	0	object/resource_container/organic_bristley_hide.iff
+hide_leathery						Leathery Hide				0	0	0	0	1	1000	0	0	0	0	1	1000	0	0	1	1000	1	1000	1	1000	0	0	object/resource_container/organic_leathery_hide.iff
+hide_leathery_corellia							Corellian Leathery Hide			0	0	0	0	1	1000	0	0	0	0	1	1000	0	0	1	1000	1	1000	1	1000	0	0	object/resource_container/organic_leathery_hide.iff
+hide_leathery_dantooine							Dantooine Leathery Hide			0	0	0	0	1	1000	0	0	0	0	1	1000	0	0	1	1000	1	1000	1	1000	0	0	object/resource_container/organic_leathery_hide.iff
+hide_leathery_dathomir							Dathomirian Leathery Hide			0	0	0	0	1	1000	0	0	0	0	1	1000	0	0	1	1000	1	1000	1	1000	0	0	object/resource_container/organic_leathery_hide.iff
+hide_leathery_endor							Endorian Leathery Hide			0	0	0	0	1	1000	0	0	0	0	1	1000	0	0	1	1000	1	1000	1	1000	0	0	object/resource_container/organic_leathery_hide.iff
+hide_leathery_lok							Lokian Leathery Hide			0	0	0	0	1	1000	0	0	0	0	1	1000	0	0	1	1000	1	1000	1	1000	0	0	object/resource_container/organic_leathery_hide.iff
+hide_leathery_naboo							Nabooian Leathery Hide			0	0	0	0	1	1000	0	0	0	0	1	1000	0	0	1	1000	1	1000	1	1000	0	0	object/resource_container/organic_leathery_hide.iff
+hide_leathery_rori							Rori Leathery Hide			0	0	0	0	1	1000	0	0	0	0	1	1000	0	0	1	1000	1	1000	1	1000	0	0	object/resource_container/organic_leathery_hide.iff
+hide_leathery_talus							Talusian Leathery Hide			0	0	0	0	1	1000	0	0	0	0	1	1000	0	0	1	1000	1	1000	1	1000	0	0	object/resource_container/organic_leathery_hide.iff
+hide_leathery_tatooine							Tatooinian Leathery Hide			0	0	0	0	1	1000	0	0	0	0	1	1000	0	0	1	1000	1	1000	1	1000	0	0	object/resource_container/organic_leathery_hide.iff
+hide_leathery_yavin4							Yavinian Leathery Hide			0	0	0	0	1	1000	0	0	0	0	1	1000	0	0	1	1000	1	1000	1	1000	0	0	object/resource_container/organic_leathery_hide.iff
+hide_leathery_kashyyyk							Kashyyykian Leathery Hide			0	0	0	0	1	1000	0	0	0	0	1	1000	0	0	1	1000	1	1000	1	1000	0	0	object/resource_container/organic_leathery_hide.iff
+hide_leathery_mustafar							Mustafarian Leathery Hide			0	0	0	0	1	1000	0	0	0	0	1	1000	0	0	1	1000	1	1000	1	1000	0	0	object/resource_container/organic_leathery_hide.iff
+hide_scaley						Scaley Hide				0	0	0	0	1	1000	0	0	0	0	1	1000	0	0	1	1000	1	1000	1	1000	0	0	object/resource_container/organic_scaley_hide.iff
+hide_scaley_corellia							Corellian Scaley Hide			0	0	0	0	1	1000	0	0	0	0	1	1000	0	0	1	1000	1	1000	1	1000	0	0	object/resource_container/organic_scaley_hide.iff
+hide_scaley_dantooine							Dantooine Scaley Hide			0	0	0	0	1	1000	0	0	0	0	1	1000	0	0	1	1000	1	1000	1	1000	0	0	object/resource_container/organic_scaley_hide.iff
+hide_scaley_dathomir							Dathomirian Scaley Hide			0	0	0	0	1	1000	0	0	0	0	1	1000	0	0	1	1000	1	1000	1	1000	0	0	object/resource_container/organic_scaley_hide.iff
+hide_scaley_endor							Endorian Scaley Hide			0	0	0	0	1	1000	0	0	0	0	1	1000	0	0	1	1000	1	1000	1	1000	0	0	object/resource_container/organic_scaley_hide.iff
+hide_scaley_lok							Lokian Scaley Hide			0	0	0	0	1	1000	0	0	0	0	1	1000	0	0	1	1000	1	1000	1	1000	0	0	object/resource_container/organic_scaley_hide.iff
+hide_scaley_naboo							Nabooian Scaley Hide			0	0	0	0	1	1000	0	0	0	0	1	1000	0	0	1	1000	1	1000	1	1000	0	0	object/resource_container/organic_scaley_hide.iff
+hide_scaley_rori							Rori Scaley Hide			0	0	0	0	1	1000	0	0	0	0	1	1000	0	0	1	1000	1	1000	1	1000	0	0	object/resource_container/organic_scaley_hide.iff
+hide_scaley_talus							Talusian Scaley Hide			0	0	0	0	1	1000	0	0	0	0	1	1000	0	0	1	1000	1	1000	1	1000	0	0	object/resource_container/organic_scaley_hide.iff
+hide_scaley_tatooine							Tatooinian Scaley Hide			0	0	0	0	1	1000	0	0	0	0	1	1000	0	0	1	1000	1	1000	1	1000	0	0	object/resource_container/organic_scaley_hide.iff
+hide_scaley_yavin4							Yavinian Scaley Hide			0	0	0	0	1	1000	0	0	0	0	1	1000	0	0	1	1000	1	1000	1	1000	0	0	object/resource_container/organic_scaley_hide.iff
+hide_scaley_kashyyyk							Kashyyykian Scaley Hide			0	0	0	0	1	1000	0	0	0	0	1	1000	0	0	1	1000	1	1000	1	1000	0	0	object/resource_container/organic_scaley_hide.iff
+hide_scaley_mustafar							Mustafarian Scaley Hide			0	0	0	0	1	1000	0	0	0	0	1	1000	0	0	1	1000	1	1000	1	1000	0	0	object/resource_container/organic_scaley_hide.iff
+flora_resources			Flora Resources							0	0	0	0	1	1000	1	1000	0	0	200	1000	1	1000	1	1000	1	700	1	800	0	0	object/resource_container/organic_food.iff
+flora_food				Flora Food						0	0	0	0	1	1000	1	1000	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_food.iff
+cereal					Cereal					0	0	0	0	1	1000	1	1000	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_food.iff
+processed_cereal						Processed Cereal			1	0	0	0	0	200	200	200	200	0	0	0	0	200	200	200	200	0	0	0	0	0	0	object/resource_container/organic_food.iff
+corn						Corn				0	0	0	0	1	1000	1	1000	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_corn.iff
+corn_domesticated							Domesticated Corn			0	0	0	0	1	1000	1	700	0	0	0	0	300	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_corn.iff
+corn_domesticated_corellia								Corellian Domesticated Corn		0	0	0	0	1	1000	1	700	0	0	0	0	300	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_corn.iff
+corn_domesticated_dantooine								Dantooine Domesticated Corn		0	0	0	0	1	1000	1	700	0	0	0	0	300	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_corn.iff
+corn_domesticated_dathomir								Dathomirian Domesticated Corn		0	0	0	0	1	1000	1	700	0	0	0	0	300	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_corn.iff
+corn_domesticated_endor								Endorian Domesticated Corn		0	0	0	0	1	1000	1	700	0	0	0	0	300	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_corn.iff
+corn_domesticated_lok								Lokian Domesticated Corn		0	0	0	0	1	1000	1	700	0	0	0	0	300	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_corn.iff
+corn_domesticated_naboo								Nabooian Domesticated Corn		0	0	0	0	1	1000	1	700	0	0	0	0	300	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_corn.iff
+corn_domesticated_rori								Rori Domesticated Corn		0	0	0	0	1	1000	1	700	0	0	0	0	300	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_corn.iff
+corn_domesticated_talus								Talusian Domesticated Corn		0	0	0	0	1	1000	1	700	0	0	0	0	300	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_corn.iff
+corn_domesticated_tatooine								Tatooinian Domesticated Corn		0	0	0	0	1	1000	1	700	0	0	0	0	300	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_corn.iff
+corn_domesticated_yavin4								Yavinian Domesticated Corn		0	0	0	0	1	1000	1	700	0	0	0	0	300	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_corn.iff
+corn_domesticated_kashyyyk								Kashyyykian Domesticated Corn		0	0	0	0	1	1000	1	700	0	0	0	0	300	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_corn.iff
+corn_domesticated_mustafar								Mustafarian Domesticated Corn		0	0	0	0	1	1000	1	700	0	0	0	0	300	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_corn.iff
+corn_wild							Wild Corn			0	0	0	0	1	1000	300	1000	0	0	0	0	1	700	1	1000	0	0	0	0	0	0	object/resource_container/organic_corn.iff
+corn_wild_corellia								Corellian Wild Corn		0	0	0	0	1	1000	300	1000	0	0	0	0	1	700	1	1000	0	0	0	0	0	0	object/resource_container/organic_corn.iff
+corn_wild_dantooine								Dantooine Wild Corn		0	0	0	0	1	1000	300	1000	0	0	0	0	1	700	1	1000	0	0	0	0	0	0	object/resource_container/organic_corn.iff
+corn_wild_dathomir								Dathomirian Wild Corn		0	0	0	0	1	1000	300	1000	0	0	0	0	1	700	1	1000	0	0	0	0	0	0	object/resource_container/organic_corn.iff
+corn_wild_endor								Endorian Wild Corn		0	0	0	0	1	1000	300	1000	0	0	0	0	1	700	1	1000	0	0	0	0	0	0	object/resource_container/organic_corn.iff
+corn_wild_lok								Lokian Wild Corn		0	0	0	0	1	1000	300	1000	0	0	0	0	1	700	1	1000	0	0	0	0	0	0	object/resource_container/organic_corn.iff
+corn_wild_naboo								Nabooian Wild Corn		0	0	0	0	1	1000	300	1000	0	0	0	0	1	700	1	1000	0	0	0	0	0	0	object/resource_container/organic_corn.iff
+corn_wild_rori								Rori Wild Corn		0	0	0	0	1	1000	300	1000	0	0	0	0	1	700	1	1000	0	0	0	0	0	0	object/resource_container/organic_corn.iff
+corn_wild_talus								Talusian Wild Corn		0	0	0	0	1	1000	300	1000	0	0	0	0	1	700	1	1000	0	0	0	0	0	0	object/resource_container/organic_corn.iff
+corn_wild_tatooine								Tatooinian Wild Corn		0	0	0	0	1	1000	300	1000	0	0	0	0	1	700	1	1000	0	0	0	0	0	0	object/resource_container/organic_corn.iff
+corn_wild_yavin4								Yavinian Wild Corn		0	0	0	0	1	1000	300	1000	0	0	0	0	1	700	1	1000	0	0	0	0	0	0	object/resource_container/organic_corn.iff
+corn_wild_kashyyyk								Kashyyykian Wild Corn		0	0	0	0	1	1000	300	1000	0	0	0	0	1	700	1	1000	0	0	0	0	0	0	object/resource_container/organic_corn.iff
+corn_wild_mustafar								Mustafarian Wild Corn		0	0	0	0	1	1000	300	1000	0	0	0	0	1	700	1	1000	0	0	0	0	0	0	object/resource_container/organic_corn.iff
+rice						Rice				0	0	0	0	1	1000	1	1000	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_rice.iff
+rice_domesticated							Domesticated Rice			0	0	0	0	1	1000	1	700	0	0	0	0	300	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_rice.iff
+rice_domesticated_corellia								Corellian Domesticated Rice		0	0	0	0	1	1000	1	700	0	0	0	0	300	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_rice.iff
+rice_domesticated_dantooine								Dantooine Domesticated Rice		0	0	0	0	1	1000	1	700	0	0	0	0	300	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_rice.iff
+rice_domesticated_dathomir								Dathomirian Domesticated Rice		0	0	0	0	1	1000	1	700	0	0	0	0	300	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_rice.iff
+rice_domesticated_endor								Endorian Domesticated Rice		0	0	0	0	1	1000	1	700	0	0	0	0	300	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_rice.iff
+rice_domesticated_lok								Lokian Domesticated Rice		0	0	0	0	1	1000	1	700	0	0	0	0	300	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_rice.iff
+rice_domesticated_naboo								Nabooian Domesticated Rice		0	0	0	0	1	1000	1	700	0	0	0	0	300	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_rice.iff
+rice_domesticated_rori								Rori Domesticated Rice		0	0	0	0	1	1000	1	700	0	0	0	0	300	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_rice.iff
+rice_domesticated_talus								Talusian Domesticated Rice		0	0	0	0	1	1000	1	700	0	0	0	0	300	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_rice.iff
+rice_domesticated_tatooine								Tatooinian Domesticated Rice		0	0	0	0	1	1000	1	700	0	0	0	0	300	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_rice.iff
+rice_domesticated_yavin4								Yavinian Domesticated Rice		0	0	0	0	1	1000	1	700	0	0	0	0	300	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_rice.iff
+rice_domesticated_kashyyyk								Kashyyykian Domesticated Rice		0	0	0	0	1	1000	1	700	0	0	0	0	300	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_rice.iff
+rice_domesticated_mustafar								Mustafarian Domesticated Rice		0	0	0	0	1	1000	1	700	0	0	0	0	300	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_rice.iff
+rice_wild							Wild Rice			0	0	0	0	1	1000	300	1000	0	0	0	0	1	700	1	1000	0	0	0	0	0	0	object/resource_container/organic_rice.iff
+rice_wild_corellia								Corellian Wild Rice		0	0	0	0	1	1000	300	1000	0	0	0	0	1	700	1	1000	0	0	0	0	0	0	object/resource_container/organic_rice.iff
+rice_wild_dantooine								Dantooine Wild Rice		0	0	0	0	1	1000	300	1000	0	0	0	0	1	700	1	1000	0	0	0	0	0	0	object/resource_container/organic_rice.iff
+rice_wild_dathomir								Dathomirian Wild Rice		0	0	0	0	1	1000	300	1000	0	0	0	0	1	700	1	1000	0	0	0	0	0	0	object/resource_container/organic_rice.iff
+rice_wild_endor								Endorian Wild Rice		0	0	0	0	1	1000	300	1000	0	0	0	0	1	700	1	1000	0	0	0	0	0	0	object/resource_container/organic_rice.iff
+rice_wild_lok								Lokian Wild Rice		0	0	0	0	1	1000	300	1000	0	0	0	0	1	700	1	1000	0	0	0	0	0	0	object/resource_container/organic_rice.iff
+rice_wild_naboo								Nabooian Wild Rice		0	0	0	0	1	1000	300	1000	0	0	0	0	1	700	1	1000	0	0	0	0	0	0	object/resource_container/organic_rice.iff
+rice_wild_rori								Rori Wild Rice		0	0	0	0	1	1000	300	1000	0	0	0	0	1	700	1	1000	0	0	0	0	0	0	object/resource_container/organic_rice.iff
+rice_wild_talus								Talusian Wild Rice		0	0	0	0	1	1000	300	1000	0	0	0	0	1	700	1	1000	0	0	0	0	0	0	object/resource_container/organic_rice.iff
+rice_wild_tatooine								Tatooinian Wild Rice		0	0	0	0	1	1000	300	1000	0	0	0	0	1	700	1	1000	0	0	0	0	0	0	object/resource_container/organic_rice.iff
+rice_wild_yavin4								Yavinian Wild Rice		0	0	0	0	1	1000	300	1000	0	0	0	0	1	700	1	1000	0	0	0	0	0	0	object/resource_container/organic_rice.iff
+rice_wild_kashyyyk								Kashyyykian Wild Rice		0	0	0	0	1	1000	300	1000	0	0	0	0	1	700	1	1000	0	0	0	0	0	0	object/resource_container/organic_rice.iff
+rice_wild_mustafar								Mustafarian Wild Rice		0	0	0	0	1	1000	300	1000	0	0	0	0	1	700	1	1000	0	0	0	0	0	0	object/resource_container/organic_rice.iff
+oats						Oats				0	0	0	0	1	1000	1	1000	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_oats.iff
+oats_domesticated							Domesticated Oats			0	0	0	0	1	1000	1	700	0	0	0	0	300	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_oats.iff
+oats_domesticated_corellia								Corellian Domesticated Oats		0	0	0	0	1	1000	1	700	0	0	0	0	300	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_oats.iff
+oats_domesticated_dantooine								Dantooine Domesticated Oats		0	0	0	0	1	1000	1	700	0	0	0	0	300	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_oats.iff
+oats_domesticated_dathomir								Dathomirian Domesticated Oats		0	0	0	0	1	1000	1	700	0	0	0	0	300	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_oats.iff
+oats_domesticated_endor								Endorian Domesticated Oats		0	0	0	0	1	1000	1	700	0	0	0	0	300	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_oats.iff
+oats_domesticated_lok								Lokian Domesticated Oats		0	0	0	0	1	1000	1	700	0	0	0	0	300	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_oats.iff
+oats_domesticated_naboo								Nabooian Domesticated Oats		0	0	0	0	1	1000	1	700	0	0	0	0	300	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_oats.iff
+oats_domesticated_rori								Rori Domesticated Oats		0	0	0	0	1	1000	1	700	0	0	0	0	300	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_oats.iff
+oats_domesticated_talus								Talusian Domesticated Oats		0	0	0	0	1	1000	1	700	0	0	0	0	300	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_oats.iff
+oats_domesticated_tatooine								Tatooinian Domesticated Oats		0	0	0	0	1	1000	1	700	0	0	0	0	300	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_oats.iff
+oats_domesticated_yavin4								Yavinian Domesticated Oats		0	0	0	0	1	1000	1	700	0	0	0	0	300	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_oats.iff
+oats_domesticated_kashyyyk								Kashyyykian Domesticated Oats		0	0	0	0	1	1000	1	700	0	0	0	0	300	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_oats.iff
+oats_domesticated_mustafar								Mustafarian Domesticated Oats		0	0	0	0	1	1000	1	700	0	0	0	0	300	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_oats.iff
+oats_wild							Wild Oats			0	0	0	0	1	1000	300	1000	0	0	0	0	1	700	1	1000	0	0	0	0	0	0	object/resource_container/organic_oats.iff
+oats_wild_corellia								Corellian Wild Oats		0	0	0	0	1	1000	300	1000	0	0	0	0	1	700	1	1000	0	0	0	0	0	0	object/resource_container/organic_oats.iff
+oats_wild_dantooine								Dantooine Wild Oats		0	0	0	0	1	1000	300	1000	0	0	0	0	1	700	1	1000	0	0	0	0	0	0	object/resource_container/organic_oats.iff
+oats_wild_dathomir								Dathomirian Wild Oats		0	0	0	0	1	1000	300	1000	0	0	0	0	1	700	1	1000	0	0	0	0	0	0	object/resource_container/organic_oats.iff
+oats_wild_endor								Endorian Wild Oats		0	0	0	0	1	1000	300	1000	0	0	0	0	1	700	1	1000	0	0	0	0	0	0	object/resource_container/organic_oats.iff
+oats_wild_lok								Lokian Wild Oats		0	0	0	0	1	1000	300	1000	0	0	0	0	1	700	1	1000	0	0	0	0	0	0	object/resource_container/organic_oats.iff
+oats_wild_naboo								Nabooian Wild Oats		0	0	0	0	1	1000	300	1000	0	0	0	0	1	700	1	1000	0	0	0	0	0	0	object/resource_container/organic_oats.iff
+oats_wild_rori								Rori Wild Oats		0	0	0	0	1	1000	300	1000	0	0	0	0	1	700	1	1000	0	0	0	0	0	0	object/resource_container/organic_oats.iff
+oats_wild_talus								Talusian Wild Oats		0	0	0	0	1	1000	300	1000	0	0	0	0	1	700	1	1000	0	0	0	0	0	0	object/resource_container/organic_oats.iff
+oats_wild_tatooine								Tatooinian Wild Oats		0	0	0	0	1	1000	300	1000	0	0	0	0	1	700	1	1000	0	0	0	0	0	0	object/resource_container/organic_oats.iff
+oats_wild_yavin4								Yavinian Wild Oats		0	0	0	0	1	1000	300	1000	0	0	0	0	1	700	1	1000	0	0	0	0	0	0	object/resource_container/organic_oats.iff
+oats_wild_kashyyyk								Kashyyykian Wild Oats		0	0	0	0	1	1000	300	1000	0	0	0	0	1	700	1	1000	0	0	0	0	0	0	object/resource_container/organic_oats.iff
+oats_wild_mustafar								Mustafarian Wild Oats		0	0	0	0	1	1000	300	1000	0	0	0	0	1	700	1	1000	0	0	0	0	0	0	object/resource_container/organic_oats.iff
+wheat						Wheat				0	0	0	0	1	1000	1	1000	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_wheat.iff
+wheat_domesticated							Domesticated Wheat			0	0	0	0	1	1000	1	700	0	0	0	0	300	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_wheat.iff
+wheat_domesticated_corellia								Corellian Domesticated Wheat		0	0	0	0	1	1000	1	700	0	0	0	0	300	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_wheat.iff
+wheat_domesticated_dantooine								Dantooine Domesticated Wheat		0	0	0	0	1	1000	1	700	0	0	0	0	300	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_wheat.iff
+wheat_domesticated_dathomir								Dathomirian Domesticated Wheat		0	0	0	0	1	1000	1	700	0	0	0	0	300	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_wheat.iff
+wheat_domesticated_endor								Endorian Domesticated Wheat		0	0	0	0	1	1000	1	700	0	0	0	0	300	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_wheat.iff
+wheat_domesticated_lok								Lokian Domesticated Wheat		0	0	0	0	1	1000	1	700	0	0	0	0	300	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_wheat.iff
+wheat_domesticated_naboo								Nabooian Domesticated Wheat		0	0	0	0	1	1000	1	700	0	0	0	0	300	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_wheat.iff
+wheat_domesticated_rori								Rori Domesticated Wheat		0	0	0	0	1	1000	1	700	0	0	0	0	300	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_wheat.iff
+wheat_domesticated_talus								Talusian Domesticated Wheat		0	0	0	0	1	1000	1	700	0	0	0	0	300	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_wheat.iff
+wheat_domesticated_tatooine								Tatooinian Domesticated Wheat		0	0	0	0	1	1000	1	700	0	0	0	0	300	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_wheat.iff
+wheat_domesticated_yavin4								Yavinian Domesticated Wheat		0	0	0	0	1	1000	1	700	0	0	0	0	300	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_wheat.iff
+wheat_domesticated_kashyyyk								Kashyyykian Domesticated Wheat		0	0	0	0	1	1000	1	700	0	0	0	0	300	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_wheat.iff
+wheat_domesticated_mustafar								Mustafarian Domesticated Wheat		0	0	0	0	1	1000	1	700	0	0	0	0	300	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_wheat.iff
+wheat_wild							Wild Wheat			0	0	0	0	1	1000	300	1000	0	0	0	0	1	700	1	1000	0	0	0	0	0	0	object/resource_container/organic_wheat.iff
+wheat_wild_corellia								Corellian Wild Wheat		0	0	0	0	1	1000	300	1000	0	0	0	0	1	700	1	1000	0	0	0	0	0	0	object/resource_container/organic_wheat.iff
+wheat_wild_dantooine								Dantooine Wild Wheat		0	0	0	0	1	1000	300	1000	0	0	0	0	1	700	1	1000	0	0	0	0	0	0	object/resource_container/organic_wheat.iff
+wheat_wild_dathomir								Dathomir Wild Wheat		0	0	0	0	1	1000	300	1000	0	0	0	0	1	700	1	1000	0	0	0	0	0	0	object/resource_container/organic_wheat.iff
+wheat_wild_endor								Endorian Wild Wheat		0	0	0	0	1	1000	300	1000	0	0	0	0	1	700	1	1000	0	0	0	0	0	0	object/resource_container/organic_wheat.iff
+wheat_wild_lok								Lokian Wild Wheat		0	0	0	0	1	1000	300	1000	0	0	0	0	1	700	1	1000	0	0	0	0	0	0	object/resource_container/organic_wheat.iff
+wheat_wild_naboo								Nabooian Wild Wheat		0	0	0	0	1	1000	300	1000	0	0	0	0	1	700	1	1000	0	0	0	0	0	0	object/resource_container/organic_wheat.iff
+wheat_wild_rori								Rori Wild Wheat		0	0	0	0	1	1000	300	1000	0	0	0	0	1	700	1	1000	0	0	0	0	0	0	object/resource_container/organic_wheat.iff
+wheat_wild_talus								Talusian Wild Wheat		0	0	0	0	1	1000	300	1000	0	0	0	0	1	700	1	1000	0	0	0	0	0	0	object/resource_container/organic_wheat.iff
+wheat_wild_tatooine								Tatooinian Wild Wheat		0	0	0	0	1	1000	300	1000	0	0	0	0	1	700	1	1000	0	0	0	0	0	0	object/resource_container/organic_wheat.iff
+wheat_wild_yavin4								Yavinian Wild Wheat		0	0	0	0	1	1000	300	1000	0	0	0	0	1	700	1	1000	0	0	0	0	0	0	object/resource_container/organic_wheat.iff
+wheat_wild_kashyyyk								Kashyyykian Wild Wheat		0	0	0	0	1	1000	300	1000	0	0	0	0	1	700	1	1000	0	0	0	0	0	0	object/resource_container/organic_wheat.iff
+wheat_wild_mustafar								Mustafarian Wild Wheat		0	0	0	0	1	1000	300	1000	0	0	0	0	1	700	1	1000	0	0	0	0	0	0	object/resource_container/organic_wheat.iff
+seeds					Seeds					0	0	0	0	1	1000	1	1000	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_green_vegetables.iff
+vegetable						Vegetables				0	0	0	0	1	1000	1	1000	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_green_vegetables.iff
+mixed_vegetables							Mixed Vegetables		1	0	0	0	0	200	200	200	200	0	0	0	0	200	200	200	200	0	0	0	0	0	0	object/resource_container/organic_green_vegetables.iff
+vegetable_greens							Greens			0	0	0	0	1	1000	1	1000	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_green_vegetables.iff
+vegetable_greens_corellia								Corellian Vegetable Greens		0	0	0	0	1	1000	1	1000	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_green_vegetables.iff
+vegetable_greens_dantooine								Dantooine Vegetable Greens		0	0	0	0	1	1000	1	1000	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_green_vegetables.iff
+vegetable_greens_dathomir								Dathomirian Vegetable Greens		0	0	0	0	1	1000	1	1000	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_green_vegetables.iff
+vegetable_greens_endor								Endorian Vegetable Greens		0	0	0	0	1	1000	1	1000	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_green_vegetables.iff
+vegetable_greens_lok								Lokian Vegetable Greens		0	0	0	0	1	1000	1	1000	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_green_vegetables.iff
+vegetable_greens_naboo								Nabooian Vegetable Greens		0	0	0	0	1	1000	1	1000	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_green_vegetables.iff
+vegetable_greens_rori								Rori Vegetable Greens		0	0	0	0	1	1000	1	1000	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_green_vegetables.iff
+vegetable_greens_talus								Talusian Vegetable Greens		0	0	0	0	1	1000	1	1000	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_green_vegetables.iff
+vegetable_greens_tatooine								Tatooinian Vegetable Greens		0	0	0	0	1	1000	1	1000	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_green_vegetables.iff
+vegetable_greens_yavin4								Yavinian Vegetable Greens		0	0	0	0	1	1000	1	1000	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_green_vegetables.iff
+vegetable_greens_kashyyyk								Kashyyykian Vegetable Greens		0	0	0	0	1	1000	1	1000	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_green_vegetables.iff
+vegetable_greens_mustafar								Mustafarian Vegetable Greens		0	0	0	0	1	1000	1	1000	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_green_vegetables.iff
+vegetable_beans							Beans			0	0	0	0	1	1000	1	1000	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_bean.iff
+vegetable_beans_corellia								Corellian Vegetable Beans		0	0	0	0	1	1000	1	1000	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_bean.iff
+vegetable_beans_dantooine								Dantooine Vegetable Beans		0	0	0	0	1	1000	1	1000	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_bean.iff
+vegetable_beans_dathomir								Dathomirian Vegetable Beans		0	0	0	0	1	1000	1	1000	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_bean.iff
+vegetable_beans_endor								Endorian Vegetable Beans		0	0	0	0	1	1000	1	1000	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_bean.iff
+vegetable_beans_lok								Lokian Vegetable Beans		0	0	0	0	1	1000	1	1000	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_bean.iff
+vegetable_beans_naboo								Nabooian Vegetable Beans		0	0	0	0	1	1000	1	1000	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_bean.iff
+vegetable_beans_rori								Rori Vegetable Beans		0	0	0	0	1	1000	1	1000	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_bean.iff
+vegetable_beans_talus								Talusian Vegetable Beans		0	0	0	0	1	1000	1	1000	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_bean.iff
+vegetable_beans_tatooine								Tatooinian Vegetable Beans		0	0	0	0	1	1000	1	1000	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_bean.iff
+vegetable_beans_yavin4								Yavinian Vegetable Beans		0	0	0	0	1	1000	1	1000	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_bean.iff
+vegetable_beans_kashyyyk								Kashyyykian Vegetable Beans		0	0	0	0	1	1000	1	1000	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_bean.iff
+vegetable_beans_mustafar								Mustafarian Vegetable Beans		0	0	0	0	1	1000	1	1000	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_bean.iff
+vegetable_tubers							Tubers			0	0	0	0	1	1000	1	1000	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_tuber.iff
+vegetable_tubers_corellia								Corellian Vegetable Tubers		0	0	0	0	1	1000	1	1000	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_tuber.iff
+vegetable_tubers_dantooine								Dantooine Vegetable Tubers		0	0	0	0	1	1000	1	1000	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_tuber.iff
+vegetable_tubers_dathomir								Dathomirian Vegetable Tubers		0	0	0	0	1	1000	1	1000	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_tuber.iff
+vegetable_tubers_endor								Endorian Vegetable Tubers		0	0	0	0	1	1000	1	1000	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_tuber.iff
+vegetable_tubers_lok								Lokian Vegetable Tubers		0	0	0	0	1	1000	1	1000	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_tuber.iff
+vegetable_tubers_naboo								Nabooian Vegetable Tubers		0	0	0	0	1	1000	1	1000	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_tuber.iff
+vegetable_tubers_rori								Rori Vegetable Tubers		0	0	0	0	1	1000	1	1000	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_tuber.iff
+vegetable_tubers_talus								Talusian Vegetable Tubers		0	0	0	0	1	1000	1	1000	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_tuber.iff
+vegetable_tubers_tatooine								Tatooinian Vegetable Tubers		0	0	0	0	1	1000	1	1000	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_tuber.iff
+vegetable_tubers_yavin4								Yavinian Vegetable Tubers		0	0	0	0	1	1000	1	1000	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_tuber.iff
+vegetable_tubers_kashyyyk								Kashyyykian Vegetable Tubers		0	0	0	0	1	1000	1	1000	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_tuber.iff
+vegetable_tubers_mustafar								Mustafarian Vegetable Tubers		0	0	0	0	1	1000	1	1000	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_tuber.iff
+vegetable_fungi							Fungi			0	0	0	0	1	1000	1	1000	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_fungi.iff
+vegetable_fungi_corellia								Corellian Vegetable Fungus		0	0	0	0	1	1000	1	1000	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_fungi.iff
+vegetable_fungi_dantooine								Dantooine Vegetable Fungus		0	0	0	0	1	1000	1	1000	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_fungi.iff
+vegetable_fungi_dathomir								Dathomirian Vegetable Fungus		0	0	0	0	1	1000	1	1000	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_fungi.iff
+vegetable_fungi_endor								Endorian Vegetable Fungus		0	0	0	0	1	1000	1	1000	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_fungi.iff
+vegetable_fungi_lok								Lokian Vegetable Fungus		0	0	0	0	1	1000	1	1000	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_fungi.iff
+vegetable_fungi_naboo								Nabooian Vegetable Fungus		0	0	0	0	1	1000	1	1000	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_fungi.iff
+vegetable_fungi_rori								Rori Vegetable Fungus		0	0	0	0	1	1000	1	1000	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_fungi.iff
+vegetable_fungi_talus								Talusian Vegetable Fungus		0	0	0	0	1	1000	1	1000	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_fungi.iff
+vegetable_fungi_tatooine								Tatooinian Vegetable Fungus		0	0	0	0	1	1000	1	1000	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_fungi.iff
+vegetable_fungi_yavin4								Yavinian Vegetable Fungus		0	0	0	0	1	1000	1	1000	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_fungi.iff
+vegetable_fungi_kashyyyk								Kashyyykian Vegetable Fungus		0	0	0	0	1	1000	1	1000	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_fungi.iff
+vegetable_fungi_mustafar								Mustafarian Vegetable Fungus		0	0	0	0	1	1000	1	1000	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_fungi.iff
+fruit						Fruit				0	0	0	0	1	1000	1	1000	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_fruit.iff
+mixed_fruits							Mixed Fruits		1	0	0	0	0	200	200	200	200	0	0	0	0	200	200	200	200	0	0	0	0	0	0	object/resource_container/organic_fruit.iff
+fruit_fruits							Fruits			0	0	0	0	1	1000	1	1000	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_fruit.iff
+fruit_fruits_corellia								Corellian Fruit		0	0	0	0	1	1000	1	1000	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_fruit.iff
+fruit_fruits_dantooine								Dantooine Fruit		0	0	0	0	1	1000	1	1000	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_fruit.iff
+fruit_fruits_dathomir								Dathomirian Fruit		0	0	0	0	1	1000	1	1000	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_fruit.iff
+fruit_fruits_endor								Endorian Fruit		0	0	0	0	1	1000	1	1000	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_fruit.iff
+fruit_fruits_lok								Lokian Fruit		0	0	0	0	1	1000	1	1000	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_fruit.iff
+fruit_fruits_naboo								Nabooian Fruit		0	0	0	0	1	1000	1	1000	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_fruit.iff
+fruit_fruits_rori								Rori Fruit		0	0	0	0	1	1000	1	1000	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_fruit.iff
+fruit_fruits_talus								Talusian Fruit		0	0	0	0	1	1000	1	1000	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_fruit.iff
+fruit_fruits_tatooine								Tatooinian Fruit		0	0	0	0	1	1000	1	1000	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_fruit.iff
+fruit_fruits_yavin4								Yavinian Fruit		0	0	0	0	1	1000	1	1000	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_fruit.iff
+fruit_fruits_kashyyyk								Kashyyykian Fruit		0	0	0	0	1	1000	1	1000	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_fruit.iff
+fruit_fruits_mustafar								Mustafarian Fruit		0	0	0	0	1	1000	1	1000	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_fruit.iff
+fruit_berries							Berries			0	0	0	0	1	1000	1	1000	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_fruit.iff
+fruit_berries_corellia								Corellia Berry Fruit		0	0	0	0	1	1000	1	1000	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_fruit.iff
+fruit_berries_dantooine								Dantooine Berry Fruit		0	0	0	0	1	1000	1	1000	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_fruit.iff
+fruit_berries_dathomir								Dathomirian Berry Fruit		0	0	0	0	1	1000	1	1000	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_fruit.iff
+fruit_berries_endor								Endorian Berry Fruit		0	0	0	0	1	1000	1	1000	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_fruit.iff
+fruit_berries_lok								Lokian Berry Fruit		0	0	0	0	1	1000	1	1000	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_fruit.iff
+fruit_berries_naboo								Nabooian Berry Fruit		0	0	0	0	1	1000	1	1000	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_fruit.iff
+fruit_berries_rori								Rori Berry Fruit		0	0	0	0	1	1000	1	1000	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_fruit.iff
+fruit_berries_talus								Talusian Berry Fruit		0	0	0	0	1	1000	1	1000	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_fruit.iff
+fruit_berries_tatooine								Tatooinian Berry Fruit		0	0	0	0	1	1000	1	1000	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_fruit.iff
+fruit_berries_yavin4								Yavinian Berry Fruit		0	0	0	0	1	1000	1	1000	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_fruit.iff
+fruit_berries_kashyyyk								Kashyyykian Berry Fruit		0	0	0	0	1	1000	1	1000	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_fruit.iff
+fruit_berries_mustafar								Mustafarian Berry Fruit		0	0	0	0	1	1000	1	1000	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/organic_fruit.iff
+fruit_flowers							Flowers			0	0	0	0	1	1000	1	1000	0	0	0	0	1	700	1	1000	0	0	0	0	0	0	object/resource_container/organic_fruit.iff
+fruit_flowers_corellia								Corellia Flower Fruit		0	0	0	0	1	1000	1	1000	0	0	0	0	1	700	1	1000	0	0	0	0	0	0	object/resource_container/organic_fruit.iff
+fruit_flowers_dantooine								Dantooine Flower Fruit		0	0	0	0	1	1000	1	1000	0	0	0	0	1	700	1	1000	0	0	0	0	0	0	object/resource_container/organic_fruit.iff
+fruit_flowers_dathomir								Dathomirian Flower Fruit		0	0	0	0	1	1000	1	1000	0	0	0	0	1	700	1	1000	0	0	0	0	0	0	object/resource_container/organic_fruit.iff
+fruit_flowers_endor								Endorian Flower Fruit		0	0	0	0	1	1000	1	1000	0	0	0	0	1	700	1	1000	0	0	0	0	0	0	object/resource_container/organic_fruit.iff
+fruit_flowers_lok								Lokian Flower Fruit		0	0	0	0	1	1000	1	1000	0	0	0	0	1	700	1	1000	0	0	0	0	0	0	object/resource_container/organic_fruit.iff
+fruit_flowers_naboo								Nabooian Flower Fruit		0	0	0	0	1	1000	1	1000	0	0	0	0	1	700	1	1000	0	0	0	0	0	0	object/resource_container/organic_fruit.iff
+fruit_flowers_rori								Rori Flower Fruit		0	0	0	0	1	1000	1	1000	0	0	0	0	1	700	1	1000	0	0	0	0	0	0	object/resource_container/organic_fruit.iff
+fruit_flowers_talus								Talusian Flower Fruit		0	0	0	0	1	1000	1	1000	0	0	0	0	1	700	1	1000	0	0	0	0	0	0	object/resource_container/organic_fruit.iff
+fruit_flowers_tatooine								Tatooinian Flower Fruit		0	0	0	0	1	1000	1	1000	0	0	0	0	1	700	1	1000	0	0	0	0	0	0	object/resource_container/organic_fruit.iff
+fruit_flowers_yavin4								Yavinian Flower Fruit		0	0	0	0	1	1000	1	1000	0	0	0	0	1	700	1	1000	0	0	0	0	0	0	object/resource_container/organic_fruit.iff
+fruit_flowers_kashyyyk								Kashyyykian Flower Fruit		0	0	0	0	1	1000	1	1000	0	0	0	0	1	700	1	1000	0	0	0	0	0	0	object/resource_container/organic_fruit.iff
+fruit_flowers_mustafar								Mustafarian Flower Fruit		0	0	0	0	1	1000	1	1000	0	0	0	0	1	700	1	1000	0	0	0	0	0	0	object/resource_container/organic_fruit.iff
+flora_structural				Flora Structural						0	0	0	0	1	800	0	0	0	0	200	1000	0	0	1	1000	1	700	1	800	0	0	object/resource_container/organic_structure.iff
+wood					Wood					0	0	0	0	1	800	0	0	0	0	200	1000	0	0	1	1000	1	700	1	800	0	0	object/resource_container/organic_structure.iff
+processed_wood						Blended Wood			1	0	0	0	0	200	200	0	0	0	0	200	200	0	0	200	200	200	200	200	200	0	0	object/resource_container/organic_structure.iff
+wood_deciduous						Hard Wood				0	0	0	0	1	800	0	0	0	0	400	800	0	0	1	1000	300	700	1	800	0	0	object/resource_container/organic_structure.iff
+wood_deciduous_corellia							Corellian Deciduous Wood			0	0	0	0	1	800	0	0	0	0	400	800	0	0	1	1000	300	700	1	800	0	0	object/resource_container/organic_structure.iff
+wood_deciduous_dantooine							Dantooine Deciduous Wood			0	0	0	0	1	800	0	0	0	0	400	800	0	0	1	1000	300	700	1	800	0	0	object/resource_container/organic_structure.iff
+wood_deciduous_dathomir							Dathomirian Deciduous Wood			0	0	0	0	1	800	0	0	0	0	400	800	0	0	1	1000	300	700	1	800	0	0	object/resource_container/organic_structure.iff
+wood_deciduous_endor							Endorian Deciduous Wood			0	0	0	0	1	800	0	0	0	0	400	800	0	0	1	1000	300	700	1	800	0	0	object/resource_container/organic_structure.iff
+wood_deciduous_lok							Lokian Deciduous Wood			0	0	0	0	1	800	0	0	0	0	400	800	0	0	1	1000	300	700	1	800	0	0	object/resource_container/organic_structure.iff
+wood_deciduous_naboo							Nabooian Deciduous Wood			0	0	0	0	1	800	0	0	0	0	400	800	0	0	1	1000	300	700	1	800	0	0	object/resource_container/organic_structure.iff
+wood_deciduous_rori							Rori Deciduous Wood			0	0	0	0	1	800	0	0	0	0	400	800	0	0	1	1000	300	700	1	800	0	0	object/resource_container/organic_structure.iff
+wood_deciduous_talus							Talusian Deciduous Wood			0	0	0	0	1	800	0	0	0	0	400	800	0	0	1	1000	300	700	1	800	0	0	object/resource_container/organic_structure.iff
+wood_deciduous_tatooine							Tatooinian Deciduous Wood			0	0	0	0	1	800	0	0	0	0	400	800	0	0	1	1000	300	700	1	800	0	0	object/resource_container/organic_structure.iff
+wood_deciduous_yavin4							Yavinian Deciduous Wood			0	0	0	0	1	800	0	0	0	0	400	800	0	0	1	1000	300	700	1	800	0	0	object/resource_container/organic_structure.iff
+wood_deciduous_kashyyyk							Kashyyykian Deciduous Wood			0	0	0	0	1	800	0	0	0	0	400	800	0	0	1	1000	300	700	1	800	0	0	object/resource_container/organic_structure.iff
+wood_deciduous_mustafar							Mustafarian Deciduous Wood			0	0	0	0	1	800	0	0	0	0	400	800	0	0	1	1000	300	700	1	800	0	0	object/resource_container/organic_structure.iff
+softwood						Soft Wood				0	0	0	0	1	600	0	0	0	0	600	1000	0	0	1	1000	1	400	1	300	0	0	object/resource_container/organic_structure.iff
+softwood_conifer_corellia							Corellian Conifer Wood			0	0	0	0	1	600	0	0	0	0	600	1000	0	0	1	1000	100	400	1	300	0	0	object/resource_container/organic_structure.iff
+softwood_conifer_dantooine							Dantooine Conifer Wood			0	0	0	0	1	600	0	0	0	0	600	1000	0	0	1	1000	100	400	1	300	0	0	object/resource_container/organic_structure.iff
+softwood_conifer_dathomir							Dathomirian Conifer Wood			0	0	0	0	1	600	0	0	0	0	600	1000	0	0	1	1000	100	400	1	300	0	0	object/resource_container/organic_structure.iff
+softwood_conifer_endor							Endorian Conifer Wood			0	0	0	0	1	600	0	0	0	0	600	1000	0	0	1	1000	100	400	1	300	0	0	object/resource_container/organic_structure.iff
+softwood_conifer_lok							Lokian Conifer Wood			0	0	0	0	1	600	0	0	0	0	600	1000	0	0	1	1000	100	400	1	300	0	0	object/resource_container/organic_structure.iff
+softwood_conifer_naboo							Nabooian Conifer Wood			0	0	0	0	1	600	0	0	0	0	600	1000	0	0	1	1000	100	400	1	300	0	0	object/resource_container/organic_structure.iff
+softwood_conifer_rori							Rori Conifer Wood			0	0	0	0	1	600	0	0	0	0	600	1000	0	0	1	1000	100	400	1	300	0	0	object/resource_container/organic_structure.iff
+softwood_conifer_talus							Talusian Conifer Wood			0	0	0	0	1	600	0	0	0	0	600	1000	0	0	1	1000	100	400	1	300	0	0	object/resource_container/organic_structure.iff
+softwood_conifer_tatooine							Tatooinian Conifer Wood			0	0	0	0	1	600	0	0	0	0	600	1000	0	0	1	1000	100	400	1	300	0	0	object/resource_container/organic_structure.iff
+softwood_conifer_yavin4							Yavinian Conifer Wood			0	0	0	0	1	600	0	0	0	0	600	1000	0	0	1	1000	100	400	1	300	0	0	object/resource_container/organic_structure.iff
+softwood_conifer_kashyyyk							Kashyyykian Conifer Wood			0	0	0	0	1	600	0	0	0	0	600	1000	0	0	1	1000	100	400	1	300	0	0	object/resource_container/organic_structure.iff
+softwood_conifer_mustafar							Mustafarian Conifer Wood			0	0	0	0	1	600	0	0	0	0	600	1000	0	0	1	1000	100	400	1	300	0	0	object/resource_container/organic_structure.iff
+softwood_evergreen							Evergreen Soft Wood			0	0	0	0	1	500	0	0	0	0	800	1000	0	0	1	1000	1	400	1	300	0	0	object/resource_container/organic_structure.iff
+softwood_evergreen_corellia								Corellia Evergreen Wood		0	0	0	0	1	500	0	0	0	0	800	1000	0	0	1	1000	1	400	1	300	0	0	object/resource_container/organic_structure.iff
+softwood_evergreen_dantooine								Dantooine Evergreen Wood		0	0	0	0	1	500	0	0	0	0	800	1000	0	0	1	1000	1	400	1	300	0	0	object/resource_container/organic_structure.iff
+softwood_evergreen_dathomir								Dathomirian Evergreen Wood		0	0	0	0	1	500	0	0	0	0	800	1000	0	0	1	1000	1	400	1	300	0	0	object/resource_container/organic_structure.iff
+softwood_evergreen_endor								Endorian Evergreen Wood		0	0	0	0	1	500	0	0	0	0	800	1000	0	0	1	1000	1	400	1	300	0	0	object/resource_container/organic_structure.iff
+softwood_evergreen_lok								Lokian Evergreen Wood		0	0	0	0	1	500	0	0	0	0	800	1000	0	0	1	1000	1	400	1	300	0	0	object/resource_container/organic_structure.iff
+softwood_evergreen_naboo								Nabooian Evergreen Wood		0	0	0	0	1	500	0	0	0	0	800	1000	0	0	1	1000	1	400	1	300	0	0	object/resource_container/organic_structure.iff
+softwood_evergreen_rori								Rori Evergreen Wood		0	0	0	0	1	500	0	0	0	0	800	1000	0	0	1	1000	1	400	1	300	0	0	object/resource_container/organic_structure.iff
+softwood_evergreen_talus								Talusian Evergreen Wood		0	0	0	0	1	500	0	0	0	0	800	1000	0	0	1	1000	1	400	1	300	0	0	object/resource_container/organic_structure.iff
+softwood_evergreen_tatooine								Tatooinian Evergreen Wood		0	0	0	0	1	500	0	0	0	0	800	1000	0	0	1	1000	1	400	1	300	0	0	object/resource_container/organic_structure.iff
+softwood_evergreen_yavin4								Yavinian Evergreen Wood		0	0	0	0	1	500	0	0	0	0	800	1000	0	0	1	1000	1	400	1	300	0	0	object/resource_container/organic_structure.iff
+softwood_evergreen_kashyyyk								Kashyyykian Evergreen Wood		0	0	0	0	1	500	0	0	0	0	800	1000	0	0	1	1000	1	400	1	300	0	0	object/resource_container/organic_structure.iff
+softwood_evergreen_mustafar								Mustafarian Evergreen Wood		0	0	0	0	1	500	0	0	0	0	800	1000	0	0	1	1000	1	400	1	300	0	0	object/resource_container/organic_structure.iff
+inorganic		Inorganic								1	1000	1	1000	1	1000	0	0	1	1000	1	1000	1	1000	1	1000	1	1000	1	1000	1	1000	object/resource_container/energy_liquid.iff
+chemical			Chemical							0	0	0	0	1	1000	0	0	0	0	1	1000	1	1000	1	1000	1	1000	1	1000	0	0	object/resource_container/energy_liquid.iff
+chemical_compound				Chemical Compound					1	0	0	0	0	200	200	0	0	0	0	0	0	0	0	200	200	0	0	0	0	0	0	object/resource_container/energy_liquid.iff
+fuel_petrochem_liquid				Liquid Petrochem Fuel						0	0	0	0	1	1000	0	0	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/inorganic_petrochem_liquid.iff
+petrochem_fuel_liquid_unknown					Unknown Liquid Petrochem Fuel					0	0	0	0	1	1000	0	0	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/inorganic_petrochem_liquid.iff
+fuel_petrochem_liquid_known					Known Liquid Petrochem Fuel					0	0	0	0	1	600	0	0	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/inorganic_petrochem_liquid.iff
+petrochem_fuel_liquid_type1						Class 1 Liquid Petro Fuel				0	0	0	0	1	600	0	0	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/inorganic_petrochem_liquid.iff
+petrochem_fuel_liquid_type2						Class 2 Liquid Petro Fuel				0	0	0	0	1	600	0	0	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/inorganic_petrochem_liquid.iff
+petrochem_fuel_liquid_type3						Class 3 Liquid Petro Fuel				0	0	0	0	1	600	0	0	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/inorganic_petrochem_liquid.iff
+petrochem_fuel_liquid_type4						Class 4 Liquid Petro Fuel				0	0	0	0	1	600	0	0	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/inorganic_petrochem_liquid.iff
+petrochem_fuel_liquid_type5						Class 5 Liquid Petro Fuel				0	0	0	0	1	600	0	0	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/inorganic_petrochem_liquid.iff
+petrochem_fuel_liquid_type6						Class 6 Liquid Petro Fuel				0	0	0	0	1	600	0	0	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/inorganic_petrochem_liquid.iff
+petrochem_fuel_liquid_type7						Class 7 Liquid Petro Fuel				0	0	0	0	1	600	0	0	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/inorganic_petrochem_liquid.iff
+petrochem_fuel_liquid_mustafar						Mustafarian Liquid Petro Fuel				0	0	0	0	1	600	0	0	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/inorganic_petrochem_liquid.iff
+petrochem_inert				Inert Petrochemical						0	0	0	0	1	1000	0	0	0	0	1	1000	0	0	1	1000	1	1000	1	1000	0	0	object/resource_container/inorganic_chemicals.iff
+petrochem_inert_lubricating_oil					Lubricating Oil					0	0	0	0	1	1000	0	0	0	0	0	0	0	0	1	1000	0	0	0	0	0	0	object/resource_container/inorganic_chemicals.iff
+petrochem_inert_polymer					Polymer					0	0	0	0	1	1000	0	0	0	0	1	1000	0	0	1	1000	1	1000	1	1000	0	0	object/resource_container/inorganic_chemicals.iff
+fiberplast				Fiberplast						0	0	0	0	1	1000	0	0	0	0	1	1000	0	0	1	1000	1	1000	1	1000	0	0	object/resource_container/inorganic_chemicals.iff
+fiberplast_corellia					Corellia Fiberplast					0	0	0	0	1	1000	0	0	0	0	1	1000	0	0	1	1000	1	1000	1	1000	0	0	object/resource_container/inorganic_chemicals.iff
+fiberplast_dantooine					Dantooine Fiberplast					0	0	0	0	1	1000	0	0	0	0	1	1000	0	0	1	1000	1	1000	1	1000	0	0	object/resource_container/inorganic_chemicals.iff
+fiberplast_dathomir					Dathomirian Fiberplast					0	0	0	0	1	1000	0	0	0	0	1	1000	0	0	1	1000	1	1000	1	1000	0	0	object/resource_container/inorganic_chemicals.iff
+fiberplast_endor					Endorian Fiberplast					0	0	0	0	1	1000	0	0	0	0	1	1000	0	0	1	1000	1	1000	1	1000	0	0	object/resource_container/inorganic_chemicals.iff
+fiberplast_lok					Lokian Fiberplast					0	0	0	0	1	1000	0	0	0	0	1	1000	0	0	1	1000	1	1000	1	1000	0	0	object/resource_container/inorganic_chemicals.iff
+fiberplast_naboo					Nabooian Fiberplast					0	0	0	0	1	1000	0	0	0	0	1	1000	0	0	1	1000	1	1000	1	1000	0	0	object/resource_container/inorganic_chemicals.iff
+fiberplast_rori					Rori Fiberplast					0	0	0	0	1	1000	0	0	0	0	1	1000	0	0	1	1000	1	1000	1	1000	0	0	object/resource_container/inorganic_chemicals.iff
+fiberplast_talus					Talusian Fiberplast					0	0	0	0	1	1000	0	0	0	0	1	1000	0	0	1	1000	1	1000	1	1000	0	0	object/resource_container/inorganic_chemicals.iff
+fiberplast_tatooine					Tatooinian Fiberplast					0	0	0	0	1	1000	0	0	0	0	1	1000	0	0	1	1000	1	1000	1	1000	0	0	object/resource_container/inorganic_chemicals.iff
+fiberplast_gravitonic					Gravitonic Fiberplast					0	0	0	0	1	1000	0	0	0	0	1	1000	0	0	1	1000	1	1000	1	1000	0	0	object/resource_container/inorganic_chemicals.iff
+fiberplast_yavin4					Yavinian Fiberplast					0	0	0	0	1	1000	0	0	0	0	1	1000	0	0	1	1000	1	1000	1	1000	0	0	object/resource_container/inorganic_chemicals.iff
+fiberplast_kashyyyk					Kashyyykian Fiberplast					0	0	0	0	1	1000	0	0	0	0	1	1000	0	0	1	1000	1	1000	1	1000	0	0	object/resource_container/inorganic_chemicals.iff
+fiberplast_mustafar					Mustafarian Fiberplast					0	0	0	0	1	1000	0	0	0	0	1	1000	0	0	1	1000	1	1000	1	1000	0	0	object/resource_container/inorganic_chemicals.iff
+water			Water							0	0	0	0	1	1000	0	0	0	0	0	0	0	0	200	1000	0	0	0	0	0	0	object/resource_container/inorganic_water.iff
+water_solution				Water Solution					1	0	0	0	0	200	200	0	0	0	0	0	0	0	0	200	200	0	0	0	0	0	0	object/resource_container/inorganic_water.iff
+water_vapor_corellia				Corellian Water Vapor						0	0	0	0	1	1000	0	0	0	0	0	0	0	0	600	1000	0	0	0	0	0	0	object/resource_container/inorganic_bottle_water.iff
+water_vapor_dantooine				Dantooine Water Vapor						0	0	0	0	1	1000	0	0	0	0	0	0	0	0	600	1000	0	0	0	0	0	0	object/resource_container/inorganic_bottle_water.iff
+water_vapor_dathomir				Dathomir Water Vapor						0	0	0	0	1	1000	0	0	0	0	0	0	0	0	600	1000	0	0	0	0	0	0	object/resource_container/inorganic_bottle_water.iff
+water_vapor_endor				Endorian Water Vapor						0	0	0	0	1	1000	0	0	0	0	0	0	0	0	600	1000	0	0	0	0	0	0	object/resource_container/inorganic_bottle_water.iff
+water_vapor_lok				Lokian Water Vapor						0	0	0	0	1	1000	0	0	0	0	0	0	0	0	600	1000	0	0	0	0	0	0	object/resource_container/inorganic_bottle_water.iff
+water_vapor_naboo				Nabooian Water Vapor						0	0	0	0	1	1000	0	0	0	0	0	0	0	0	600	1000	0	0	0	0	0	0	object/resource_container/inorganic_bottle_water.iff
+water_vapor_rori				Rori Water Vapor						0	0	0	0	1	1000	0	0	0	0	0	0	0	0	600	1000	0	0	0	0	0	0	object/resource_container/inorganic_bottle_water.iff
+water_vapor_talus				Talusian Water Vapor						0	0	0	0	1	1000	0	0	0	0	0	0	0	0	600	1000	0	0	0	0	0	0	object/resource_container/inorganic_bottle_water.iff
+water_vapor_tatooine				Tatooinian Water Vapor						0	0	0	0	1	1000	0	0	0	0	0	0	0	0	600	1000	0	0	0	0	0	0	object/resource_container/inorganic_bottle_water.iff
+water_vapor_yavin4				Yavinian Water Vapor						0	0	0	0	1	1000	0	0	0	0	0	0	0	0	600	1000	0	0	0	0	0	0	object/resource_container/inorganic_bottle_water.iff
+water_vapor_kashyyyk				Kashyyykian Water Vapor						0	0	0	0	1	1000	0	0	0	0	0	0	0	0	600	1000	0	0	0	0	0	0	object/resource_container/inorganic_bottle_water.iff
+water_vapor_mustafar				Mustafarian Water Vapor						0	0	0	0	1	1000	0	0	0	0	0	0	0	0	600	1000	0	0	0	0	0	0	object/resource_container/inorganic_bottle_water.iff
+mineral			Mineral							1	1000	1	1000	1	1000	0	0	1	1000	1	1000	1	1000	1	1000	1	1000	1	1000	1	1000	object/resource_container/energy_solid.iff
+fuel_petrochem_solid				Solid Petrochem Fuel						0	0	0	0	1	1000	0	0	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/energy_solid.iff
+degraded_fuel_petrochem_solid					Degraded Solid Petrochem Fuel				1	0	0	0	0	200	200	0	0	0	0	0	0	200	200	200	200	0	0	0	0	0	0	object/resource_container/energy_solid.iff
+petrochem_fuel_solid_unknown					Unknown Solid Petrochem Fuel					0	0	0	0	1	1000	0	0	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/energy_solid.iff
+fuel_petrochem_solid_known					Known Solid Petrochem Fuel					0	0	0	0	1	800	0	0	0	0	0	0	300	1000	1	1000	0	0	0	0	0	0	object/resource_container/energy_solid.iff
+petrochem_fuel_solid_type1						Class 1 Solid Petro Fuel				0	0	0	0	1	149	0	0	0	0	0	0	300	430	1	1000	0	0	0	0	0	0	object/resource_container/energy_solid.iff
+petrochem_fuel_solid_type2						Class 2 Solid Petro Fuel				0	0	0	0	81	264	0	0	0	0	0	0	370	530	1	1000	0	0	0	0	0	0	object/resource_container/energy_solid.iff
+petrochem_fuel_solid_type3						Class 3 Solid Petro Fuel				0	0	0	0	195	378	0	0	0	0	0	0	470	630	1	1000	0	0	0	0	0	0	object/resource_container/energy_solid.iff
+petrochem_fuel_solid_type4						Class 4 Solid Petro Fuel				0	0	0	0	309	492	0	0	0	0	0	0	570	730	1	1000	0	0	0	0	0	0	object/resource_container/energy_solid.iff
+petrochem_fuel_solid_type5						Class 5 Solid Petro Fuel				0	0	0	0	423	606	0	0	0	0	0	0	670	830	1	1000	0	0	0	0	0	0	object/resource_container/energy_solid.iff
+petrochem_fuel_solid_type6						Class 6 Solid Petro Fuel				0	0	0	0	537	720	0	0	0	0	0	0	770	930	1	1000	0	0	0	0	0	0	object/resource_container/energy_solid.iff
+petrochem_fuel_solid_type7						Class 7 Solid Petro Fuel				0	0	0	0	652	800	0	0	0	0	0	0	870	1000	1	1000	0	0	0	0	0	0	object/resource_container/energy_solid.iff
+petrochem_fuel_solid_mustafar						Mustafarian Solid Petro Fuel				0	0	0	0	750	800	0	0	0	0	0	0	870	1000	500	1000	0	0	0	0	0	0	object/resource_container/energy_solid.iff
+radioactive				Radioactive						0	0	0	0	1	1000	0	0	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/energy_radioactive.iff
+combined_radioactive_isotpopes					Combined Radioactive Isotopes				1	0	0	0	0	200	200	0	0	0	0	0	0	200	200	200	200	0	0	0	0	0	0	object/resource_container/energy_radioactive.iff
+radioactive_unknown					Unknown Radioactive					0	0	0	0	1	800	0	0	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/energy_radioactive.iff
+radioactive_known					Known Radioactive					0	0	0	0	1	1000	0	0	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/energy_radioactive.iff
+radioactive_type1						Class 1 Radioactive				0	0	0	0	400	474	0	0	0	0	0	0	500	593	1	1000	0	0	0	0	0	0	object/resource_container/energy_radioactive.iff
+radioactive_type2						Class 2 Radioactive				0	0	0	0	440	531	0	0	0	0	0	0	550	664	1	1000	0	0	0	0	0	0	object/resource_container/energy_radioactive.iff
+radioactive_type3						Class 3 Radioactive				0	0	0	0	497	589	0	0	0	0	0	0	621	736	1	1000	0	0	0	0	0	0	object/resource_container/energy_radioactive.iff
+radioactive_type4						Class 4 Radioactive				0	0	0	0	554	646	0	0	0	0	0	0	693	807	1	1000	0	0	0	0	0	0	object/resource_container/energy_radioactive.iff
+radioactive_type5						Class 5 Radioactive				0	0	0	0	611	703	0	0	0	0	0	0	764	879	1	1000	0	0	0	0	0	0	object/resource_container/energy_radioactive.iff
+radioactive_type6						Class 6 Radioactive				0	0	0	0	669	760	0	0	0	0	0	0	836	950	1	1000	0	0	0	0	0	0	object/resource_container/energy_radioactive.iff
+radioactive_type7						Class 7 Radioactive				0	0	0	0	726	800	0	0	0	0	0	0	907	1000	1	1000	0	0	0	0	0	0	object/resource_container/energy_radioactive.iff
+radioactive_mustafar						Mustafarian Radioactive				0	0	0	0	900	1000	0	0	0	0	0	0	907	1000	500	1000	0	0	0	0	0	0	object/resource_container/energy_radioactive.iff
+radioactive_polymetric						High Grade Polymetric Radioactive				0	0	0	0	1	1000	0	0	0	0	0	0	1	1000	1	1000	0	0	0	0	0	0	object/resource_container/energy_radioactive.iff
+metal				Metal						1	800	1	1000	1	1000	0	0	1	1000	1	1000	0	0	1	1000	1	1000	1	1000	0	0	object/resource_container/inorganic_minerals.iff
+metal_ferrous					Ferrous Metal					1	800	1	650	1	1000	0	0	1	1000	1	600	0	0	1	1000	1	1000	1	1000	0	0	object/resource_container/inorganic_minerals.iff
+smelted_metal_ferrous_unknown						Smelted Ferrous Metal			1	200	200	200	200	200	200	0	0	200	200	200	200	0	0	200	200	200	200	200	200	0	0	object/resource_container/inorganic_minerals.iff
+metal_ferrous_unknown						Unknown Ferrous Metal				1	800	1	650	300	1000	0	0	300	1000	1	600	0	0	1	1000	400	1000	400	1000	0	0	object/resource_container/inorganic_minerals.iff
+steel						Steel				1	800	1	650	1	1000	0	0	1	1000	1	400	0	0	1	1000	1	1000	1	1000	0	0	object/resource_container/inorganic_minerals.iff
+steel_smelted							Smelted Steel		1	200	200	200	200	200	200	0	0	200	200	200	200	0	0	200	200	200	200	200	200	0	0	object/resource_container/inorganic_minerals.iff
+steel_rhodium							Rhodium Steel			1	105	1	85	500	565	0	0	600	652	1	53	0	0	1	1000	500	565	400	478	0	0	object/resource_container/inorganic_minerals.iff
+steel_kiirium							Kiirium Steel			57	185	46	150	535	615	0	0	628	692	29	93	0	0	1	1000	535	615	442	538	0	0	object/resource_container/inorganic_minerals.iff
+steel_cubirian							Cubirian Steel			137	265	111	215	585	665	0	0	668	732	69	133	0	0	1	1000	585	665	502	598	0	0	object/resource_container/inorganic_minerals.iff
+steel_thoranium							Thoranium Steel			217	345	176	280	635	715	0	0	708	772	109	173	0	0	1	1000	635	715	562	658	0	0	object/resource_container/inorganic_minerals.iff
+steel_neutronium							Neutronium Steel			297	424	241	345	685	765	0	0	748	812	149	212	0	0	1	1000	685	765	622	718	0	0	object/resource_container/inorganic_minerals.iff
+steel_duranium							Duranium Steel			377	504	306	410	735	815	0	0	788	852	189	252	0	0	1	1000	735	815	682	778	0	0	object/resource_container/inorganic_minerals.iff
+steel_ditanium							Ditanium Steel			456	584	371	475	785	865	0	0	828	892	228	292	0	0	1	1000	785	865	742	838	0	0	object/resource_container/inorganic_minerals.iff
+steel_quadranium							Quadranium Steel			536	664	436	540	835	915	0	0	868	932	268	332	0	0	1	1000	835	915	802	898	0	0	object/resource_container/inorganic_minerals.iff
+steel_carbonite							Carbonite Steel			616	744	501	605	885	965	0	0	908	972	308	372	0	0	1	1000	885	965	862	958	0	0	object/resource_container/inorganic_minerals.iff
+steel_arveshian							Hardened Arveshium Steel			1	1000	1	1000	1	1000	0	0	1	1000	1	1000	0	0	1	1000	1	1000	1	1000	0	0	object/resource_container/inorganic_minerals.iff
+steel_bicorbantium							Crystallized Bicorbantium Steel			1	1000	1	1000	1	1000	0	0	1	1000	1	1000	0	0	1	1000	1	1000	1	1000	0	0	object/resource_container/inorganic_minerals.iff
+steel_duralloy							Duralloy Steel			696	800	566	650	935	1000	0	0	948	1000	348	400	0	0	1	1000	935	1000	922	1000	0	0	object/resource_container/inorganic_minerals.iff
+steel_mustafar							Mustafarian Steel			750	800	600	650	935	1000	0	0	948	1000	350	400	0	0	500	1000	935	1000	922	1000	0	0	object/resource_container/inorganic_minerals.iff
+iron						Iron				1	800	1	500	200	1000	0	0	200	1000	1	600	0	0	1	1000	200	1000	200	1000	0	0	object/resource_container/inorganic_minerals.iff
+iron_smelted							Smelted Iron		1	200	200	200	200	200	200	0	0	200	200	200	200	0	0	200	200	200	200	200	200	0	0	object/resource_container/inorganic_minerals.iff
+iron_plumbum							Plumbum Iron			1	131	1	82	300	414	0	0	500	581	1	98	0	0	1	1000	400	498	400	498	0	0	object/resource_container/inorganic_minerals.iff
+iron_polonium							Polonium Iron			71	231	45	144	361	501	0	0	544	644	53	173	0	0	1	1000	453	573	453	573	0	0	object/resource_container/inorganic_minerals.iff
+iron_axidite							Axidite Iron			171	331	107	207	559	589	0	0	606	706	128	248	0	0	1	1000	528	648	528	648	0	0	object/resource_container/inorganic_minerals.iff
+iron_bronzium							Bronzium Iron			271	430	169	269	536	676	0	0	669	769	203	323	0	0	1	1000	603	723	603	723	0	0	object/resource_container/inorganic_minerals.iff
+iron_colat							Colat Iron			371	530	232	332	624	764	0	0	731	831	278	398	0	0	1	1000	678	798	678	798	0	0	object/resource_container/inorganic_minerals.iff
+iron_dolovite							Dolovite Iron			470	630	294	394	711	851	0	0	794	894	353	473	0	0	1	1000	753	873	753	873	0	0	object/resource_container/inorganic_minerals.iff
+iron_doonium							Doonium Iron			570	730	357	456	799	939	0	0	856	956	428	548	0	0	1	1000	828	948	828	948	0	0	object/resource_container/inorganic_minerals.iff
+iron_kammris							Kammris Iron			670	800	419	500	886	1000	0	0	919	1000	503	600	0	0	1	1000	903	1000	903	1000	0	0	object/resource_container/inorganic_minerals.iff
+iron_mustafar							Mustafarian Iron			750	800	450	500	886	1000	0	0	919	1000	550	600	0	0	500	1000	903	1000	903	1000	0	0	object/resource_container/inorganic_minerals.iff
+metal_nonferrous					Non-Ferrous Metal					1	800	1	1000	1	800	0	0	1	800	1	1000	0	0	1	1000	1	900	1	1000	0	0	object/resource_container/inorganic_minerals.iff
+smelted_metal_nonferrous_unknown						Smelted Non-Ferrous Metal			1	200	200	200	200	200	200	0	0	200	200	200	200	0	0	200	200	200	200	200	200	0	0	object/resource_container/inorganic_minerals.iff
+metal_nonferrous_unknown						Unknown Non-Ferrous Metal				1	800	300	1000	1	700	0	0	200	800	300	1000	0	0	1	1000	300	900	300	1000	0	0	object/resource_container/inorganic_minerals.iff
+aluminum						Aluminum				1	800	1	800	1	800	0	0	1	800	1	1000	0	0	1	1000	1	900	1	900	0	0	object/resource_container/inorganic_minerals.iff
+aluminum_smelted							Smelted Aluminum		1	200	200	200	200	200	200	0	0	200	200	200	200	0	0	200	200	200	200	200	200	0	0	object/resource_container/inorganic_minerals.iff
+aluminum_titanium							Titanium Aluminum			1	174	300	408	1	174	0	0	200	330	300	452	0	0	1	1000	300	430	300	430	0	0	object/resource_container/inorganic_minerals.iff
+aluminum_agrinium							Agrinium Aluminum			94	307	358	492	94	307	0	0	270	430	382	568	0	0	1	1000	370	530	370	530	0	0	object/resource_container/inorganic_minerals.iff
+aluminum_chromium							Chromium Aluminum			227	440	442	575	227	440	0	0	370	530	498	685	0	0	1	1000	470	630	470	630	0	0	object/resource_container/inorganic_minerals.iff
+aluminum_duralumin							Duralumin Aluminum			361	574	525	658	361	574	0	0	470	630	615	802	0	0	1	1000	570	730	570	730	0	0	object/resource_container/inorganic_minerals.iff
+aluminum_linksteel							Link-Steel Aluminum			494	707	608	742	494	707	0	0	570	730	732	918	0	0	1	1000	670	830	670	830	0	0	object/resource_container/inorganic_minerals.iff
+aluminum_perovskitic							Perovskitic Aluminum			1	1000	1	1000	1	1000	0	0	1	1000	1	1000	0	0	1	1000	1	1000	1	1000	0	0	object/resource_container/inorganic_minerals.iff
+aluminum_phrik							Phrik Aluminum			627	800	692	800	627	800	0	0	670	800	848	1000	0	0	1	1000	770	900	770	900	0	0	object/resource_container/inorganic_minerals.iff
+aluminum_mustafar							Mustafarian Aluminum			750	800	750	800	800	800	0	0	750	800	848	1000	0	0	500	1000	800	900	800	900	0	0	object/resource_container/inorganic_minerals.iff
+copper						Copper				1	800	1	1000	1	700	0	0	1	650	1	1000	0	0	1	1000	1	800	1	800	0	0	object/resource_container/inorganic_minerals.iff
+copper_smelted							Smelted Copper		1	200	200	200	200	200	200	0	0	200	200	200	200	0	0	200	200	200	200	200	200	0	0	object/resource_container/inorganic_minerals.iff
+copper_desh							Desh Copper			1	116	500	572	1	102	0	0	200	265	500	572	0	0	1	1000	300	372	300	372	0	0	object/resource_container/inorganic_minerals.iff
+copper_thallium							Thallium Copper			63	205	539	628	55	180	0	0	235	315	539	628	0	0	1	1000	339	428	339	428	0	0	object/resource_container/inorganic_minerals.iff
+copper_beyrllius							Beyrllius Copper			152	294	594	683	133	257	0	0	285	365	594	683	0	0	1	1000	394	483	394	483	0	0	object/resource_container/inorganic_minerals.iff
+copper_codoan							Codoan Copper			241	383	650	739	211	335	0	0	335	415	650	739	0	0	1	1000	450	539	450	539	0	0	object/resource_container/inorganic_minerals.iff
+copper_diatium							Diatium Copper			329	472	706	794	288	413	0	0	385	465	706	794	0	0	1	1000	506	594	506	594	0	0	object/resource_container/inorganic_minerals.iff
+copper_kelsh							Kelsh Copper			418	560	761	850	366	490	0	0	435	515	761	850	0	0	1	1000	561	650	561	650	0	0	object/resource_container/inorganic_minerals.iff
+copper_mythra							Mythra Copper			507	649	817	906	444	568	0	0	485	565	817	906	0	0	1	1000	617	706	617	706	0	0	object/resource_container/inorganic_minerals.iff
+copper_platinite							Platinite Copper			596	738	872	961	521	646	0	0	535	615	872	961	0	0	1	1000	672	761	672	761	0	0	object/resource_container/inorganic_minerals.iff
+copper_polysteel							Polysteel Copper			685	800	928	1000	599	700	0	0	585	650	928	1000	0	0	1	1000	728	800	728	800	0	0	object/resource_container/inorganic_minerals.iff
+copper_borocarbitic							Conductive Borcarbitic Copper			1	1000	1	1000	1	1000	0	0	1	1000	1	1000	0	0	1	1000	1	1000	1	1000	0	0	object/resource_container/inorganic_minerals.iff
+copper_mustafar							Mustafarian Copper			750	800	500	1000	650	700	0	0	600	650	500	1000	0	0	500	1000	750	800	750	800	0	0	object/resource_container/inorganic_minerals.iff
+ore				Low-Grade Ore						1	1000	0	0	1	1000	0	0	1	1000	1	1000	0	0	1	1000	1	1000	1	1000	0	0	object/resource_container/inorganic_minerals.iff
+ore_igneous					Igneous Ore					200	1000	0	0	200	1000	0	0	200	1000	1	800	0	0	1	1000	200	1000	200	1000	0	0	object/resource_container/inorganic_minerals.iff
+ore_extrusive_low_grade						Low Grade Ore (igneous)			1	200	200	0	0	200	200	0	0	200	200	200	200	0	0	200	200	200	200	200	200	0	0	object/resource_container/inorganic_minerals.iff
+ore_igneous_unknown						Unknown Igneous Ore				200	1000	0	0	300	1000	0	0	400	1000	1	800	0	0	1	1000	400	1000	400	1000	0	0	object/resource_container/inorganic_minerals.iff
+ore_extrusive						Extrusive Ore				200	1000	0	0	300	1000	0	0	400	1000	1	600	0	0	1	1000	400	1000	400	1000	0	0	object/resource_container/inorganic_minerals.iff
+ore_extrusive_bene							Bene Extrusive Ore			200	304	0	0	300	391	0	0	400	478	1	79	0	0	1	1000	400	478	400	478	0	0	object/resource_container/inorganic_minerals.iff
+ore_extrusive_chronamite							Chronamite Extrusive Ore			256	384	0	0	349	461	0	0	442	538	43	139	0	0	1	1000	442	538	442	538	0	0	object/resource_container/inorganic_minerals.iff
+ore_extrusive_ilimium							Ilimium Extrusive Ore			336	464	0	0	419	531	0	0	502	598	103	199	0	0	1	1000	502	598	502	598	0	0	object/resource_container/inorganic_minerals.iff
+ore_extrusive_kalonterium							Kalonterium Extrusive Ore			416	544	0	0	489	601	0	0	562	658	163	259	0	0	1	1000	562	658	562	658	0	0	object/resource_container/inorganic_minerals.iff
+ore_extrusive_keschel							Keschel Extrusive Ore			496	624	0	0	559	671	0	0	622	718	223	318	0	0	1	1000	622	718	622	718	0	0	object/resource_container/inorganic_minerals.iff
+ore_extrusive_lidium							Lidium Extrusive Ore			576	704	0	0	629	741	0	0	682	778	283	378	0	0	1	1000	682	778	682	778	0	0	object/resource_container/inorganic_minerals.iff
+ore_extrusive_maranium							Maranium Extrusive Ore			656	784	0	0	699	811	0	0	742	838	342	438	0	0	1	1000	742	838	742	838	0	0	object/resource_container/inorganic_minerals.iff
+ore_extrusive_pholokite							Pholokite Extrusive Ore			736	864	0	0	769	881	0	0	802	898	402	498	0	0	1	1000	802	898	802	898	0	0	object/resource_container/inorganic_minerals.iff
+ore_extrusive_quadrenium							Quadrenium Extrusive Ore			816	944	0	0	839	951	0	0	862	958	462	558	0	0	1	1000	862	958	862	958	0	0	object/resource_container/inorganic_minerals.iff
+ore_extrusive_vintrium							Vintrium Extrusive Ore			896	1000	0	0	909	1000	0	0	922	1000	522	600	0	0	1	1000	922	1000	922	1000	0	0	object/resource_container/inorganic_minerals.iff
+ore_extrusive_mustafar							Mustafarian Extrusive Ore			896	1000	0	0	909	1000	0	0	922	1000	550	600	0	0	500	1000	922	1000	922	1000	0	0	object/resource_container/inorganic_minerals.iff
+ore_intrusive						Intrusive Ore				200	1000	0	0	300	1000	0	0	700	1000	1	600	0	0	1	1000	500	1000	400	1000	0	0	object/resource_container/inorganic_minerals.iff
+ore_intrusive_berubium							Berubium Intrusive Ore			200	316	0	0	300	401	0	0	700	743	1	88	0	0	1	1000	500	572	400	487	0	0	object/resource_container/inorganic_minerals.iff
+ore_intrusive_chanlon							Chanlon Intrusive Ore			262	404	0	0	354	479	0	0	723	777	48	154	0	0	1	1000	539	628	447	553	0	0	object/resource_container/inorganic_minerals.iff
+ore_intrusive_corintium							Corintium Intrusive Ore			351	493	0	0	432	557	0	0	757	810	114	221	0	0	1	1000	594	683	513	620	0	0	object/resource_container/inorganic_minerals.iff
+ore_intrusive_derillium							Derillium Intrusive Ore			440	582	0	0	510	634	0	0	790	843	181	287	0	0	1	1000	650	739	580	687	0	0	object/resource_container/inorganic_minerals.iff
+ore_intrusive_oridium							Oridium Intrusive Ore			529	671	0	0	588	712	0	0	823	877	247	354	0	0	1	1000	706	794	647	753	0	0	object/resource_container/inorganic_minerals.iff
+ore_intrusive_dylinium							Dylinium Intrusive Ore			618	760	0	0	666	790	0	0	857	910	314	420	0	0	1	1000	761	850	713	820	0	0	object/resource_container/inorganic_minerals.iff
+ore_intrusive_hollinium							Hollinium Intrusive Ore			707	849	0	0	743	868	0	0	890	943	380	487	0	0	1	1000	817	906	780	887	0	0	object/resource_container/inorganic_minerals.iff
+ore_intrusive_ionite							Ionite Intrusive Ore			796	938	0	0	821	946	0	0	923	977	447	553	0	0	1	1000	872	961	847	953	0	0	object/resource_container/inorganic_minerals.iff
+ore_intrusive_katrium							Katrium Intrusive Ore			884	1000	0	0	899	1000	0	0	957	1000	513	600	0	0	1	1000	928	1000	913	1000	0	0	object/resource_container/inorganic_minerals.iff
+ore_intrusive_mustafar							Mustafarian Intrusive Ore			884	1000	0	0	899	1000	0	0	957	1000	550	600	0	0	500	1000	928	1000	913	1000	0	0	object/resource_container/inorganic_minerals.iff
+ore_sedimentary					Sedimentary Ore					1	1000	0	0	1	700	0	0	1	1000	1	1000	0	0	1	1000	1	700	1	1000	0	0	object/resource_container/inorganic_minerals.iff
+ore_carbonate_low_grade						Low Grade Ore (sedimentary)			1	200	200	0	0	200	200	0	0	200	200	200	200	0	0	200	200	200	200	200	200	0	0	object/resource_container/inorganic_minerals.iff
+ore_sedimentary_unknown						Unknown Sedimentary Ore				300	1000	0	0	1	700	0	0	300	1000	300	1000	0	0	1	1000	1	700	1	1000	0	0	object/resource_container/inorganic_minerals.iff
+ore_carbonate						Carbonate Ore				300	1000	0	0	1	700	0	0	400	1000	300	1000	0	0	1	1000	1	700	200	1000	0	0	object/resource_container/inorganic_minerals.iff
+ore_carbonate_alantium							Alantium Carbonate Ore			300	414	0	0	1	115	0	0	400	498	300	414	0	0	1	1000	1	115	200	330	0	0	object/resource_container/inorganic_minerals.iff
+ore_carbonate_barthierium							Barthierium Carbonate Ore			361	501	0	0	62	202	0	0	453	573	361	501	0	0	1	1000	62	202	270	430	0	0	object/resource_container/inorganic_minerals.iff
+ore_carbonate_chromite							Chromite Carbonate Ore			449	589	0	0	150	289	0	0	528	648	449	589	0	0	1	1000	150	289	370	530	0	0	object/resource_container/inorganic_minerals.iff
+ore_carbonate_frasium							Frasium Carbonate Ore			536	676	0	0	237	377	0	0	603	723	536	676	0	0	1	1000	237	377	470	630	0	0	object/resource_container/inorganic_minerals.iff
+ore_carbonate_lommite							Lommite Carbonate Ore			624	764	0	0	324	464	0	0	678	798	624	764	0	0	1	1000	324	464	570	730	0	0	object/resource_container/inorganic_minerals.iff
+ore_carbonate_ostrine							Ostrine Carbonate Ore			711	851	0	0	412	551	0	0	753	873	711	851	0	0	1	1000	412	551	670	830	0	0	object/resource_container/inorganic_minerals.iff
+ore_carbonate_varium							Varium Carbonate Ore			799	939	0	0	499	639	0	0	828	948	799	939	0	0	1	1000	499	639	770	930	0	0	object/resource_container/inorganic_minerals.iff
+ore_carbonate_zinsiam							Zinsiam Carbonate Ore			886	1000	0	0	586	700	0	0	903	1000	886	1000	0	0	1	1000	586	700	870	1000	0	0	object/resource_container/inorganic_minerals.iff
+ore_siliclastic						Siliclastic Ore				1	1000	0	0	1	700	0	0	1	1000	1	1000	0	0	1	1000	1	600	1	700	0	0	object/resource_container/inorganic_minerals.iff
+ore_siliclastic_low_grade							Low Grade Ore (siliclastic)		1	200	200	0	0	200	200	0	0	200	200	200	200	0	0	200	200	200	200	200	200	0	0	object/resource_container/inorganic_minerals.iff
+ore_siliclastic_ardanium							Ardanium Siliclastic Ore			300	452	0	0	1	152	0	0	300	452	300	452	0	0	1	1000	1	131	1	152	0	0	object/resource_container/inorganic_minerals.iff
+ore_siliclastic_cortosis							Cortosis Siliclastic Ore			382	568	0	0	83	269	0	0	382	568	382	568	0	0	1	1000	71	231	83	269	0	0	object/resource_container/inorganic_minerals.iff
+ore_siliclastic_crism							Crism Siliclastic Ore			498	685	0	0	199	385	0	0	498	685	498	685	0	0	1	1000	171	330	199	385	0	0	object/resource_container/inorganic_minerals.iff
+ore_siliclastic_malab							Malab Siliclastic Ore			615	802	0	0	316	502	0	0	615	802	615	802	0	0	1	1000	271	430	316	502	0	0	object/resource_container/inorganic_minerals.iff
+ore_siliclastic_robindun							Robindun Siliclastic Ore			732	918	0	0	432	618	0	0	732	918	732	918	0	0	1	1000	370	530	432	618	0	0	object/resource_container/inorganic_minerals.iff
+ore_siliclastic_fermionic							Fermionic Siliclastic Ore			1	1000	0	0	1	1000	0	0	1	1000	1	1000	0	0	1	1000	1	1000	1	1000	0	0	object/resource_container/inorganic_minerals.iff
+ore_siliclastic_tertian							Tertian Siliclastic Ore			848	1000	0	0	549	700	0	0	848	1000	848	1000	0	0	1	1000	470	600	549	700	0	0	object/resource_container/inorganic_minerals.iff
+gemstone				Gemstone						1	1000	0	0	1	1000	0	0	200	1000	1	600	0	0	1	1000	1	1000	1	1000	1	1000	object/resource_container/inorganic_minerals.iff
+gemstone_mixed_low_quality					Low Quality Gemstones				1	200	200	0	0	200	200	0	0	200	200	200	200	0	0	200	200	200	200	200	200	200	200	object/resource_container/inorganic_minerals.iff
+gemstone_unknown					Unknown Gem Type					1	1000	0	0	1	1000	0	0	600	1000	1	600	0	0	1	1000	1	1000	1	1000	1	1000	object/resource_container/inorganic_minerals.iff
+gemstone_armophous					Amorphous Gemstone					1	1000	0	0	1	1000	0	0	600	1000	1	600	0	0	1	1000	1	1000	1	1000	1	800	object/resource_container/inorganic_minerals.iff
+armophous_bospridium						Bospridium Amorphous Gemstone				1	131	0	0	1	131	0	0	600	652	1	79	0	0	1	1000	1	131	1	131	1	105	object/resource_container/inorganic_minerals.iff
+armophous_baradium						Baradium Amorphous Gemstone				71	231	0	0	71	231	0	0	628	692	43	139	0	0	1	1000	71	231	71	231	57	185	object/resource_container/inorganic_minerals.iff
+armophous_regvis						Regvis Amorphous Gemstone				171	331	0	0	171	331	0	0	668	732	103	199	0	0	1	1000	171	331	171	331	137	265	object/resource_container/inorganic_minerals.iff
+armophous_plexite						Plexite Amorphous Gemstone				271	431	0	0	271	431	0	0	708	772	163	259	0	0	1	1000	271	431	271	431	217	345	object/resource_container/inorganic_minerals.iff
+armophous_rudic						Rudic Amorphous Gemstone				371	530	0	0	371	530	0	0	748	812	223	318	0	0	1	1000	371	530	371	530	297	424	object/resource_container/inorganic_minerals.iff
+armophous_ryll						Ryll Amorphous Gemstone				471	630	0	0	471	630	0	0	788	852	283	378	0	0	1	1000	471	630	471	630	377	504	object/resource_container/inorganic_minerals.iff
+armophous_sedrellium						Sedrellium Amorphous Gemstone				570	730	0	0	570	730	0	0	828	892	342	438	0	0	1	1000	570	730	570	730	456	584	object/resource_container/inorganic_minerals.iff
+armophous_stygium						Stygium Amorphous Gemstone				670	830	0	0	670	830	0	0	868	932	402	498	0	0	1	1000	670	830	670	830	536	664	object/resource_container/inorganic_minerals.iff
+armophous_vendusii						Vendusii Crystal Amorphous Gemstone				770	930	0	0	770	930	0	0	908	972	462	558	0	0	1	1000	770	930	770	930	616	744	object/resource_container/inorganic_minerals.iff
+armophous_baltaran						Bal'ta'ran Crystal Amorphous Gemstone				870	1000	0	0	870	1000	0	0	948	1000	522	600	0	0	1	1000	870	1000	870	1000	696	800	object/resource_container/inorganic_minerals.iff
+armophous_mustafar_1						Mustafarian Type 1 Crystal Amorphous Gem				870	1000	0	0	870	1000	0	0	948	1000	550	600	0	0	1	1000	870	1000	870	1000	750	800	object/resource_container/inorganic_minerals.iff
+armophous_mustafar_2						Mustafarian Type 2 Crystal Amorphous Gem				870	1000	0	0	870	1000	0	0	948	1000	550	600	0	0	1	1000	870	1000	870	1000	750	800	object/resource_container/inorganic_minerals.iff
+gemstone_crystalline					Crystalline Gemstone					1	1000	0	0	1	1000	0	0	700	1000	1	400	0	0	1	1000	300	1000	300	1000	500	1000	object/resource_container/inorganic_minerals.iff
+crystalline_byrothsis						Byrothsis Crystalline Gemstone				1	163	0	0	1	163	0	0	700	749	1	66	0	0	1	1000	300	414	300	414	500	581	object/resource_container/inorganic_minerals.iff
+crystalline_gallinorian						Gallinorian Rainbow Gem Crystalline Gemstone				88	288	0	0	88	288	0	0	726	786	36	116	0	0	1	1000	361	501	361	501	544	644	object/resource_container/inorganic_minerals.iff
+crystalline_green_diamond						Green Diamond Crystalline Gemstone				213	413	0	0	213	413	0	0	764	824	86	166	0	0	1	1000	449	589	449	589	606	706	object/resource_container/inorganic_minerals.iff
+crystalline_kerol_firegem						Kerol Fire-Gem Crystalline Gemstone				338	538	0	0	338	538	0	0	801	861	136	215	0	0	1	1000	536	676	536	676	669	769	object/resource_container/inorganic_minerals.iff
+crystalline_seafah_jewel						Seafah Jewel Crystalline Gemstone				463	663	0	0	463	663	0	0	839	899	186	265	0	0	1	1000	624	764	624	764	731	831	object/resource_container/inorganic_minerals.iff
+crystalline_sormahil_firegem						Sormahil Fire Gem Crystalline Gemstone				588	788	0	0	588	788	0	0	876	936	235	315	0	0	1	1000	711	851	711	851	794	894	object/resource_container/inorganic_minerals.iff
+crystalline_laboi_mineral_crystal						Laboi Mineral Crystal Crystalline Gemstone				713	913	0	0	713	913	0	0	914	974	285	365	0	0	1	1000	799	939	799	939	856	956	object/resource_container/inorganic_minerals.iff
+crystalline_vertex						Vertex Crystalline Gemstone				838	1000	0	0	838	1000	0	0	951	1000	335	400	0	0	1	1000	886	1000	886	1000	919	1000	object/resource_container/inorganic_minerals.iff
+crystalline_mustafar_1						Mustafarian Type 1 Crystalline Gem				838	1000	0	0	838	1000	0	0	951	1000	350	400	0	0	500	1000	886	1000	886	1000	919	1000	object/resource_container/inorganic_minerals.iff
+crystalline_mustafar_2						Mustafarian Type 2 Crystalline Gem				838	1000	0	0	838	1000	0	0	951	1000	350	400	0	0	500	1000	886	1000	886	1000	919	1000	object/resource_container/inorganic_minerals.iff
+gas			Gas							0	0	0	0	1	1000	0	0	0	0	0	0	0	0	1	1000	0	0	0	0	0	0	object/resource_container/energy_gas.iff
+gas_reactive				Reactive Gas						0	0	0	0	1	1000	0	0	0	0	0	0	0	0	1	1000	0	0	0	0	0	0	object/resource_container/energy_gas.iff
+gas_reactive_unknown					Unknown Reactive Gas					0	0	0	0	1	1000	0	0	0	0	0	0	0	0	1	1000	0	0	0	0	0	0	object/resource_container/energy_gas.iff
+gas_reactive_known					Known Reactive Gas					0	0	0	0	1	1000	0	0	0	0	0	0	0	0	1	1000	0	0	0	0	0	0	object/resource_container/energy_gas.iff
+gas_reactive_mixed						Mixed Reactive Gas			1	0	0	0	0	200	200	0	0	0	0	0	0	0	0	200	200	0	0	0	0	0	0	object/resource_container/energy_gas.iff
+gas_reactive_eleton						Eleton Reactive Gas				0	0	0	0	1	400	0	0	0	0	0	0	0	0	1	1000	0	0	0	0	0	0	object/resource_container/energy_gas.iff
+gas_reactive_irolunn						Irolunn Reactive Gas				0	0	0	0	100	600	0	0	0	0	0	0	0	0	1	1000	0	0	0	0	0	0	object/resource_container/energy_gas.iff
+gas_reactive_methane						Methane Reactive Gas				0	0	0	0	200	700	0	0	0	0	0	0	0	0	1	1000	0	0	0	0	0	0	object/resource_container/energy_gas.iff
+gas_reactive_orveth						Orveth Reactive Gas				0	0	0	0	300	800	0	0	0	0	0	0	0	0	1	1000	0	0	0	0	0	0	object/resource_container/energy_gas.iff
+gas_reactive_sig						Sig Reactive Gas				0	0	0	0	300	900	0	0	0	0	0	0	0	0	1	1000	0	0	0	0	0	0	object/resource_container/energy_gas.iff
+gas_reactive_skevon						Skevon Reactive Gas				0	0	0	0	400	900	0	0	0	0	0	0	0	0	1	1000	0	0	0	0	0	0	object/resource_container/energy_gas.iff
+gas_reactive_organometallic						Unstable Organometallic Reactive Gas				0	0	0	0	1	1000	0	0	0	0	0	0	0	0	1	1000	0	0	0	0	0	0	object/resource_container/energy_gas.iff
+gas_reactive_tolium						Tolium Reactive Gas				0	0	0	0	500	1000	0	0	0	0	0	0	0	0	1	1000	0	0	0	0	0	0	object/resource_container/energy_gas.iff
+gas_reactive_mustafar						Mustafarian Reactive Gas				0	0	0	0	800	1000	0	0	0	0	0	0	0	0	500	1000	0	0	0	0	0	0	object/resource_container/energy_gas.iff
+gas_inert				Inert Gas						0	0	0	0	1	1000	0	0	0	0	0	0	0	0	1	1000	0	0	0	0	0	0	object/resource_container/inorganic_gas.iff
+gas_inert_unknown					Unknown Inert Gas					0	0	0	0	1	1000	0	0	0	0	0	0	0	0	1	1000	0	0	0	0	0	0	object/resource_container/inorganic_gas.iff
+gas_inert_known					Known Inert Gas					0	0	0	0	1	800	0	0	0	0	0	0	0	0	1	1000	0	0	0	0	0	0	object/resource_container/inorganic_gas.iff
+gas_inert_mixed						Mixed Inert Gas			1	0	0	0	0	200	200	0	0	0	0	0	0	0	0	200	200	0	0	0	0	0	0	object/resource_container/inorganic_gas.iff
+gas_inert_hydron3						Hydron-3 Inert Gas				0	0	0	0	1	81	0	0	0	0	0	0	0	0	1	1000	0	0	0	0	0	0	object/resource_container/inorganic_gas.iff
+gas_inert_malium						Malium Inert Gas				0	0	0	0	44	142	0	0	0	0	0	0	0	0	1	1000	0	0	0	0	0	0	object/resource_container/inorganic_gas.iff
+gas_inert_bilal						Bilal gas Inert Gas				0	0	0	0	105	204	0	0	0	0	0	0	0	0	1	1000	0	0	0	0	0	0	object/resource_container/inorganic_gas.iff
+gas_inert_corthel						Corthel Inert Gas				0	0	0	0	167	265	0	0	0	0	0	0	0	0	1	1000	0	0	0	0	0	0	object/resource_container/inorganic_gas.iff
+gas_inert_culsion						Culsion Inert Gas				0	0	0	0	228	327	0	0	0	0	0	0	0	0	1	1000	0	0	0	0	0	0	object/resource_container/inorganic_gas.iff
+gas_inert_dioxis						Dioxis Inert Gas				0	0	0	0	290	388	0	0	0	0	0	0	0	0	1	1000	0	0	0	0	0	0	object/resource_container/inorganic_gas.iff
+gas_inert_hurlothrombic						Hurlothrombic Inert Gas				0	0	0	0	351	450	0	0	0	0	0	0	0	0	1	1000	0	0	0	0	0	0	object/resource_container/inorganic_gas.iff
+gas_inert_kaylon						Kaylon Inert Gas				0	0	0	0	413	511	0	0	0	0	0	0	0	0	1	1000	0	0	0	0	0	0	object/resource_container/inorganic_gas.iff
+gas_inert_korfaise						Korfaise Inert Gas				0	0	0	0	474	573	0	0	0	0	0	0	0	0	1	1000	0	0	0	0	0	0	object/resource_container/inorganic_gas.iff
+gas_inert_methanagen						Methanagen Inert Gas				0	0	0	0	536	634	0	0	0	0	0	0	0	0	1	1000	0	0	0	0	0	0	object/resource_container/inorganic_gas.iff
+gas_inert_mirth						Mirth Inert Gas				0	0	0	0	597	696	0	0	0	0	0	0	0	0	1	1000	0	0	0	0	0	0	object/resource_container/inorganic_gas.iff
+gas_inert_obah						Obah Inert Gas				0	0	0	0	659	757	0	0	0	0	0	0	0	0	1	1000	0	0	0	0	0	0	object/resource_container/inorganic_gas.iff
+gas_inert_rethin						Rethin Inert Gas				0	0	0	0	720	800	0	0	0	0	0	0	0	0	1	1000	0	0	0	0	0	0	object/resource_container/inorganic_gas.iff
+energy		Energy								0	0	0	0	0	0	0	0	0	0	0	0	1	1000	200	1000	0	0	0	0	0	0	object/resource_container/energy_liquid.iff
+energy_renewable			Renewable energy							0	0	0	0	0	0	0	0	0	0	0	0	1	1000	200	1000	0	0	0	0	0	0	object/resource_container/energy_liquid.iff
+energy_renewable_site_limited				Site-Restricted Renewable Energy						0	0	0	0	0	0	0	0	0	0	0	0	1	1000	200	1000	0	0	0	0	0	0	object/resource_container/energy_liquid.iff
+energy_renewable_site_limited_tidal					Tidal Energy					0	0	0	0	0	0	0	0	0	0	0	0	1	500	200	500	0	0	0	0	0	0	object/resource_container/energy_liquid.iff
+energy_renewable_site_limited_tidal_weak						Weak Tidal Renewable Energy			1	0	0	0	0	0	0	0	0	0	0	0	0	200	200	200	200	0	0	0	0	0	0	object/resource_container/energy_liquid.iff
+energy_renewable_site_limited_tidal_corellia						Corellian Tidal Renewable Energy				0	0	0	0	0	0	0	0	0	0	0	0	1	500	500	500	0	0	0	0	0	0	object/resource_container/energy_liquid.iff
+energy_renewable_site_limited_tidal_dathomir						Dathomirian Tidal Renewable Energy				0	0	0	0	0	0	0	0	0	0	0	0	1	500	500	500	0	0	0	0	0	0	object/resource_container/energy_liquid.iff
+energy_renewable_site_limited_tidal_dantooine						Dantooine Tidal Renewable Energy				0	0	0	0	0	0	0	0	0	0	0	0	1	500	500	500	0	0	0	0	0	0	object/resource_container/energy_liquid.iff
+energy_renewable_site_limited_tidal_endor						Endor Tidal Renewable Energy				0	0	0	0	0	0	0	0	0	0	0	0	1	500	500	500	0	0	0	0	0	0	object/resource_container/energy_liquid.iff
+energy_renewable_site_limited_tidal_lok						Lokian Tidal Renewable Energy				0	0	0	0	0	0	0	0	0	0	0	0	1	500	500	500	0	0	0	0	0	0	object/resource_container/energy_liquid.iff
+energy_renewable_site_limited_tidal_naboo						Naboo Tidal Renewable Energy				0	0	0	0	0	0	0	0	0	0	0	0	1	500	500	500	0	0	0	0	0	0	object/resource_container/energy_liquid.iff
+energy_renewable_site_limited_tidal_rori						Rori Tidal Renewable Energy				0	0	0	0	0	0	0	0	0	0	0	0	1	500	500	500	0	0	0	0	0	0	object/resource_container/energy_liquid.iff
+energy_renewable_site_limited_tidal_talus						Talusian Tidal Renewable Energy				0	0	0	0	0	0	0	0	0	0	0	0	1	500	500	500	0	0	0	0	0	0	object/resource_container/energy_liquid.iff
+energy_renewable_site_limited_tidal_tatooine						Tatooinian Tidal Renewable Energy				0	0	0	0	0	0	0	0	0	0	0	0	1	500	500	500	0	0	0	0	0	0	object/resource_container/energy_liquid.iff
+energy_renewable_site_limited_tidal_yavin4						Yavinian Tidal Renewable Energy				0	0	0	0	0	0	0	0	0	0	0	0	1	500	500	500	0	0	0	0	0	0	object/resource_container/energy_liquid.iff
+energy_renewable_site_limited_tidal_kashyyyk						Kashyyykian Tidal Renewable Energy				0	0	0	0	0	0	0	0	0	0	0	0	1	500	500	500	0	0	0	0	0	0	object/resource_container/energy_liquid.iff
+energy_renewable_site_limited_hydron3					Hydron-3 Energy					0	0	0	0	0	0	0	0	0	0	0	0	1	500	200	500	0	0	0	0	0	0	object/resource_container/energy_liquid.iff
+energy_renewable_site_limited_hydron3_weak						Weak Hydron-3 Renewable Energy			1	0	0	0	0	0	0	0	0	0	0	0	0	200	200	200	200	0	0	0	0	0	0	object/resource_container/energy_liquid.iff
+energy_renewable_site_limited_hydron3_corellia						Corellian Hydron-3 Renewable Energy				0	0	0	0	0	0	0	0	0	0	0	0	1	500	500	500	0	0	0	0	0	0	object/resource_container/energy_liquid.iff
+energy_renewable_site_limited_hydron3_dantooine						Dantooine Hydron-3 Renewable Energy				0	0	0	0	0	0	0	0	0	0	0	0	1	500	500	500	0	0	0	0	0	0	object/resource_container/energy_liquid.iff
+energy_renewable_site_limited_hydron3_dathomir						Dathomirian Hydron-3 Renewable Energy				0	0	0	0	0	0	0	0	0	0	0	0	1	500	500	500	0	0	0	0	0	0	object/resource_container/energy_liquid.iff
+energy_renewable_site_limited_hydron3_endor						Endorian Hydron-3 Renewable Energy				0	0	0	0	0	0	0	0	0	0	0	0	1	500	500	500	0	0	0	0	0	0	object/resource_container/energy_liquid.iff
+energy_renewable_site_limited_hydron3_lok						Lokian Hydron-3 Renewable Energy				0	0	0	0	0	0	0	0	0	0	0	0	1	500	500	500	0	0	0	0	0	0	object/resource_container/energy_liquid.iff
+energy_renewable_site_limited_hydron3_naboo						Nabooian Hydron-3 Renewable Energy				0	0	0	0	0	0	0	0	0	0	0	0	1	500	500	500	0	0	0	0	0	0	object/resource_container/energy_liquid.iff
+energy_renewable_site_limited_hydron3_rori						Rori Hydron-3 Renewable Energy				0	0	0	0	0	0	0	0	0	0	0	0	1	500	500	500	0	0	0	0	0	0	object/resource_container/energy_liquid.iff
+energy_renewable_site_limited_hydron3_talus						Talusian Hydron-3 Renewable Energy				0	0	0	0	0	0	0	0	0	0	0	0	1	500	500	500	0	0	0	0	0	0	object/resource_container/energy_liquid.iff
+energy_renewable_site_limited_hydron3_tatooine						Tatooinian Hydron-3 Renewable Energy				0	0	0	0	0	0	0	0	0	0	0	0	1	500	500	500	0	0	0	0	0	0	object/resource_container/energy_liquid.iff
+energy_renewable_site_limited_hydron3_yavin4						Yavinian Hydron-3 Renewable Energy				0	0	0	0	0	0	0	0	0	0	0	0	1	500	500	500	0	0	0	0	0	0	object/resource_container/energy_liquid.iff
+energy_renewable_site_limited_hydron3_kashyyyk						Kashyyykian Hydron-3 Renewable Energy				0	0	0	0	0	0	0	0	0	0	0	0	1	500	500	500	0	0	0	0	0	0	object/resource_container/energy_liquid.iff
+energy_renewable_site_limited_geothermal					Geothermal Energy					0	0	0	0	0	0	0	0	0	0	0	0	200	1000	200	1000	0	0	0	0	0	0	object/resource_container/energy_liquid.iff
+energy_renewable_site_limited_geothermal_weak						Weak Geothermal Renewable Energy			1	0	0	0	0	0	0	0	0	0	0	0	0	200	200	200	200	0	0	0	0	0	0	object/resource_container/energy_liquid.iff
+energy_renewable_site_limited_geothermal_corellia						Corellian Geothermal Renewable Energy				0	0	0	0	0	0	0	0	0	0	0	0	200	1000	500	1000	0	0	0	0	0	0	object/resource_container/energy_liquid.iff
+energy_renewable_site_limited_geothermal_dantooine						Dantooine Geothermal Renewable Energy				0	0	0	0	0	0	0	0	0	0	0	0	200	1000	500	1000	0	0	0	0	0	0	object/resource_container/energy_liquid.iff
+energy_renewable_site_limited_geothermal_dathomir						Dathomirian Geothermal Renewable Energy				0	0	0	0	0	0	0	0	0	0	0	0	200	1000	500	1000	0	0	0	0	0	0	object/resource_container/energy_liquid.iff
+energy_renewable_site_limited_geothermal_endor						Endorian Geothermal Renewable Energy				0	0	0	0	0	0	0	0	0	0	0	0	200	1000	500	1000	0	0	0	0	0	0	object/resource_container/energy_liquid.iff
+energy_renewable_site_limited_geothermal_lok						Lokian Geothermal Renewable Energy				0	0	0	0	0	0	0	0	0	0	0	0	200	1000	500	1000	0	0	0	0	0	0	object/resource_container/energy_liquid.iff
+energy_renewable_site_limited_geothermal_naboo						Nabooian Geothermal Renewable Energy				0	0	0	0	0	0	0	0	0	0	0	0	200	1000	500	1000	0	0	0	0	0	0	object/resource_container/energy_liquid.iff
+energy_renewable_site_limited_geothermal_rori						Rori Geothermal Renewable Energy				0	0	0	0	0	0	0	0	0	0	0	0	200	1000	500	1000	0	0	0	0	0	0	object/resource_container/energy_liquid.iff
+energy_renewable_site_limited_geothermal_talus						Talusian Geothermal Renewable Energy				0	0	0	0	0	0	0	0	0	0	0	0	200	1000	500	1000	0	0	0	0	0	0	object/resource_container/energy_liquid.iff
+energy_renewable_site_limited_geothermal_tatooine						Tatooinian Geothermal Renewable Energy				0	0	0	0	0	0	0	0	0	0	0	0	200	1000	500	1000	0	0	0	0	0	0	object/resource_container/energy_liquid.iff
+energy_renewable_site_limited_geothermal_yavin4						Yavinian Geothermal Renewable Energy				0	0	0	0	0	0	0	0	0	0	0	0	200	1000	500	1000	0	0	0	0	0	0	object/resource_container/energy_liquid.iff
+energy_renewable_site_limited_geothermal_kashyyyk						Kashyyykian Geothermal Renewable Energy				0	0	0	0	0	0	0	0	0	0	0	0	200	1000	500	1000	0	0	0	0	0	0	object/resource_container/energy_liquid.iff
+energy_renewable_unlimited				Non Site-Restricted Renewable Energy						0	0	0	0	0	0	0	0	0	0	0	0	1	600	200	500	0	0	0	0	0	0	object/resource_container/energy_liquid.iff
+energy_renewable_unlimited_wind					Wind Energy					0	0	0	0	0	0	0	0	0	0	0	0	1	400	200	500	0	0	0	0	0	0	object/resource_container/energy_liquid.iff
+energy_renewable_unlimited_wind_weak						Weak Wind Renewable Energy			1	0	0	0	0	0	0	0	0	0	0	0	0	200	200	200	200	0	0	0	0	0	0	object/resource_container/energy_liquid.iff
+energy_renewable_unlimited_wind_corellia						Corellian Wind Renewable Energy				0	0	0	0	0	0	0	0	0	0	0	0	1	400	500	500	0	0	0	0	0	0	object/resource_container/energy_liquid.iff
+energy_renewable_unlimited_wind_dantooine						Dantooine Wind Renewable Energy				0	0	0	0	0	0	0	0	0	0	0	0	1	400	500	500	0	0	0	0	0	0	object/resource_container/energy_liquid.iff
+energy_renewable_unlimited_wind_dathomir						Dathomirian Wind Renewable Energy				0	0	0	0	0	0	0	0	0	0	0	0	1	400	500	500	0	0	0	0	0	0	object/resource_container/energy_liquid.iff
+energy_renewable_unlimited_wind_endor						Endorian Wind Renewable Energy				0	0	0	0	0	0	0	0	0	0	0	0	1	400	500	500	0	0	0	0	0	0	object/resource_container/energy_liquid.iff
+energy_renewable_unlimited_wind_lok						Lokian Wind Renewable Energy				0	0	0	0	0	0	0	0	0	0	0	0	1	400	500	500	0	0	0	0	0	0	object/resource_container/energy_liquid.iff
+energy_renewable_unlimited_wind_naboo						Nabooian Wind Renewable Energy				0	0	0	0	0	0	0	0	0	0	0	0	1	400	500	500	0	0	0	0	0	0	object/resource_container/energy_liquid.iff
+energy_renewable_unlimited_wind_rori						Rori Wind Renewable Energy				0	0	0	0	0	0	0	0	0	0	0	0	1	400	500	500	0	0	0	0	0	0	object/resource_container/energy_liquid.iff
+energy_renewable_unlimited_wind_talus						Talusian Wind Renewable Energy				0	0	0	0	0	0	0	0	0	0	0	0	1	400	500	500	0	0	0	0	0	0	object/resource_container/energy_liquid.iff
+energy_renewable_unlimited_wind_tatooine						Tatooinian Wind Renewable Energy				0	0	0	0	0	0	0	0	0	0	0	0	1	400	500	500	0	0	0	0	0	0	object/resource_container/energy_liquid.iff
+energy_renewable_unlimited_wind_yavin4						Yavinian Wind Renewable Energy				0	0	0	0	0	0	0	0	0	0	0	0	1	400	500	500	0	0	0	0	0	0	object/resource_container/energy_liquid.iff
+energy_renewable_unlimited_wind_kashyyyk						Kashyyykian Wind Renewable Energy				0	0	0	0	0	0	0	0	0	0	0	0	1	400	500	500	0	0	0	0	0	0	object/resource_container/energy_liquid.iff
+energy_renewable_unlimited_solar					Solar Energy					0	0	0	0	0	0	0	0	0	0	0	0	200	600	200	500	0	0	0	0	0	0	object/resource_container/energy_liquid.iff
+energy_renewable_unlimited_solar_weak						Weak Solar Renewable Energy			1	0	0	0	0	0	0	0	0	0	0	0	0	200	200	200	200	0	0	0	0	0	0	object/resource_container/energy_liquid.iff
+energy_renewable_unlimited_solar_corellia						Corellian Solar Renewable Energy				0	0	0	0	0	0	0	0	0	0	0	0	200	600	500	500	0	0	0	0	0	0	object/resource_container/energy_liquid.iff
+energy_renewable_unlimited_solar_dantooine						Dantooine Solar Renewable Energy				0	0	0	0	0	0	0	0	0	0	0	0	200	600	500	500	0	0	0	0	0	0	object/resource_container/energy_liquid.iff
+energy_renewable_unlimited_solar_dathomir						Dathomirian Solar Renewable Energy				0	0	0	0	0	0	0	0	0	0	0	0	200	600	500	500	0	0	0	0	0	0	object/resource_container/energy_liquid.iff
+energy_renewable_unlimited_solar_endor						Endorian Solar Renewable Energy				0	0	0	0	0	0	0	0	0	0	0	0	200	600	500	500	0	0	0	0	0	0	object/resource_container/energy_liquid.iff
+energy_renewable_unlimited_solar_lok						Lokian Solar Renewable Energy				0	0	0	0	0	0	0	0	0	0	0	0	200	600	500	500	0	0	0	0	0	0	object/resource_container/energy_liquid.iff
+energy_renewable_unlimited_solar_naboo						Nabooian Solar Renewable Energy				0	0	0	0	0	0	0	0	0	0	0	0	200	600	500	500	0	0	0	0	0	0	object/resource_container/energy_liquid.iff
+energy_renewable_unlimited_solar_rori						Rori Solar Renewable Energy				0	0	0	0	0	0	0	0	0	0	0	0	200	600	500	500	0	0	0	0	0	0	object/resource_container/energy_liquid.iff
+energy_renewable_unlimited_solar_talus						Talusian Solar Renewable Energy				0	0	0	0	0	0	0	0	0	0	0	0	200	600	500	500	0	0	0	0	0	0	object/resource_container/energy_liquid.iff
+energy_renewable_unlimited_solar_tatooine						Tatooinian Solar Renewable Energy				0	0	0	0	0	0	0	0	0	0	0	0	200	600	500	500	0	0	0	0	0	0	object/resource_container/energy_liquid.iff
+energy_renewable_unlimited_solar_yavin4						Yavinian Solar Renewable Energy				0	0	0	0	0	0	0	0	0	0	0	0	200	600	500	500	0	0	0	0	0	0	object/resource_container/energy_liquid.iff
+energy_renewable_unlimited_solar_kashyyyk						Kashyyykian Solar Renewable Energy				0	0	0	0	0	0	0	0	0	0	0	0	200	600	500	500	0	0	0	0	0	0	object/resource_container/energy_liquid.iff
+space_resource		Space Resource								0	0	0	0	0	0	0	0	0	0	0	0	0	0	500	1000	0	0	0	0	0	0	object/resource_container/space/metal.iff
+space_metal			Asteroidal Mineral							0	0	0	0	0	0	0	0	0	0	0	0	0	0	500	1000	0	0	0	0	0	0	object/resource_container/space/metal.iff
+space_metal_iron				Iron Asteroid						0	0	0	0	0	0	0	0	0	0	0	0	0	0	500	500	0	0	0	0	0	0	object/resource_container/space/metal.iff
+space_metal_silicaceous				Silicaceous Asteroid						0	0	0	0	0	0	0	0	0	0	0	0	0	0	1000	1000	0	0	0	0	0	0	object/resource_container/space/metal.iff
+space_metal_carbonaceous				Carbonaceous Asteroid						0	0	0	0	0	0	0	0	0	0	0	0	0	0	1000	1000	0	0	0	0	0	0	object/resource_container/space/metal.iff
+space_metal_ice				Icy Asteroid						0	0	0	0	0	0	0	0	0	0	0	0	0	0	1000	1000	0	0	0	0	0	0	object/resource_container/space/metal.iff
+space_metal_obsidian				Obsidian Asteroid						0	0	0	0	0	0	0	0	0	0	0	0	0	0	1000	1000	0	0	0	0	0	0	object/resource_container/space/metal.iff
+space_gem			Asteroidal Gemstone							0	0	0	0	0	0	0	0	0	0	0	0	0	0	500	1000	0	0	0	0	0	0	object/resource_container/space/gem.iff
+space_gem_diamond				Diamond Asteroid						0	0	0	0	0	0	0	0	0	0	0	0	0	0	500	500	0	0	0	0	0	0	object/resource_container/space/gem.iff
+space_gem_crystal				Crystal Asteroid						0	0	0	0	0	0	0	0	0	0	0	0	0	0	1000	1000	0	0	0	0	0	0	object/resource_container/space/gem.iff
+space_chemical			Asteroidal Chemical							0	0	0	0	0	0	0	0	0	0	0	0	0	0	500	1000	0	0	0	0	0	0	object/resource_container/space/chemical.iff
+space_chemical_petrochem				Petrochemical Asteroid						0	0	0	0	0	0	0	0	0	0	0	0	0	0	500	500	0	0	0	0	0	0	object/resource_container/space/chemical.iff
+space_chemical_acid				Acidic Asteroid						0	0	0	0	0	0	0	0	0	0	0	0	0	0	1000	1000	0	0	0	0	0	0	object/resource_container/space/chemical.iff
+space_chemical_cyanomethanic				Cyanomethanic Asteroid						0	0	0	0	0	0	0	0	0	0	0	0	0	0	1000	1000	0	0	0	0	0	0	object/resource_container/space/chemical.iff
+space_chemical_sulfuric				Sulfuric Asteroid						0	0	0	0	0	0	0	0	0	0	0	0	0	0	1000	1000	0	0	0	0	0	0	object/resource_container/space/chemical.iff
+space_gas			Asteroidal Gas							0	0	0	0	0	0	0	0	0	0	0	0	0	0	500	1000	0	0	0	0	0	0	object/resource_container/space/gas.iff
+space_gas_methane				Methane Asteroid						0	0	0	0	0	0	0	0	0	0	0	0	0	0	500	500	0	0	0	0	0	0	object/resource_container/space/gas.iff
+space_gas_organometallic				Organometallic Asteroid						0	0	0	0	0	0	0	0	0	0	0	0	0	0	1000	1000	0	0	0	0	0	0	object/resource_container/space/gas.iff

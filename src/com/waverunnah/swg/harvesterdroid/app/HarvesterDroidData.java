@@ -1,28 +1,44 @@
 package com.waverunnah.swg.harvesterdroid.app;
 
 
+import com.waverunnah.swg.harvesterdroid.Launcher;
 import com.waverunnah.swg.harvesterdroid.data.resources.ResourceType;
+import com.waverunnah.swg.harvesterdroid.gui.dialog.ExceptionDialog;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.security.CodeSource;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Stream;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 /**
  * Created by Waverunner on 3/23/2017
  */
 public class HarvesterDroidData {
 
+    private Map<String, List<String>> legacy_resourceGroups;
     private Map<String, ResourceType> resourceTypeMap;
 
     public HarvesterDroidData() {
         this.resourceTypeMap = new HashMap<>();
+        this.legacy_resourceGroups = new HashMap<>();
         init();
     }
 
     private void init() {
         loadResourceTypes();
+        legacy_loadResourceGroups();
     }
 
     private void loadResourceTypes() {
@@ -63,6 +79,47 @@ public class HarvesterDroidData {
         });
     }
 
+    private void legacy_loadResourceGroups() {
+        // This only needs to be done for the resources that do not follow the proper hierarchy naming convention
+        try {
+            CodeSource src = Launcher.class.getProtectionDomain().getCodeSource();
+            String path = "com/waverunnah/swg/harvesterdroid/data/raw/groups/";
+            if (src != null) {
+                ZipInputStream zip = new ZipInputStream(src.getLocation().openStream());
+                ZipEntry entry = zip.getNextEntry();
+
+                if (entry == null) {
+                    File dir = new File(src.getLocation().getPath() + path);
+                    File[] files = dir.listFiles();
+                    for (File file : files != null ? files : new File[0]) {
+                        populateResourceGroup(file.getAbsolutePath());
+                    }
+                } else {
+                    while (entry != null) {
+                        if (entry.getName() != null)
+                            populateResourceGroup(entry.getName());
+                        entry = zip.getNextEntry();
+                    }
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void populateResourceGroup(String file) {
+        List<String> resourceGroup = new ArrayList<>();
+        resourceGroup.add(file.substring(file.lastIndexOf("\\") + 1));
+        try {
+            try (Stream<String> stream = Files.lines(Paths.get(file))) {
+                stream.forEach(resourceGroup::add);
+            }
+        } catch (IOException e) {
+            ExceptionDialog.display(e);
+        }
+        legacy_resourceGroups.put(file.substring(file.lastIndexOf("\\") + 1), resourceGroup);
+    }
+
     private void readCsv(String file, CsvParser parser) {
         BufferedReader br = null;
         String line = "";
@@ -77,7 +134,8 @@ public class HarvesterDroidData {
                     continue;
                 }
                 String[] row = line.split(cvsSplitBy);
-                parser.parse(row);
+                if (row.length > 1)
+                    parser.parse(row);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -96,7 +154,100 @@ public class HarvesterDroidData {
         return resourceTypeMap;
     }
 
+    public List<String> legacy_getResourceGroups(String group) {
+        return legacy_resourceGroups.get(group);
+    }
+
     private interface CsvParser {
         void parse(String[] line);
+    }
+
+    @SuppressWarnings("unused")
+    private void _formatResourceTreeTable() {
+        // Helper method for formating resources table from iff
+        // Crmin	Crmax	Cdmin	Cdmax	Drmin	Drmax	Flmin	Flmax	Hrmin	Hrmax	Mamin	Mamax	Pemin	Pemax	Oqmin	Oqmax	Srmin	Srmax	Utmin	Utmax	Ermin	Ermax
+        List<String> updatedLines = new ArrayList<>();
+
+        readCsv("../data/raw/resource_tree.txt", line -> {
+            String[] updatedLine = new String[33];
+            updatedLine[32] = line[43];
+
+            for (int i = 0; i < 10; i++) {
+                updatedLine[i] = line[i];
+            }
+
+            int attr = 0;
+            for (int i = 10; i < 21; i++) {
+                attr++;
+                String key = line[i];
+                switch(key) {
+                    case "res_cold_resist":
+                        _doAttr(updatedLine, line, 10, attr, i);
+                        break;
+                    case "res_conductivity":
+                        _doAttr(updatedLine, line, 12, attr, i);
+                        break;
+                    case "res_decay_resist":
+                        _doAttr(updatedLine,line,14,attr, i);
+                        break;
+                    case "res_flavor":
+                        _doAttr(updatedLine, line, 16, attr, i);
+                        break;
+                    case "res_heat_resist":
+                        _doAttr(updatedLine, line, 18, attr, i);
+                        break;
+                    case "res_malleability":
+                        _doAttr(updatedLine, line, 20, attr, i);
+                        break;
+                    case "res_potential_energy":
+                        _doAttr(updatedLine, line, 22, attr, i);
+                        break;
+                    case "res_quality":
+                        _doAttr(updatedLine, line, 24, attr, i);
+                        break;
+                    case "res_shock_resistance":
+                        _doAttr(updatedLine, line, 26, attr, i);
+                        break;
+                    case "res_toughness":
+                        _doAttr(updatedLine, line, 28, attr, i);
+                        break;
+                    case "entangle_resistance":
+                        _doAttr(updatedLine, line, 30, attr, i);
+                        break;
+                    default:
+                        break;
+                }
+            }
+
+            for (int i = 10; i < 32; i++) {
+                if (updatedLine[i] == null)
+                    updatedLine[i] = "0";
+            }
+
+            StringBuilder builder = new StringBuilder();
+            for (int i = 0; i < updatedLine.length; i++) {
+                builder.append(updatedLine[i]);
+                if (i + 1 != updatedLine.length)
+                    builder.append("\t");
+            }
+            builder.append("\n");
+            updatedLines.add(builder.toString());
+        });
+
+        try {
+            BufferedWriter writer = new BufferedWriter(new FileWriter("updated_tree.txt"));
+            for (String updatedLine : updatedLines) {
+                writer.write(updatedLine);
+            }
+            writer.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void _doAttr(String[] updatedLine, String[] line, int index, int attr, int pos) {
+        updatedLine[index] = line[pos + 10 + attr];
+        updatedLine[index+1] = line[pos + 11 + attr];
     }
 }

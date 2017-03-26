@@ -18,17 +18,10 @@ import javafx.stage.Stage;
 import javax.xml.transform.TransformerException;
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.security.CodeSource;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Stream;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipInputStream;
 
 public class Launcher extends Application {
 	private static final boolean IGNORE_UNCAUGHT_EXCEPTIONS = true;
@@ -118,58 +111,12 @@ public class Launcher extends Application {
 		return stage;
 	}
 
-	public static List<String> getResourceTypes() {
+	public static Map<String, String> getResourceTypes() {
 		return instance.app.getResourceTypes();
 	}
 
 	public static HarvesterDroid getApp() {
 		return instance.app;
-	}
-
-	// TODO Refactor resource groups
-	static {
-		// This only needs to be done for the resources that do not follow the proper hierarchy naming convention
-		try {
-			CodeSource src = Launcher.class.getProtectionDomain().getCodeSource();
-			String path = "com/waverunnah/swg/harvesterdroid/data/raw/groups/";
-			if (src != null) {
-				ZipInputStream zip = new ZipInputStream(src.getLocation().openStream());
-				ZipEntry entry = zip.getNextEntry();
-
-				if (entry == null) {
-					File dir = new File(src.getLocation().getPath() + path);
-					File[] files = dir.listFiles();
-					for (File file : files != null ? files : new File[0]) {
-						populateResourceGroup(file.getAbsolutePath());
-					}
-				} else {
-					while (entry != null) {
-						if (entry.getName() != null)
-							populateResourceGroup(entry.getName());
-						entry = zip.getNextEntry();
-					}
-				}
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
-	private static void populateResourceGroup(String file) {
-		List<String> resourceGroup = new ArrayList<>();
-		resourceGroup.add(file.substring(file.lastIndexOf("\\") + 1));
-		try {
-			try (Stream<String> stream = Files.lines(Paths.get(file))) {
-				stream.forEach(resourceGroup::add);
-			}
-		} catch (IOException e) {
-			ExceptionDialog.display(e);
-		}
-		resourceGroups.put(file.substring(file.lastIndexOf("\\") + 1), resourceGroup);
-	}
-
-	public static List<String> getResourceGroups(String group) {
-		return resourceGroups.get(group);
 	}
 
     public static Image getAppIcon() {

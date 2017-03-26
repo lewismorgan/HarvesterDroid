@@ -13,7 +13,16 @@ import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.ListCell;
+import javafx.scene.control.ListView;
+import javafx.scene.control.TableCell;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TablePosition;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
+import javafx.scene.control.TitledPane;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
@@ -22,12 +31,14 @@ import javafx.scene.layout.VBox;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class SchematicDialogController extends VBox implements Initializable {
 
 	private FilteredList<String> availableModifiers = new FilteredList<>(FXCollections.observableArrayList(Attributes.get()));
+	private Map<String, String> resourceTypes;
 
 	@FXML
 	TextField nameField;
@@ -54,17 +65,13 @@ public class SchematicDialogController extends VBox implements Initializable {
 
 	public void readSchematic(Schematic schematic) {
 		if (schematic == null)
-			System.err.println("Trying to read a null schematic!");
+            return;
 		this.schematic.set(schematic);
 
-		nameField.textProperty().bindBidirectional(schematic.nameProperty());
+        nameField.textProperty().bindBidirectional(schematic.nameProperty());
 		resourceListView.itemsProperty().bindBidirectional(schematic.resourcesProperty());
 		groupField.textProperty().bindBidirectional(schematic.groupProperty());
 		attributesTableView.itemsProperty().bindBidirectional(schematic.modifiersProperty());
-		attributesTableView.disableProperty().bind(Bindings.isEmpty(schematic.getModifiers()));
-
-        resourceListView.itemsProperty().bindBidirectional(schematic.resourcesProperty());
-        resourceListView.disableProperty().bind(Bindings.isEmpty(schematic.getResources()));
 
 		schematic.getModifiers().addListener((ListChangeListener<? super Schematic.Modifier>) c -> {
 			while (c.next()) {
@@ -91,7 +98,8 @@ public class SchematicDialogController extends VBox implements Initializable {
 		Schematic schematic = getSchematic();
 
 		List<String> choices = new ArrayList<>();
-		Launcher.getResourceTypes().stream().filter(type -> !schematic.getResources().contains(type)).forEach(choices::add);
+		resourceTypes.keySet().stream().filter(type -> !schematic.getResources().contains(type))
+                .forEach(choice -> choices.add(resourceTypes.get(choice)));
 		AddResourceTypeDialog dialog = new AddResourceTypeDialog(choices);
 
 		Optional<List<String>> result = dialog.showAndWait();
@@ -202,7 +210,9 @@ public class SchematicDialogController extends VBox implements Initializable {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+        resourceTypes = Launcher.getResourceTypes();
 		SchematicDialog.setController(this);
+
 		createAttributesTable();
 
         removeAttributeButton.disableProperty().bind(Bindings.isEmpty(attributesTableView.getSelectionModel().getSelectedItems()));
@@ -230,6 +240,19 @@ public class SchematicDialogController extends VBox implements Initializable {
                 if (empty)
                     setText(null);
                 else setText(Attributes.getLocalizedName(item));
+            }
+        });
+
+        resourceListView.setCellFactory(param -> new ListCell<String>(){
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                System.out.println(item);
+                if (item != null) {
+                    setText(resourceTypes.get(item));
+                } else {
+                    setText(null);
+                }
             }
         });
     }
