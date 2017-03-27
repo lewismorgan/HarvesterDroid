@@ -168,9 +168,7 @@ public class HarvesterDroid {
 		if (resourceGroups != null) {
 		    // ID that was entered is a group of resources
 			List<GalaxyResource> master = new ArrayList<>();
-			System.out.println("~~~" + id + "~~~");
 			for (String group : resourceGroups) {
-				System.out.println(group);
 				master.addAll(galaxyResourceList.stream()
 						.filter(galaxyResource -> galaxyResource.getResourceType().getId().startsWith(group)
 								|| galaxyResource.getResourceType().getId().equals(group))

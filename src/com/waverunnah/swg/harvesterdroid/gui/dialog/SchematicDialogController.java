@@ -29,7 +29,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 
 import java.net.URL;
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -97,9 +97,9 @@ public class SchematicDialogController extends VBox implements Initializable {
 	public void addResource() {
 		Schematic schematic = getSchematic();
 
-		List<String> choices = new ArrayList<>();
+		Map<String, String> choices = new HashMap<>();
 		resourceTypes.keySet().stream().filter(type -> !schematic.getResources().contains(type))
-                .forEach(choice -> choices.add(resourceTypes.get(choice)));
+                .forEach(choice -> choices.put(resourceTypes.get(choice), choice));
 		AddResourceTypeDialog dialog = new AddResourceTypeDialog(choices);
 
 		Optional<List<String>> result = dialog.showAndWait();

@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" spacing="10.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.waverunnah.swg.harvesterdroid.gui.dialog.SchematicDialogController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" spacing="10.0" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.waverunnah.swg.harvesterdroid.gui.dialog.SchematicDialogController">
    <children>
       <HBox spacing="5.0">
          <children>
@@ -22,7 +22,7 @@
                   <Insets top="5.0" />
                </HBox.margin>
             </Label>
-            <TextField fx:id="nameField" HBox.hgrow="ALWAYS" />
+            <TextField fx:id="nameField" promptText="Name of the schematic" HBox.hgrow="ALWAYS" />
             <Label text="Group" HBox.hgrow="ALWAYS">
                <HBox.margin>
                   <Insets top="5.0" />
@@ -31,7 +31,7 @@
                   <Insets left="5.0" />
                </padding>
             </Label>
-            <TextField fx:id="groupField" promptText="Enter a group id" HBox.hgrow="ALWAYS" />
+            <TextField fx:id="groupField" promptText="&quot;:&quot; specifies a sub-group" HBox.hgrow="ALWAYS" />
          </children>
       </HBox>
       <HBox layoutX="10.0" layoutY="10.0" spacing="5.0">
