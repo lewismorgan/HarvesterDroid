@@ -51,6 +51,7 @@ public class ResourceDialog extends Dialog<GalaxyResource> {
 		setResultConverter(buttonType -> {
 			if (buttonType != saveButtonType)
 				return null;
+			controller.retrieveStats();
 			return controller.getGalaxyResource();
 		});
 	}

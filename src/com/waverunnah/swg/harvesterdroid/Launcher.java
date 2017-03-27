@@ -56,7 +56,7 @@ public class Launcher extends Application {
 		app.updateResources();
         updateLoadingProgress("Loading saved data...", -1);
 		app.loadSavedData();
-		updateLoadingProgress("Punch it Chewie!", -1.0);
+		updateLoadingProgress("Punch it Chewie!", -1);
 	}
 
 	@Override

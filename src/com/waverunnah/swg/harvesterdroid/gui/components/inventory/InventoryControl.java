@@ -65,8 +65,15 @@ public class InventoryControl extends VBox {
 			return;
 
 		GalaxyResource galaxyResource = result.get();
-		if (!galaxyResource.getName().isEmpty() && !galaxyResource.getResourceTypeString().isEmpty())
-			inventoryList.add(galaxyResource);
+		boolean exists = false;
+        for (GalaxyResource resource : inventoryList) {
+            if (resource.getName().equals(galaxyResource.getName())) {
+                exists = true;
+                break;
+            }
+        }
+        if (!exists)
+            inventoryList.add(galaxyResource);
 	}
 
 	public void setInventoryList(FilteredList<GalaxyResource> filteredInventoryList) {

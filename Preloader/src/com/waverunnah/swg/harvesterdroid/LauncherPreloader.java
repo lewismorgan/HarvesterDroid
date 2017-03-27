@@ -14,7 +14,6 @@ import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -30,7 +29,7 @@ public class LauncherPreloader extends Preloader {
 		container.setAlignment(Pos.CENTER);
 		container.setBackground(new Background(new BackgroundFill(Color.WHITE, null, null)));
 
-		ImageView header = new ImageView(new Image(getClass().getResourceAsStream("HarvesterDroid_Header.png")));
+		ImageView header = new ImageView(new Image(getClass().getResourceAsStream("/images/HarvesterDroid_Header.png")));
 		header.setFitHeight(100);
 		header.setFitWidth(350);
 
