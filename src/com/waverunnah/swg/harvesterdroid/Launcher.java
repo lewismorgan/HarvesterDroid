@@ -24,7 +24,7 @@ import java.util.Map;
 import java.util.Optional;
 
 public class Launcher extends Application {
-	private static final boolean IGNORE_UNCAUGHT_EXCEPTIONS = false;
+	private static final boolean IGNORE_UNCAUGHT_EXCEPTIONS = true;
 	// TODO Finish refactoring business logic into HarvesterDroid
 
 	public static String ROOT_DIR = System.getProperty("user.home").replace("\\", "/") + "/.harvesterdroid";

@@ -50,7 +50,7 @@ public class SchematicsControl extends VBox {
         items.addListener((ListChangeListener<Schematic>) c -> {
             while (c.next()) {
                 if (c.getAddedSize() > 0) {
-                    c.getAddedSubList().forEach(this::addTreeItem);
+                    c.getAddedSubList().forEach(this::createSchematicsTree);
                 }
                 if (c.getRemovedSize() > 0) {
                     c.getRemoved().forEach(this::removeTreeItem);
@@ -102,7 +102,7 @@ public class SchematicsControl extends VBox {
 	}
 
     private void setFocusedSchematic(TreeItem<SchematicsTreeItem> selected) {
-	    if (selected == null) {
+        if (selected == null) {
             focusedSchematic.set(null);
             return;
         }
@@ -126,8 +126,12 @@ public class SchematicsControl extends VBox {
 		if (!result.isPresent())
 			return;
 
-		// TODO Update tree view in schematic
-	}
+		schematic = result.get();
+
+		updateTreeView();
+
+		schematicsTreeView.getSelectionModel().select(getSchematicsTreeItem(schematicsTreeView.getRoot(), schematic.getIdentifier()));
+    }
 
 	@FXML
 	public void removeSelectedSchematic() {
@@ -139,7 +143,28 @@ public class SchematicsControl extends VBox {
 		schematicsTreeView.getSelectionModel().clearSelection();
 	}
 
-    private void addTreeItem(Schematic schematic) {
+	private void updateTreeView() {
+	    schematicsTreeView.getRoot().getChildren().clear();
+
+        for (Schematic item : items) {
+            createSchematicsTree(item);
+        }
+    }
+
+    private TreeItem<SchematicsTreeItem> getSchematicsTreeItem(TreeItem<SchematicsTreeItem> root, String identifier) {
+        for (TreeItem<SchematicsTreeItem> treeItem : root.getChildren()) {
+            if (treeItem.getValue().getIdentifier().equals(identifier))
+                return treeItem;
+            if (!treeItem.isLeaf()) {
+                TreeItem<SchematicsTreeItem> schematicsTreeItem = getSchematicsTreeItem(treeItem, identifier);
+                if (schematicsTreeItem != null)
+                    return schematicsTreeItem;
+            }
+        }
+        return null;
+    }
+
+    private void createSchematicsTree(Schematic schematic) {
         String[] groups = schematic.getGroup().split(":");
         TreeItem<SchematicsTreeItem> groupTree = getSubGroupTree(schematicsTreeView.getRoot(), groups, 0);
 
@@ -157,29 +182,38 @@ public class SchematicsControl extends VBox {
             schematicsTreeView.getRoot().getChildren().add(rootGroup);
         } else {
             // Base of the group has been created, make the remaining non-existent groups
-            TreeItem<SchematicsTreeItem> existingParentGroup = getParentGroupTreeItem(schematicsTreeView.getRoot(), groups, 0);
-            int index = getParentGroupIndex(schematicsTreeView.getRoot(), groups, 0);
+            TreeItem<SchematicsTreeItem> existingGroup = getParentGroupTreeItem(schematicsTreeView.getRoot(), groups, 0);
+            if (existingGroup == groupTree) {
+                // Don't need to do anything, all the groups are made, just add the schematic
+                existingGroup.getChildren().add(createSchematicsTreeItem(schematic));
+            } else {
 
-            TreeItem<SchematicsTreeItem> rootGroup = createGroupTreeItem(groups, index);
-            TreeItem<SchematicsTreeItem> subGroup = getSubGroupTree(rootGroup, groups, index);
+                int index = getParentGroupIndex(schematicsTreeView.getRoot(), groups, 0);
 
-            if (subGroup != null)
-                subGroup.getChildren().add(createSchematicsTreeItem(schematic));
-            else rootGroup.getChildren().add(createSchematicsTreeItem(schematic));
+                TreeItem<SchematicsTreeItem> rootGroup = createGroupTreeItem(groups, index);
+                TreeItem<SchematicsTreeItem> subGroup = getSubGroupTree(rootGroup, groups, index);
 
-            // Ensure groups remain at the top
-            int lastGroupIndex = 0;
-            for (int i = 0; i < existingParentGroup.getChildren().size(); i++) {
-                TreeItem<SchematicsTreeItem> treeItem = existingParentGroup.getChildren().get(i);
-                if (treeItem.isLeaf())
-                    break;
-                else lastGroupIndex++;
+                if (subGroup != null)
+                    subGroup.getChildren().add(createSchematicsTreeItem(schematic));
+                else rootGroup.getChildren().add(createSchematicsTreeItem(schematic));
+
+                // Ensure groups remain at the top
+                int lastGroupIndex = 0;
+                for (int i = 0; i < existingGroup.getChildren().size(); i++) {
+                    TreeItem<SchematicsTreeItem> treeItem = existingGroup.getChildren().get(i);
+                    if (treeItem.isLeaf())
+                        break;
+                    else lastGroupIndex++;
+                }
+                if (!existingGroup.getChildren().contains(rootGroup))
+                    existingGroup.getChildren().add(lastGroupIndex, rootGroup);
             }
-            existingParentGroup.getChildren().add(lastGroupIndex, rootGroup);
         }
     }
 
     private int getParentGroupIndex(TreeItem<SchematicsTreeItem> start, String[] group, int index) {
+	    if (index >= group.length)
+	        return index - 1;
         for (TreeItem<SchematicsTreeItem> treeItem : start.getChildren()) {
             if (treeItem.getValue().getName().equals(group[index])) {
                 if (treeItem.getValue().isGroup()) {
@@ -193,6 +227,8 @@ public class SchematicsControl extends VBox {
     }
 
     private TreeItem<SchematicsTreeItem> getParentGroupTreeItem(TreeItem<SchematicsTreeItem> start, String[] group, int index) {
+	    if (index >= group.length)
+	        return start;
         for (TreeItem<SchematicsTreeItem> treeItem : start.getChildren()) {
             if (treeItem.getValue().getName().equals(group[index])) {
                 if (treeItem.getValue().isGroup()) {
