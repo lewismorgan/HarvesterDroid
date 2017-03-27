@@ -17,6 +17,7 @@ Programmed with love by Waverunner <3
 * Finalize support for use with other resource tracking websites (50% done!)
 * Server selection
 * Update Getting Started images
+* Allow custom loading of resource trees from game files
 
 # Getting Started
 Using HarvesterDroid is super easy! First off we start by creating a schematic.

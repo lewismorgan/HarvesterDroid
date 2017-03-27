@@ -121,11 +121,13 @@ public class GalaxyResource {
         float min = capAttributesMap.get(attribute + "min");
 
         float value = getAttribute(Attributes.getFullName(attribute));
+        float result = (value - min) / (max - min);
 
-        float result = ((value-min)/(max-min))*100;
+        if (Float.isNaN(result)) // At the max cap
+            result = 1;
 
         StringProperty percentageProperty = new SimpleStringProperty();
-        percentageProperty.set("(" + String.valueOf(Math.round(result) + "%" + ")"));
+        percentageProperty.set("(" + String.valueOf(Math.round(result * 100)) + "%" + ")");
         return percentageProperty;
     }
 

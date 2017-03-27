@@ -271,6 +271,10 @@ public class HarvesterDroid {
 
     private void populateResourceFromType(GalaxyResource galaxyResource) {
         ResourceType type = data.getResourceTypeMap().get(galaxyResource.getResourceTypeString());
+        if (type == null) {
+            System.out.println("No resource type " + galaxyResource.getResourceTypeString());
+            return;
+        }
         galaxyResource.setCapAttributesMap(type.getMinMaxMap());
         galaxyResource.setResourceType(type);
     }

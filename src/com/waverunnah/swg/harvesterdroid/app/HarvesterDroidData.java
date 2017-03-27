@@ -4,6 +4,8 @@ package com.waverunnah.swg.harvesterdroid.app;
 import com.waverunnah.swg.harvesterdroid.data.resources.ResourceType;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -11,6 +13,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Created by Waverunner on 3/23/2017
@@ -27,6 +30,7 @@ public class HarvesterDroidData {
     }
 
     private void init() {
+        _formatResourceTreeTable();
         loadResourceTypes();
         loadResourceGroups();
     }
@@ -70,7 +74,6 @@ public class HarvesterDroidData {
             minMax.put("ERmin", Integer.valueOf(line[23]));
             minMax.put("ERmax", Integer.valueOf(line[24]));
             type.setMinMaxMap(minMax);
-            type.setContainer(line[25]);
 
             resourceTypeMap.put(type.getId(), type);
         });
@@ -116,5 +119,135 @@ public class HarvesterDroidData {
 
     private interface CsvParser {
         void parse(String[] line);
+    }
+
+    private void _formatResourceTreeTable() {
+        // Helper method for formating resources table from iff
+        List<String> updatedLines = new ArrayList<>();
+        updatedLines.add("Id\tName\tRecycled\tCr min\tCr max\tCd min\tCd max\tDr min\tDr max\tFl min\tFl max\tHr min\t" +
+                "Hr max\tMa min\tMa max\tPe min\tPe max\tOq min\tOq max\tSr min\tSr max\tUt min\tUt max\tEr min\tEr max\tContainer\n");
+        AtomicInteger lineNum = new AtomicInteger(0);
+        readCsv("resource_tree.txt", line -> {
+            if (lineNum.getAndIncrement() < 2 )
+                return;
+
+            if (line.length != 50) {
+                String[] buffer = new String[50];
+                for (int i = 0; i < buffer.length; i++) {
+                    if (i < line.length)
+                        buffer[i] = line[i];
+                    else buffer[i] = "";
+                }
+                line = buffer;
+            }
+
+            String[] updatedLine = new String[26];
+            updatedLine[0] = line[1]; // id
+            updatedLine[2] = line[14]; // recycled
+            if (line.length == 50)
+                updatedLine[25] = line[49]; // container
+            else updatedLine[25] = "";
+
+            for (int i = 2; i < 10; i++) {
+                if (!line[i].isEmpty()) {
+                    updatedLine[1] = line[i]; // name
+                    break;
+                }
+            }
+
+            int attr = 0;
+            for (int i = 16; i < 27; i++) {
+                attr++;
+                String key = line[i];
+                switch(key) {
+                    case "res_cold_resist":
+                        _doAttr(updatedLine, line, 3, attr, i);
+                        break;
+                    case "res_conductivity":
+                        _doAttr(updatedLine, line, 5, attr, i);
+                        break;
+                    case "res_decay_resist":
+                        _doAttr(updatedLine,line,7,attr, i);
+                        break;
+                    case "res_flavor":
+                        _doAttr(updatedLine, line, 9, attr, i);
+                        break;
+                    case "res_heat_resist":
+                        _doAttr(updatedLine, line, 11, attr, i);
+                        break;
+                    case "res_malleability":
+                        _doAttr(updatedLine, line, 13, attr, i);
+                        break;
+                    case "res_potential_energy":
+                        _doAttr(updatedLine, line, 15, attr, i);
+                        break;
+                    case "res_quality":
+                        _doAttr(updatedLine, line, 17, attr, i);
+                        break;
+                    case "res_shock_resistance":
+                        _doAttr(updatedLine, line, 19, attr, i);
+                        break;
+                    case "res_toughness":
+                        _doAttr(updatedLine, line, 21, attr, i);
+                        break;
+                    case "entangle_resistance":
+                        _doAttr(updatedLine, line, 23, attr, i);
+                        break;
+                    default:
+                        if (!key.isEmpty())
+                            System.out.println("Unknown key " + key);
+                        break;
+                }
+            }
+
+            for (int i = 3; i < 25; i++) {
+                if (updatedLine[i] == null || updatedLine[i].isEmpty())
+                    updatedLine[i] = "0";
+            }
+
+            StringBuilder builder = getStringBuilder(updatedLine);
+
+            if (updatedLine[0].equals("crystalline_mustafar_1")) {
+                updatedLine[0] = "crystalline_mustafar";
+                updatedLine[1] = "Mustafarian Crystalline Gemstone";
+                updatedLines.add(getStringBuilder(updatedLine).toString());
+            } else if (updatedLine[0].equals("armophous_mustafar_1")) {
+                updatedLine[0] = "armophous_mustafar";
+                updatedLine[1] = "Mustafarian Amorphous Gemstone";
+                updatedLines.add(getStringBuilder(updatedLine).toString());
+            } else if (updatedLine[0].startsWith("meat_reptilian_")) {
+                updatedLine[0] = updatedLine[0].replace("meat_reptilian_", "meat_reptillian_");
+                builder = getStringBuilder(updatedLine);
+            }
+
+            updatedLines.add(builder.toString());
+        });
+
+        try {
+            BufferedWriter writer = new BufferedWriter(new FileWriter("resources/data/resource_tree.txt"));
+            for (String updatedLine : updatedLines) {
+                writer.write(updatedLine);
+            }
+            writer.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private StringBuilder getStringBuilder(String[] updatedLine) {
+        StringBuilder builder = new StringBuilder();
+        for (int i = 0; i < updatedLine.length; i++) {
+            builder.append(updatedLine[i]);
+            if (i + 1 != updatedLine.length)
+                builder.append("\t");
+        }
+        builder.append("\n");
+        return builder;
+    }
+
+    private void _doAttr(String[] updatedLine, String[] line, int index, int attr, int pos) {
+        updatedLine[index] = line[pos + 10 + attr];
+        updatedLine[index+1] = line[pos + 11 + attr];
     }
 }
