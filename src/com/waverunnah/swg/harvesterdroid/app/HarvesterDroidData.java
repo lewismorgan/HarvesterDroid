@@ -32,7 +32,7 @@ public class HarvesterDroidData {
     }
 
     private void loadResourceGroups() {
-        readCsv("../data/raw/resource_groups.txt", line -> {
+        readCsv("/data/resource_groups.txt", line -> {
             if (resourceGroups.containsKey(line[1]))
                 resourceGroups.get(line[1]).add(line[0]);
             else resourceGroups.put(line[1], new ArrayList<>(Collections.singletonList(line[0])));
@@ -41,7 +41,7 @@ public class HarvesterDroidData {
     }
 
     private void loadResourceTypes() {
-        readCsv("../data/raw/resource_tree.txt", line -> {
+        readCsv("/data/resource_tree.txt", line -> {
             ResourceType type = new ResourceType();
             type.setId(line[0]);
             type.setName(line[1]);

@@ -24,7 +24,7 @@ import java.util.Map;
 import java.util.Optional;
 
 public class Launcher extends Application {
-	private static final boolean IGNORE_UNCAUGHT_EXCEPTIONS = true;
+	private static final boolean IGNORE_UNCAUGHT_EXCEPTIONS = false;
 	// TODO Finish refactoring business logic into HarvesterDroid
 
 	public static String ROOT_DIR = System.getProperty("user.home").replace("\\", "/") + "/.harvesterdroid";
@@ -120,6 +120,6 @@ public class Launcher extends Application {
 	}
 
     public static Image getAppIcon() {
-        return new Image(Launcher.class.getResourceAsStream("gui/images/icon.png"));
+        return new Image(Launcher.class.getResourceAsStream("/images/icon.png"));
     }
 }

@@ -21,7 +21,7 @@ import javafx.scene.layout.VBox;
 import javafx.util.StringConverter;
 
 import java.io.IOException;
-import java.net.URL;
+import java.io.InputStream;
 
 public class ResourceListItem extends HBox {
 
@@ -122,16 +122,16 @@ public class ResourceListItem extends HBox {
 	private Image getImage(String container) {
 		if (container == null)
 			return null;
-		URL url = getClass().getResource("images/resources/" + container + ".png");
-		if (url == null) {
+		InputStream is = getClass().getResourceAsStream("/images/resources/" + container + ".png");
+		if (is == null) {
 			container = container.split("_")[0];
-			url = getClass().getResource("images/resources/" + container + ".png");
-			if (url == null) {
-				System.out.println("Could not find image images/resources/" + container + ".png");
+			is = getClass().getResourceAsStream("/images/resources/" + container + ".png");
+			if (is == null) {
+				System.out.println("Could not find image /images/resources/" + container + ".png");
 				return null;
 			}
 		}
-		return new Image(url.toString());
+		return new Image(is);
 	}
 
 	public GalaxyResource getGalaxyResource() {
