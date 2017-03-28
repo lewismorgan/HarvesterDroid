@@ -30,7 +30,6 @@ public class HarvesterDroidData {
     }
 
     private void init() {
-        _formatResourceTreeTable();
         loadResourceTypes();
         loadResourceGroups();
     }
@@ -121,6 +120,7 @@ public class HarvesterDroidData {
         void parse(String[] line);
     }
 
+    @SuppressWarnings("unused")
     private void _formatResourceTreeTable() {
         // Helper method for formating resources table from iff
         List<String> updatedLines = new ArrayList<>();

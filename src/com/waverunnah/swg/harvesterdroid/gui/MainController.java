@@ -3,7 +3,7 @@ package com.waverunnah.swg.harvesterdroid.gui;
 import com.waverunnah.swg.harvesterdroid.Launcher;
 import com.waverunnah.swg.harvesterdroid.app.HarvesterDroid;
 import com.waverunnah.swg.harvesterdroid.data.resources.GalaxyResource;
-import com.waverunnah.swg.harvesterdroid.gui.callbacks.GalaxyResourceListCell;
+import com.waverunnah.swg.harvesterdroid.gui.cells.GalaxyResourceListCell;
 import com.waverunnah.swg.harvesterdroid.gui.components.inventory.InventoryControl;
 import com.waverunnah.swg.harvesterdroid.gui.components.schematics.SchematicsControl;
 import com.waverunnah.swg.harvesterdroid.gui.dialog.AboutDialog;

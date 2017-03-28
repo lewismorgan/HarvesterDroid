@@ -275,7 +275,6 @@ public class HarvesterDroid {
             System.out.println("No resource type " + galaxyResource.getResourceTypeString());
             return;
         }
-        galaxyResource.setCapAttributesMap(type.getMinMaxMap());
         galaxyResource.setResourceType(type);
     }
 

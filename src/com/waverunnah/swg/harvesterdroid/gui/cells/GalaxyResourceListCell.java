@@ -1,4 +1,4 @@
-package com.waverunnah.swg.harvesterdroid.gui.callbacks;
+package com.waverunnah.swg.harvesterdroid.gui.cells;
 
 import com.waverunnah.swg.harvesterdroid.data.resources.GalaxyResource;
 import com.waverunnah.swg.harvesterdroid.gui.ResourceListItem;

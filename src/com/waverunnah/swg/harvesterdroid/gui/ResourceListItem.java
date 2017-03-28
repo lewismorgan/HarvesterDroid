@@ -7,7 +7,6 @@ import com.waverunnah.swg.harvesterdroid.utils.Attributes;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.property.StringProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
@@ -18,6 +17,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.util.StringConverter;
 
 import java.io.IOException;
@@ -90,12 +90,12 @@ public class ResourceListItem extends HBox {
 
 		Attributes.forEach((primary, secondary) -> {
 			IntegerProperty value = val.getAttributes().get(primary);
-			StringProperty percentage = val.getPercentageCap(primary);
+			Label percentage = createPercentageLabel(primary, val);
 			createAttributeUI(secondary, value, percentage);
 		});
 	}
 
-	private void createAttributeUI(String simple, IntegerProperty valueProperty, StringProperty percentage) {
+	private void createAttributeUI(String simple, IntegerProperty valueProperty, Label percentageLabel) {
 		VBox group = new VBox();
 		group.setAlignment(Pos.CENTER);
 		group.setPadding(new Insets(5.0, 5, 5, 5));
@@ -109,12 +109,10 @@ public class ResourceListItem extends HBox {
 		valueLabel.setContentDisplay(ContentDisplay.CENTER);
 		group.getChildren().add(valueLabel);
 
-		Label percentageLabel = new Label("--");
 		percentageLabel.setContentDisplay(ContentDisplay.CENTER);
 		group.getChildren().add(percentageLabel);
 
 		Bindings.bindBidirectional(valueLabel.textProperty(), valueProperty, new ResourceValueConverter());
-		percentageLabel.textProperty().bind(percentage);
 
 		resourceStatsBox.getChildren().add(group);
 	}
@@ -133,6 +131,37 @@ public class ResourceListItem extends HBox {
 		}
 		return new Image(is);
 	}
+
+    private Label createPercentageLabel(String attribute, GalaxyResource galaxyResource) {
+        attribute = Attributes.getAbbreviation(attribute);
+
+        ResourceType type = galaxyResource.getResourceType();
+        if (!galaxyResource.getResourceType().getMinMaxMap().containsKey(attribute + "max")) {
+            return new Label("--");
+        }
+
+        float max = type.getMinMaxMap().get(attribute + "max");
+        if (max <= 0)
+            return new Label("--");
+
+        float min = type.getMinMaxMap().get(attribute + "min");
+
+        float value = galaxyResource.getAttribute(Attributes.getFullName(attribute));
+        float result = (value - min) / (max - min);
+
+        if (Float.isNaN(result)) // At the max cap
+            result = 1;
+
+        Label label = new Label();
+        label.setText("(" + String.valueOf(Math.round(result * 100)) + "%" + ")");
+        if (result == 1)
+            label.setTextFill(Color.RED);
+        else if (result >= .8)
+            label.setTextFill(Color.DARKORANGE);
+        else if (result >= .7)
+            label.setTextFill(Color.ORANGE);
+        return label;
+    }
 
 	public GalaxyResource getGalaxyResource() {
 		return galaxyResource.get();

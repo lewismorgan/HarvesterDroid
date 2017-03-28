@@ -1,7 +1,7 @@
 package com.waverunnah.swg.harvesterdroid.gui.components.inventory;
 
 import com.waverunnah.swg.harvesterdroid.data.resources.GalaxyResource;
-import com.waverunnah.swg.harvesterdroid.gui.callbacks.GalaxyResourceListCell;
+import com.waverunnah.swg.harvesterdroid.gui.cells.GalaxyResourceListCell;
 import com.waverunnah.swg.harvesterdroid.gui.dialog.ResourceDialog;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.BooleanProperty;
