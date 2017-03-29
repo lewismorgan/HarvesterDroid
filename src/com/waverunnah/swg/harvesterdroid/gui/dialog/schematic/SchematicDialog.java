@@ -18,22 +18,14 @@
 
 package com.waverunnah.swg.harvesterdroid.gui.dialog.schematic;
 
-import com.waverunnah.swg.harvesterdroid.Launcher;
 import com.waverunnah.swg.harvesterdroid.data.schematics.Schematic;
-import com.waverunnah.swg.harvesterdroid.gui.dialog.ExceptionDialog;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
+import com.waverunnah.swg.harvesterdroid.gui.dialog.BaseDialog;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
-import javafx.scene.control.Dialog;
-import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 
-import java.io.IOException;
-
-public class SchematicDialog extends Dialog<Schematic> {
-
+public class SchematicDialog extends BaseDialog<Schematic> {
+    private static ButtonType SAVE = new ButtonType("Save", ButtonBar.ButtonData.APPLY);
     private static SchematicDialogController controller;
 
     public SchematicDialog() {
@@ -41,7 +33,7 @@ public class SchematicDialog extends Dialog<Schematic> {
     }
 
     public SchematicDialog(Schematic schematic) {
-        init();
+        super("Schematic Editor");
         if (controller != null)
             controller.readSchematic(schematic);
     }
@@ -50,36 +42,21 @@ public class SchematicDialog extends Dialog<Schematic> {
         SchematicDialog.controller = controller;
     }
 
-    private void init() {
-        setTitle("Schematic Editor");
-        setupView();
-        setupButtons();
+    @Override
+    protected ButtonType[] getButtonTypes() {
+        return new ButtonType[]{
+                SAVE,
+                ButtonType.CANCEL
+        };
     }
 
-    private void setupView() {
-        try {
-            Parent root = FXMLLoader.load(getClass().getResource("schematic_dialog.fxml"));
-            if (!(root instanceof VBox))
-                return;
-
-            ((Stage) getDialogPane().getScene().getWindow()).getIcons().add(Launcher.getAppIcon());
-            getDialogPane().setContent(root);
-            getDialogPane().heightProperty().addListener((observable, oldValue, newValue) -> getDialogPane().getScene().getWindow().sizeToScene());
-            getDialogPane().widthProperty().addListener((observable, oldValue, newValue) -> getDialogPane().getScene().getWindow().sizeToScene());
-        } catch (IOException e) {
-            ExceptionDialog.display(e);
-        }
-    }
-
-    private void setupButtons() {
-        ButtonType saveButtonType = new ButtonType("Save", ButtonBar.ButtonData.APPLY);
-        getDialogPane().getButtonTypes().addAll(saveButtonType, ButtonType.CANCEL);
-
-        Button saveButton = (Button) getDialogPane().lookupButton(saveButtonType);
+    @Override
+    protected void createDialog() {
+        Button saveButton = (Button) getDialogPane().lookupButton(SAVE);
         saveButton.setDefaultButton(true);
 
         setResultConverter(buttonType -> {
-            if (buttonType != saveButtonType)
+            if (buttonType != SAVE)
                 return null;
             return controller.getSchematic();
         });

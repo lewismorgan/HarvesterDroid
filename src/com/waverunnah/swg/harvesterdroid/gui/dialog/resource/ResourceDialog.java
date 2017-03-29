@@ -18,61 +18,36 @@
 
 package com.waverunnah.swg.harvesterdroid.gui.dialog.resource;
 
-import com.waverunnah.swg.harvesterdroid.Launcher;
 import com.waverunnah.swg.harvesterdroid.data.resources.GalaxyResource;
-import com.waverunnah.swg.harvesterdroid.gui.dialog.ExceptionDialog;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
+import com.waverunnah.swg.harvesterdroid.gui.dialog.BaseDialog;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
-import javafx.scene.control.Dialog;
-import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 
-import java.io.IOException;
+public class ResourceDialog extends BaseDialog<GalaxyResource> {
 
-public class ResourceDialog extends Dialog<GalaxyResource> {
-
+    private static ButtonType ADD = new ButtonType("Add", ButtonBar.ButtonData.APPLY);
     private static ResourceDialogController controller;
 
     public ResourceDialog() {
-        super();
-        init();
+        super("Add Resource");
     }
 
     public static void setController(ResourceDialogController controller) {
         ResourceDialog.controller = controller;
     }
 
-    private void init() {
-        setupView();
-        setupButtons();
+    @Override
+    protected ButtonType[] getButtonTypes() {
+        return new ButtonType[] {
+                ADD,
+                ButtonType.CANCEL
+        };
     }
 
-    private void setupView() {
-        try {
-            Parent root = FXMLLoader.load(getClass().getResource("resource_dialog.fxml"));
-            if (!(root instanceof VBox))
-                return;
-
-            ((Stage) getDialogPane().getScene().getWindow()).getIcons().add(Launcher.getAppIcon());
-            getDialogPane().setContent(root);
-            getDialogPane().heightProperty().addListener((observable, oldValue, newValue) -> getDialogPane().getScene().getWindow().sizeToScene());
-            getDialogPane().widthProperty().addListener((observable, oldValue, newValue) -> getDialogPane().getScene().getWindow().sizeToScene());
-
-            //vBox.heightProperty().addListener((observable, oldValue, newValue) -> getDialogPane().getScene().getWindow().sizeToScene());
-            //vBox.widthProperty().addListener((observable, oldValue, newValue) -> getDialogPane().getScene().getWindow().sizeToScene());
-        } catch (IOException e) {
-            ExceptionDialog.display(e);
-        }
-    }
-
-    private void setupButtons() {
-        ButtonType saveButtonType = new ButtonType("Add", ButtonBar.ButtonData.APPLY);
-        getDialogPane().getButtonTypes().addAll(saveButtonType, ButtonType.CANCEL);
-
+    @Override
+    protected void createDialog() {
         setResultConverter(buttonType -> {
-            if (buttonType != saveButtonType)
+            if (buttonType != ADD)
                 return null;
             controller.retrieveStats();
             return controller.getGalaxyResource();

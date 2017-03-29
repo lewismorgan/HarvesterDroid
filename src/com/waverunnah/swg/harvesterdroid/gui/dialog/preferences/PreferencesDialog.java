@@ -16,21 +16,26 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.waverunnah.swg.harvesterdroid.gui.dialog.about;
-
+package com.waverunnah.swg.harvesterdroid.gui.dialog.preferences;
 
 import com.waverunnah.swg.harvesterdroid.gui.dialog.BaseDialog;
 import javafx.scene.control.ButtonType;
 
-public class AboutDialog extends BaseDialog {
+import java.util.prefs.Preferences;
 
-    public AboutDialog() {
-        super("About");
+/**
+ * Created by Waverunner on 3/29/2017
+ */
+public class PreferencesDialog extends BaseDialog<Preferences> {
+
+    public PreferencesDialog() {
+        super("Preferences");
     }
 
     @Override
     protected ButtonType[] getButtonTypes() {
         return new ButtonType[]{
+                ButtonType.APPLY,
                 ButtonType.CLOSE
         };
     }

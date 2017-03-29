@@ -76,7 +76,6 @@ public class InventoryControl extends VBox {
     @FXML
     public void addGalaxyResource() {
         ResourceDialog dialog = new ResourceDialog();
-        dialog.setTitle("Add Resource to Inventory");
         Optional<GalaxyResource> result = dialog.showAndWait();
         if (!result.isPresent())
             return;
