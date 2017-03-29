@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.waverunnah.swg.harvesterdroid.utils;
+package com.waverunnah.swg.harvesterdroid.app;
 
 import java.util.ArrayList;
 import java.util.HashMap;

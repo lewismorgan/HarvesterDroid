@@ -21,7 +21,7 @@ package com.waverunnah.swg.harvesterdroid.downloaders;
 import com.waverunnah.swg.harvesterdroid.Launcher;
 import com.waverunnah.swg.harvesterdroid.data.resources.GalaxyResource;
 import com.waverunnah.swg.harvesterdroid.gui.dialog.ExceptionDialog;
-import com.waverunnah.swg.harvesterdroid.utils.Watcher;
+import com.waverunnah.swg.harvesterdroid.app.Watcher;
 
 import java.io.File;
 import java.io.FileInputStream;

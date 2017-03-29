@@ -16,12 +16,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.waverunnah.swg.harvesterdroid.gui.dialog;
+package com.waverunnah.swg.harvesterdroid.gui.dialog.schematic;
 
 import com.waverunnah.swg.harvesterdroid.Launcher;
 import com.waverunnah.swg.harvesterdroid.data.schematics.Schematic;
-import com.waverunnah.swg.harvesterdroid.gui.IntegerTextField;
-import com.waverunnah.swg.harvesterdroid.utils.Attributes;
+import com.waverunnah.swg.harvesterdroid.gui.components.IntegerTextField;
+import com.waverunnah.swg.harvesterdroid.gui.dialog.AddResourceTypeDialog;
+import com.waverunnah.swg.harvesterdroid.app.Attributes;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;

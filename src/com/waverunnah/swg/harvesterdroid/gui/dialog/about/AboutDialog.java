@@ -16,10 +16,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.waverunnah.swg.harvesterdroid.gui.dialog;
+package com.waverunnah.swg.harvesterdroid.gui.dialog.about;
 
 
 import com.waverunnah.swg.harvesterdroid.Launcher;
+import com.waverunnah.swg.harvesterdroid.gui.dialog.ExceptionDialog;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.ButtonType;

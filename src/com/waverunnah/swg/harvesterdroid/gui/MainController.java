@@ -24,7 +24,7 @@ import com.waverunnah.swg.harvesterdroid.data.resources.GalaxyResource;
 import com.waverunnah.swg.harvesterdroid.gui.cells.GalaxyResourceListCell;
 import com.waverunnah.swg.harvesterdroid.gui.components.inventory.InventoryControl;
 import com.waverunnah.swg.harvesterdroid.gui.components.schematics.SchematicsControl;
-import com.waverunnah.swg.harvesterdroid.gui.dialog.AboutDialog;
+import com.waverunnah.swg.harvesterdroid.gui.dialog.about.AboutDialog;
 import com.waverunnah.swg.harvesterdroid.gui.dialog.ExceptionDialog;
 import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;

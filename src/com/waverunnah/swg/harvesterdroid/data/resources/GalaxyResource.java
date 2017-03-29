@@ -18,7 +18,7 @@
 
 package com.waverunnah.swg.harvesterdroid.data.resources;
 
-import com.waverunnah.swg.harvesterdroid.utils.Attributes;
+import com.waverunnah.swg.harvesterdroid.app.Attributes;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleIntegerProperty;

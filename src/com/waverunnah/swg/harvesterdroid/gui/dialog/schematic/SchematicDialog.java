@@ -16,12 +16,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.waverunnah.swg.harvesterdroid.gui.dialog;
+package com.waverunnah.swg.harvesterdroid.gui.dialog.schematic;
 
 import com.waverunnah.swg.harvesterdroid.Launcher;
-import com.waverunnah.swg.harvesterdroid.data.resources.GalaxyResource;
+import com.waverunnah.swg.harvesterdroid.data.schematics.Schematic;
+import com.waverunnah.swg.harvesterdroid.gui.dialog.ExceptionDialog;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
@@ -30,27 +32,33 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class ResourceDialog extends Dialog<GalaxyResource> {
+public class SchematicDialog extends Dialog<Schematic> {
 
-    private static ResourceDialogController controller;
+    private static SchematicDialogController controller;
 
-    public ResourceDialog() {
-        super();
-        init();
+    public SchematicDialog() {
+        this(new Schematic());
     }
 
-    public static void setController(ResourceDialogController controller) {
-        ResourceDialog.controller = controller;
+    public SchematicDialog(Schematic schematic) {
+        init();
+        if (controller != null)
+            controller.readSchematic(schematic);
+    }
+
+    public static void setController(SchematicDialogController controller) {
+        SchematicDialog.controller = controller;
     }
 
     private void init() {
+        setTitle("Schematic Editor");
         setupView();
         setupButtons();
     }
 
     private void setupView() {
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("resource_dialog.fxml"));
+            Parent root = FXMLLoader.load(getClass().getResource("schematic_dialog.fxml"));
             if (!(root instanceof VBox))
                 return;
 
@@ -58,23 +66,22 @@ public class ResourceDialog extends Dialog<GalaxyResource> {
             getDialogPane().setContent(root);
             getDialogPane().heightProperty().addListener((observable, oldValue, newValue) -> getDialogPane().getScene().getWindow().sizeToScene());
             getDialogPane().widthProperty().addListener((observable, oldValue, newValue) -> getDialogPane().getScene().getWindow().sizeToScene());
-
-            //vBox.heightProperty().addListener((observable, oldValue, newValue) -> getDialogPane().getScene().getWindow().sizeToScene());
-            //vBox.widthProperty().addListener((observable, oldValue, newValue) -> getDialogPane().getScene().getWindow().sizeToScene());
         } catch (IOException e) {
             ExceptionDialog.display(e);
         }
     }
 
     private void setupButtons() {
-        ButtonType saveButtonType = new ButtonType("Add", ButtonBar.ButtonData.APPLY);
+        ButtonType saveButtonType = new ButtonType("Save", ButtonBar.ButtonData.APPLY);
         getDialogPane().getButtonTypes().addAll(saveButtonType, ButtonType.CANCEL);
+
+        Button saveButton = (Button) getDialogPane().lookupButton(saveButtonType);
+        saveButton.setDefaultButton(true);
 
         setResultConverter(buttonType -> {
             if (buttonType != saveButtonType)
                 return null;
-            controller.retrieveStats();
-            return controller.getGalaxyResource();
+            return controller.getSchematic();
         });
     }
 }

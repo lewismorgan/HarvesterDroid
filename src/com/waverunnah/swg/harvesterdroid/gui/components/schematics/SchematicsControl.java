@@ -19,7 +19,7 @@
 package com.waverunnah.swg.harvesterdroid.gui.components.schematics;
 
 import com.waverunnah.swg.harvesterdroid.data.schematics.Schematic;
-import com.waverunnah.swg.harvesterdroid.gui.dialog.SchematicDialog;
+import com.waverunnah.swg.harvesterdroid.gui.dialog.schematic.SchematicDialog;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ListProperty;
