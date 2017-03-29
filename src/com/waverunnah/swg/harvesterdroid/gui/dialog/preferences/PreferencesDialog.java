@@ -21,15 +21,15 @@ package com.waverunnah.swg.harvesterdroid.gui.dialog.preferences;
 import com.waverunnah.swg.harvesterdroid.gui.dialog.BaseDialog;
 import javafx.scene.control.ButtonType;
 
-import java.util.prefs.Preferences;
+import java.util.Properties;
 
 /**
  * Created by Waverunner on 3/29/2017
  */
-public class PreferencesDialog extends BaseDialog<Preferences> {
+public class PreferencesDialog extends BaseDialog<Properties> {
 
     public PreferencesDialog() {
-        super("Preferences");
+        super("HarvesterDroid Preferences");
     }
 
     @Override
@@ -38,5 +38,15 @@ public class PreferencesDialog extends BaseDialog<Preferences> {
                 ButtonType.APPLY,
                 ButtonType.CLOSE
         };
+    }
+
+    @Override
+    protected void createDialog() {
+        setResultConverter(buttonType -> {
+            if (buttonType != ButtonType.APPLY)
+                return null;
+
+            return new Properties();
+        });
     }
 }

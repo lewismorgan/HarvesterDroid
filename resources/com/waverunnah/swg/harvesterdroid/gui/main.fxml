@@ -42,7 +42,7 @@
           <Menu mnemonicParsing="false" text="File">
             <items>
                   <MenuItem mnemonicParsing="false" onAction="#save" text="Save" />
-                  <MenuItem mnemonicParsing="false" text="Preferences" />
+                  <MenuItem mnemonicParsing="false" onAction="#onPreferencesMenuItem" text="Preferences" />
                   <SeparatorMenuItem mnemonicParsing="false" />
               <MenuItem mnemonicParsing="false" onAction="#close" text="Quit" />
             </items>

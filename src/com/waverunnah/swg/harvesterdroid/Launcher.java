@@ -19,10 +19,10 @@
 package com.waverunnah.swg.harvesterdroid;
 
 import com.waverunnah.swg.harvesterdroid.app.HarvesterDroid;
+import com.waverunnah.swg.harvesterdroid.app.Watcher;
 import com.waverunnah.swg.harvesterdroid.downloaders.Downloader;
 import com.waverunnah.swg.harvesterdroid.downloaders.GalaxyHarvesterDownloader;
 import com.waverunnah.swg.harvesterdroid.gui.dialog.ExceptionDialog;
-import com.waverunnah.swg.harvesterdroid.app.Watcher;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -40,6 +40,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Properties;
 
 public class Launcher extends Application {
     private static final boolean IGNORE_UNCAUGHT_EXCEPTIONS = true;
@@ -89,6 +90,8 @@ public class Launcher extends Application {
 
         Downloader downloader = new GalaxyHarvesterDownloader();
 
+        Properties properties = new Properties();
+        properties.load(getClass().getResourceAsStream("/harvesterdroid.properties"));
         // TODO Decide what downloader to use based on preferences
         app = new HarvesterDroid(XML_SCHEMATICS, XML_INVENTORY, downloader);
 
