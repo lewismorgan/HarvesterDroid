@@ -24,7 +24,6 @@ import com.waverunnah.swg.harvesterdroid.data.resources.GalaxyResource;
 import com.waverunnah.swg.harvesterdroid.gui.cells.GalaxyResourceListCell;
 import com.waverunnah.swg.harvesterdroid.gui.components.inventory.InventoryControl;
 import com.waverunnah.swg.harvesterdroid.gui.components.schematics.SchematicsControl;
-import com.waverunnah.swg.harvesterdroid.gui.dialog.ExceptionDialog;
 import com.waverunnah.swg.harvesterdroid.gui.dialog.about.AboutDialog;
 import com.waverunnah.swg.harvesterdroid.gui.dialog.preferences.PreferencesDialog;
 import javafx.beans.binding.Bindings;
@@ -36,8 +35,6 @@ import javafx.scene.input.MouseButton;
 import javafx.stage.WindowEvent;
 import org.controlsfx.control.StatusBar;
 
-import javax.xml.transform.TransformerException;
-import java.io.IOException;
 import java.net.URL;
 import java.util.Optional;
 import java.util.Properties;
@@ -92,11 +89,7 @@ public class MainController implements Initializable {
     }
 
     public void save() {
-        try {
-            app.save();
-        } catch (IOException | TransformerException e) {
-            new ExceptionDialog(e).show();
-        }
+        app.save();
     }
 
     public void close() {
@@ -111,7 +104,9 @@ public class MainController implements Initializable {
         PreferencesDialog dialog = new PreferencesDialog();
         Optional<Properties> result = dialog.showAndWait();
         if (result.isPresent()) {
-
+            Properties properties = result.get();
+            app.setProperties(properties);
+            app.updateFromProperties();
         }
     }
 }

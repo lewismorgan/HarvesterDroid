@@ -33,9 +33,10 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
-import javax.xml.transform.TransformerException;
 import java.io.File;
-import java.io.IOException;
+import java.io.FileInputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -43,10 +44,10 @@ import java.util.Optional;
 import java.util.Properties;
 
 public class Launcher extends Application {
-    private static final boolean IGNORE_UNCAUGHT_EXCEPTIONS = true;
+    private static boolean DEBUG = false;
     // TODO Finish refactoring business logic into HarvesterDroid
     private static final Map<String, List<String>> resourceGroups = new HashMap<>();
-    public static String ROOT_DIR = System.getProperty("user.home").replace("\\", "/") + "/.harvesterdroid";
+    public static String ROOT_DIR = System.getProperty("user.home") + "/.harvesterdroid";
     private static String XML_SCHEMATICS = ROOT_DIR + "/schematics.xml";
     private static String XML_INVENTORY = ROOT_DIR + "/inventory.xml";
     private static Launcher instance;
@@ -55,7 +56,7 @@ public class Launcher extends Application {
 
     public static void main(String[] args) {
         Thread.setDefaultUncaughtExceptionHandler((t, e) -> {
-            if (Platform.isFxApplicationThread() && !IGNORE_UNCAUGHT_EXCEPTIONS) {
+            if (Platform.isFxApplicationThread() && !DEBUG) {
                 ExceptionDialog exceptionDialog = new ExceptionDialog(e);
                 exceptionDialog.show();
             } else {
@@ -91,9 +92,16 @@ public class Launcher extends Application {
         Downloader downloader = new GalaxyHarvesterDownloader();
 
         Properties properties = new Properties();
-        properties.load(getClass().getResourceAsStream("/harvesterdroid.properties"));
+        if (Files.exists(Paths.get(ROOT_DIR + "/harvesterdroid.properties")))
+            properties.load(new FileInputStream(Paths.get(ROOT_DIR + "/harvesterdroid.properties").toFile()));
+        else properties.load(getClass().getResourceAsStream("/harvesterdroid.properties"));
+
+        DEBUG = Boolean.valueOf((String) properties.getOrDefault("debug", "false"));
+
         // TODO Decide what downloader to use based on preferences
         app = new HarvesterDroid(XML_SCHEMATICS, XML_INVENTORY, downloader);
+        app.setProperties(properties);
+        app.updateFromProperties();
 
         if (!new File(ROOT_DIR).exists())
             new File(ROOT_DIR).mkdir();
@@ -113,26 +121,43 @@ public class Launcher extends Application {
         primaryStage.setTitle("Harvester Droid");
         primaryStage.setScene(new Scene(root));
         primaryStage.getIcons().add(getAppIcon());
+
+        Properties properties = app.getProperties();
+        primaryStage.setFullScreen(Boolean.valueOf((String) properties.getOrDefault("fullscreen", "false")));
+        primaryStage.setWidth(Double.parseDouble((String) properties.getOrDefault("width", "800")));
+        primaryStage.setHeight(Double.parseDouble((String) properties.getOrDefault("height", "600")));
+
         primaryStage.show();
 
-        primaryStage.setOnCloseRequest(e -> close());
+        primaryStage.setOnCloseRequest(e -> {
+            if (Boolean.valueOf((String) app.getProperties().getOrDefault("save.nag", "true")))
+                showSaveConfirmation();
+            else if (Boolean.valueOf((String) app.getProperties().getOrDefault("autosave", "true")))
+                app.save();
+            close();
+        });
+    }
+
+    private void showSaveConfirmation() {
+        Alert save = new Alert(Alert.AlertType.INFORMATION);
+        save.setTitle("Harvester Droid");
+        save.setContentText("Would you like to save your changes?");
+        save.setHeaderText(null);
+        save.getButtonTypes().setAll(ButtonType.NO, ButtonType.YES);
+
+        Optional<ButtonType> result = save.showAndWait();
+        if (result.isPresent() && result.get().equals(ButtonType.YES)) {
+            app.save();
+        }
     }
 
     private void close() {
         Watcher.shutdown();
-        try {
-            Alert save = new Alert(Alert.AlertType.INFORMATION);
-            save.setTitle("Harvester Droid");
-            save.setContentText("Would you like to save your changes?");
-            save.setHeaderText(null);
-            save.getButtonTypes().setAll(ButtonType.NO, ButtonType.YES);
-
-            Optional<ButtonType> result = save.showAndWait();
-            if (result.isPresent() && result.get().equals(ButtonType.YES))
-                app.save();
-        } catch (IOException | TransformerException e1) {
-            e1.printStackTrace();
-        }
+        Properties properties = app.getProperties();
+        properties.setProperty("height", String.valueOf(stage.getHeight()));
+        properties.setProperty("width", String.valueOf(stage.getWidth()));
+        properties.setProperty("fullscreen", String.valueOf(stage.isFullScreen()));
+        app.shutdown();
     }
 
     private void updateLoadingProgress(String status, double value) {
