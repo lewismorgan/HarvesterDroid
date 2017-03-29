@@ -25,22 +25,22 @@ import org.w3c.dom.Document;
 import javax.xml.parsers.DocumentBuilder;
 
 public abstract class ResourceXml extends BaseXml {
-	private GalaxyResource galaxyResource;
+    private GalaxyResource galaxyResource;
 
-	public ResourceXml(DocumentBuilder documentBuilder) {
-		super(documentBuilder);
-	}
+    public ResourceXml(DocumentBuilder documentBuilder) {
+        super(documentBuilder);
+    }
 
-	public GalaxyResource getGalaxyResource() {
-		return galaxyResource;
-	}
+    public GalaxyResource getGalaxyResource() {
+        return galaxyResource;
+    }
 
-	@Override
-	protected final void write(Document document) {
-		throw new UnsupportedOperationException();
-	}
+    protected void setGalaxyResource(GalaxyResource galaxyResource) {
+        this.galaxyResource = galaxyResource;
+    }
 
-	protected void setGalaxyResource(GalaxyResource galaxyResource) {
-		this.galaxyResource = galaxyResource;
-	}
+    @Override
+    protected final void write(Document document) {
+        throw new UnsupportedOperationException();
+    }
 }

@@ -33,54 +33,54 @@ import java.io.IOException;
 
 public class SchematicDialog extends Dialog<Schematic> {
 
-	private static SchematicDialogController controller;
+    private static SchematicDialogController controller;
 
-	public SchematicDialog() {
-		this(new Schematic());
-	}
+    public SchematicDialog() {
+        this(new Schematic());
+    }
 
-	public SchematicDialog(Schematic schematic) {
-		init();
-		if (controller != null)
-			controller.readSchematic(schematic);
-	}
+    public SchematicDialog(Schematic schematic) {
+        init();
+        if (controller != null)
+            controller.readSchematic(schematic);
+    }
 
-	private void init() {
-		setTitle("Schematic Editor");
-		setupView();
-		setupButtons();
-	}
+    public static void setController(SchematicDialogController controller) {
+        SchematicDialog.controller = controller;
+    }
 
-	private void setupView() {
-		try {
-			Parent root = FXMLLoader.load(getClass().getResource("schematic_dialog.fxml"));
-			if (!(root instanceof VBox))
-				return;
+    private void init() {
+        setTitle("Schematic Editor");
+        setupView();
+        setupButtons();
+    }
 
-			((Stage)getDialogPane().getScene().getWindow()).getIcons().add(Launcher.getAppIcon());
-			getDialogPane().setContent(root);
-			getDialogPane().heightProperty().addListener((observable, oldValue, newValue) -> getDialogPane().getScene().getWindow().sizeToScene());
-			getDialogPane().widthProperty().addListener((observable, oldValue, newValue) -> getDialogPane().getScene().getWindow().sizeToScene());
-		} catch (IOException e) {
-			ExceptionDialog.display(e);
-		}
-	}
+    private void setupView() {
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("schematic_dialog.fxml"));
+            if (!(root instanceof VBox))
+                return;
 
-	private void setupButtons() {
-		ButtonType saveButtonType = new ButtonType("Save", ButtonBar.ButtonData.APPLY);
-		getDialogPane().getButtonTypes().addAll(saveButtonType, ButtonType.CANCEL);
+            ((Stage) getDialogPane().getScene().getWindow()).getIcons().add(Launcher.getAppIcon());
+            getDialogPane().setContent(root);
+            getDialogPane().heightProperty().addListener((observable, oldValue, newValue) -> getDialogPane().getScene().getWindow().sizeToScene());
+            getDialogPane().widthProperty().addListener((observable, oldValue, newValue) -> getDialogPane().getScene().getWindow().sizeToScene());
+        } catch (IOException e) {
+            ExceptionDialog.display(e);
+        }
+    }
 
-		Button saveButton = (Button) getDialogPane().lookupButton(saveButtonType);
-		saveButton.setDefaultButton(true);
+    private void setupButtons() {
+        ButtonType saveButtonType = new ButtonType("Save", ButtonBar.ButtonData.APPLY);
+        getDialogPane().getButtonTypes().addAll(saveButtonType, ButtonType.CANCEL);
 
-		setResultConverter(buttonType -> {
-			if (buttonType != saveButtonType)
-				return null;
-			return controller.getSchematic();
-		});
-	}
+        Button saveButton = (Button) getDialogPane().lookupButton(saveButtonType);
+        saveButton.setDefaultButton(true);
 
-	public static void setController(SchematicDialogController controller) {
-		SchematicDialog.controller = controller;
-	}
+        setResultConverter(buttonType -> {
+            if (buttonType != saveButtonType)
+                return null;
+            return controller.getSchematic();
+        });
+    }
 }

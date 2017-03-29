@@ -32,48 +32,48 @@ import java.util.Collection;
 import java.util.List;
 
 public class InventoryXml extends BaseXml {
-	public List<String> inventory = new ArrayList<>();
+    public List<String> inventory = new ArrayList<>();
 
-	public InventoryXml(DocumentBuilder documentBuilder) {
-		super(documentBuilder);
-	}
+    public InventoryXml(DocumentBuilder documentBuilder) {
+        super(documentBuilder);
+    }
 
-	@Override
-	protected void read(Element root) throws IOException, ParserConfigurationException, SAXException {
-		if (!root.getNodeName().equals("inventory"))
-			return;
+    @Override
+    protected void read(Element root) throws IOException, ParserConfigurationException, SAXException {
+        if (!root.getNodeName().equals("inventory"))
+            return;
 
-		processElement(root, node -> {
-			if (!node.getNodeName().equals("resource") || node.getAttributes().getLength() != 1)
-				return;
+        processElement(root, node -> {
+            if (!node.getNodeName().equals("resource") || node.getAttributes().getLength() != 1)
+                return;
 
-			Node name = node.getAttributes().getNamedItem("name");
-			if (name == null || name.getTextContent().isEmpty())
-				return;
+            Node name = node.getAttributes().getNamedItem("name");
+            if (name == null || name.getTextContent().isEmpty())
+                return;
 
-			inventory.add(name.getTextContent());
-		});
-	}
+            inventory.add(name.getTextContent());
+        });
+    }
 
-	@Override
-	protected void write(Document document) {
-		Element root = document.createElement("inventory");
+    @Override
+    protected void write(Document document) {
+        Element root = document.createElement("inventory");
 
-		inventory.forEach(resource -> {
-			Element node = document.createElement("resource");
-			node.setAttribute("name", resource);
-			root.appendChild(node);
-		});
+        inventory.forEach(resource -> {
+            Element node = document.createElement("resource");
+            node.setAttribute("name", resource);
+            root.appendChild(node);
+        });
 
-		document.appendChild(root);
-	}
+        document.appendChild(root);
+    }
 
-	public List<String> getInventory() {
-		return inventory;
-	}
+    public List<String> getInventory() {
+        return inventory;
+    }
 
-	public void setInventory(Collection<String> newInventory) {
-		inventory.clear();
-		inventory.addAll(newInventory);
-	}
+    public void setInventory(Collection<String> newInventory) {
+        inventory.clear();
+        inventory.addAll(newInventory);
+    }
 }

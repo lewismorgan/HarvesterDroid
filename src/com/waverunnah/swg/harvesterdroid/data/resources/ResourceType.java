@@ -70,15 +70,15 @@ public class ResourceType {
         return minMaxMap;
     }
 
+    public void setMinMaxMap(Map<String, Integer> minMaxMap) {
+        this.minMaxMap = minMaxMap;
+    }
+
     public boolean isRecylced() {
         return recylced;
     }
 
     public void setRecylced(boolean recylced) {
         this.recylced = recylced;
-    }
-
-    public void setMinMaxMap(Map<String, Integer> minMaxMap) {
-        this.minMaxMap = minMaxMap;
     }
 }

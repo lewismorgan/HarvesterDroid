@@ -77,7 +77,7 @@ public class AddResourceTypeDialog extends Dialog<List<String>> {
     }
 
     private void setupView() {
-        ((Stage)getDialogPane().getScene().getWindow()).getIcons().add(Launcher.getAppIcon());
+        ((Stage) getDialogPane().getScene().getWindow()).getIcons().add(Launcher.getAppIcon());
 
         getDialogPane().setContent(createView());
         getDialogPane().heightProperty().addListener((observable, oldValue, newValue) -> getDialogPane().getScene().getWindow().sizeToScene());
@@ -104,7 +104,8 @@ public class AddResourceTypeDialog extends Dialog<List<String>> {
                             if (!selectedCache.contains(added))
                                 selectedCache.add(added);
                         }
-                    } if (c.getRemovedSize() > 0) {
+                    }
+                    if (c.getRemovedSize() > 0) {
                         for (String removed : c.getRemoved()) {
                             if (selectedCache.contains(removed)) {
                                 selectedCache.remove(removed);
@@ -117,14 +118,14 @@ public class AddResourceTypeDialog extends Dialog<List<String>> {
 
         TextField searchTermField = new TextField();
         searchTermField.setPromptText("Enter a resource type");
-        searchTermField.setPadding(new Insets(5,5,5,5));
+        searchTermField.setPadding(new Insets(5, 5, 5, 5));
         searchTermField.textProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue == null)
                 return;
 
             if (!newValue.isEmpty())
                 filteredList.setPredicate(str -> {
-                    if(str == null) return false;
+                    if (str == null) return false;
 
                     final int length = newValue.length();
                     if (length == 0)

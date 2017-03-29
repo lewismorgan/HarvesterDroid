@@ -32,49 +32,49 @@ import java.io.IOException;
 
 public class ResourceDialog extends Dialog<GalaxyResource> {
 
-	private static ResourceDialogController controller;
+    private static ResourceDialogController controller;
 
-	public ResourceDialog() {
-		super();
-		init();
-	}
+    public ResourceDialog() {
+        super();
+        init();
+    }
 
-	private void init() {
-		setupView();
-		setupButtons();
-	}
+    public static void setController(ResourceDialogController controller) {
+        ResourceDialog.controller = controller;
+    }
 
-	private void setupView() {
-		try {
-			Parent root = FXMLLoader.load(getClass().getResource("resource_dialog.fxml"));
-			if (!(root instanceof VBox))
-				return;
+    private void init() {
+        setupView();
+        setupButtons();
+    }
 
-            ((Stage)getDialogPane().getScene().getWindow()).getIcons().add(Launcher.getAppIcon());
-			getDialogPane().setContent(root);
-			getDialogPane().heightProperty().addListener((observable, oldValue, newValue) -> getDialogPane().getScene().getWindow().sizeToScene());
-			getDialogPane().widthProperty().addListener((observable, oldValue, newValue) -> getDialogPane().getScene().getWindow().sizeToScene());
+    private void setupView() {
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("resource_dialog.fxml"));
+            if (!(root instanceof VBox))
+                return;
 
-			//vBox.heightProperty().addListener((observable, oldValue, newValue) -> getDialogPane().getScene().getWindow().sizeToScene());
-			//vBox.widthProperty().addListener((observable, oldValue, newValue) -> getDialogPane().getScene().getWindow().sizeToScene());
-		} catch (IOException e) {
-			ExceptionDialog.display(e);
-		}
-	}
+            ((Stage) getDialogPane().getScene().getWindow()).getIcons().add(Launcher.getAppIcon());
+            getDialogPane().setContent(root);
+            getDialogPane().heightProperty().addListener((observable, oldValue, newValue) -> getDialogPane().getScene().getWindow().sizeToScene());
+            getDialogPane().widthProperty().addListener((observable, oldValue, newValue) -> getDialogPane().getScene().getWindow().sizeToScene());
 
-	private void setupButtons() {
-		ButtonType saveButtonType = new ButtonType("Add", ButtonBar.ButtonData.APPLY);
-		getDialogPane().getButtonTypes().addAll(saveButtonType, ButtonType.CANCEL);
+            //vBox.heightProperty().addListener((observable, oldValue, newValue) -> getDialogPane().getScene().getWindow().sizeToScene());
+            //vBox.widthProperty().addListener((observable, oldValue, newValue) -> getDialogPane().getScene().getWindow().sizeToScene());
+        } catch (IOException e) {
+            ExceptionDialog.display(e);
+        }
+    }
 
-		setResultConverter(buttonType -> {
-			if (buttonType != saveButtonType)
-				return null;
-			controller.retrieveStats();
-			return controller.getGalaxyResource();
-		});
-	}
+    private void setupButtons() {
+        ButtonType saveButtonType = new ButtonType("Add", ButtonBar.ButtonData.APPLY);
+        getDialogPane().getButtonTypes().addAll(saveButtonType, ButtonType.CANCEL);
 
-	public static void setController(ResourceDialogController controller) {
-		ResourceDialog.controller = controller;
-	}
+        setResultConverter(buttonType -> {
+            if (buttonType != saveButtonType)
+                return null;
+            controller.retrieveStats();
+            return controller.getGalaxyResource();
+        });
+    }
 }

@@ -41,67 +41,66 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class MainController implements Initializable {
-	private HarvesterDroid app;
+    @FXML
+    InventoryControl inventoryControl;
+    @FXML
+    SchematicsControl schematicsControl;
+    @FXML
+    TitledPane bestResourcesPane;
+    @FXML
+    ListView<GalaxyResource> bestResourcesListView;
+    @FXML
+    StatusBar statusBar;
+    private HarvesterDroid app;
 
-	@FXML
-	InventoryControl inventoryControl;
-	@FXML
-	SchematicsControl schematicsControl;
-	@FXML
-	TitledPane bestResourcesPane;
-	@FXML
-	ListView<GalaxyResource> bestResourcesListView;
-	@FXML
-	StatusBar statusBar;
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        app = Launcher.getApp();
+        initResources();
+        initInventory();
+        initSchematics();
+    }
 
-	@Override
-	public void initialize(URL location, ResourceBundle resources) {
-		app = Launcher.getApp();
-		initResources();
-		initInventory();
-		initSchematics();
-	}
+    private void initInventory() {
+        inventoryControl.setInventoryList(app.getFilteredInventory());
+        inventoryControl.disableInventoryItemsProperty().bind(app.inventoryProperty().emptyProperty());
+    }
 
-	private void initInventory() {
-		inventoryControl.setInventoryList(app.getFilteredInventory());
-		inventoryControl.disableInventoryItemsProperty().bind(app.inventoryProperty().emptyProperty());
-	}
-
-	private void initResources() {
-		bestResourcesPane.textProperty().bind(Bindings.concat("Best Resources as of ").concat(app.currentResourceTimestampProperty()));
-		bestResourcesListView.disableProperty().bind(Bindings.isEmpty(app.getFilteredResources()));
-		bestResourcesListView.setCellFactory(param -> new GalaxyResourceListCell());
-		bestResourcesListView.setItems(app.getFilteredResources());
-		bestResourcesListView.addEventHandler(javafx.scene.input.MouseEvent.MOUSE_CLICKED, event -> {
-		    if (event.getButton() == MouseButton.PRIMARY) {
-		        if (event.getClickCount() >= 2) {
+    private void initResources() {
+        bestResourcesPane.textProperty().bind(Bindings.concat("Best Resources as of ").concat(app.currentResourceTimestampProperty()));
+        bestResourcesListView.disableProperty().bind(Bindings.isEmpty(app.getFilteredResources()));
+        bestResourcesListView.setCellFactory(param -> new GalaxyResourceListCell());
+        bestResourcesListView.setItems(app.getFilteredResources());
+        bestResourcesListView.addEventHandler(javafx.scene.input.MouseEvent.MOUSE_CLICKED, event -> {
+            if (event.getButton() == MouseButton.PRIMARY) {
+                if (event.getClickCount() >= 2) {
                     GalaxyResource selectedItem = bestResourcesListView.getSelectionModel().getSelectedItem();
                     if (selectedItem != null && !app.getInventory().contains(selectedItem))
                         app.getInventory().add(selectedItem);
                 }
             }
         });
-	}
+    }
 
-	private void initSchematics() {
-		schematicsControl.focusedSchematicProperty().bindBidirectional(app.activeSchematicProperty());
-		schematicsControl.itemsProperty().bind(app.schematicsProperty());
-		schematicsControl.disableSchematicsViewProperty().bind(app.schematicsProperty().emptyProperty());
-	}
+    private void initSchematics() {
+        schematicsControl.focusedSchematicProperty().bindBidirectional(app.activeSchematicProperty());
+        schematicsControl.itemsProperty().bind(app.schematicsProperty());
+        schematicsControl.disableSchematicsViewProperty().bind(app.schematicsProperty().emptyProperty());
+    }
 
-	public void save() {
-		try {
-			app.save();
-		} catch (IOException | TransformerException e) {
-			new ExceptionDialog(e).show();
-		}
-	}
+    public void save() {
+        try {
+            app.save();
+        } catch (IOException | TransformerException e) {
+            new ExceptionDialog(e).show();
+        }
+    }
 
-	public void close() {
-		Launcher.getStage().fireEvent(new WindowEvent(Launcher.getStage(), WindowEvent.WINDOW_CLOSE_REQUEST));
-	}
+    public void close() {
+        Launcher.getStage().fireEvent(new WindowEvent(Launcher.getStage(), WindowEvent.WINDOW_CLOSE_REQUEST));
+    }
 
-	public void about() {
-		new AboutDialog().show();
-	}
+    public void about() {
+        new AboutDialog().show();
+    }
 }

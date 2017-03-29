@@ -41,30 +41,30 @@ import java.util.Optional;
  * Created by Waverunner on 3/20/2017
  */
 public class SchematicsControl extends VBox {
-	@FXML
-	TreeView<SchematicsTreeItem> schematicsTreeView;
-	@FXML
-	Button removeSchematicButton;
-	@FXML
-	Button editSchematicButton;
+    @FXML
+    TreeView<SchematicsTreeItem> schematicsTreeView;
+    @FXML
+    Button removeSchematicButton;
+    @FXML
+    Button editSchematicButton;
 
-	private ListProperty<Schematic> items = new SimpleListProperty<>();
-	private ObjectProperty<Schematic> focusedSchematic = new SimpleObjectProperty<>();
+    private ListProperty<Schematic> items = new SimpleListProperty<>();
+    private ObjectProperty<Schematic> focusedSchematic = new SimpleObjectProperty<>();
 
-	public SchematicsControl() {
-		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("schematics_control.fxml"));
-		fxmlLoader.setRoot(this);
-		fxmlLoader.setController(this);
-		try {
-			fxmlLoader.load();
-		} catch (IOException exception) {
-			throw new RuntimeException(exception);
-		}
+    public SchematicsControl() {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("schematics_control.fxml"));
+        fxmlLoader.setRoot(this);
+        fxmlLoader.setController(this);
+        try {
+            fxmlLoader.load();
+        } catch (IOException exception) {
+            throw new RuntimeException(exception);
+        }
 
-		setup();
-	}
+        setup();
+    }
 
-	private void createListeners() {
+    private void createListeners() {
         items.addListener((ListChangeListener<Schematic>) c -> {
             while (c.next()) {
                 if (c.getAddedSize() > 0) {
@@ -81,88 +81,70 @@ public class SchematicsControl extends VBox {
                 setFocusedSchematic(newValue);
             else setFocusedSchematic(null);
         });
-	}
+    }
 
     private void setup() {
-		createListeners();
+        createListeners();
 
-		removeSchematicButton.disableProperty().bind(Bindings.isNull(focusedSchematic));
-		editSchematicButton.disableProperty().bind(Bindings.isNull(focusedSchematic));
+        removeSchematicButton.disableProperty().bind(Bindings.isNull(focusedSchematic));
+        editSchematicButton.disableProperty().bind(Bindings.isNull(focusedSchematic));
 
-		schematicsTreeView.setRoot(createSchematicsTreeItem("root"));
-		schematicsTreeView.disableProperty().bind(Bindings.isEmpty(items));
-		schematicsTreeView.setCellFactory(param -> new SchematicsTreeCellFactory());
-	}
+        schematicsTreeView.setRoot(createSchematicsTreeItem("root"));
+        schematicsTreeView.disableProperty().bind(Bindings.isEmpty(items));
+        schematicsTreeView.setCellFactory(param -> new SchematicsTreeCellFactory());
+    }
 
-	@FXML
-	public void editSelectedSchematic() {
-	    Schematic selection = getFocusedSchematic();
-		if (selection == null)
-			displaySchematicDialog();
-		else
-			displaySchematicDialog(selection);
-	}
+    @FXML
+    public void editSelectedSchematic() {
+        Schematic selection = getFocusedSchematic();
+        if (selection == null)
+            displaySchematicDialog();
+        else
+            displaySchematicDialog(selection);
+    }
 
-	@FXML
-	public void displaySchematicDialog() {
-		SchematicDialog dialog = new SchematicDialog();
-		dialog.setTitle("Create Schematic");
-		Optional<Schematic> result = dialog.showAndWait();
-		if (!result.isPresent())
-			return;
-
-		Schematic schematic = result.get();
-		if (!schematic.isIncomplete()) {
-			items.add(schematic);
-			schematicsTreeView.getSelectionModel().clearSelection();
-			schematicsTreeView.getSelectionModel().selectLast();
-		}
-	}
-
-    private void setFocusedSchematic(TreeItem<SchematicsTreeItem> selected) {
-        if (selected == null) {
-            focusedSchematic.set(null);
+    @FXML
+    public void displaySchematicDialog() {
+        SchematicDialog dialog = new SchematicDialog();
+        dialog.setTitle("Create Schematic");
+        Optional<Schematic> result = dialog.showAndWait();
+        if (!result.isPresent())
             return;
+
+        Schematic schematic = result.get();
+        if (!schematic.isIncomplete()) {
+            items.add(schematic);
+            schematicsTreeView.getSelectionModel().clearSelection();
+            schematicsTreeView.getSelectionModel().selectLast();
         }
-
-	    Schematic toSelect = null;
-
-        for (Schematic item : items) {
-            if (item.getIdentifier().equals(selected.getValue().getIdentifier())) {
-                toSelect = item;
-                break;
-            }
-        }
-
-        focusedSchematic.set(toSelect);
     }
 
     public void displaySchematicDialog(Schematic schematic) {
-		SchematicDialog dialog = new SchematicDialog(schematic);
-		dialog.setTitle("Edit Schematic");
-		Optional<Schematic> result = dialog.showAndWait();
-		if (!result.isPresent())
-			return;
+        SchematicDialog dialog = new SchematicDialog(schematic);
+        dialog.setTitle("Edit Schematic");
+        Optional<Schematic> result = dialog.showAndWait();
+        if (!result.isPresent())
+            return;
 
-		schematic = result.get();
+        schematic = result.get();
 
-		updateTreeView();
+        updateTreeView();
 
-		schematicsTreeView.getSelectionModel().select(getSchematicsTreeItem(schematicsTreeView.getRoot(), schematic.getIdentifier()));
+        schematicsTreeView.getSelectionModel().select(getSchematicsTreeItem(schematicsTreeView.getRoot(), schematic.getIdentifier()));
     }
 
-	@FXML
-	public void removeSelectedSchematic() {
-		Schematic selectedSchematic = getFocusedSchematic();
-		if (selectedSchematic == null || !items.contains(selectedSchematic))
-			return;
+    @FXML
+    public void removeSelectedSchematic() {
+        Schematic selectedSchematic = getFocusedSchematic();
+        if (selectedSchematic == null || !items.contains(selectedSchematic))
+            return;
 
-		items.remove(selectedSchematic);
-		schematicsTreeView.getSelectionModel().clearSelection();
-	}
+        items.remove(selectedSchematic);
+        schematicsTreeView.getSelectionModel().clearSelection();
+    }
 
-	private void updateTreeView() {
-	    schematicsTreeView.getRoot().getChildren().clear();
+    private void updateTreeView() {
+        schematicsTreeView.getRoot().getChildren().clear();
 
         for (Schematic item : items) {
             createSchematicsTree(item);
@@ -230,8 +212,8 @@ public class SchematicsControl extends VBox {
     }
 
     private int getParentGroupIndex(TreeItem<SchematicsTreeItem> start, String[] group, int index) {
-	    if (index >= group.length)
-	        return index - 1;
+        if (index >= group.length)
+            return index - 1;
         for (TreeItem<SchematicsTreeItem> treeItem : start.getChildren()) {
             if (treeItem.getValue().getName().equals(group[index])) {
                 if (treeItem.getValue().isGroup()) {
@@ -245,8 +227,8 @@ public class SchematicsControl extends VBox {
     }
 
     private TreeItem<SchematicsTreeItem> getParentGroupTreeItem(TreeItem<SchematicsTreeItem> start, String[] group, int index) {
-	    if (index >= group.length)
-	        return start;
+        if (index >= group.length)
+            return start;
         for (TreeItem<SchematicsTreeItem> treeItem : start.getChildren()) {
             if (treeItem.getValue().getName().equals(group[index])) {
                 if (treeItem.getValue().isGroup()) {
@@ -268,7 +250,7 @@ public class SchematicsControl extends VBox {
     }
 
     private TreeItem<SchematicsTreeItem> createGroupTreeItem(String[] groups, int index) {
-        if (index == (groups.length -1))
+        if (index == (groups.length - 1))
             return createSchematicsTreeItem(groups[index]);
 
         TreeItem<SchematicsTreeItem> rootGroup = createSchematicsTreeItem(groups[index]);
@@ -279,9 +261,9 @@ public class SchematicsControl extends VBox {
     }
 
     private void removeTreeItem(Schematic schematic) {
-	    String[] group = schematic.getGroup().split(":");
+        String[] group = schematic.getGroup().split(":");
 
-	    TreeItem<SchematicsTreeItem> groupRoot = getSubGroupTree(schematicsTreeView.getRoot(), group, 0);
+        TreeItem<SchematicsTreeItem> groupRoot = getSubGroupTree(schematicsTreeView.getRoot(), group, 0);
         if (groupRoot == null)
             return;
 
@@ -345,12 +327,30 @@ public class SchematicsControl extends VBox {
         return focusedSchematic.get();
     }
 
+    private void setFocusedSchematic(TreeItem<SchematicsTreeItem> selected) {
+        if (selected == null) {
+            focusedSchematic.set(null);
+            return;
+        }
+
+        Schematic toSelect = null;
+
+        for (Schematic item : items) {
+            if (item.getIdentifier().equals(selected.getValue().getIdentifier())) {
+                toSelect = item;
+                break;
+            }
+        }
+
+        focusedSchematic.set(toSelect);
+    }
+
     public ObjectProperty<Schematic> focusedSchematicProperty() {
         return focusedSchematic;
     }
 
     public BooleanProperty disableSchematicsViewProperty() {
-		return schematicsTreeView.disableProperty();
-	}
+        return schematicsTreeView.disableProperty();
+    }
 
 }

@@ -39,26 +39,26 @@ import java.util.Map;
 
 /**
  * Abstract class used by HarvesterDroid in the downloading of required data to function
- *
+ * <p>
  * This base class should have no knowledge of "how" the data is stored, only that it can be downloaded
  * from some location and turned into something usable for HarvesterDroid. The responsibility lies on
  * sub-classes to know how the data is stored and convert them to the resources map.
  */
 public abstract class Downloader {
-	private final String baseUrl;
-	private final String identifier;
+    private final String baseUrl;
+    private final String identifier;
 
-	private final Map<String, GalaxyResource> currentResources = new HashMap<>();
+    private final Map<String, GalaxyResource> currentResources = new HashMap<>();
 
-	protected Downloader(String identifier, String baseUrl) {
-		this.identifier = identifier;
-		this.baseUrl = baseUrl;
-		init();
-	}
+    protected Downloader(String identifier, String baseUrl) {
+        this.identifier = identifier;
+        this.baseUrl = baseUrl;
+        init();
+    }
 
-	private void init() {
-	    File currentResources = new File(getRootDownloadsPath() + "current_resources.dl");
-	    if (currentResources.exists()) {
+    private void init() {
+        File currentResources = new File(getRootDownloadsPath() + "current_resources.dl");
+        if (currentResources.exists()) {
             try {
                 parseCurrentResources(new FileInputStream(currentResources));
             } catch (IOException e) {
@@ -67,52 +67,56 @@ public abstract class Downloader {
         }
     }
 
-	protected abstract void parseCurrentResources(InputStream currentResourcesStream) throws IOException;
+    protected abstract void parseCurrentResources(InputStream currentResourcesStream) throws IOException;
+
     protected abstract GalaxyResource parseGalaxyResource(InputStream galaxyResourceStream);
-	protected abstract InputStream getCurrentResourcesStream() throws IOException;
+
+    protected abstract InputStream getCurrentResourcesStream() throws IOException;
+
     protected abstract InputStream getGalaxyResourceStream(String resource) throws IOException;
+
     public abstract Date getCurrentResourcesTimestamp();
 
-	public final DownloadResult downloadCurrentResources() throws IOException {
-		InputStream in = null;
+    public final DownloadResult downloadCurrentResources() throws IOException {
+        InputStream in = null;
 
-		File file = new File(getRootDownloadsPath() + "current_resources.dl");
-		if (!file.exists() && !file.mkdirs())
+        File file = new File(getRootDownloadsPath() + "current_resources.dl");
+        if (!file.exists() && !file.mkdirs())
             return DownloadResult.FAILED;
 
-		try {
-			in = getCurrentResourcesStream();
+        try {
+            in = getCurrentResourcesStream();
 
-			Files.copy(in, Paths.get(file.toURI()), StandardCopyOption.REPLACE_EXISTING);
+            Files.copy(in, Paths.get(file.toURI()), StandardCopyOption.REPLACE_EXISTING);
 
-			// Just in-case the user messes with something, we can re-download the XML
-			Watcher.createFileWatcher(new File(getRootDownloadsPath()+ "current_resources.dl"), () -> {
-				try {
-					downloadCurrentResources();
-				} catch (IOException e) {
-					ExceptionDialog.display(e);
-				}
-			});
-		} catch (ConnectException e) {
-			return DownloadResult.FAILED;
-		} finally {
-			if (in != null) {
-				in.close();
-			}
-		}
+            // Just in-case the user messes with something, we can re-download the XML
+            Watcher.createFileWatcher(new File(getRootDownloadsPath() + "current_resources.dl"), () -> {
+                try {
+                    downloadCurrentResources();
+                } catch (IOException e) {
+                    ExceptionDialog.display(e);
+                }
+            });
+        } catch (ConnectException e) {
+            return DownloadResult.FAILED;
+        } finally {
+            if (in != null) {
+                in.close();
+            }
+        }
 
-		if (!file.exists())
-			return DownloadResult.FAILED;
+        if (!file.exists())
+            return DownloadResult.FAILED;
 
-		parseCurrentResources(new FileInputStream(file));
+        parseCurrentResources(new FileInputStream(file));
 
-		return DownloadResult.SUCCESS;
-	}
+        return DownloadResult.SUCCESS;
+    }
 
-	public final GalaxyResource downloadGalaxyResource(String resource) {
-	    InputStream in;
+    public final GalaxyResource downloadGalaxyResource(String resource) {
+        InputStream in;
 
-	    File file = new File(getRootDownloadsPath() + resource + ".dl");
+        File file = new File(getRootDownloadsPath() + resource + ".dl");
         if (!file.exists())
             file.mkdirs();
 
@@ -130,32 +134,33 @@ public abstract class Downloader {
     }
 
     protected final void populateCurrentResourcesMap(Map<String, GalaxyResource> parsedCurrentResources) {
-		currentResources.clear();
-		currentResources.putAll(parsedCurrentResources);
-	}
+        currentResources.clear();
+        currentResources.putAll(parsedCurrentResources);
+    }
 
-	public final InputStream getInputStreamFromUrl(String url) throws IOException {
-		return new URL(getBaseUrl() + url).openStream();
-	}
+    public final InputStream getInputStreamFromUrl(String url) throws IOException {
+        return new URL(getBaseUrl() + url).openStream();
+    }
 
-	public final String getBaseUrl() {
-		return baseUrl;
-	}
+    public final String getBaseUrl() {
+        return baseUrl;
+    }
 
-	public final String getIdentifier() {
-		return identifier;
-	}
+    public final String getIdentifier() {
+        return identifier;
+    }
 
-	public Collection<GalaxyResource> getCurrentResources() {
-		return currentResources.values();
-	}
+    public Collection<GalaxyResource> getCurrentResources() {
+        return currentResources.values();
+    }
 
-	private String getRootDownloadsPath() {
-		return Launcher.ROOT_DIR + "/" + getIdentifier() + "/";
-	}
-	public enum DownloadResult {
-		FAILED,
-		NO_ACTION, SUCCESS
-	}
+    private String getRootDownloadsPath() {
+        return Launcher.ROOT_DIR + "/" + getIdentifier() + "/";
+    }
+
+    public enum DownloadResult {
+        FAILED,
+        NO_ACTION, SUCCESS
+    }
 
 }

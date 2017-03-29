@@ -25,14 +25,14 @@ import javafx.scene.control.ListCell;
 
 public class GalaxyResourceListCell extends ListCell<GalaxyResource> {
 
-	@Override
-	protected void updateItem(GalaxyResource item, boolean empty) {
-		super.updateItem(item, empty);
+    @Override
+    protected void updateItem(GalaxyResource item, boolean empty) {
+        super.updateItem(item, empty);
 
-		if (item != null) {
-			setGraphic(new ResourceListItem(item));
-		} else {
-			setGraphic(null);
-		}
-	}
+        if (item != null) {
+            setGraphic(new ResourceListItem(item));
+        } else {
+            setGraphic(null);
+        }
+    }
 }

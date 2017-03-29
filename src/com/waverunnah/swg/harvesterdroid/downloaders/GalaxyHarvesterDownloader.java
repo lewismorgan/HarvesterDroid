@@ -34,26 +34,26 @@ import java.util.Date;
 
 public final class GalaxyHarvesterDownloader extends Downloader {
 
-	private DocumentBuilderFactory xmlFactory = DocumentBuilderFactory.newInstance();
-	private HarvesterCurrentResourcesXml currentResourcesXml;
+    private DocumentBuilderFactory xmlFactory = DocumentBuilderFactory.newInstance();
+    private HarvesterCurrentResourcesXml currentResourcesXml;
 
-	public GalaxyHarvesterDownloader() {
-		super("galaxyharvester", "https://galaxyharvester.net/");
-	}
+    public GalaxyHarvesterDownloader() {
+        super("galaxyharvester", "https://galaxyharvester.net/");
+    }
 
-	@Override
-	protected void parseCurrentResources(InputStream currentResourcesStream) throws IOException {
-		try {
-		    if (xmlFactory == null)
-		        xmlFactory = DocumentBuilderFactory.newInstance();
-			currentResourcesXml = new HarvesterCurrentResourcesXml(xmlFactory.newDocumentBuilder());
-			currentResourcesXml.load(currentResourcesStream);
+    @Override
+    protected void parseCurrentResources(InputStream currentResourcesStream) throws IOException {
+        try {
+            if (xmlFactory == null)
+                xmlFactory = DocumentBuilderFactory.newInstance();
+            currentResourcesXml = new HarvesterCurrentResourcesXml(xmlFactory.newDocumentBuilder());
+            currentResourcesXml.load(currentResourcesStream);
 
-			populateCurrentResourcesMap(currentResourcesXml.getGalaxyResources());
-		} catch (ParserConfigurationException | SAXException e) {
-			e.printStackTrace();
-		}
-	}
+            populateCurrentResourcesMap(currentResourcesXml.getGalaxyResources());
+        } catch (ParserConfigurationException | SAXException e) {
+            e.printStackTrace();
+        }
+    }
 
     @Override
     protected GalaxyResource parseGalaxyResource(InputStream galaxyResourceStream) {
@@ -68,9 +68,9 @@ public final class GalaxyHarvesterDownloader extends Downloader {
     }
 
     @Override
-	public InputStream getCurrentResourcesStream() throws IOException {
-		return getInputStreamFromUrl("exports/current48.xml");
-	}
+    public InputStream getCurrentResourcesStream() throws IOException {
+        return getInputStreamFromUrl("exports/current48.xml");
+    }
 
     @Override
     protected InputStream getGalaxyResourceStream(String resource) throws IOException {
@@ -79,16 +79,16 @@ public final class GalaxyHarvesterDownloader extends Downloader {
 
 
     @Override
-	public Date getCurrentResourcesTimestamp() {
-		if (currentResourcesXml == null || currentResourcesXml.getTimestamp() == null
-				|| currentResourcesXml.getTimestamp().isEmpty())
-			return null;
-		DateFormat dateFormat = new SimpleDateFormat("E, dd MMMM yyyy HH:mm:ss Z");
-		try {
-			return dateFormat.parse(currentResourcesXml.getTimestamp());
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
+    public Date getCurrentResourcesTimestamp() {
+        if (currentResourcesXml == null || currentResourcesXml.getTimestamp() == null
+                || currentResourcesXml.getTimestamp().isEmpty())
+            return null;
+        DateFormat dateFormat = new SimpleDateFormat("E, dd MMMM yyyy HH:mm:ss Z");
+        try {
+            return dateFormat.parse(currentResourcesXml.getTimestamp());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }

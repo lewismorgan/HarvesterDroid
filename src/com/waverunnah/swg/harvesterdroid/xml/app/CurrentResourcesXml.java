@@ -32,32 +32,32 @@ import java.util.Map;
 
 
 public abstract class CurrentResourcesXml extends BaseXml {
-	private String timestamp;
-	private Map<String, GalaxyResource> galaxyResources = new HashMap<>();
+    private String timestamp;
+    private Map<String, GalaxyResource> galaxyResources = new HashMap<>();
 
-	public CurrentResourcesXml(DocumentBuilder documentBuilder) {
-		super(documentBuilder);
-	}
+    public CurrentResourcesXml(DocumentBuilder documentBuilder) {
+        super(documentBuilder);
+    }
 
-	@Override
-	protected void read(Element root) throws IOException, ParserConfigurationException, SAXException {
-		throw new UnsupportedOperationException();
-	}
+    @Override
+    protected void read(Element root) throws IOException, ParserConfigurationException, SAXException {
+        throw new UnsupportedOperationException();
+    }
 
-	@Override
-	protected final void write(Document document) {
-		throw new UnsupportedOperationException();
-	}
+    @Override
+    protected final void write(Document document) {
+        throw new UnsupportedOperationException();
+    }
 
-	public String getTimestamp() {
-		return timestamp;
-	}
+    public String getTimestamp() {
+        return timestamp;
+    }
 
-	public void setTimestamp(String timestamp) {
-		this.timestamp = timestamp;
-	}
+    public void setTimestamp(String timestamp) {
+        this.timestamp = timestamp;
+    }
 
-	public Map<String, GalaxyResource> getGalaxyResources() {
-		return galaxyResources;
-	}
+    public Map<String, GalaxyResource> getGalaxyResources() {
+        return galaxyResources;
+    }
 }

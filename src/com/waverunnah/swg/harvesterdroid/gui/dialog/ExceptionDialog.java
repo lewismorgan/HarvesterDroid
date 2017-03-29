@@ -28,40 +28,40 @@ import javafx.scene.layout.Priority;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
-public class ExceptionDialog extends Alert{
-	public ExceptionDialog(Throwable throwable) {
-		super(AlertType.ERROR);
+public class ExceptionDialog extends Alert {
+    public ExceptionDialog(Throwable throwable) {
+        super(AlertType.ERROR);
 
-		setTitle("OH NO");
-		setHeaderText("An exception has occurred");
-		setContentText(throwable.getMessage());
+        setTitle("OH NO");
+        setHeaderText("An exception has occurred");
+        setContentText(throwable.getMessage());
 
-		StringWriter sw = new StringWriter();
-		PrintWriter pw = new PrintWriter(sw);
-		throwable.printStackTrace(pw);
-		String exceptionText = sw.toString();
+        StringWriter sw = new StringWriter();
+        PrintWriter pw = new PrintWriter(sw);
+        throwable.printStackTrace(pw);
+        String exceptionText = sw.toString();
 
-		Label label = new Label("Stacktrace:");
+        Label label = new Label("Stacktrace:");
 
-		TextArea textArea = new TextArea(exceptionText);
-		textArea.setEditable(false);
-		textArea.setWrapText(true);
+        TextArea textArea = new TextArea(exceptionText);
+        textArea.setEditable(false);
+        textArea.setWrapText(true);
 
-		textArea.setMaxWidth(Double.MAX_VALUE);
-		textArea.setMaxHeight(Double.MAX_VALUE);
-		GridPane.setVgrow(textArea, Priority.ALWAYS);
-		GridPane.setHgrow(textArea, Priority.ALWAYS);
+        textArea.setMaxWidth(Double.MAX_VALUE);
+        textArea.setMaxHeight(Double.MAX_VALUE);
+        GridPane.setVgrow(textArea, Priority.ALWAYS);
+        GridPane.setHgrow(textArea, Priority.ALWAYS);
 
-		GridPane expContent = new GridPane();
-		expContent.setMaxWidth(Double.MAX_VALUE);
-		expContent.add(label, 0, 0);
-		expContent.add(textArea, 0, 1);
+        GridPane expContent = new GridPane();
+        expContent.setMaxWidth(Double.MAX_VALUE);
+        expContent.add(label, 0, 0);
+        expContent.add(textArea, 0, 1);
 
-		getDialogPane().setExpandableContent(expContent);
-	}
+        getDialogPane().setExpandableContent(expContent);
+    }
 
-	public static void display(Throwable throwable) {
-		if (Platform.isFxApplicationThread())
-			new ExceptionDialog(throwable).showAndWait();
-	}
+    public static void display(Throwable throwable) {
+        if (Platform.isFxApplicationThread())
+            new ExceptionDialog(throwable).showAndWait();
+    }
 }

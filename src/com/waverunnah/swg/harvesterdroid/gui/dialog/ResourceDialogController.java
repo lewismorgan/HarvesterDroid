@@ -43,83 +43,82 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class ResourceDialogController implements Initializable {
-	private ObjectProperty<GalaxyResource> galaxyResource = new SimpleObjectProperty<>();
+    @FXML
+    TextField resourceTypeField;
+    @FXML
+    TextField nameField;
+    @FXML
+    HBox attributesGroup;
+    @FXML
+    Label infoRightLabel;
+    @FXML
+    Label infoLeftLabel;
+    @FXML
+    HBox infoGroup;
+    private ObjectProperty<GalaxyResource> galaxyResource = new SimpleObjectProperty<>();
 
-	@FXML
-	TextField resourceTypeField;
-	@FXML
-	TextField nameField;
-	@FXML
-	HBox attributesGroup;
-	@FXML
-	Label infoRightLabel;
-	@FXML
-	Label infoLeftLabel;
-	@FXML
-	HBox infoGroup;
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        ResourceDialog.setController(this);
+        galaxyResource.addListener((observable, oldValue, newValue) -> {
+            if (newValue != null)
+                populateFromGalaxyResource(newValue);
+        });
+    }
 
-	@Override
-	public void initialize(URL location, ResourceBundle resources) {
-		ResourceDialog.setController(this);
-		galaxyResource.addListener((observable, oldValue, newValue) -> {
-			if (newValue != null)
-				populateFromGalaxyResource(newValue);
-		});
-	}
+    private void populateFromGalaxyResource(GalaxyResource galaxyResource) {
+        attributesGroup.getChildren().clear();
+        resourceTypeField.textProperty().bindBidirectional(galaxyResource.resourceTypeProperty(), new StringConverter<ResourceType>() {
+            @Override
+            public String toString(ResourceType object) {
+                return object.getName();
+            }
 
-	private void populateFromGalaxyResource(GalaxyResource galaxyResource) {
-		attributesGroup.getChildren().clear();
-		resourceTypeField.textProperty().bindBidirectional(galaxyResource.resourceTypeProperty(), new StringConverter<ResourceType>() {
-			@Override
-			public String toString(ResourceType object) {
-				return object.getName();
-			}
+            @Override
+            public ResourceType fromString(String string) {
+                return null;
+            }
+        });
+        Attributes.forEach((primary, secondary) -> bindAttribute(primary, galaxyResource.getAttributes().get(primary)));
 
-			@Override
-			public ResourceType fromString(String string) {
-				return null;
-			}
-		});
-		Attributes.forEach((primary, secondary) -> bindAttribute(primary, galaxyResource.getAttributes().get(primary)));
+        When whenUnavailable = Bindings.when(galaxyResource.despawnDateProperty().isNotEmpty());
+        infoLeftLabel.textProperty().bind(whenUnavailable.then("Despawned on").otherwise("Available since"));
+        infoRightLabel.textProperty().bind(whenUnavailable.then(galaxyResource.despawnDateProperty()).otherwise(galaxyResource.dateProperty()));
+    }
 
-		When whenUnavailable = Bindings.when(galaxyResource.despawnDateProperty().isNotEmpty());
-		infoLeftLabel.textProperty().bind(whenUnavailable.then("Despawned on").otherwise("Available since"));
-		infoRightLabel.textProperty().bind(whenUnavailable.then(galaxyResource.despawnDateProperty()).otherwise(galaxyResource.dateProperty()));
-	}
+    private void bindAttribute(String attribute, IntegerProperty property) {
+        VBox group = new VBox();
+        group.setAlignment(Pos.CENTER);
+        group.setPadding(new Insets(5.0, 0, 0, 0));
+        group.disableProperty().bind(property.isEqualTo(-1));
 
-	private void bindAttribute(String attribute, IntegerProperty property) {
-		VBox group = new VBox();
-		group.setAlignment(Pos.CENTER);
-		group.setPadding(new Insets(5.0, 0, 0, 0));
-		group.disableProperty().bind(property.isEqualTo(-1));
+        Label nameLabel = new Label(Attributes.getAbbreviation(attribute));
+        nameLabel.setContentDisplay(ContentDisplay.CENTER);
+        group.getChildren().add(nameLabel);
 
-		Label nameLabel = new Label(Attributes.getAbbreviation(attribute));
-		nameLabel.setContentDisplay(ContentDisplay.CENTER);
-		group.getChildren().add(nameLabel);
+        Label valueLabel = new Label("--");
+        valueLabel.setContentDisplay(ContentDisplay.CENTER);
+        group.getChildren().add(valueLabel);
 
-		Label valueLabel = new Label("--");
-		valueLabel.setContentDisplay(ContentDisplay.CENTER);
-		group.getChildren().add(valueLabel);
+        Bindings.bindBidirectional(valueLabel.textProperty(), property, new ResourceValueConverter());
 
-		Bindings.bindBidirectional(valueLabel.textProperty(), property, new ResourceValueConverter());
+        attributesGroup.getChildren().add(group);
+    }
 
-		attributesGroup.getChildren().add(group);
-	}
+    public GalaxyResource getGalaxyResource() {
+        return galaxyResource.get();
+    }
 
-	public GalaxyResource getGalaxyResource() {
-		return galaxyResource.get();
-	}
+    public void retrieveStats() {
+        GalaxyResource galaxyResource = Launcher.getApp().retrieveGalaxyResource(nameField.getText());
+        if (galaxyResource == null) {
+            infoLeftLabel.setText("Couldn't find resource");
+            infoRightLabel.textProperty().unbind();
+            infoRightLabel.setText(nameField.getText());
+            nameField.setText(null);
+            return;
+        }
 
-	public void retrieveStats() {
-		GalaxyResource galaxyResource = Launcher.getApp().retrieveGalaxyResource(nameField.getText());
-		if (galaxyResource == null) {
-			infoLeftLabel.setText("Couldn't find resource");
-			infoRightLabel.textProperty().unbind();
-			infoRightLabel.setText(nameField.getText());
-			nameField.setText(null);
-			return;
-		}
-
-		this.galaxyResource.set(galaxyResource);
-	}
+        this.galaxyResource.set(galaxyResource);
+    }
 }

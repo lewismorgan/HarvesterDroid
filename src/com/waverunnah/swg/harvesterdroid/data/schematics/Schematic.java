@@ -33,70 +33,70 @@ import javafx.collections.ObservableMap;
 import java.util.UUID;
 
 public class Schematic {
-	private StringProperty name = new SimpleStringProperty();
-	private StringProperty group = new SimpleStringProperty();
-	private ListProperty<String> resources = new SimpleListProperty<>(FXCollections.observableArrayList());
-	private ListProperty<Modifier> modifiers = new SimpleListProperty<>(FXCollections.observableArrayList());
-	private MapProperty<String, String> resourceWeights = new SimpleMapProperty<>(FXCollections.emptyObservableMap());
+    private StringProperty name = new SimpleStringProperty();
+    private StringProperty group = new SimpleStringProperty();
+    private ListProperty<String> resources = new SimpleListProperty<>(FXCollections.observableArrayList());
+    private ListProperty<Modifier> modifiers = new SimpleListProperty<>(FXCollections.observableArrayList());
+    private MapProperty<String, String> resourceWeights = new SimpleMapProperty<>(FXCollections.emptyObservableMap());
 
-	private String identifier = UUID.randomUUID().toString();
+    private String identifier = UUID.randomUUID().toString();
 
-	public Schematic() {
+    public Schematic() {
 
     }
 
-	public String getName() {
-		return name.get();
-	}
+    public String getName() {
+        return name.get();
+    }
 
-	public StringProperty nameProperty() {
-		return name;
-	}
+    public void setName(String name) {
+        this.name.set(name);
+    }
 
-	public void setName(String name) {
-		this.name.set(name);
-	}
+    public StringProperty nameProperty() {
+        return name;
+    }
 
-	public String getGroup() {
-		return group.get();
-	}
+    public String getGroup() {
+        return group.get();
+    }
 
-	public StringProperty groupProperty() {
-		return group;
-	}
+    public void setGroup(String group) {
+        this.group.set(group);
+    }
 
-	public void setGroup(String group) {
-		this.group.set(group);
-	}
+    public StringProperty groupProperty() {
+        return group;
+    }
 
-	public ObservableList<String> getResources() {
-		return resources.get();
-	}
+    public ObservableList<String> getResources() {
+        return resources.get();
+    }
 
-	public ListProperty<String> resourcesProperty() {
-		return resources;
-	}
+    public void setResources(ObservableList<String> resources) {
+        this.resources.set(resources);
+    }
 
-	public void setResources(ObservableList<String> resources) {
-		this.resources.set(resources);
-	}
+    public ListProperty<String> resourcesProperty() {
+        return resources;
+    }
 
-	public ObservableList<Modifier> getModifiers() {
-		return modifiers.get();
-	}
+    public ObservableList<Modifier> getModifiers() {
+        return modifiers.get();
+    }
 
-	public ListProperty<Modifier> modifiersProperty() {
-		return modifiers;
-	}
+    public void setModifiers(ObservableList<Modifier> modifiers) {
+        this.modifiers.set(modifiers);
+    }
 
-	public void setModifiers(ObservableList<Modifier> modifiers) {
-		this.modifiers.set(modifiers);
-	}
+    public ListProperty<Modifier> modifiersProperty() {
+        return modifiers;
+    }
 
-	public boolean isIncomplete() {
-		return getName() == null || getGroup() == null || getResources() == null || getModifiers() == null
-				|| getResources().isEmpty() || getModifiers().isEmpty();
-	}
+    public boolean isIncomplete() {
+        return getName() == null || getGroup() == null || getResources() == null || getModifiers() == null
+                || getResources().isEmpty() || getModifiers().isEmpty();
+    }
 
     public ObservableMap<String, String> getResourceWeights() {
         return resourceWeights.get();
@@ -111,41 +111,41 @@ public class Schematic {
     }
 
     @Override
-	public String toString() {
-		return getName();
-	}
+    public String toString() {
+        return getName();
+    }
 
     public static class Modifier {
-		private StringProperty name = new SimpleStringProperty();
-		private IntegerProperty value = new SimpleIntegerProperty();
+        private StringProperty name = new SimpleStringProperty();
+        private IntegerProperty value = new SimpleIntegerProperty();
 
-		public Modifier(String name, int value) {
-			setName(name);
-			setValue(value);
-		}
+        public Modifier(String name, int value) {
+            setName(name);
+            setValue(value);
+        }
 
-		public String getName() {
-			return name.get();
-		}
+        public String getName() {
+            return name.get();
+        }
 
-		public StringProperty nameProperty() {
-			return name;
-		}
+        public void setName(String name) {
+            this.name.set(name);
+        }
 
-		public void setName(String name) {
-			this.name.set(name);
-		}
+        public StringProperty nameProperty() {
+            return name;
+        }
 
-		public int getValue() {
-			return value.get();
-		}
+        public int getValue() {
+            return value.get();
+        }
 
-		public IntegerProperty valueProperty() {
-			return value;
-		}
+        public void setValue(int value) {
+            this.value.set(value);
+        }
 
-		public void setValue(int value) {
-			this.value.set(value);
-		}
-	}
+        public IntegerProperty valueProperty() {
+            return value;
+        }
+    }
 }

@@ -134,10 +134,6 @@ public class HarvesterDroidData {
         return resourceGroups.get(group);
     }
 
-    private interface CsvParser {
-        void parse(String[] line);
-    }
-
     @SuppressWarnings("unused")
     private void _formatResourceTreeTable() {
         // Helper method for formating resources table from iff
@@ -146,7 +142,7 @@ public class HarvesterDroidData {
                 "Hr max\tMa min\tMa max\tPe min\tPe max\tOq min\tOq max\tSr min\tSr max\tUt min\tUt max\tEr min\tEr max\tContainer\n");
         AtomicInteger lineNum = new AtomicInteger(0);
         readCsv("resource_tree.txt", line -> {
-            if (lineNum.getAndIncrement() < 2 )
+            if (lineNum.getAndIncrement() < 2)
                 return;
 
             if (line.length != 50) {
@@ -177,7 +173,7 @@ public class HarvesterDroidData {
             for (int i = 16; i < 27; i++) {
                 attr++;
                 String key = line[i];
-                switch(key) {
+                switch (key) {
                     case "res_cold_resist":
                         _doAttr(updatedLine, line, 3, attr, i);
                         break;
@@ -185,7 +181,7 @@ public class HarvesterDroidData {
                         _doAttr(updatedLine, line, 5, attr, i);
                         break;
                     case "res_decay_resist":
-                        _doAttr(updatedLine,line,7,attr, i);
+                        _doAttr(updatedLine, line, 7, attr, i);
                         break;
                     case "res_flavor":
                         _doAttr(updatedLine, line, 9, attr, i);
@@ -266,6 +262,10 @@ public class HarvesterDroidData {
 
     private void _doAttr(String[] updatedLine, String[] line, int index, int attr, int pos) {
         updatedLine[index] = line[pos + 10 + attr];
-        updatedLine[index+1] = line[pos + 11 + attr];
+        updatedLine[index + 1] = line[pos + 11 + attr];
+    }
+
+    private interface CsvParser {
+        void parse(String[] line);
     }
 }

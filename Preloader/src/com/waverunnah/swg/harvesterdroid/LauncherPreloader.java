@@ -37,64 +37,64 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 public class LauncherPreloader extends Preloader {
-	ProgressBar bar;
-	Label statusLabel;
-	Stage stage;
+    ProgressBar bar;
+    Label statusLabel;
+    Stage stage;
 
-	private Scene createPreloaderScene() {
-		// TODO: Move to an FXML
-		VBox container = new VBox();
-		container.setAlignment(Pos.CENTER);
-		container.setBackground(new Background(new BackgroundFill(Color.WHITE, null, null)));
+    private Scene createPreloaderScene() {
+        // TODO: Move to an FXML
+        VBox container = new VBox();
+        container.setAlignment(Pos.CENTER);
+        container.setBackground(new Background(new BackgroundFill(Color.WHITE, null, null)));
 
-		ImageView header = new ImageView(new Image(getClass().getResourceAsStream("/images/HarvesterDroid_Header.png")));
-		header.setFitHeight(100);
-		header.setFitWidth(350);
+        ImageView header = new ImageView(new Image(getClass().getResourceAsStream("/images/HarvesterDroid_Header.png")));
+        header.setFitHeight(100);
+        header.setFitWidth(350);
 
-		statusLabel = new Label("Loading...");
-		statusLabel.setPadding(new Insets(5, 0, 5, 0));
+        statusLabel = new Label("Loading...");
+        statusLabel.setPadding(new Insets(5, 0, 5, 0));
 
-		bar = new ProgressBar();
+        bar = new ProgressBar();
 
-		AnchorPane.setBottomAnchor(bar, 0d);
-		AnchorPane.setTopAnchor(bar, 0d);
-		AnchorPane.setLeftAnchor(bar, 0d);
-		AnchorPane.setRightAnchor(bar, 0d);
+        AnchorPane.setBottomAnchor(bar, 0d);
+        AnchorPane.setTopAnchor(bar, 0d);
+        AnchorPane.setLeftAnchor(bar, 0d);
+        AnchorPane.setRightAnchor(bar, 0d);
 
-		container.getChildren().addAll(header, statusLabel, new AnchorPane(bar));
+        container.getChildren().addAll(header, statusLabel, new AnchorPane(bar));
 
-		return new Scene(container);
-	}
+        return new Scene(container);
+    }
 
-	public void start(Stage stage) throws Exception {
-		this.stage = stage;
-		stage.initStyle(StageStyle.UNDECORATED);
-		stage.setAlwaysOnTop(true);
-		stage.setScene(createPreloaderScene());
+    public void start(Stage stage) throws Exception {
+        this.stage = stage;
+        stage.initStyle(StageStyle.UNDECORATED);
+        stage.setAlwaysOnTop(true);
+        stage.setScene(createPreloaderScene());
 
-		stage.show();
-		Rectangle2D primScreenBounds = Screen.getPrimary().getVisualBounds();
-		stage.setX((primScreenBounds.getWidth() - stage.getWidth()) / 2);
-		stage.setY((primScreenBounds.getHeight() - stage.getHeight()) / 2);
-	}
+        stage.show();
+        Rectangle2D primScreenBounds = Screen.getPrimary().getVisualBounds();
+        stage.setX((primScreenBounds.getWidth() - stage.getWidth()) / 2);
+        stage.setY((primScreenBounds.getHeight() - stage.getHeight()) / 2);
+    }
 
-	@Override
-	public void handleApplicationNotification(PreloaderNotification info) {
-		if (!(info instanceof PreloaderStatusNotification)) {
-			bar.setProgress(-1);
-			statusLabel.setText("Loading...");
-		} else {
-			PreloaderStatusNotification notification = (PreloaderStatusNotification) info;
-			bar.setProgress(notification.getProgress());
-			statusLabel.setText(notification.getStatus());
-		}
-	}
+    @Override
+    public void handleApplicationNotification(PreloaderNotification info) {
+        if (!(info instanceof PreloaderStatusNotification)) {
+            bar.setProgress(-1);
+            statusLabel.setText("Loading...");
+        } else {
+            PreloaderStatusNotification notification = (PreloaderStatusNotification) info;
+            bar.setProgress(notification.getProgress());
+            statusLabel.setText(notification.getStatus());
+        }
+    }
 
-	@Override
-	public void handleStateChangeNotification(StateChangeNotification evt) {
-		if (evt.getType() == StateChangeNotification.Type.BEFORE_START) {
-			stage.hide();
-		}
-	}
+    @Override
+    public void handleStateChangeNotification(StateChangeNotification evt) {
+        if (evt.getType() == StateChangeNotification.Type.BEFORE_START) {
+            stage.hide();
+        }
+    }
 
 }

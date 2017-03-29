@@ -43,112 +43,112 @@ import java.io.InputStream;
 
 public class ResourceListItem extends HBox {
 
-	//region FXML Components
-	@FXML
-	ImageView resourceImage;
-	@FXML
-	private Label resourceName;
-	@FXML
-	private Label resourceType;
-	@FXML
-	private HBox resourceStatsBox;
-	//endregion
+    //region FXML Components
+    @FXML
+    ImageView resourceImage;
+    @FXML
+    private Label resourceName;
+    @FXML
+    private Label resourceType;
+    @FXML
+    private HBox resourceStatsBox;
+    //endregion
 
-	private SimpleObjectProperty<GalaxyResource> galaxyResource = new SimpleObjectProperty<>();
+    private SimpleObjectProperty<GalaxyResource> galaxyResource = new SimpleObjectProperty<>();
 
-	public ResourceListItem() {
-		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("resource_list_item.fxml"));
-		fxmlLoader.setRoot(this);
-		fxmlLoader.setController(this);
+    public ResourceListItem() {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("resource_list_item.fxml"));
+        fxmlLoader.setRoot(this);
+        fxmlLoader.setController(this);
 
-		try {
-			fxmlLoader.load();
-		} catch (IOException exception) {
-			throw new RuntimeException(exception);
-		}
+        try {
+            fxmlLoader.load();
+        } catch (IOException exception) {
+            throw new RuntimeException(exception);
+        }
 
-		galaxyResource.addListener((observable, old, val) -> handleGalaxyResourceSet(val));
-	}
+        galaxyResource.addListener((observable, old, val) -> handleGalaxyResourceSet(val));
+    }
 
-	public ResourceListItem(GalaxyResource item) {
-		this();
-		setGalaxyResource(item);
-	}
+    public ResourceListItem(GalaxyResource item) {
+        this();
+        setGalaxyResource(item);
+    }
 
-	public void handleGalaxyResourceSet(GalaxyResource val) {
-		if (val == null) {
-			resourceName.textProperty().unbind();
-			resourceType.textProperty().unbind();
-			resourceImage.imageProperty().unbind();
-			resourceStatsBox.getChildren().clear();
-			return;
-		}
+    public void handleGalaxyResourceSet(GalaxyResource val) {
+        if (val == null) {
+            resourceName.textProperty().unbind();
+            resourceType.textProperty().unbind();
+            resourceImage.imageProperty().unbind();
+            resourceStatsBox.getChildren().clear();
+            return;
+        }
 
-		resourceName.textProperty().bind(val.nameProperty());
-		resourceType.textProperty().bindBidirectional(val.resourceTypeProperty(), new StringConverter<ResourceType>() {
-			@Override
-			public String toString(ResourceType object) {
-				return object.getName();
-			}
+        resourceName.textProperty().bind(val.nameProperty());
+        resourceType.textProperty().bindBidirectional(val.resourceTypeProperty(), new StringConverter<ResourceType>() {
+            @Override
+            public String toString(ResourceType object) {
+                return object.getName();
+            }
 
-			@Override
-			public ResourceType fromString(String string) {
-				return null;
-			}
-		});
+            @Override
+            public ResourceType fromString(String string) {
+                return null;
+            }
+        });
 
-		resourceImage.setImage(getImage(val.containerProperty().get()));
-		val.containerProperty().addListener((observable, oldValue, newValue) -> {
-			if (newValue != null)
-				resourceImage.setImage(getImage(newValue));
-		});
+        resourceImage.setImage(getImage(val.containerProperty().get()));
+        val.containerProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null)
+                resourceImage.setImage(getImage(newValue));
+        });
 
-		// Ensures no duplicates are made
-		resourceStatsBox.getChildren().clear();
+        // Ensures no duplicates are made
+        resourceStatsBox.getChildren().clear();
 
-		Attributes.forEach((primary, secondary) -> {
-			IntegerProperty value = val.getAttributes().get(primary);
-			Label percentage = createPercentageLabel(primary, val);
-			createAttributeUI(secondary, value, percentage);
-		});
-	}
+        Attributes.forEach((primary, secondary) -> {
+            IntegerProperty value = val.getAttributes().get(primary);
+            Label percentage = createPercentageLabel(primary, val);
+            createAttributeUI(secondary, value, percentage);
+        });
+    }
 
-	private void createAttributeUI(String simple, IntegerProperty valueProperty, Label percentageLabel) {
-		VBox group = new VBox();
-		group.setAlignment(Pos.CENTER);
-		group.setPadding(new Insets(5.0, 5, 5, 5));
-		group.disableProperty().bind(valueProperty.isEqualTo(-1));
+    private void createAttributeUI(String simple, IntegerProperty valueProperty, Label percentageLabel) {
+        VBox group = new VBox();
+        group.setAlignment(Pos.CENTER);
+        group.setPadding(new Insets(5.0, 5, 5, 5));
+        group.disableProperty().bind(valueProperty.isEqualTo(-1));
 
-		Label nameLabel = new Label(simple);
-		nameLabel.setContentDisplay(ContentDisplay.CENTER);
-		group.getChildren().add(nameLabel);
+        Label nameLabel = new Label(simple);
+        nameLabel.setContentDisplay(ContentDisplay.CENTER);
+        group.getChildren().add(nameLabel);
 
-		Label valueLabel = new Label("--");
-		valueLabel.setContentDisplay(ContentDisplay.CENTER);
-		group.getChildren().add(valueLabel);
+        Label valueLabel = new Label("--");
+        valueLabel.setContentDisplay(ContentDisplay.CENTER);
+        group.getChildren().add(valueLabel);
 
-		percentageLabel.setContentDisplay(ContentDisplay.CENTER);
-		group.getChildren().add(percentageLabel);
+        percentageLabel.setContentDisplay(ContentDisplay.CENTER);
+        group.getChildren().add(percentageLabel);
 
-		Bindings.bindBidirectional(valueLabel.textProperty(), valueProperty, new ResourceValueConverter());
+        Bindings.bindBidirectional(valueLabel.textProperty(), valueProperty, new ResourceValueConverter());
 
-		resourceStatsBox.getChildren().add(group);
-	}
+        resourceStatsBox.getChildren().add(group);
+    }
 
-	private Image getImage(String container) {
-		if (container == null)
-			return null;
-		InputStream is = getClass().getResourceAsStream("/images/resources/" + container + ".png");
-		if (is == null) {
-			container = container.split("_")[0];
-			is = getClass().getResourceAsStream("/images/resources/" + container + ".png");
-			if (is == null) {
-				System.out.println("Could not find image /images/resources/" + container + ".png");
-				return null;
-			}
-		}
-		return new Image(is);
-	}
+    private Image getImage(String container) {
+        if (container == null)
+            return null;
+        InputStream is = getClass().getResourceAsStream("/images/resources/" + container + ".png");
+        if (is == null) {
+            container = container.split("_")[0];
+            is = getClass().getResourceAsStream("/images/resources/" + container + ".png");
+            if (is == null) {
+                System.out.println("Could not find image /images/resources/" + container + ".png");
+                return null;
+            }
+        }
+        return new Image(is);
+    }
 
     private Label createPercentageLabel(String attribute, GalaxyResource galaxyResource) {
         attribute = Attributes.getAbbreviation(attribute);
@@ -181,15 +181,15 @@ public class ResourceListItem extends HBox {
         return label;
     }
 
-	public GalaxyResource getGalaxyResource() {
-		return galaxyResource.get();
-	}
+    public GalaxyResource getGalaxyResource() {
+        return galaxyResource.get();
+    }
 
-	public void setGalaxyResource(GalaxyResource galaxyResource) {
-		this.galaxyResource.set(galaxyResource);
-	}
+    public void setGalaxyResource(GalaxyResource galaxyResource) {
+        this.galaxyResource.set(galaxyResource);
+    }
 
-	public SimpleObjectProperty<GalaxyResource> galaxyResourceProperty() {
-		return galaxyResource;
-	}
+    public SimpleObjectProperty<GalaxyResource> galaxyResourceProperty() {
+        return galaxyResource;
+    }
 }

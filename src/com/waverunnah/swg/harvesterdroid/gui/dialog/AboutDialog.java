@@ -31,24 +31,24 @@ import java.io.IOException;
 
 public class AboutDialog extends Dialog {
 
-	public AboutDialog() {
-		super();
-		try {
-			init();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
+    public AboutDialog() {
+        super();
+        try {
+            init();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
-	private void init() throws IOException {
-		setTitle("About");
+    private void init() throws IOException {
+        setTitle("About");
 
         try {
             Parent root = FXMLLoader.load(getClass().getResource("about_dialog.fxml"));
             if (!(root instanceof VBox))
                 return;
 
-            ((Stage)getDialogPane().getScene().getWindow()).getIcons().add(Launcher.getAppIcon());
+            ((Stage) getDialogPane().getScene().getWindow()).getIcons().add(Launcher.getAppIcon());
             getDialogPane().setContent(root);
             getDialogPane().heightProperty().addListener((observable, oldValue, newValue) -> getDialogPane().getScene().getWindow().sizeToScene());
             getDialogPane().widthProperty().addListener((observable, oldValue, newValue) -> getDialogPane().getScene().getWindow().sizeToScene());
@@ -57,5 +57,5 @@ public class AboutDialog extends Dialog {
         } catch (IOException e) {
             ExceptionDialog.display(e);
         }
-	}
+    }
 }

@@ -38,60 +38,61 @@ import java.io.InputStream;
 
 public abstract class BaseXml {
 
-	protected DocumentBuilder documentBuilder;
-	protected Document document;
+    protected DocumentBuilder documentBuilder;
+    protected Document document;
 
-	public BaseXml(DocumentBuilder documentBuilder) {
-		this.documentBuilder = documentBuilder;
-	}
+    public BaseXml(DocumentBuilder documentBuilder) {
+        this.documentBuilder = documentBuilder;
+    }
 
-	public final void load(InputStream xmlStream) throws IOException, SAXException, ParserConfigurationException {
-		document = documentBuilder.parse(xmlStream);
-		if (document != null)
-			read(document.getDocumentElement());
-	}
+    public final void load(InputStream xmlStream) throws IOException, SAXException, ParserConfigurationException {
+        document = documentBuilder.parse(xmlStream);
+        if (document != null)
+            read(document.getDocumentElement());
+    }
 
-	public final void save(File file) throws TransformerException, IOException {
-		if (!file.exists()) {
-			String sub = file.getAbsolutePath().substring(0, file.getAbsolutePath().lastIndexOf("\\"));
-			new File(sub).mkdirs();
-			if (!file.createNewFile())
-				throw new IOException("Could not create a new xml file");
-		}
-		Document saveDoc = documentBuilder.newDocument();
+    public final void save(File file) throws TransformerException, IOException {
+        if (!file.exists()) {
+            String sub = file.getAbsolutePath().substring(0, file.getAbsolutePath().lastIndexOf("\\"));
+            new File(sub).mkdirs();
+            if (!file.createNewFile())
+                throw new IOException("Could not create a new xml file");
+        }
+        Document saveDoc = documentBuilder.newDocument();
 
-		write(saveDoc);
+        write(saveDoc);
 
-		TransformerFactory transformerFactory = TransformerFactory.newInstance();
-		Transformer transformer = transformerFactory.newTransformer();
-		transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-		transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
+        TransformerFactory transformerFactory = TransformerFactory.newInstance();
+        Transformer transformer = transformerFactory.newTransformer();
+        transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+        transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
         transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
-		DOMSource source = new DOMSource(saveDoc);
-		StreamResult result = new StreamResult(file);
-		//StreamResult result =  new StreamResult(System.out);
+        DOMSource source = new DOMSource(saveDoc);
+        StreamResult result = new StreamResult(file);
+        //StreamResult result =  new StreamResult(System.out);
 
-		transformer.transform(source, result);
-	}
+        transformer.transform(source, result);
+    }
 
-	protected abstract void read(Element root) throws IOException, ParserConfigurationException, SAXException;
-	protected abstract void write(Document document);
+    protected abstract void read(Element root) throws IOException, ParserConfigurationException, SAXException;
 
-	public final void processElement(Node node, Processor processor) {
-		NodeList children = node.getChildNodes();
-		for (int i = 0; i < children.getLength(); i++) {
-			Node child = children.item(i);
-			if (!(child instanceof Element))
-				continue;
-			processor.process(child);
-		}
-	}
+    protected abstract void write(Document document);
 
-	public Element getRoot() {
-		return document.getDocumentElement();
-	}
+    public final void processElement(Node node, Processor processor) {
+        NodeList children = node.getChildNodes();
+        for (int i = 0; i < children.getLength(); i++) {
+            Node child = children.item(i);
+            if (!(child instanceof Element))
+                continue;
+            processor.process(child);
+        }
+    }
 
-	protected interface Processor {
-		void process(Node node);
-	}
+    public Element getRoot() {
+        return document.getDocumentElement();
+    }
+
+    protected interface Processor {
+        void process(Node node);
+    }
 }
