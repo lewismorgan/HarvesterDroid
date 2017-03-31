@@ -18,6 +18,7 @@
 
 package com.waverunnah.swg.harvesterdroid.gui;
 
+import com.waverunnah.swg.harvesterdroid.DroidProperties;
 import com.waverunnah.swg.harvesterdroid.Launcher;
 import com.waverunnah.swg.harvesterdroid.app.HarvesterDroid;
 import com.waverunnah.swg.harvesterdroid.data.resources.GalaxyResource;
@@ -102,12 +103,11 @@ public class MainController implements Initializable {
 
     public void onPreferencesMenuItem() {
         PreferencesDialog dialog = new PreferencesDialog();
-        dialog.setProperties(app.getProperties());
+        dialog.setProperties(DroidProperties.getProperties());
         Optional<Properties> result = dialog.showAndWait();
         if (result.isPresent()) {
             Properties properties = result.get();
-            app.setProperties(properties);
-            app.updateFromProperties();
+            DroidProperties.setProperties(properties);
         }
     }
 }

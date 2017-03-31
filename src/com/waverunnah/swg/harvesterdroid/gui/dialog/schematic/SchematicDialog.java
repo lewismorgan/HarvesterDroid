@@ -61,4 +61,9 @@ public class SchematicDialog extends BaseDialog<Schematic> {
             return controller.getSchematic();
         });
     }
+
+    @Override
+    protected boolean isController() {
+        return false;
+    }
 }

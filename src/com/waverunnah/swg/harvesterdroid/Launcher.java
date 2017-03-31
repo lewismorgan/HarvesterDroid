@@ -35,13 +35,14 @@ import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Properties;
 
 public class Launcher extends Application {
     private static boolean DEBUG = false;
@@ -91,17 +92,14 @@ public class Launcher extends Application {
 
         Downloader downloader = new GalaxyHarvesterDownloader();
 
-        Properties properties = new Properties();
         if (Files.exists(Paths.get(ROOT_DIR + "/harvesterdroid.properties")))
-            properties.load(new FileInputStream(Paths.get(ROOT_DIR + "/harvesterdroid.properties").toFile()));
-        else properties.load(getClass().getResourceAsStream("/harvesterdroid.properties"));
+            DroidProperties.load(new FileInputStream(Paths.get(ROOT_DIR + "/harvesterdroid.properties").toFile()));
+        else DroidProperties.load(getClass().getResourceAsStream("/harvesterdroid.properties"));
 
-        DEBUG = Boolean.valueOf((String) properties.getOrDefault("debug", "false"));
+        DEBUG = DroidProperties.getBoolean(DroidProperties.DEBUG);
 
         // TODO Decide what downloader to use based on preferences
         app = new HarvesterDroid(XML_SCHEMATICS, XML_INVENTORY, downloader);
-        app.setProperties(properties);
-        app.updateFromProperties();
 
         if (!new File(ROOT_DIR).exists())
             new File(ROOT_DIR).mkdir();
@@ -122,17 +120,16 @@ public class Launcher extends Application {
         primaryStage.setScene(new Scene(root));
         primaryStage.getIcons().add(getAppIcon());
 
-        Properties properties = app.getProperties();
-        primaryStage.setFullScreen(Boolean.valueOf((String) properties.getOrDefault("fullscreen", "false")));
-        primaryStage.setWidth(Double.parseDouble((String) properties.getOrDefault("width", "800")));
-        primaryStage.setHeight(Double.parseDouble((String) properties.getOrDefault("height", "600")));
+        primaryStage.setFullScreen(DroidProperties.getBoolean(DroidProperties.FULLSCREEN));
+        primaryStage.setWidth(DroidProperties.getDouble(DroidProperties.WIDTH));
+        primaryStage.setHeight(DroidProperties.getDouble(DroidProperties.HEIGHT));
 
         primaryStage.show();
 
         primaryStage.setOnCloseRequest(e -> {
-            if (Boolean.valueOf((String) app.getProperties().getOrDefault("save.nag", "true")))
+            if (DroidProperties.getBoolean(DroidProperties.SAVE_NAG))
                 showSaveConfirmation();
-            else if (Boolean.valueOf((String) app.getProperties().getOrDefault("autosave", "true")))
+            else if (DroidProperties.getBoolean(DroidProperties.AUTOSAVE))
                 app.save();
             close();
         });
@@ -153,11 +150,21 @@ public class Launcher extends Application {
 
     private void close() {
         Watcher.shutdown();
-        Properties properties = app.getProperties();
-        properties.setProperty("height", String.valueOf(stage.getHeight()));
-        properties.setProperty("width", String.valueOf(stage.getWidth()));
-        properties.setProperty("fullscreen", String.valueOf(stage.isFullScreen()));
+        saveProperties();
         app.shutdown();
+    }
+
+    private void saveProperties() {
+        DroidProperties.set(DroidProperties.HEIGHT, stage.getHeight());
+        DroidProperties.set(DroidProperties.WIDTH, stage.getWidth());
+        DroidProperties.set(DroidProperties.FULLSCREEN, stage.isFullScreen());
+
+        try {
+            DroidProperties.save(new FileOutputStream(System.getProperty("user.home")
+                    + "/.harvesterdroid/harvesterdroid.properties"));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
     private void updateLoadingProgress(String status, double value) {

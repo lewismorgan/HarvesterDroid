@@ -43,9 +43,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
@@ -57,7 +55,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Properties;
 import java.util.stream.Collectors;
 
 public class HarvesterDroid {
@@ -72,8 +69,6 @@ public class HarvesterDroid {
     private final HarvesterDroidData data;
 
     private final Downloader downloader;
-
-    private Properties properties;
 
     private SchematicsXml schematicsXml;
     private InventoryXml inventoryXml;
@@ -233,12 +228,7 @@ public class HarvesterDroid {
     }
 
     public void shutdown() {
-        try {
-            properties.store(new OutputStreamWriter(new FileOutputStream(System.getProperty("user.home")
-                    + "/.harvesterdroid/harvesterdroid.properties")), "Saved User Preferences for HarvesterDroid");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+
     }
 
     public void updateResources() {
@@ -314,11 +304,6 @@ public class HarvesterDroid {
         galaxyResource.setResourceType(type);
     }
 
-
-    public void updateFromProperties() {
-        // TODO Update data according to properties
-    }
-
     public ObservableList<GalaxyResource> getInventory() {
         return inventory.get();
     }
@@ -363,13 +348,5 @@ public class HarvesterDroid {
         Map<String, String> types = new HashMap<>();
         data.getResourceTypeMap().forEach((key, value) -> types.put(key, value.getName()));
         return types;
-    }
-
-    public Properties getProperties() {
-        return properties;
-    }
-
-    public void setProperties(Properties properties) {
-        this.properties = properties;
     }
 }

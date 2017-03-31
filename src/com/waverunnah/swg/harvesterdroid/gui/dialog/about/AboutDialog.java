@@ -34,4 +34,9 @@ public class AboutDialog extends BaseDialog {
                 ButtonType.CLOSE
         };
     }
+
+    @Override
+    protected boolean isController() {
+        return false;
+    }
 }

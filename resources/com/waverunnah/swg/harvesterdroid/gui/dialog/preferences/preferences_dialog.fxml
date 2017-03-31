@@ -9,8 +9,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-
-<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" spacing="5.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.waverunnah.swg.harvesterdroid.gui.dialog.preferences.PreferencesController">
+<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" spacing="5.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <HBox alignment="CENTER" spacing="5.0" VBox.vgrow="ALWAYS">
          <children>
@@ -29,7 +28,7 @@
       <HBox alignment="CENTER" spacing="25.0" VBox.vgrow="ALWAYS">
          <children>
             <CheckBox fx:id="autosaveCheckBox" alignment="TOP_LEFT" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" text="AutoSave" />
-            <CheckBox fx:id="saveNagChoiceBox" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" text="Save Confirmation on Close" />
+            <CheckBox fx:id="saveNagCheckBox" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" text="Save Confirmation on Close" />
          </children>
          <padding>
             <Insets bottom="5.0" />

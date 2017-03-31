@@ -53,4 +53,9 @@ public class ResourceDialog extends BaseDialog<GalaxyResource> {
             return controller.getGalaxyResource();
         });
     }
+
+    @Override
+    protected boolean isController() {
+        return false;
+    }
 }

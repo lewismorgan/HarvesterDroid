@@ -18,19 +18,69 @@
 
 package com.waverunnah.swg.harvesterdroid.gui.dialog.preferences;
 
+import com.waverunnah.swg.harvesterdroid.DroidProperties;
 import com.waverunnah.swg.harvesterdroid.gui.dialog.BaseDialog;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.collections.FXCollections;
+import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.TextField;
 
+import java.net.URL;
 import java.util.Properties;
+import java.util.ResourceBundle;
 
 /**
  * Created by Waverunner on 3/29/2017
  */
-public class PreferencesDialog extends BaseDialog<Properties> {
-    private static PreferencesController controller;
+public class PreferencesDialog extends BaseDialog<Properties> implements Initializable {
+    //region FXML
+    @FXML
+    private ChoiceBox<String> trackerComboBox;
+    @FXML
+    private ChoiceBox<String> galaxyComboBox;
+    @FXML
+    private TextField downloadBufferTextField;
+    @FXML
+    private CheckBox autosaveCheckBox;
+    @FXML
+    private CheckBox saveNagCheckBox;
+    //endregion
+
+    private ObjectProperty<Properties> properties;
 
     public PreferencesDialog() {
         super("HarvesterDroid Preferences");
+    }
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        properties = new SimpleObjectProperty<>();
+
+        trackerComboBox.setItems(FXCollections.observableArrayList("GalaxyHarvester"));
+        trackerComboBox.getSelectionModel().select(0);
+        trackerComboBox.setDisable(true);
+        galaxyComboBox.setItems(FXCollections.observableArrayList("SWG Legends"));
+        galaxyComboBox.getSelectionModel().select(0);
+        galaxyComboBox.setDisable(true);
+
+        createListeners();
+    }
+
+    private void createListeners() {
+        properties.addListener((observable, oldValue, newValue) -> {
+            downloadBufferTextField.setText(newValue.getProperty(DroidProperties.DOWNLOAD_BUFFER));
+            autosaveCheckBox.selectedProperty().set(Boolean.parseBoolean(newValue.getProperty(DroidProperties.AUTOSAVE)));
+            saveNagCheckBox.selectedProperty().set(Boolean.parseBoolean(newValue.getProperty(DroidProperties.SAVE_NAG)));
+        });
+
+        downloadBufferTextField.textProperty().addListener((observable, oldValue, newValue) -> properties.get().setProperty(DroidProperties.DOWNLOAD_BUFFER, String.valueOf(newValue)));
+        autosaveCheckBox.selectedProperty().addListener((observable, oldValue, newValue) -> properties.get().setProperty(DroidProperties.AUTOSAVE, String.valueOf(newValue)));
+        saveNagCheckBox.selectedProperty().addListener((observable, oldValue, newValue) -> properties.get().setProperty(DroidProperties.SAVE_NAG, String.valueOf(newValue)));
     }
 
     @Override
@@ -47,15 +97,16 @@ public class PreferencesDialog extends BaseDialog<Properties> {
             if (buttonType != ButtonType.APPLY)
                 return null;
 
-            return controller.getProperties();
+            return properties.get();
         });
     }
 
     public void setProperties(Properties properties) {
-        controller.setProperties(properties);
+        this.properties.set(properties);
     }
 
-    public static void setController(PreferencesController controller) {
-        PreferencesDialog.controller = controller;
+    @Override
+    protected boolean isController() {
+        return true;
     }
 }
