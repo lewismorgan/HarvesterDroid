@@ -102,6 +102,7 @@ public class MainController implements Initializable {
 
     public void onPreferencesMenuItem() {
         PreferencesDialog dialog = new PreferencesDialog();
+        dialog.setProperties(app.getProperties());
         Optional<Properties> result = dialog.showAndWait();
         if (result.isPresent()) {
             Properties properties = result.get();

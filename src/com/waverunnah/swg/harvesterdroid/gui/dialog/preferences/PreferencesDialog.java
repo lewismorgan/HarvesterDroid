@@ -27,6 +27,7 @@ import java.util.Properties;
  * Created by Waverunner on 3/29/2017
  */
 public class PreferencesDialog extends BaseDialog<Properties> {
+    private static PreferencesController controller;
 
     public PreferencesDialog() {
         super("HarvesterDroid Preferences");
@@ -46,7 +47,15 @@ public class PreferencesDialog extends BaseDialog<Properties> {
             if (buttonType != ButtonType.APPLY)
                 return null;
 
-            return new Properties();
+            return controller.getProperties();
         });
+    }
+
+    public void setProperties(Properties properties) {
+        controller.setProperties(properties);
+    }
+
+    public static void setController(PreferencesController controller) {
+        PreferencesDialog.controller = controller;
     }
 }

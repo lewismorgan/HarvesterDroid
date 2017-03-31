@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+
+<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" spacing="5.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.waverunnah.swg.harvesterdroid.gui.dialog.preferences.PreferencesController">
+   <children>
+      <HBox alignment="CENTER" spacing="5.0" VBox.vgrow="ALWAYS">
+         <children>
+            <Label alignment="CENTER" text="Tracker" HBox.hgrow="ALWAYS" />
+            <ChoiceBox fx:id="trackerComboBox" prefWidth="150.0" />
+            <Label text="Galaxy" />
+            <ChoiceBox fx:id="galaxyComboBox" prefWidth="150.0" />
+            <Label text="Download Buffer (hrs)" />
+            <TextField fx:id="downloadBufferTextField" prefWidth="35.0" />
+         </children>
+         <padding>
+            <Insets bottom="5.0" />
+         </padding>
+      </HBox>
+      <Separator prefWidth="200.0" />
+      <HBox alignment="CENTER" spacing="25.0" VBox.vgrow="ALWAYS">
+         <children>
+            <CheckBox fx:id="autosaveCheckBox" alignment="TOP_LEFT" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" text="AutoSave" />
+            <CheckBox fx:id="saveNagChoiceBox" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" text="Save Confirmation on Close" />
+         </children>
+         <padding>
+            <Insets bottom="5.0" />
+         </padding>
+      </HBox>
+   </children>
+   <padding>
+      <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+   </padding>
+</VBox>
