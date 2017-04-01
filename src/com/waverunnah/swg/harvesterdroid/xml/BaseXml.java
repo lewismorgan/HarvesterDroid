@@ -53,7 +53,7 @@ public abstract class BaseXml {
 
     public final void save(File file) throws TransformerException, IOException {
         if (!file.exists()) {
-            String sub = file.getAbsolutePath().substring(0, file.getAbsolutePath().lastIndexOf("\\"));
+            String sub = file.getAbsolutePath().substring(0, file.getAbsolutePath().lastIndexOf("/"));
             new File(sub).mkdirs();
             if (!file.createNewFile())
                 throw new IOException("Could not create a new xml file");

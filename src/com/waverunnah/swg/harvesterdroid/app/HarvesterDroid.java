@@ -66,6 +66,8 @@ public class HarvesterDroid {
     private List<GalaxyResource> resources;
     private List<Schematic> schematics;
 
+    private Map<String, String> galaxies;
+
     private String currentResourceTimestamp;
     private String tracker;
 
@@ -187,6 +189,8 @@ public class HarvesterDroid {
                 }
             }
 
+            galaxies = downloader.downloadGalaxyList();
+
             downloader.downloadCurrentResources();
             for (GalaxyResource downloadedResource : downloader.getCurrentResources()) {
                 populateResourceFromType(downloadedResource);
@@ -298,6 +302,10 @@ public class HarvesterDroid {
 
     public String getCurrentResourceTimestamp() {
         return currentResourceTimestamp;
+    }
+
+    public Map<String, String> getGalaxies() {
+        return galaxies;
     }
 
     public Map<String, String> getResourceTypes() {

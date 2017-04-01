@@ -31,6 +31,7 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
 
 import java.net.URL;
+import java.util.Map;
 import java.util.Properties;
 import java.util.ResourceBundle;
 
@@ -42,7 +43,7 @@ public class PreferencesDialog extends BaseDialog<Properties> implements Initial
     @FXML
     private ChoiceBox<String> trackerComboBox;
     @FXML
-    private TextField galaxyTextField;
+    private ChoiceBox<String> galaxyChoiceBox;
     @FXML
     private TextField downloadBufferTextField;
     @FXML
@@ -52,14 +53,18 @@ public class PreferencesDialog extends BaseDialog<Properties> implements Initial
     //endregion
 
     private ObjectProperty<Properties> properties;
+    private Map<String, String> galaxies;
 
-    public PreferencesDialog() {
+    public PreferencesDialog(Map<String, String> galaxies) {
         super("HarvesterDroid Preferences");
+        this.galaxies = galaxies;
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         properties = new SimpleObjectProperty<>();
+
+        galaxies.forEach((key, value) -> galaxyChoiceBox.getItems().add(value));
 
         trackerComboBox.setItems(FXCollections.observableArrayList("GalaxyHarvester"));
         trackerComboBox.getSelectionModel().select(0);
@@ -70,13 +75,13 @@ public class PreferencesDialog extends BaseDialog<Properties> implements Initial
 
     private void createListeners() {
         properties.addListener((observable, oldValue, newValue) -> {
-            galaxyTextField.setText(newValue.getProperty(DroidProperties.GALAXY));
+            selectGalaxy(newValue.getProperty(DroidProperties.GALAXY));
             downloadBufferTextField.setText(newValue.getProperty(DroidProperties.DOWNLOAD_BUFFER));
             autosaveCheckBox.selectedProperty().set(Boolean.parseBoolean(newValue.getProperty(DroidProperties.AUTOSAVE)));
             saveNagCheckBox.selectedProperty().set(Boolean.parseBoolean(newValue.getProperty(DroidProperties.SAVE_NAG)));
         });
 
-        galaxyTextField.textProperty().addListener((observable, oldValue, newValue) -> properties.get().setProperty(DroidProperties.GALAXY, String.valueOf(newValue)));
+        galaxyChoiceBox.getSelectionModel().selectedItemProperty().addListener(((observable, oldValue, newValue) -> properties.get().setProperty(DroidProperties.GALAXY, getGalaxyKey(newValue))));
         downloadBufferTextField.textProperty().addListener((observable, oldValue, newValue) -> properties.get().setProperty(DroidProperties.DOWNLOAD_BUFFER, String.valueOf(newValue)));
         autosaveCheckBox.selectedProperty().addListener((observable, oldValue, newValue) -> properties.get().setProperty(DroidProperties.AUTOSAVE, String.valueOf(newValue)));
         saveNagCheckBox.selectedProperty().addListener((observable, oldValue, newValue) -> properties.get().setProperty(DroidProperties.SAVE_NAG, String.valueOf(newValue)));
@@ -98,6 +103,18 @@ public class PreferencesDialog extends BaseDialog<Properties> implements Initial
 
             return properties.get();
         });
+    }
+
+    private String getGalaxyKey(String value) {
+        for (Map.Entry<String, String> entry : galaxies.entrySet()) {
+            if (entry.getValue().equals(value))
+                return entry.getKey();
+        }
+        return null;
+    }
+
+    private void selectGalaxy(String key) {
+        galaxyChoiceBox.getSelectionModel().select(galaxies.get(key));
     }
 
     public void setProperties(Properties properties) {

@@ -71,13 +71,37 @@ public abstract class Downloader {
 
     protected abstract void parseCurrentResources(InputStream currentResourcesStream) throws IOException;
 
+    protected abstract Map<String,String> parseGalaxyList(InputStream galaxyListStream);
+
     protected abstract GalaxyResource parseGalaxyResource(InputStream galaxyResourceStream);
 
     protected abstract InputStream getCurrentResourcesStream() throws IOException;
 
     protected abstract InputStream getGalaxyResourceStream(String resource) throws IOException;
 
+    protected abstract InputStream getGalaxyListStream() throws IOException;
+
     public abstract Date getCurrentResourcesTimestamp();
+
+    public final Map<String, String> downloadGalaxyList() {
+        InputStream in;
+
+        File file = new File(getRootDownloadsPath() + "servers.dl");
+        if (!file.exists() && !file.mkdirs())
+            return null;
+
+        try {
+            in = getGalaxyListStream();
+
+            Files.copy(in, Paths.get(file.toURI()), StandardCopyOption.REPLACE_EXISTING);
+
+            return parseGalaxyList(new FileInputStream(file));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
 
     public final DownloadResult downloadCurrentResources() throws IOException {
         InputStream in = null;

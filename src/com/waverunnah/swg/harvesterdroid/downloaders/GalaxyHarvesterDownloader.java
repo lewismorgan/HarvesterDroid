@@ -20,6 +20,7 @@ package com.waverunnah.swg.harvesterdroid.downloaders;
 
 import com.waverunnah.swg.harvesterdroid.data.resources.GalaxyResource;
 import com.waverunnah.swg.harvesterdroid.xml.galaxyharvester.HarvesterCurrentResourcesXml;
+import com.waverunnah.swg.harvesterdroid.xml.galaxyharvester.HarvesterGalaxyListXml;
 import com.waverunnah.swg.harvesterdroid.xml.galaxyharvester.HarvesterResourceXml;
 import org.xml.sax.SAXException;
 
@@ -31,6 +32,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Map;
 
 public final class GalaxyHarvesterDownloader extends Downloader {
 
@@ -56,6 +58,22 @@ public final class GalaxyHarvesterDownloader extends Downloader {
     }
 
     @Override
+    protected Map<String, String> parseGalaxyList(InputStream galaxyListStream) {
+        if (xmlFactory == null)
+            xmlFactory = DocumentBuilderFactory.newInstance();
+
+        try {
+            HarvesterGalaxyListXml galaxyListXml = new HarvesterGalaxyListXml(xmlFactory.newDocumentBuilder());
+            galaxyListXml.load(galaxyListStream);
+
+            return galaxyListXml.getGalaxyList();
+        } catch (ParserConfigurationException | SAXException | IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
     protected GalaxyResource parseGalaxyResource(InputStream galaxyResourceStream) {
         try {
             HarvesterResourceXml resourceXml = new HarvesterResourceXml(xmlFactory.newDocumentBuilder());
@@ -75,6 +93,11 @@ public final class GalaxyHarvesterDownloader extends Downloader {
     @Override
     protected InputStream getGalaxyResourceStream(String resource) throws IOException {
         return getInputStreamFromUrl("getResourceByName.py?name=" + resource + "&galaxy=" + getGalaxy());
+    }
+
+    @Override
+    protected InputStream getGalaxyListStream() throws IOException {
+        return getInputStreamFromUrl("getList.py?listType=galaxy");
     }
 
 

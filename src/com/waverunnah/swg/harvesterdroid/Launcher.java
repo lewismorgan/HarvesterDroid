@@ -104,9 +104,11 @@ public class Launcher extends Application {
         updateLoadingProgress("Finding the latest resources...", -1);
         app.updateResources();
         updateLoadingProgress("Loading saved data...", -1);
-        SchematicsXml schematicXml = XmlFactory.load(SchematicsXml.class, new FileInputStream(new File(XML_SCHEMATICS)));
-        if (schematicXml != null)
-            app.setSchematics(schematicXml.getSchematicsList());
+        if (new File(XML_SCHEMATICS).exists()) {
+            SchematicsXml schematicXml = XmlFactory.load(SchematicsXml.class, new FileInputStream(new File(XML_SCHEMATICS)));
+            if (schematicXml != null)
+                app.setSchematics(schematicXml.getSchematicsList());
+        }
         app.loadSavedData();
         updateLoadingProgress("Punch it Chewie!", -1);
     }
