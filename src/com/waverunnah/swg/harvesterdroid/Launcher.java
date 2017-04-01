@@ -90,8 +90,6 @@ public class Launcher extends Application {
         updateLoadingProgress("Setting up bare essentials...", 0.1);
         instance = this;
 
-        Downloader downloader = new GalaxyHarvesterDownloader();
-
         if (Files.exists(Paths.get(ROOT_DIR + "/harvesterdroid.properties")))
             DroidProperties.load(new FileInputStream(Paths.get(ROOT_DIR + "/harvesterdroid.properties").toFile()));
         else DroidProperties.load(getClass().getResourceAsStream("/harvesterdroid.properties"));
@@ -99,7 +97,8 @@ public class Launcher extends Application {
         DEBUG = DroidProperties.getBoolean(DroidProperties.DEBUG);
 
         // TODO Decide what downloader to use based on preferences
-        app = new HarvesterDroid(XML_SCHEMATICS, XML_INVENTORY, downloader);
+        Downloader downloader = new GalaxyHarvesterDownloader(DroidProperties.getString(DroidProperties.GALAXY));
+        app = new HarvesterDroid(XML_SCHEMATICS, XML_INVENTORY, "galaxyharvester", downloader);
 
         if (!new File(ROOT_DIR).exists())
             new File(ROOT_DIR).mkdir();

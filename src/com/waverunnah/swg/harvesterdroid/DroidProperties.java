@@ -30,7 +30,7 @@ import java.util.Properties;
 public class DroidProperties {
     private static Properties properties;
     public static String TRACKER = "tracker";
-    public static String GALAXY = "galaxy";
+    public static String GALAXY = "activegalaxy";
     public static String DOWNLOAD_BUFFER = "download.buffer";
 
     public static String WIDTH = "width";

@@ -37,8 +37,8 @@ public final class GalaxyHarvesterDownloader extends Downloader {
     private DocumentBuilderFactory xmlFactory = DocumentBuilderFactory.newInstance();
     private HarvesterCurrentResourcesXml currentResourcesXml;
 
-    public GalaxyHarvesterDownloader() {
-        super("galaxyharvester", "https://galaxyharvester.net/");
+    public GalaxyHarvesterDownloader(String galaxy) {
+        super("galaxyharvester", "https://galaxyharvester.net/", galaxy);
     }
 
     @Override
@@ -69,12 +69,12 @@ public final class GalaxyHarvesterDownloader extends Downloader {
 
     @Override
     public InputStream getCurrentResourcesStream() throws IOException {
-        return getInputStreamFromUrl("exports/current48.xml");
+        return getInputStreamFromUrl("exports/current" + getGalaxy() + ".xml");
     }
 
     @Override
     protected InputStream getGalaxyResourceStream(String resource) throws IOException {
-        return getInputStreamFromUrl("getResourceByName.py?name=" + resource + "&galaxy=48");
+        return getInputStreamFromUrl("getResourceByName.py?name=" + resource + "&galaxy=" + getGalaxy());
     }
 
 

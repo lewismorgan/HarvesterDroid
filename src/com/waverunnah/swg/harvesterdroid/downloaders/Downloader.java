@@ -45,19 +45,21 @@ import java.util.Map;
  * sub-classes to know how the data is stored and convert them to the resources map.
  */
 public abstract class Downloader {
+    private String galaxy;
     private final String baseUrl;
     private final String identifier;
 
     private final Map<String, GalaxyResource> currentResources = new HashMap<>();
 
-    protected Downloader(String identifier, String baseUrl) {
+    protected Downloader(String identifier, String baseUrl, String galaxy) {
         this.identifier = identifier;
         this.baseUrl = baseUrl;
+        this.galaxy = galaxy;
         init();
     }
 
     private void init() {
-        File currentResources = new File(getRootDownloadsPath() + "current_resources.dl");
+        File currentResources = new File(getRootDownloadsPath() + "current_resources" + getGalaxy() + ".dl");
         if (currentResources.exists()) {
             try {
                 parseCurrentResources(new FileInputStream(currentResources));
@@ -80,7 +82,7 @@ public abstract class Downloader {
     public final DownloadResult downloadCurrentResources() throws IOException {
         InputStream in = null;
 
-        File file = new File(getRootDownloadsPath() + "current_resources.dl");
+        File file = new File(getRootDownloadsPath() + "current_resources" + getGalaxy() + ".dl");
         if (!file.exists() && !file.mkdirs())
             return DownloadResult.FAILED;
 
@@ -90,7 +92,7 @@ public abstract class Downloader {
             Files.copy(in, Paths.get(file.toURI()), StandardCopyOption.REPLACE_EXISTING);
 
             // Just in-case the user messes with something, we can re-download the XML
-            Watcher.createFileWatcher(new File(getRootDownloadsPath() + "current_resources.dl"), () -> {
+            Watcher.createFileWatcher(new File(getRootDownloadsPath() + "current_resources" + getGalaxy() + ".dl"), () -> {
                 try {
                     downloadCurrentResources();
                 } catch (IOException e) {
@@ -150,12 +152,20 @@ public abstract class Downloader {
         return identifier;
     }
 
-    public Collection<GalaxyResource> getCurrentResources() {
+    public final Collection<GalaxyResource> getCurrentResources() {
         return currentResources.values();
     }
 
     private String getRootDownloadsPath() {
         return Launcher.ROOT_DIR + "/" + getIdentifier() + "/";
+    }
+
+    public final String getGalaxy() {
+        return galaxy;
+    }
+
+    public final void setGalaxy(String galaxy) {
+        this.galaxy = galaxy;
     }
 
     public enum DownloadResult {

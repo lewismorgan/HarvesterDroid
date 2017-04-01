@@ -16,7 +16,7 @@
             <Label alignment="CENTER" text="Tracker" HBox.hgrow="ALWAYS" />
             <ChoiceBox fx:id="trackerComboBox" prefWidth="150.0" />
             <Label text="Galaxy" />
-            <ChoiceBox fx:id="galaxyComboBox" prefWidth="150.0" />
+            <TextField fx:id="galaxyTextField" />
             <Label text="Download Buffer (hrs)" />
             <TextField fx:id="downloadBufferTextField" prefWidth="35.0" />
          </children>

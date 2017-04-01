@@ -42,7 +42,7 @@ public class PreferencesDialog extends BaseDialog<Properties> implements Initial
     @FXML
     private ChoiceBox<String> trackerComboBox;
     @FXML
-    private ChoiceBox<String> galaxyComboBox;
+    private TextField galaxyTextField;
     @FXML
     private TextField downloadBufferTextField;
     @FXML
@@ -64,20 +64,19 @@ public class PreferencesDialog extends BaseDialog<Properties> implements Initial
         trackerComboBox.setItems(FXCollections.observableArrayList("GalaxyHarvester"));
         trackerComboBox.getSelectionModel().select(0);
         trackerComboBox.setDisable(true);
-        galaxyComboBox.setItems(FXCollections.observableArrayList("SWG Legends"));
-        galaxyComboBox.getSelectionModel().select(0);
-        galaxyComboBox.setDisable(true);
 
         createListeners();
     }
 
     private void createListeners() {
         properties.addListener((observable, oldValue, newValue) -> {
+            galaxyTextField.setText(newValue.getProperty(DroidProperties.GALAXY));
             downloadBufferTextField.setText(newValue.getProperty(DroidProperties.DOWNLOAD_BUFFER));
             autosaveCheckBox.selectedProperty().set(Boolean.parseBoolean(newValue.getProperty(DroidProperties.AUTOSAVE)));
             saveNagCheckBox.selectedProperty().set(Boolean.parseBoolean(newValue.getProperty(DroidProperties.SAVE_NAG)));
         });
 
+        galaxyTextField.textProperty().addListener((observable, oldValue, newValue) -> properties.get().setProperty(DroidProperties.GALAXY, String.valueOf(newValue)));
         downloadBufferTextField.textProperty().addListener((observable, oldValue, newValue) -> properties.get().setProperty(DroidProperties.DOWNLOAD_BUFFER, String.valueOf(newValue)));
         autosaveCheckBox.selectedProperty().addListener((observable, oldValue, newValue) -> properties.get().setProperty(DroidProperties.AUTOSAVE, String.valueOf(newValue)));
         saveNagCheckBox.selectedProperty().addListener((observable, oldValue, newValue) -> properties.get().setProperty(DroidProperties.SAVE_NAG, String.valueOf(newValue)));

@@ -107,6 +107,7 @@ public class MainController implements Initializable {
         Optional<Properties> result = dialog.showAndWait();
         if (result.isPresent()) {
             Properties properties = result.get();
+            app.switchToGalaxy(properties.getProperty(DroidProperties.GALAXY));
             DroidProperties.setProperties(properties);
         }
     }

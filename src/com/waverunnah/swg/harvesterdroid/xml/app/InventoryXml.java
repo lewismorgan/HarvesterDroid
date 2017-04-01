@@ -18,21 +18,20 @@
 
 package com.waverunnah.swg.harvesterdroid.xml.app;
 
+import com.waverunnah.swg.harvesterdroid.data.resources.InventoryResource;
 import com.waverunnah.swg.harvesterdroid.xml.BaseXml;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 public class InventoryXml extends BaseXml {
-    public List<String> inventory = new ArrayList<>();
+    public List<InventoryResource> inventory = new ArrayList<>();
 
     public InventoryXml(DocumentBuilder documentBuilder) {
         super(documentBuilder);
@@ -44,14 +43,16 @@ public class InventoryXml extends BaseXml {
             return;
 
         processElement(root, node -> {
-            if (!node.getNodeName().equals("resource") || node.getAttributes().getLength() != 1)
+            if (!node.getNodeName().equals("resource") || node.getAttributes().getLength() != 3)
                 return;
 
-            Node name = node.getAttributes().getNamedItem("name");
-            if (name == null || name.getTextContent().isEmpty())
-                return;
+            InventoryResource inventoryResource = new InventoryResource();
 
-            inventory.add(name.getTextContent());
+            inventoryResource.setName(node.getAttributes().getNamedItem("name").getTextContent());
+            inventoryResource.setGalaxy(node.getAttributes().getNamedItem("galaxy").getTextContent());
+            inventoryResource.setTracker(node.getAttributes().getNamedItem("tracker").getTextContent());
+
+            inventory.add(inventoryResource);
         });
     }
 
@@ -59,21 +60,22 @@ public class InventoryXml extends BaseXml {
     protected void write(Document document) {
         Element root = document.createElement("inventory");
 
-        inventory.forEach(resource -> {
+        inventory.forEach(invResource -> {
             Element node = document.createElement("resource");
-            node.setAttribute("name", resource);
+            node.setAttribute("tracker", invResource.getTracker());
+            node.setAttribute("galaxy", invResource.getGalaxy());
+            node.setAttribute("name", invResource.getName());
             root.appendChild(node);
         });
 
         document.appendChild(root);
     }
 
-    public List<String> getInventory() {
+    public List<InventoryResource> getInventory() {
         return inventory;
     }
 
-    public void setInventory(Collection<String> newInventory) {
-        inventory.clear();
-        inventory.addAll(newInventory);
+    public void setInventory(List<InventoryResource> inventory) {
+        this.inventory = inventory;
     }
 }

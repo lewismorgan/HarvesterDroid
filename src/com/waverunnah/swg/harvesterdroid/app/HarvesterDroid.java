@@ -19,6 +19,7 @@
 package com.waverunnah.swg.harvesterdroid.app;
 
 import com.waverunnah.swg.harvesterdroid.data.resources.GalaxyResource;
+import com.waverunnah.swg.harvesterdroid.data.resources.InventoryResource;
 import com.waverunnah.swg.harvesterdroid.data.resources.ResourceType;
 import com.waverunnah.swg.harvesterdroid.data.schematics.Schematic;
 import com.waverunnah.swg.harvesterdroid.downloaders.Downloader;
@@ -54,12 +55,15 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class HarvesterDroid {
     // TODO Status messages
     // TODO Move intensive methods to a Task
+    // TODO Refactor XML handling
+    // TODO Remove dependency of JavaFX classes -> Should only be needed within the gui package!
 
     private final static int DOWNLOAD_HOURS = 2;
 
@@ -73,6 +77,8 @@ public class HarvesterDroid {
     private SchematicsXml schematicsXml;
     private InventoryXml inventoryXml;
 
+    private List<InventoryResource> inventoryResources;
+
     private ListProperty<GalaxyResource> inventory;
     private SimpleListProperty<GalaxyResource> resources;
     private ListProperty<Schematic> schematics;
@@ -82,11 +88,15 @@ public class HarvesterDroid {
 
     private ObjectProperty<Schematic> activeSchematic;
     private StringProperty currentResourceTimestamp;
+    private String tracker;
 
-    public HarvesterDroid(String schematicsXmlPath, String inventoryXmlPath, Downloader downloader) {
+
+    public HarvesterDroid(String schematicsXmlPath, String inventoryXmlPath, String tracker, Downloader downloader) {
         this.schematicsXmlPath = schematicsXmlPath;
         this.inventoryXmlPath = inventoryXmlPath;
         this.downloader = downloader;
+        this.tracker = tracker;
+        this.inventoryResources = new ArrayList<>();
         this.currentResourceTimestamp = new SimpleStringProperty();
         this.data = new HarvesterDroidData();
         init(new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
@@ -111,6 +121,16 @@ public class HarvesterDroid {
                     c.getAddedSubList().forEach(galaxyResource -> {
                         if (!resources.contains(galaxyResource))
                             resources.add(galaxyResource);
+
+                        boolean exists = false;
+                        for (InventoryResource inventoryResource : inventoryResources) {
+                            if (inventoryResource.getName().equals(galaxyResource.getName())) {
+                                exists = true;
+                                break;
+                            }
+                        }
+                        if (!exists)
+                            inventoryResources.add(new InventoryResource(galaxyResource.getName(), tracker, downloader.getGalaxy()));
                     });
                 }
             }
@@ -217,7 +237,7 @@ public class HarvesterDroid {
 
     public void save() {
         schematicsXml.setSchematics(getSchematics());
-        inventoryXml.setInventory(getInventory().stream().map(GalaxyResource::getName).collect(Collectors.toList()));
+        inventoryXml.setInventory(inventoryResources);
 
         try {
             schematicsXml.save(new File(schematicsXmlPath));
@@ -266,18 +286,30 @@ public class HarvesterDroid {
             e.printStackTrace();
         }
 
-        List<GalaxyResource> inventoryResources = new ArrayList<>();
+        schematics.setAll(schematicsXml.getSchematics());
 
-        for (String resource : inventoryXml.getInventory()) {
-            GalaxyResource galaxyResource = getGalaxyResourceByName(resource);
+        if (inventoryXml != null) {
+            inventoryResources = inventoryXml.getInventory();
+            refreshInventoryResources();
+        }
+    }
+
+    public void refreshInventoryResources() {
+        List<GalaxyResource> inventory = new ArrayList<>();
+
+        String galaxy = downloader.getGalaxy();
+        for (InventoryResource inventoryResource : inventoryResources) {
+            if (!Objects.equals(inventoryResource.getTracker(), tracker) && !Objects.equals(inventoryResource.getGalaxy(), galaxy))
+                return;
+
+            GalaxyResource galaxyResource = getGalaxyResourceByName(inventoryResource.getName());
             if (galaxyResource == null)
-                galaxyResource = retrieveGalaxyResource(resource);
+                galaxyResource = retrieveGalaxyResource(inventoryResource.getName());
             if (galaxyResource != null)
-                inventoryResources.add(galaxyResource);
+                inventory.add(galaxyResource);
         }
 
-        schematics.setAll(schematicsXml.getSchematics());
-        inventory.setAll(inventoryResources);
+        this.inventory.setAll(inventory);
     }
 
     public GalaxyResource retrieveGalaxyResource(String resource) {
@@ -293,6 +325,15 @@ public class HarvesterDroid {
         populateResourceFromType(galaxyResource);
         resources.add(galaxyResource);
         return galaxyResource;
+    }
+
+    public void switchToGalaxy(String galaxy) {
+        if (Objects.equals(galaxy, downloader.getGalaxy()))
+            return;
+
+        downloader.setGalaxy(galaxy);
+        updateResources();
+        refreshInventoryResources();
     }
 
     private void populateResourceFromType(GalaxyResource galaxyResource) {
