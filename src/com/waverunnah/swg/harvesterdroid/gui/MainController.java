@@ -22,12 +22,17 @@ import com.waverunnah.swg.harvesterdroid.DroidProperties;
 import com.waverunnah.swg.harvesterdroid.Launcher;
 import com.waverunnah.swg.harvesterdroid.app.HarvesterDroid;
 import com.waverunnah.swg.harvesterdroid.data.resources.GalaxyResource;
+import com.waverunnah.swg.harvesterdroid.data.schematics.Schematic;
 import com.waverunnah.swg.harvesterdroid.gui.cells.GalaxyResourceListCell;
 import com.waverunnah.swg.harvesterdroid.gui.components.inventory.InventoryControl;
 import com.waverunnah.swg.harvesterdroid.gui.components.schematics.SchematicsControl;
 import com.waverunnah.swg.harvesterdroid.gui.dialog.about.AboutDialog;
 import com.waverunnah.swg.harvesterdroid.gui.dialog.preferences.PreferencesDialog;
 import javafx.beans.binding.Bindings;
+import javafx.beans.property.ListProperty;
+import javafx.beans.property.SimpleListProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ListView;
@@ -52,7 +57,10 @@ public class MainController implements Initializable {
     ListView<GalaxyResource> bestResourcesListView;
     @FXML
     StatusBar statusBar;
+
     private HarvesterDroid app;
+
+    private ListProperty<Schematic> schematics = new SimpleListProperty<>();;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -84,13 +92,23 @@ public class MainController implements Initializable {
     }
 
     private void initSchematics() {
+        schematics.set(FXCollections.observableArrayList(app.getSchematics()));
         schematicsControl.focusedSchematicProperty().bindBidirectional(app.activeSchematicProperty());
-        schematicsControl.itemsProperty().bind(app.schematicsProperty());
-        schematicsControl.disableSchematicsViewProperty().bind(app.schematicsProperty().emptyProperty());
+        schematicsControl.itemsProperty().bind(schematics);
+        schematicsControl.disableSchematicsViewProperty().bind(schematics.emptyProperty());
+
+        schematics.addListener((ListChangeListener<Schematic>) c -> {
+            while(c.next()) {
+                if (c.getAddedSize() > 0)
+                    c.getAddedSubList().forEach(added -> app.getSchematics().add(added));
+                if (c.getRemovedSize() > 0)
+                    c.getRemoved().forEach(removed -> app.getSchematics().remove(removed));
+            }
+        });
     }
 
     public void save() {
-        app.save();
+        Launcher.save();
     }
 
     public void close() {

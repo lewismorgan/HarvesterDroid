@@ -58,12 +58,16 @@ public class SchematicDialog extends BaseDialog<Schematic> {
         setResultConverter(buttonType -> {
             if (buttonType != SAVE)
                 return null;
-            return controller.getSchematic();
+            return controller.createSchematic();
         });
     }
 
     @Override
     protected boolean isController() {
         return false;
+    }
+
+    public void readSchematic(Schematic schematic) {
+        controller.readSchematic(schematic);
     }
 }

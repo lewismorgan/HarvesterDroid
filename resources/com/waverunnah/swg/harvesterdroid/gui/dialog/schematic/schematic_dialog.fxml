@@ -39,7 +39,7 @@
                   <Insets top="5.0" />
                </HBox.margin>
             </Label>
-            <TextField fx:id="nameField" promptText="Name of the schematic" HBox.hgrow="ALWAYS" />
+            <TextField fx:id="nameField" promptText="Name of the schematicsList" HBox.hgrow="ALWAYS" />
             <Label text="Group" HBox.hgrow="ALWAYS">
                <HBox.margin>
                   <Insets top="5.0" />

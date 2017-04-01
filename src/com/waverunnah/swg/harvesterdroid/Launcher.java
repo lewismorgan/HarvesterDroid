@@ -23,6 +23,8 @@ import com.waverunnah.swg.harvesterdroid.app.Watcher;
 import com.waverunnah.swg.harvesterdroid.downloaders.Downloader;
 import com.waverunnah.swg.harvesterdroid.downloaders.GalaxyHarvesterDownloader;
 import com.waverunnah.swg.harvesterdroid.gui.dialog.ExceptionDialog;
+import com.waverunnah.swg.harvesterdroid.xml.XmlFactory;
+import com.waverunnah.swg.harvesterdroid.xml.app.SchematicsXml;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -39,21 +41,18 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
 public class Launcher extends Application {
     private static boolean DEBUG = false;
     // TODO Finish refactoring business logic into HarvesterDroid
-    private static final Map<String, List<String>> resourceGroups = new HashMap<>();
+
     public static String ROOT_DIR = System.getProperty("user.home") + "/.harvesterdroid";
     private static String XML_SCHEMATICS = ROOT_DIR + "/schematics.xml";
     private static String XML_INVENTORY = ROOT_DIR + "/inventory.xml";
-    private static Launcher instance;
     private static Stage stage;
-    private HarvesterDroid app;
+    private static HarvesterDroid app;
 
     public static void main(String[] args) {
         Thread.setDefaultUncaughtExceptionHandler((t, e) -> {
@@ -74,11 +73,11 @@ public class Launcher extends Application {
     }
 
     public static Map<String, String> getResourceTypes() {
-        return instance.app.getResourceTypes();
+        return app.getResourceTypes();
     }
 
     public static HarvesterDroid getApp() {
-        return instance.app;
+        return app;
     }
 
     public static Image getAppIcon() {
@@ -88,7 +87,6 @@ public class Launcher extends Application {
     @Override
     public void init() throws Exception {
         updateLoadingProgress("Setting up bare essentials...", 0.1);
-        instance = this;
 
         if (Files.exists(Paths.get(ROOT_DIR + "/harvesterdroid.properties")))
             DroidProperties.load(new FileInputStream(Paths.get(ROOT_DIR + "/harvesterdroid.properties").toFile()));
@@ -98,7 +96,7 @@ public class Launcher extends Application {
 
         // TODO Decide what downloader to use based on preferences
         Downloader downloader = new GalaxyHarvesterDownloader(DroidProperties.getString(DroidProperties.GALAXY));
-        app = new HarvesterDroid(XML_SCHEMATICS, XML_INVENTORY, "galaxyharvester", downloader);
+        app = new HarvesterDroid(XML_INVENTORY, "galaxyharvester", downloader);
 
         if (!new File(ROOT_DIR).exists())
             new File(ROOT_DIR).mkdir();
@@ -106,6 +104,9 @@ public class Launcher extends Application {
         updateLoadingProgress("Finding the latest resources...", -1);
         app.updateResources();
         updateLoadingProgress("Loading saved data...", -1);
+        SchematicsXml schematicXml = XmlFactory.load(SchematicsXml.class, new FileInputStream(new File(XML_SCHEMATICS)));
+        if (schematicXml != null)
+            app.setSchematics(schematicXml.getSchematicsList());
         app.loadSavedData();
         updateLoadingProgress("Punch it Chewie!", -1);
     }
@@ -129,7 +130,7 @@ public class Launcher extends Application {
             if (DroidProperties.getBoolean(DroidProperties.SAVE_NAG))
                 showSaveConfirmation();
             else if (DroidProperties.getBoolean(DroidProperties.AUTOSAVE))
-                app.save();
+                save();
             close();
         });
     }
@@ -143,7 +144,20 @@ public class Launcher extends Application {
 
         Optional<ButtonType> result = save.showAndWait();
         if (result.isPresent() && result.get().equals(ButtonType.YES)) {
-            app.save();
+            save();
+        }
+    }
+
+    public static void save() {
+        app.save();
+
+        SchematicsXml schematicsXml = new SchematicsXml();
+        schematicsXml.setSchematicsList(app.getSchematics());
+
+        try {
+            XmlFactory.write(schematicsXml, new FileOutputStream(new File(XML_SCHEMATICS)));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
         }
     }
 

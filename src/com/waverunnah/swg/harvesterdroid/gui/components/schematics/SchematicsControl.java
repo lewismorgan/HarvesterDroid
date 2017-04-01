@@ -112,11 +112,9 @@ public class SchematicsControl extends VBox {
             return;
 
         Schematic schematic = result.get();
-        if (!schematic.isIncomplete()) {
-            items.add(schematic);
-            schematicsTreeView.getSelectionModel().clearSelection();
-            schematicsTreeView.getSelectionModel().selectLast();
-        }
+        items.add(schematic);
+        schematicsTreeView.getSelectionModel().clearSelection();
+        schematicsTreeView.getSelectionModel().selectLast();
     }
 
     public void displaySchematicDialog(Schematic schematic) {
@@ -130,7 +128,7 @@ public class SchematicsControl extends VBox {
 
         updateTreeView();
 
-        schematicsTreeView.getSelectionModel().select(getSchematicsTreeItem(schematicsTreeView.getRoot(), schematic.getIdentifier()));
+        schematicsTreeView.getSelectionModel().select(getSchematicsTreeItem(schematicsTreeView.getRoot(), schematic.getId()));
     }
 
     @FXML
@@ -246,7 +244,7 @@ public class SchematicsControl extends VBox {
     }
 
     private TreeItem<SchematicsTreeItem> createSchematicsTreeItem(Schematic schematic) {
-        return new TreeItem<>(new SchematicsTreeItem(schematic.getName(), schematic.getIdentifier(), false));
+        return new TreeItem<>(new SchematicsTreeItem(schematic.getName(), schematic.getId(), false));
     }
 
     private TreeItem<SchematicsTreeItem> createGroupTreeItem(String[] groups, int index) {
@@ -269,7 +267,7 @@ public class SchematicsControl extends VBox {
 
         TreeItem<SchematicsTreeItem> toRemove = null;
         for (TreeItem<SchematicsTreeItem> treeItem : groupRoot.getChildren()) {
-            if (treeItem.getValue().getIdentifier().equals(schematic.getIdentifier())) {
+            if (treeItem.getValue().getIdentifier().equals(schematic.getId())) {
                 toRemove = treeItem;
                 break;
             }
@@ -336,7 +334,7 @@ public class SchematicsControl extends VBox {
         Schematic toSelect = null;
 
         for (Schematic item : items) {
-            if (item.getIdentifier().equals(selected.getValue().getIdentifier())) {
+            if (item.getId().equals(selected.getValue().getIdentifier())) {
                 toSelect = item;
                 break;
             }

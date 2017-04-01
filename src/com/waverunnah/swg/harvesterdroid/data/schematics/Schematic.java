@@ -18,134 +18,91 @@
 
 package com.waverunnah.swg.harvesterdroid.data.schematics;
 
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.ListProperty;
-import javafx.beans.property.MapProperty;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleListProperty;
-import javafx.beans.property.SimpleMapProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.collections.ObservableMap;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlRootElement;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-import java.util.UUID;
-
+@XmlRootElement(name="schematic")
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Schematic {
-    private StringProperty name = new SimpleStringProperty();
-    private StringProperty group = new SimpleStringProperty();
-    private ListProperty<String> resources = new SimpleListProperty<>(FXCollections.observableArrayList());
-    private ListProperty<Modifier> modifiers = new SimpleListProperty<>(FXCollections.observableArrayList());
-    private MapProperty<String, String> resourceWeights = new SimpleMapProperty<>(FXCollections.emptyObservableMap());
+    @XmlAttribute
+    private String id;
+    @XmlAttribute
+    private String group;
+    @XmlAttribute
+    private String name;
 
-    private String identifier = UUID.randomUUID().toString();
+    @XmlElementWrapper(name="resources")
+    @XmlElement(name = "resource")
+    private List<String> resources;
+
+    @XmlElementWrapper(name="modifiers")
+    @XmlElement(name="modifier")
+    private Map<String, Integer> modifiers;
 
     public Schematic() {
-
-    }
-
-    public String getName() {
-        return name.get();
-    }
-
-    public void setName(String name) {
-        this.name.set(name);
-    }
-
-    public StringProperty nameProperty() {
-        return name;
+        this.id = "";
+        this.group = "";
+        this.name = "";
+        this.resources = new ArrayList<>();
+        this.modifiers = new HashMap<>();
     }
 
     public String getGroup() {
-        return group.get();
-    }
-
-    public void setGroup(String group) {
-        this.group.set(group);
-    }
-
-    public StringProperty groupProperty() {
         return group;
     }
 
-    public ObservableList<String> getResources() {
-        return resources.get();
+    public void setGroup(String group) {
+        this.group = group;
     }
 
-    public void setResources(ObservableList<String> resources) {
-        this.resources.set(resources);
+    public String getName() {
+        return name;
     }
 
-    public ListProperty<String> resourcesProperty() {
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public List<String> getResources() {
         return resources;
     }
 
-    public ObservableList<Modifier> getModifiers() {
-        return modifiers.get();
+    public void setResources(List<String> resources) {
+        this.resources = resources;
     }
 
-    public void setModifiers(ObservableList<Modifier> modifiers) {
-        this.modifiers.set(modifiers);
+    public String getId() {
+        return id;
     }
 
-    public ListProperty<Modifier> modifiersProperty() {
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public Map<String, Integer> getModifiers() {
         return modifiers;
     }
 
-    public boolean isIncomplete() {
-        return getName() == null || getGroup() == null || getResources() == null || getModifiers() == null
-                || getResources().isEmpty() || getModifiers().isEmpty();
-    }
-
-    public ObservableMap<String, String> getResourceWeights() {
-        return resourceWeights.get();
-    }
-
-    public MapProperty<String, String> resourceWeightsProperty() {
-        return resourceWeights;
-    }
-
-    public String getIdentifier() {
-        return identifier;
+    public void setModifiers(Map<String, Integer> modifiers) {
+        this.modifiers = modifiers;
     }
 
     @Override
     public String toString() {
-        return getName();
-    }
-
-    public static class Modifier {
-        private StringProperty name = new SimpleStringProperty();
-        private IntegerProperty value = new SimpleIntegerProperty();
-
-        public Modifier(String name, int value) {
-            setName(name);
-            setValue(value);
-        }
-
-        public String getName() {
-            return name.get();
-        }
-
-        public void setName(String name) {
-            this.name.set(name);
-        }
-
-        public StringProperty nameProperty() {
-            return name;
-        }
-
-        public int getValue() {
-            return value.get();
-        }
-
-        public void setValue(int value) {
-            this.value.set(value);
-        }
-
-        public IntegerProperty valueProperty() {
-            return value;
-        }
+        return "Schematic{" +
+                "id='" + id + '\'' +
+                ", group='" + group + '\'' +
+                ", name='" + name + '\'' +
+                ", resources=" + resources +
+                ", modifiers=" + modifiers +
+                '}';
     }
 }

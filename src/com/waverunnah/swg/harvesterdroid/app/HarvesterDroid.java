@@ -24,7 +24,6 @@ import com.waverunnah.swg.harvesterdroid.data.resources.ResourceType;
 import com.waverunnah.swg.harvesterdroid.data.schematics.Schematic;
 import com.waverunnah.swg.harvesterdroid.downloaders.Downloader;
 import com.waverunnah.swg.harvesterdroid.xml.app.InventoryXml;
-import com.waverunnah.swg.harvesterdroid.xml.app.SchematicsXml;
 import javafx.beans.property.ListProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.ReadOnlyStringProperty;
@@ -67,21 +66,19 @@ public class HarvesterDroid {
 
     private final static int DOWNLOAD_HOURS = 2;
 
-    private final String schematicsXmlPath;
     private final String inventoryXmlPath;
 
     private final HarvesterDroidData data;
 
     private final Downloader downloader;
 
-    private SchematicsXml schematicsXml;
     private InventoryXml inventoryXml;
 
     private List<InventoryResource> inventoryResources;
 
     private ListProperty<GalaxyResource> inventory;
     private SimpleListProperty<GalaxyResource> resources;
-    private ListProperty<Schematic> schematics;
+    private List<Schematic> schematics;
 
     private FilteredList<GalaxyResource> filteredInventory;
     private FilteredList<GalaxyResource> filteredResources;
@@ -91,8 +88,7 @@ public class HarvesterDroid {
     private String tracker;
 
 
-    public HarvesterDroid(String schematicsXmlPath, String inventoryXmlPath, String tracker, Downloader downloader) {
-        this.schematicsXmlPath = schematicsXmlPath;
+    public HarvesterDroid(String inventoryXmlPath, String tracker, Downloader downloader) {
         this.inventoryXmlPath = inventoryXmlPath;
         this.downloader = downloader;
         this.tracker = tracker;
@@ -103,12 +99,12 @@ public class HarvesterDroid {
         createListeners();
     }
 
-    private void init(Collection<Schematic> schematics, Collection<GalaxyResource> resources, Collection<GalaxyResource> inventory) {
+    private void init(List<Schematic> schematics, Collection<GalaxyResource> resources, Collection<GalaxyResource> inventory) {
         this.inventory = new SimpleListProperty<>(FXCollections.observableArrayList(inventory));
         filteredInventory = new FilteredList<>(this.inventory.get(), galaxyResource -> true);
         this.resources = new SimpleListProperty<>(FXCollections.observableArrayList(resources));
         filteredResources = new FilteredList<>(this.resources.get(), galaxyResource -> false);
-        this.schematics = new SimpleListProperty<>(FXCollections.observableArrayList(schematics));
+        this.schematics = schematics;
         activeSchematic = new SimpleObjectProperty<>(null);
     }
 
@@ -144,7 +140,7 @@ public class HarvesterDroid {
     }
 
     private void filterResourcesForSchematic(Schematic schematic) {
-        if (schematic == null || schematic.isIncomplete() || resources.isEmpty()) {
+        if (schematic == null || resources.isEmpty()) {
             filteredResources.setPredicate(param -> false);
             return;
         }
@@ -169,7 +165,7 @@ public class HarvesterDroid {
     public GalaxyResource collectBestResourceForSchematic(Schematic schematic, List<GalaxyResource> galaxyResources) {
         GalaxyResource ret = null;
         float weightedAvg = -1;
-        List<Schematic.Modifier> modifiers = schematic.getModifiers();
+        Map<String, Integer> modifiers = schematic.getModifiers();
 
         for (GalaxyResource galaxyResource : galaxyResources) {
             float galaxyResourceAvg = getResourceWeightedAverage(modifiers, galaxyResource);
@@ -185,11 +181,11 @@ public class HarvesterDroid {
         return ret;
     }
 
-    public float getResourceWeightedAverage(List<Schematic.Modifier> modifierList, GalaxyResource resource) {
+    public float getResourceWeightedAverage(Map<String, Integer> modifiers, GalaxyResource resource) {
         float average = 0;
 
-        for (Schematic.Modifier modifier : modifierList) {
-            float value = resource.getAttribute(modifier.getName());
+        for (Map.Entry<String, Integer> modifier : modifiers.entrySet()) {
+            float value = resource.getAttribute(modifier.getKey());
             if (value == -1)
                 continue;
 
@@ -236,11 +232,11 @@ public class HarvesterDroid {
     }
 
     public void save() {
-        schematicsXml.setSchematics(getSchematics());
+        //schematicsXml.setSchematics(getSchematics());
         inventoryXml.setInventory(inventoryResources);
 
         try {
-            schematicsXml.save(new File(schematicsXmlPath));
+            //schematicsXml.save(new File(schematicsXmlPath));
             inventoryXml.save(new File(inventoryXmlPath));
         } catch (TransformerException | IOException e) {
             throw new RuntimeException(e);
@@ -275,18 +271,18 @@ public class HarvesterDroid {
     public void loadSavedData() {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         try {
-            schematicsXml = new SchematicsXml(factory.newDocumentBuilder());
+            //schematicsXml = new SchematicsXml(factory.newDocumentBuilder());
             inventoryXml = new InventoryXml(factory.newDocumentBuilder());
 
-            if (Files.exists(Paths.get(schematicsXmlPath)))
-                schematicsXml.load(new FileInputStream(schematicsXmlPath));
+/*            if (Files.exists(Paths.get(schematicsXmlPath)))
+                schematicsXml.load(new FileInputStream(schematicsXmlPath));*/
             if (Files.exists(Paths.get(inventoryXmlPath)))
                 inventoryXml.load(new FileInputStream(inventoryXmlPath));
         } catch (ParserConfigurationException | IOException | SAXException e) {
             e.printStackTrace();
         }
 
-        schematics.setAll(schematicsXml.getSchematics());
+        //schematics.setAll(schematicsXml.getSchematics());
 
         if (inventoryXml != null) {
             inventoryResources = inventoryXml.getInventory();
@@ -357,12 +353,12 @@ public class HarvesterDroid {
         return resources.get();
     }
 
-    public ObservableList<Schematic> getSchematics() {
-        return schematics.get();
+    public List<Schematic> getSchematics() {
+        return schematics;
     }
 
-    public ListProperty<Schematic> schematicsProperty() {
-        return schematics;
+    public void setSchematics(List<Schematic> schematics) {
+        this.schematics = schematics;
     }
 
     public FilteredList<GalaxyResource> getFilteredInventory() {

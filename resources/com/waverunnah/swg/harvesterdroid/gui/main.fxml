@@ -84,7 +84,8 @@
                         <SchematicsControl fx:id="schematicsControl">
                            <padding>
                               <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                           </padding></SchematicsControl>
+                           </padding>
+                        </SchematicsControl>
                      </content>
                   </TitledPane>
                </children>
@@ -98,7 +99,7 @@
                      <content>
                         <ListView fx:id="bestResourcesListView" disable="true">
                             <placeholder>
-                                <Label text="Select a schematic to view the Best Resources" />
+                                <Label text="Select a schematicsList to view the Best Resources" />
                             </placeholder>
                         </ListView>
                      </content>
