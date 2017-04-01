@@ -30,9 +30,14 @@ import com.waverunnah.swg.harvesterdroid.gui.dialog.about.AboutDialog;
 import com.waverunnah.swg.harvesterdroid.gui.dialog.preferences.PreferencesDialog;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.ListProperty;
+import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleListProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
+import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ListView;
@@ -42,6 +47,7 @@ import javafx.stage.WindowEvent;
 import org.controlsfx.control.StatusBar;
 
 import java.net.URL;
+import java.util.List;
 import java.util.Optional;
 import java.util.Properties;
 import java.util.ResourceBundle;
@@ -60,7 +66,13 @@ public class MainController implements Initializable {
 
     private HarvesterDroid app;
 
-    private ListProperty<Schematic> schematics = new SimpleListProperty<>();;
+    private ListProperty<Schematic> schematics = new SimpleListProperty<>();
+    private ObjectProperty<Schematic> activeSchematic = new SimpleObjectProperty<>(null);
+
+    private ObservableList<GalaxyResource> inventory;
+    private FilteredList<GalaxyResource> filteredInventory;
+    private ObservableList<GalaxyResource> resources;
+    private FilteredList<GalaxyResource> filteredResources;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -71,15 +83,31 @@ public class MainController implements Initializable {
     }
 
     private void initInventory() {
-        inventoryControl.setInventoryList(app.getFilteredInventory());
-        inventoryControl.disableInventoryItemsProperty().bind(app.inventoryProperty().emptyProperty());
+        inventory = FXCollections.observableArrayList(app.getInventory());
+        filteredInventory = new FilteredList<>(inventory, galaxyResource -> true);
+        inventoryControl.setInventoryList(filteredInventory);
+        inventoryControl.disableInventoryItemsProperty().bind(Bindings.isEmpty(filteredInventory));
+
+        inventory.addListener((ListChangeListener<? super GalaxyResource>) c -> {
+            while (c.next()) {
+                if (c.wasAdded()) {
+                    c.getAddedSubList().forEach(galaxyResource -> {
+                        if (!resources.contains(galaxyResource))
+                            resources.add(galaxyResource);
+                        app.addInventoryResource(galaxyResource);
+                    });
+                }
+            }
+        });
     }
 
     private void initResources() {
-        bestResourcesPane.textProperty().bind(Bindings.concat("Best Resources as of ").concat(app.currentResourceTimestampProperty()));
-        bestResourcesListView.disableProperty().bind(Bindings.isEmpty(app.getFilteredResources()));
+        resources = FXCollections.observableArrayList(app.getResources());
+        filteredResources = new FilteredList<>(resources, galaxyResource -> false);
+        bestResourcesPane.textProperty().bind(Bindings.concat("Best Resources as of ").concat(app.getCurrentResourceTimestamp()));
+        bestResourcesListView.disableProperty().bind(Bindings.isEmpty(filteredResources));
         bestResourcesListView.setCellFactory(param -> new GalaxyResourceListCell());
-        bestResourcesListView.setItems(app.getFilteredResources());
+        bestResourcesListView.setItems(filteredResources);
         bestResourcesListView.addEventHandler(javafx.scene.input.MouseEvent.MOUSE_CLICKED, event -> {
             if (event.getButton() == MouseButton.PRIMARY) {
                 if (event.getClickCount() >= 2) {
@@ -93,7 +121,7 @@ public class MainController implements Initializable {
 
     private void initSchematics() {
         schematics.set(FXCollections.observableArrayList(app.getSchematics()));
-        schematicsControl.focusedSchematicProperty().bindBidirectional(app.activeSchematicProperty());
+        schematicsControl.focusedSchematicProperty().bindBidirectional(activeSchematic);
         schematicsControl.itemsProperty().bind(schematics);
         schematicsControl.disableSchematicsViewProperty().bind(schematics.emptyProperty());
 
@@ -105,6 +133,18 @@ public class MainController implements Initializable {
                     c.getRemoved().forEach(removed -> app.getSchematics().remove(removed));
             }
         });
+
+        activeSchematic.addListener(this::onSchematicSelected);
+    }
+
+    private void onSchematicSelected(ObservableValue<? extends Schematic> observable, Schematic oldValue, Schematic newValue) {
+        if (newValue == null) {
+            filteredResources.setPredicate(param -> false);
+            return;
+        }
+
+        List<GalaxyResource> bestResources = app.getBestResourcesList(newValue);
+        filteredResources.setPredicate(bestResources::contains);
     }
 
     public void save() {
