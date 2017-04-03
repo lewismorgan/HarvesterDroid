@@ -25,6 +25,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.MenuBar;
 import javafx.stage.WindowEvent;
+import org.controlsfx.control.StatusBar;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -35,12 +36,15 @@ import java.util.ResourceBundle;
 public class MainView implements FxmlView<MainViewModel>, Initializable {
 
     @FXML
+    private StatusBar statusBar;
+    @FXML
     private MenuBar menuBar;
+
     @InjectViewModel
     private MainViewModel viewModel;
 
     public void initialize(URL location, ResourceBundle resources) {
-
+        statusBar.textProperty().bind(viewModel.statusTextProperty());
     }
 
     public void save(ActionEvent actionEvent) {

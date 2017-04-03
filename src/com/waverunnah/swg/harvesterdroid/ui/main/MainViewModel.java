@@ -31,6 +31,8 @@ import de.saxsys.mvvmfx.ViewModel;
 import de.saxsys.mvvmfx.utils.commands.Action;
 import de.saxsys.mvvmfx.utils.commands.Command;
 import de.saxsys.mvvmfx.utils.commands.DelegateCommand;
+import javafx.beans.property.ReadOnlyStringProperty;
+import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.FXCollections;
 
 import javax.inject.Singleton;
@@ -50,6 +52,8 @@ import static com.waverunnah.swg.harvesterdroid.app.HarvesterDroidData.XML_SCHEM
 public class MainViewModel implements ViewModel {
 
     private final HarvesterDroid harvesterDroid;
+
+    private ReadOnlyStringWrapper statusText = new ReadOnlyStringWrapper();
 
     private Command preferencesCommand;
     private Command saveCommand;
@@ -94,6 +98,9 @@ public class MainViewModel implements ViewModel {
                 new AboutDialog().show();
             }
         });
+
+        galaxyScope.subscribe(GalaxyScope.CHANGED, (s, objects) -> statusText.set("Current Resources:\t" + harvesterDroid.getResources().size()));
+        statusText.set("Current Resources:\t" + harvesterDroid.getResources().size());
     }
 
     public Command getPreferencesCommand() {
@@ -106,5 +113,17 @@ public class MainViewModel implements ViewModel {
 
     public Command getAboutCommand() {
         return aboutCommand;
+    }
+
+    public String getStatusText() {
+        return statusText.get();
+    }
+
+    public ReadOnlyStringProperty statusTextProperty() {
+        return statusText.getReadOnlyProperty();
+    }
+
+    public void setStatusText(String statusText) {
+        this.statusText.set(statusText);
     }
 }

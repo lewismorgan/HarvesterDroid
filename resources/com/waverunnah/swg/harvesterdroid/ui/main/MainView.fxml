@@ -55,5 +55,5 @@
              <fx:include source="../resources/ResourcesView.fxml" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0" />
         </AnchorPane>
     </GridPane>
-    <StatusBar text="Idle" VBox.vgrow="SOMETIMES" />
+    <StatusBar fx:id="statusBar" text="Idle" VBox.vgrow="SOMETIMES" />
 </VBox>
