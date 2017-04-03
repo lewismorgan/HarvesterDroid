@@ -18,12 +18,22 @@
 
 package com.waverunnah.swg.harvesterdroid.data.resources;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlRootElement;
+
 /**
  * Created by Waverunner on 3/31/2017
  */
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlRootElement(name="resource")
 public class InventoryResource {
+    @XmlAttribute
     private String name;
+    @XmlAttribute
     private String tracker;
+    @XmlAttribute
     private String galaxy;
 
     public InventoryResource() {}

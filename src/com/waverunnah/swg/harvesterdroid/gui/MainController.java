@@ -42,7 +42,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TitledPane;
-import javafx.stage.WindowEvent;
 import org.controlsfx.control.StatusBar;
 
 import java.net.URL;
@@ -147,11 +146,11 @@ public class MainController implements Initializable {
     }
 
     public void save() {
-        Launcher.save();
+        //Launcher.save();
     }
 
     public void close() {
-        Launcher.getStage().fireEvent(new WindowEvent(Launcher.getStage(), WindowEvent.WINDOW_CLOSE_REQUEST));
+        //Launcher.getStage().fireEvent(new WindowEvent(Launcher.getStage(), WindowEvent.WINDOW_CLOSE_REQUEST));
     }
 
     public void about() {

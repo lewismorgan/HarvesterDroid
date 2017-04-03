@@ -37,6 +37,9 @@ import java.util.concurrent.atomic.AtomicInteger;
  * Created by Waverunner on 3/23/2017
  */
 public class HarvesterDroidData {
+    public static String ROOT_DIR = System.getProperty("user.home") + "/.harvesterdroid";
+    public static String XML_SCHEMATICS = ROOT_DIR + "/schematics.xml";
+    public static String XML_INVENTORY = ROOT_DIR + "/inventory.xml";
 
     private Map<String, List<String>> resourceGroups;
     private Map<String, ResourceType> resourceTypeMap;

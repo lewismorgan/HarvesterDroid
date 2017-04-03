@@ -33,14 +33,14 @@ import java.util.List;
 @XmlRootElement(name="schematics")
 public class SchematicsXml {
     @XmlElement(name="schematic")
-    private List<Schematic> schematicsList;
+    private List<Schematic> schematics;
 
-    public List<Schematic> getSchematicsList() {
-        return schematicsList;
+    public List<Schematic> getSchematics() {
+        return schematics;
     }
 
-    public void setSchematicsList(List<Schematic> schematicsList) {
-        this.schematicsList = schematicsList;
+    public void setSchematics(List<Schematic> schematics) {
+        this.schematics = schematics;
     }
 
 }

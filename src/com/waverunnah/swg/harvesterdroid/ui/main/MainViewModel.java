@@ -20,6 +20,7 @@ package com.waverunnah.swg.harvesterdroid.ui.main;
 
 import com.waverunnah.swg.harvesterdroid.DroidProperties;
 import com.waverunnah.swg.harvesterdroid.app.HarvesterDroid;
+import com.waverunnah.swg.harvesterdroid.gui.dialog.about.AboutDialog;
 import com.waverunnah.swg.harvesterdroid.gui.dialog.preferences.PreferencesDialog;
 import com.waverunnah.swg.harvesterdroid.ui.scopes.GalaxyScope;
 import com.waverunnah.swg.harvesterdroid.ui.scopes.ResourceScope;
@@ -33,8 +34,13 @@ import de.saxsys.mvvmfx.utils.commands.DelegateCommand;
 import javafx.collections.FXCollections;
 
 import javax.inject.Singleton;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.Optional;
 import java.util.Properties;
+
+import static com.waverunnah.swg.harvesterdroid.app.HarvesterDroidData.XML_INVENTORY;
+import static com.waverunnah.swg.harvesterdroid.app.HarvesterDroidData.XML_SCHEMATICS;
 
 /**
  * Created by Waverunner on 4/3/2017
@@ -47,6 +53,8 @@ public class MainViewModel implements ViewModel {
     private final HarvesterDroid harvesterDroid;
 
     private Command preferencesCommand;
+    private Command saveCommand;
+    private Command aboutCommand;
 
     @InjectScope
     private GalaxyScope galaxyScope;
@@ -72,9 +80,32 @@ public class MainViewModel implements ViewModel {
                 }
             }
         });
+
+        saveCommand = new DelegateCommand(() -> new Action() {
+            @Override
+            protected void action() throws Exception {
+                harvesterDroid.saveSchematics(new FileOutputStream(new File(XML_SCHEMATICS)));
+                harvesterDroid.saveInventory(new FileOutputStream(new File(XML_INVENTORY)));
+            }
+        });
+
+        aboutCommand = new DelegateCommand(() -> new Action() {
+            @Override
+            protected void action() throws Exception {
+                new AboutDialog().show();
+            }
+        });
     }
 
     public Command getPreferencesCommand() {
         return preferencesCommand;
+    }
+
+    public Command getSaveCommand() {
+        return saveCommand;
+    }
+
+    public Command getAboutCommand() {
+        return aboutCommand;
     }
 }

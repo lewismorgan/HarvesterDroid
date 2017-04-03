@@ -14,7 +14,7 @@
 <?import org.controlsfx.control.StatusBar?>
 
 <VBox prefHeight="800.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.waverunnah.swg.harvesterdroid.ui.main.MainView">
-    <MenuBar VBox.vgrow="ALWAYS">
+    <MenuBar fx:id="menuBar" VBox.vgrow="ALWAYS">
         <Menu mnemonicParsing="false" text="File">
             <MenuItem mnemonicParsing="false" onAction="#save" text="Save" />
             <MenuItem mnemonicParsing="false" onAction="#preferences" text="Preferences" />

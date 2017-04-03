@@ -18,10 +18,9 @@
 
 package com.waverunnah.swg.harvesterdroid.downloaders;
 
-import com.waverunnah.swg.harvesterdroid.Launcher;
+import com.waverunnah.swg.harvesterdroid.app.Watcher;
 import com.waverunnah.swg.harvesterdroid.data.resources.GalaxyResource;
 import com.waverunnah.swg.harvesterdroid.gui.dialog.ExceptionDialog;
-import com.waverunnah.swg.harvesterdroid.app.Watcher;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -46,12 +45,14 @@ import java.util.Map;
  */
 public abstract class Downloader {
     private String galaxy;
+    private final String root;
     private final String baseUrl;
     private final String identifier;
 
     private final Map<String, GalaxyResource> currentResources = new HashMap<>();
 
-    protected Downloader(String identifier, String baseUrl, String galaxy) {
+    protected Downloader(String root, String identifier, String baseUrl, String galaxy) {
+        this.root = root;
         this.identifier = identifier;
         this.baseUrl = baseUrl;
         this.galaxy = galaxy;
@@ -181,7 +182,7 @@ public abstract class Downloader {
     }
 
     private String getRootDownloadsPath() {
-        return Launcher.ROOT_DIR + "/" + getIdentifier() + "/";
+        return root + "/" + getIdentifier() + "/";
     }
 
     public final String getGalaxy() {

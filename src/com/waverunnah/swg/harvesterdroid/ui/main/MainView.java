@@ -21,7 +21,10 @@ package com.waverunnah.swg.harvesterdroid.ui.main;
 import de.saxsys.mvvmfx.FxmlView;
 import de.saxsys.mvvmfx.InjectViewModel;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.MenuBar;
+import javafx.stage.WindowEvent;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -31,6 +34,8 @@ import java.util.ResourceBundle;
  */
 public class MainView implements FxmlView<MainViewModel>, Initializable {
 
+    @FXML
+    private MenuBar menuBar;
     @InjectViewModel
     private MainViewModel viewModel;
 
@@ -39,7 +44,7 @@ public class MainView implements FxmlView<MainViewModel>, Initializable {
     }
 
     public void save(ActionEvent actionEvent) {
-
+        viewModel.getSaveCommand().execute();
     }
 
     public void preferences(ActionEvent actionEvent) {
@@ -47,9 +52,11 @@ public class MainView implements FxmlView<MainViewModel>, Initializable {
     }
 
     public void close(ActionEvent actionEvent) {
-
+        menuBar.getScene().getWindow().fireEvent(new WindowEvent(menuBar.getScene().getWindow(), WindowEvent.WINDOW_CLOSE_REQUEST));
     }
 
-    public void about(ActionEvent actionEvent) {}
+    public void about(ActionEvent actionEvent) {
+        viewModel.getAboutCommand().execute();
+    }
 
 }

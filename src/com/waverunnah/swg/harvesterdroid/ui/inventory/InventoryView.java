@@ -25,6 +25,7 @@ import de.saxsys.mvvmfx.InjectViewModel;
 import de.saxsys.mvvmfx.utils.viewlist.CachedViewModelCellFactory;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 
 import java.net.URL;
@@ -34,6 +35,11 @@ import java.util.ResourceBundle;
  * Created by Waverunner on 4/3/2017
  */
 public class InventoryView implements FxmlView<InventoryViewModel>, Initializable {
+    @FXML
+    private Button removeButton;
+    @FXML
+    private Button addButton;
+
     @InjectViewModel
     private InventoryViewModel viewModel;
 
@@ -41,7 +47,18 @@ public class InventoryView implements FxmlView<InventoryViewModel>, Initializabl
     private ListView<GalaxyResourceItemViewModel> listView;
 
     public void initialize(URL location, ResourceBundle resources) {
+        listView.disableProperty().bind(viewModel.inventoryProperty().emptyProperty());
         listView.itemsProperty().bind(viewModel.inventoryProperty());
         listView.setCellFactory(CachedViewModelCellFactory.createForFxmlView(GalaxyResourceItemView.class));
+        viewModel.selectedProperty().bind(listView.getSelectionModel().selectedItemProperty());
+        removeButton.disableProperty().bind(viewModel.getRemoveCommand().executableProperty().not());
+    }
+
+    public void removeSelectedResource() {
+        viewModel.getRemoveCommand().execute();
+    }
+
+    public void addGalaxyResource() {
+        viewModel.getAddCommand().execute();
     }
 }

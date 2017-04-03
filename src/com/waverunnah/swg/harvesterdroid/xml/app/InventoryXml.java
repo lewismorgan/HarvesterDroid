@@ -19,57 +19,19 @@
 package com.waverunnah.swg.harvesterdroid.xml.app;
 
 import com.waverunnah.swg.harvesterdroid.data.resources.InventoryResource;
-import com.waverunnah.swg.harvesterdroid.xml.BaseXml;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.xml.sax.SAXException;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.ParserConfigurationException;
-import java.io.IOException;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class InventoryXml extends BaseXml {
-    public List<InventoryResource> inventory = new ArrayList<>();
-
-    public InventoryXml(DocumentBuilder documentBuilder) {
-        super(documentBuilder);
-    }
-
-    @Override
-    protected void read(Element root) throws IOException, ParserConfigurationException, SAXException {
-        if (!root.getNodeName().equals("inventory"))
-            return;
-
-        processElement(root, node -> {
-            if (!node.getNodeName().equals("resource") || node.getAttributes().getLength() != 3)
-                return;
-
-            InventoryResource inventoryResource = new InventoryResource();
-
-            inventoryResource.setName(node.getAttributes().getNamedItem("name").getTextContent());
-            inventoryResource.setGalaxy(node.getAttributes().getNamedItem("galaxy").getTextContent());
-            inventoryResource.setTracker(node.getAttributes().getNamedItem("tracker").getTextContent());
-
-            inventory.add(inventoryResource);
-        });
-    }
-
-    @Override
-    protected void write(Document document) {
-        Element root = document.createElement("inventory");
-
-        inventory.forEach(invResource -> {
-            Element node = document.createElement("resource");
-            node.setAttribute("tracker", invResource.getTracker());
-            node.setAttribute("galaxy", invResource.getGalaxy());
-            node.setAttribute("name", invResource.getName());
-            root.appendChild(node);
-        });
-
-        document.appendChild(root);
-    }
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlRootElement(name="inventory")
+public class InventoryXml {
+    @XmlElement(name="resource")
+    private List<InventoryResource> inventory = new ArrayList<>();
 
     public List<InventoryResource> getInventory() {
         return inventory;
