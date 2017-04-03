@@ -16,28 +16,27 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.waverunnah.swg.harvesterdroid.xml.app;
+package com.waverunnah.swg.harvesterdroid.ui.schematics;
 
-import com.waverunnah.swg.harvesterdroid.data.resources.InventoryResource;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import java.util.ArrayList;
-import java.util.List;
+import javafx.scene.control.TreeCell;
 
-@XmlAccessorType(XmlAccessType.FIELD)
-@XmlRootElement(name="inventory")
-public class InventoryXml {
-    @XmlElement(name="resource")
-    private List<InventoryResource> inventory = new ArrayList<>();
+/**
+ * Created by Waverunner on 3/23/2017
+ */
+public class SchematicsTreeCellFactory extends TreeCell<SchematicsTreeItem> {
+    // TODO Context menus
+    @Override
+    protected void updateItem(SchematicsTreeItem item, boolean empty) {
+        super.updateItem(item, empty);
 
-    public List<InventoryResource> getInventory() {
-        return inventory;
+        if (item != null) {
+            setText(item.getName());
+        } else {
+            setGraphic(null);
+            setText(null);
+        }
     }
 
-    public void setInventory(List<InventoryResource> inventory) {
-        this.inventory = inventory;
-    }
+
 }

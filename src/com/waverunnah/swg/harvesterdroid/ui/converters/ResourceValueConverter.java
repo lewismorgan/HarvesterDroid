@@ -16,28 +16,26 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.waverunnah.swg.harvesterdroid.xml.app;
+package com.waverunnah.swg.harvesterdroid.ui.converters;
 
-import com.waverunnah.swg.harvesterdroid.data.resources.InventoryResource;
+import javafx.util.StringConverter;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import java.util.ArrayList;
-import java.util.List;
-
-@XmlAccessorType(XmlAccessType.FIELD)
-@XmlRootElement(name="inventory")
-public class InventoryXml {
-    @XmlElement(name="resource")
-    private List<InventoryResource> inventory = new ArrayList<>();
-
-    public List<InventoryResource> getInventory() {
-        return inventory;
+public class ResourceValueConverter extends StringConverter<Number> {
+    @Override
+    public String toString(Number object) {
+        int value = object.intValue();
+        return value == -1 ? "--" : String.valueOf(value);
     }
 
-    public void setInventory(List<InventoryResource> inventory) {
-        this.inventory = inventory;
+    @Override
+    public Integer fromString(String string) {
+        if (!"0123456789".contains(string))
+            return -1;
+
+        int value = Integer.valueOf(string);
+        if (value > 1000 || value <= 0)
+            return -1;
+
+        return value;
     }
 }

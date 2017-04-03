@@ -16,28 +16,31 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.waverunnah.swg.harvesterdroid.xml.app;
+package com.waverunnah.swg.harvesterdroid.ui.schematics;
 
-import com.waverunnah.swg.harvesterdroid.data.resources.InventoryResource;
+/**
+ * Created by Waverunner on 3/23/2017
+ */
+public class SchematicsTreeItem {
+    private String name;
+    private String identifier;
+    private boolean group;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import java.util.ArrayList;
-import java.util.List;
-
-@XmlAccessorType(XmlAccessType.FIELD)
-@XmlRootElement(name="inventory")
-public class InventoryXml {
-    @XmlElement(name="resource")
-    private List<InventoryResource> inventory = new ArrayList<>();
-
-    public List<InventoryResource> getInventory() {
-        return inventory;
+    public SchematicsTreeItem(String name, String identifier, boolean isGroup) {
+        this.name = name;
+        this.identifier = identifier;
+        this.group = isGroup;
     }
 
-    public void setInventory(List<InventoryResource> inventory) {
-        this.inventory = inventory;
+    public String getName() {
+        return name;
+    }
+
+    public String getIdentifier() {
+        return identifier;
+    }
+
+    public boolean isGroup() {
+        return group;
     }
 }

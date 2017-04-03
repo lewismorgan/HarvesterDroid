@@ -22,12 +22,12 @@ import com.waverunnah.swg.harvesterdroid.app.HarvesterDroid;
 import com.waverunnah.swg.harvesterdroid.app.Watcher;
 import com.waverunnah.swg.harvesterdroid.downloaders.Downloader;
 import com.waverunnah.swg.harvesterdroid.downloaders.GalaxyHarvesterDownloader;
-import com.waverunnah.swg.harvesterdroid.gui.dialog.ExceptionDialog;
-import com.waverunnah.swg.harvesterdroid.xml.XmlFactory;
-import com.waverunnah.swg.harvesterdroid.xml.app.SchematicsXml;
-import javafx.application.Application;
+import com.waverunnah.swg.harvesterdroid.ui.dialog.ExceptionDialog;
+import com.waverunnah.swg.harvesterdroid.ui.main.MainView;
+import de.saxsys.mvvmfx.FluentViewLoader;
+import de.saxsys.mvvmfx.easydi.MvvmfxEasyDIApplication;
+import eu.lestard.easydi.EasyDI;
 import javafx.application.Platform;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -44,13 +44,13 @@ import java.nio.file.Paths;
 import java.util.Map;
 import java.util.Optional;
 
-public class Launcher extends Application {
-    private static boolean DEBUG = false;
-    // TODO Finish refactoring business logic into HarvesterDroid
+import static com.waverunnah.swg.harvesterdroid.app.HarvesterDroidData.ROOT_DIR;
+import static com.waverunnah.swg.harvesterdroid.app.HarvesterDroidData.XML_INVENTORY;
+import static com.waverunnah.swg.harvesterdroid.app.HarvesterDroidData.XML_SCHEMATICS;
 
-    public static String ROOT_DIR = System.getProperty("user.home") + "/.harvesterdroid";
-    private static String XML_SCHEMATICS = ROOT_DIR + "/schematics.xml";
-    private static String XML_INVENTORY = ROOT_DIR + "/inventory.xml";
+public class Launcher extends MvvmfxEasyDIApplication {
+    private static boolean DEBUG = false;
+
     private static Stage stage;
     private static HarvesterDroid app;
 
@@ -68,24 +68,9 @@ public class Launcher extends Application {
         launch(args);
     }
 
-    public static Stage getStage() {
-        return stage;
-    }
-
-    public static Map<String, String> getResourceTypes() {
-        return app.getResourceTypes();
-    }
-
-    public static HarvesterDroid getApp() {
-        return app;
-    }
-
-    public static Image getAppIcon() {
-        return new Image(Launcher.class.getResourceAsStream("/images/icon.png"));
-    }
 
     @Override
-    public void init() throws Exception {
+    public void initMvvmfx() throws Exception {
         updateLoadingProgress("Setting up bare essentials...", 0.1);
 
         if (Files.exists(Paths.get(ROOT_DIR + "/harvesterdroid.properties")))
@@ -95,29 +80,36 @@ public class Launcher extends Application {
         DEBUG = DroidProperties.getBoolean(DroidProperties.DEBUG);
 
         // TODO Decide what downloader to use based on preferences
-        Downloader downloader = new GalaxyHarvesterDownloader(DroidProperties.getString(DroidProperties.GALAXY));
-        app = new HarvesterDroid(XML_INVENTORY, "galaxyharvester", downloader);
 
         if (!new File(ROOT_DIR).exists())
             new File(ROOT_DIR).mkdir();
 
+        Downloader downloader = new GalaxyHarvesterDownloader(ROOT_DIR, DroidProperties.getString(DroidProperties.GALAXY));
+        app.setDownloader(downloader);
         updateLoadingProgress("Finding the latest resources...", -1);
         app.updateResources();
         updateLoadingProgress("Loading saved data...", -1);
         if (new File(XML_SCHEMATICS).exists()) {
-            SchematicsXml schematicXml = XmlFactory.load(SchematicsXml.class, new FileInputStream(new File(XML_SCHEMATICS)));
-            if (schematicXml != null)
-                app.setSchematics(schematicXml.getSchematicsList());
+            app.loadSchematics(new FileInputStream(new File(XML_SCHEMATICS)));
         }
-        app.loadSavedData();
+        if (new File(XML_INVENTORY).exists()) {
+            app.loadInventory(new FileInputStream(new File(XML_INVENTORY)));
+        }
+
         updateLoadingProgress("Punch it Chewie!", -1);
     }
 
     @Override
-    public void start(Stage primaryStage) throws Exception {
+    protected void initEasyDi(EasyDI context) throws Exception {
+        app = new HarvesterDroid(null);
+        context.bindInstance(HarvesterDroid.class, app);
+    }
+
+    @Override
+    public void startMvvmfx(Stage primaryStage) throws Exception {
         stage = primaryStage;
 
-        Parent root = FXMLLoader.load(getClass().getResource("gui/main.fxml"));
+        Parent root = FluentViewLoader.fxmlView(MainView.class).load().getView();
         primaryStage.setTitle("Harvester Droid");
         primaryStage.setScene(new Scene(root));
         primaryStage.getIcons().add(getAppIcon());
@@ -133,8 +125,13 @@ public class Launcher extends Application {
                 showSaveConfirmation();
             else if (DroidProperties.getBoolean(DroidProperties.AUTOSAVE))
                 save();
-            close();
         });
+    }
+
+    @Override
+    public void stopMvvmfx() throws Exception {
+        Watcher.shutdown();
+        saveProperties();
     }
 
     private void showSaveConfirmation() {
@@ -150,23 +147,14 @@ public class Launcher extends Application {
         }
     }
 
-    public static void save() {
-        app.save();
-
-        SchematicsXml schematicsXml = new SchematicsXml();
-        schematicsXml.setSchematicsList(app.getSchematics());
-
+    private void save() {
         try {
-            XmlFactory.write(schematicsXml, new FileOutputStream(new File(XML_SCHEMATICS)));
+            app.saveInventory(new FileOutputStream(new File(XML_INVENTORY)));
+            app.saveSchematics(new FileOutputStream(new File(XML_SCHEMATICS)));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-    }
-
-    private void close() {
-        Watcher.shutdown();
         saveProperties();
-        app.shutdown();
     }
 
     private void saveProperties() {
@@ -184,5 +172,17 @@ public class Launcher extends Application {
 
     private void updateLoadingProgress(String status, double value) {
         notifyPreloader(new PreloaderStatusNotification(status, value));
+    }
+
+    public static Map<String, String> getResourceTypes() {
+        return app.getResourceTypes();
+    }
+
+    public static HarvesterDroid getApp() {
+        return app;
+    }
+
+    public static Image getAppIcon() {
+        return new Image(Launcher.class.getResourceAsStream("/images/icon.png"));
     }
 }

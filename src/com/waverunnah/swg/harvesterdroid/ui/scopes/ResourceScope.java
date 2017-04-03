@@ -16,31 +16,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.waverunnah.swg.harvesterdroid.xml.app;
+package com.waverunnah.swg.harvesterdroid.ui.scopes;
 
-import com.waverunnah.swg.harvesterdroid.data.schematics.Schematic;
-
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import java.util.List;
+import de.saxsys.mvvmfx.Scope;
 
 /**
- * Created by Waverunner on 3/31/2017
+ * Created by Waverunner on 4/3/2017
  */
-@XmlAccessorType(XmlAccessType.FIELD)
-@XmlRootElement(name="schematics")
-public class SchematicsXml {
-    @XmlElement(name="schematic")
-    private List<Schematic> schematics;
-
-    public List<Schematic> getSchematics() {
-        return schematics;
-    }
-
-    public void setSchematics(List<Schematic> schematics) {
-        this.schematics = schematics;
-    }
-
+public class ResourceScope implements Scope {
+    public static final String FAVORITE = "ResourceScope.Highlight";
 }

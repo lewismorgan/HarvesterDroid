@@ -26,11 +26,13 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 /**
+ * Simple JAXB utility class for easy reading and writing of classes
+ *
  * Created by Waverunner on 3/31/2017
  */
 @SuppressWarnings("unchecked")
 public class XmlFactory {
-    public static <T> T load(Class<T> classToLoad, InputStream inputStream) {
+    public static <T> T read(Class<T> classToLoad, InputStream inputStream) {
         JAXBContext context;
         try {
             context = JAXBContext.newInstance(classToLoad);

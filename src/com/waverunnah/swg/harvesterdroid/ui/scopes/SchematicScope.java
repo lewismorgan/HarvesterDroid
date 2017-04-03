@@ -16,31 +16,31 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.waverunnah.swg.harvesterdroid.xml.app;
+package com.waverunnah.swg.harvesterdroid.ui.scopes;
 
 import com.waverunnah.swg.harvesterdroid.data.schematics.Schematic;
-
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import java.util.List;
+import de.saxsys.mvvmfx.Scope;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
 
 /**
- * Created by Waverunner on 3/31/2017
+ * Created by Waverunner on 4/3/2017
  */
-@XmlAccessorType(XmlAccessType.FIELD)
-@XmlRootElement(name="schematics")
-public class SchematicsXml {
-    @XmlElement(name="schematic")
-    private List<Schematic> schematics;
+public class SchematicScope implements Scope {
+    private ObjectProperty<Schematic> schematic = new SimpleObjectProperty<>();
 
-    public List<Schematic> getSchematics() {
-        return schematics;
+    public static String UPDATE = "SchematicScope.Update";
+    public static String ACTIVE = "SchematicScope.Active";
+
+    public Schematic getSchematic() {
+        return schematic.get();
     }
 
-    public void setSchematics(List<Schematic> schematics) {
-        this.schematics = schematics;
+    public void setSchematic(Schematic schematic) {
+        this.schematic.set(schematic);
     }
 
+    public ObjectProperty<Schematic> schematicProperty() {
+        return schematic;
+    }
 }

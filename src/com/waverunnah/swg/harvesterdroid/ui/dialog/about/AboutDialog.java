@@ -16,28 +16,27 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.waverunnah.swg.harvesterdroid.xml.app;
+package com.waverunnah.swg.harvesterdroid.ui.dialog.about;
 
-import com.waverunnah.swg.harvesterdroid.data.resources.InventoryResource;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import java.util.ArrayList;
-import java.util.List;
+import com.waverunnah.swg.harvesterdroid.ui.dialog.BaseDialog;
+import javafx.scene.control.ButtonType;
 
-@XmlAccessorType(XmlAccessType.FIELD)
-@XmlRootElement(name="inventory")
-public class InventoryXml {
-    @XmlElement(name="resource")
-    private List<InventoryResource> inventory = new ArrayList<>();
+public class AboutDialog extends BaseDialog {
 
-    public List<InventoryResource> getInventory() {
-        return inventory;
+    public AboutDialog() {
+        super("About");
     }
 
-    public void setInventory(List<InventoryResource> inventory) {
-        this.inventory = inventory;
+    @Override
+    protected ButtonType[] getButtonTypes() {
+        return new ButtonType[]{
+                ButtonType.CLOSE
+        };
+    }
+
+    @Override
+    protected boolean isController() {
+        return false;
     }
 }

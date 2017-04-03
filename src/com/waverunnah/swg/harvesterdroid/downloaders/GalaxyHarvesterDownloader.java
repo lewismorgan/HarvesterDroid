@@ -39,8 +39,8 @@ public final class GalaxyHarvesterDownloader extends Downloader {
     private DocumentBuilderFactory xmlFactory = DocumentBuilderFactory.newInstance();
     private HarvesterCurrentResourcesXml currentResourcesXml;
 
-    public GalaxyHarvesterDownloader(String galaxy) {
-        super("galaxyharvester", "https://galaxyharvester.net/", galaxy);
+    public GalaxyHarvesterDownloader(String root, String galaxy) {
+        super(root, "galaxyharvester", "https://galaxyharvester.net/", galaxy);
     }
 
     @Override
