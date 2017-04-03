@@ -22,6 +22,7 @@ import com.waverunnah.swg.harvesterdroid.DroidProperties;
 import com.waverunnah.swg.harvesterdroid.app.HarvesterDroid;
 import com.waverunnah.swg.harvesterdroid.gui.dialog.preferences.PreferencesDialog;
 import com.waverunnah.swg.harvesterdroid.ui.scopes.GalaxyScope;
+import com.waverunnah.swg.harvesterdroid.ui.scopes.ResourceScope;
 import com.waverunnah.swg.harvesterdroid.ui.scopes.SchematicScope;
 import de.saxsys.mvvmfx.InjectScope;
 import de.saxsys.mvvmfx.ScopeProvider;
@@ -40,7 +41,7 @@ import java.util.Properties;
  */
 @SuppressWarnings("Duplicates")
 @Singleton
-@ScopeProvider(scopes = {SchematicScope.class, GalaxyScope.class})
+@ScopeProvider(scopes = {SchematicScope.class, GalaxyScope.class, ResourceScope.class})
 public class MainViewModel implements ViewModel {
 
     private final HarvesterDroid harvesterDroid;

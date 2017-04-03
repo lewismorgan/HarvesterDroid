@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.waverunnah.swg.harvesterdroid.ui.resources;
+package com.waverunnah.swg.harvesterdroid.ui.inventory;
 
 import com.waverunnah.swg.harvesterdroid.ui.items.GalaxyResourceItemView;
 import com.waverunnah.swg.harvesterdroid.ui.items.GalaxyResourceItemViewModel;
@@ -26,7 +26,6 @@ import de.saxsys.mvvmfx.utils.viewlist.CachedViewModelCellFactory;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ListView;
-import javafx.scene.input.MouseButton;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -34,27 +33,15 @@ import java.util.ResourceBundle;
 /**
  * Created by Waverunner on 4/3/2017
  */
-@SuppressWarnings("Duplicates")
-public class ResourcesView implements FxmlView<ResourcesViewModel>, Initializable {
+public class InventoryView implements FxmlView<InventoryViewModel>, Initializable {
+    @InjectViewModel
+    private InventoryViewModel viewModel;
 
     @FXML
     private ListView<GalaxyResourceItemViewModel> listView;
 
-    @InjectViewModel
-    private ResourcesViewModel viewModel;
-
     public void initialize(URL location, ResourceBundle resources) {
-        listView.disableProperty().bind(viewModel.galaxyResourcesProperty().emptyProperty());
-
+        listView.itemsProperty().bind(viewModel.inventoryProperty());
         listView.setCellFactory(CachedViewModelCellFactory.createForFxmlView(GalaxyResourceItemView.class));
-        listView.itemsProperty().bind(viewModel.resourcesProperty());
-        listView.addEventHandler(javafx.scene.input.MouseEvent.MOUSE_CLICKED, event -> {
-            if (event.getButton() == MouseButton.PRIMARY) {
-                if (event.getClickCount() >= 2) {
-                    viewModel.getFavoriteCommand().execute();
-                }
-            }
-        });
-        viewModel.selectedProperty().bind(listView.getSelectionModel().selectedItemProperty());
     }
 }

@@ -38,13 +38,7 @@
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
         </VBox.margin>
         <AnchorPane GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
-            <TitledPane alignment="TOP_LEFT" animated="false" collapsible="false" nodeOrientation="LEFT_TO_RIGHT" text="Inventory" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                <!--<InventoryControl fx:id="inventoryControl">
-                               <padding>
-                                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                               </padding>
-                           </InventoryControl>-->
-            </TitledPane>
+            <fx:include source="../inventory/InventoryView.fxml" AnchorPane.topAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.bottomAnchor="0"/>
         </AnchorPane>
         <AnchorPane layoutX="10.0" layoutY="10.0" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
             <GridPane.margin>

@@ -42,7 +42,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TitledPane;
-import javafx.scene.input.MouseButton;
 import javafx.stage.WindowEvent;
 import org.controlsfx.control.StatusBar;
 
@@ -83,12 +82,12 @@ public class MainController implements Initializable {
     }
 
     private void initInventory() {
-        inventory = FXCollections.observableArrayList(app.getInventory());
+        //inventory = FXCollections.observableArrayList(app.getInventory());
         filteredInventory = new FilteredList<>(inventory, galaxyResource -> true);
         inventoryControl.setInventoryList(filteredInventory);
         inventoryControl.disableInventoryItemsProperty().bind(Bindings.isEmpty(filteredInventory));
 
-        inventory.addListener((ListChangeListener<? super GalaxyResource>) c -> {
+/*        inventory.addListener((ListChangeListener<? super GalaxyResource>) c -> {
             while (c.next()) {
                 if (c.wasAdded()) {
                     c.getAddedSubList().forEach(galaxyResource -> {
@@ -98,7 +97,7 @@ public class MainController implements Initializable {
                     });
                 }
             }
-        });
+        });*/
     }
 
     private void initResources() {
@@ -108,7 +107,7 @@ public class MainController implements Initializable {
         bestResourcesListView.disableProperty().bind(Bindings.isEmpty(filteredResources));
         bestResourcesListView.setCellFactory(param -> new GalaxyResourceListCell());
         bestResourcesListView.setItems(filteredResources);
-        bestResourcesListView.addEventHandler(javafx.scene.input.MouseEvent.MOUSE_CLICKED, event -> {
+/*        bestResourcesListView.addEventHandler(javafx.scene.input.MouseEvent.MOUSE_CLICKED, event -> {
             if (event.getButton() == MouseButton.PRIMARY) {
                 if (event.getClickCount() >= 2) {
                     GalaxyResource selectedItem = bestResourcesListView.getSelectionModel().getSelectedItem();
@@ -116,7 +115,7 @@ public class MainController implements Initializable {
                         app.getInventory().add(selectedItem);
                 }
             }
-        });
+        });*/
     }
 
     private void initSchematics() {

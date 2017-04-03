@@ -21,10 +21,15 @@ package com.waverunnah.swg.harvesterdroid.ui.resources;
 import com.waverunnah.swg.harvesterdroid.app.HarvesterDroid;
 import com.waverunnah.swg.harvesterdroid.data.resources.GalaxyResource;
 import com.waverunnah.swg.harvesterdroid.data.schematics.Schematic;
+import com.waverunnah.swg.harvesterdroid.ui.items.GalaxyResourceItemViewModel;
 import com.waverunnah.swg.harvesterdroid.ui.scopes.GalaxyScope;
+import com.waverunnah.swg.harvesterdroid.ui.scopes.ResourceScope;
 import com.waverunnah.swg.harvesterdroid.ui.scopes.SchematicScope;
 import de.saxsys.mvvmfx.InjectScope;
 import de.saxsys.mvvmfx.ViewModel;
+import de.saxsys.mvvmfx.utils.commands.Action;
+import de.saxsys.mvvmfx.utils.commands.Command;
+import de.saxsys.mvvmfx.utils.commands.DelegateCommand;
 import javafx.beans.property.ListProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleListProperty;
@@ -34,38 +39,52 @@ import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by Waverunner on 4/3/2017
  */
 public class ResourcesViewModel implements ViewModel {
+    private ListProperty<GalaxyResourceItemViewModel> galaxyResources = new SimpleListProperty<>();
+    private ObjectProperty<FilteredList<GalaxyResourceItemViewModel>> resources = new SimpleObjectProperty<>();
+    private ObjectProperty<GalaxyResourceItemViewModel> selected = new SimpleObjectProperty<>();
 
-    private ListProperty<GalaxyResource> galaxyResources = new SimpleListProperty<>();
-    private ObjectProperty<FilteredList<GalaxyResource>> resources = new SimpleObjectProperty<>();
+    private Command favoriteCommand;
 
     @InjectScope
     private SchematicScope schematicScope;
     @InjectScope
     private GalaxyScope galaxyScope;
+    @InjectScope
+    private ResourceScope resourceScope;
 
     private final HarvesterDroid harvesterDroid;
-
 
     public ResourcesViewModel(HarvesterDroid harvesterDroid) {
         this.harvesterDroid = harvesterDroid;
     }
 
     public void initialize() {
+
+        favoriteCommand = new DelegateCommand(() -> new Action() {
+            @Override
+            protected void action() throws Exception {
+                resourceScope.publish(ResourceScope.FAVORITE, selected.get());
+            }
+        });
+
         galaxyResources.addListener(((observable, oldValue, newValue) -> {
             if (newValue != null)
                 resources.set(new FilteredList<>(newValue, galaxyResource -> false));
         }));
 
-        galaxyResources.set(FXCollections.observableArrayList(harvesterDroid.getResources()));
+        galaxyResources.set(FXCollections.observableArrayList(harvesterDroid.getResources()
+                .stream().map(GalaxyResourceItemViewModel::new).collect(Collectors.toList())));
 
         schematicScope.subscribe(SchematicScope.ACTIVE, (s, objects) -> onSchematicSelected((Schematic) objects[0]));
 
-        galaxyScope.subscribe(GalaxyScope.CHANGED, (s, objects) -> galaxyResources.set(FXCollections.observableArrayList(harvesterDroid.getResources())));
+        galaxyScope.subscribe(GalaxyScope.CHANGED, (s, objects) -> galaxyResources.set(FXCollections.observableArrayList(harvesterDroid.getResources()
+                .stream().map(GalaxyResourceItemViewModel::new).collect(Collectors.toList()))));
     }
 
     private void onSchematicSelected(Schematic newValue) {
@@ -75,30 +94,46 @@ public class ResourcesViewModel implements ViewModel {
         }
 
         List<GalaxyResource> bestResources = harvesterDroid.getBestResourcesList(newValue);
-        resources.get().setPredicate(bestResources::contains);
+        resources.get().setPredicate(param -> bestResources.contains(param.getGalaxyResource()));
     }
 
-    public ObservableList<GalaxyResource> getGalaxyResources() {
+    public ObservableList<GalaxyResourceItemViewModel> getGalaxyResources() {
         return galaxyResources.get();
     }
 
-    public ListProperty<GalaxyResource> galaxyResourcesProperty() {
+    public ListProperty<GalaxyResourceItemViewModel> galaxyResourcesProperty() {
         return galaxyResources;
     }
 
-    public void setGalaxyResources(ObservableList<GalaxyResource> galaxyResources) {
+    public void setGalaxyResources(ObservableList<GalaxyResourceItemViewModel> galaxyResources) {
         this.galaxyResources.set(galaxyResources);
     }
 
-    public FilteredList<GalaxyResource> getResources() {
+    public FilteredList<GalaxyResourceItemViewModel> getResources() {
         return resources.get();
     }
 
-    public ObjectProperty<FilteredList<GalaxyResource>> resourcesProperty() {
+    public ObjectProperty<FilteredList<GalaxyResourceItemViewModel>> resourcesProperty() {
         return resources;
     }
 
-    public void setResources(FilteredList<GalaxyResource> resources) {
+    public void setResources(FilteredList<GalaxyResourceItemViewModel> resources) {
         this.resources.set(resources);
+    }
+
+    public GalaxyResourceItemViewModel getSelected() {
+        return selected.get();
+    }
+
+    public ObjectProperty<GalaxyResourceItemViewModel> selectedProperty() {
+        return selected;
+    }
+
+    public void setSelected(GalaxyResourceItemViewModel selected) {
+        this.selected.set(selected);
+    }
+
+    public Command getFavoriteCommand() {
+        return favoriteCommand;
     }
 }
