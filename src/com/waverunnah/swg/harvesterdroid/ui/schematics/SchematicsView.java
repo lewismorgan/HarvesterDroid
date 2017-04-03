@@ -34,7 +34,6 @@ import java.util.ResourceBundle;
 /**
  * Created by Waverunner on 4/3/2017
  */
-@SuppressWarnings("Duplicates")
 public class SchematicsView implements FxmlView<SchematicsViewModel>, Initializable {
 
     @FXML

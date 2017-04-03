@@ -39,7 +39,6 @@ import java.util.Optional;
 /**
  * Created by Waverunner on 4/3/2017
  */
-@SuppressWarnings("Duplicates")
 public class SchematicsViewModel implements ViewModel {
     private ListProperty<Schematic> schematics = new SimpleListProperty<>();
     private ObjectProperty<Schematic> selected = new SimpleObjectProperty<>();

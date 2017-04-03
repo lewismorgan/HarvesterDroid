@@ -35,7 +35,6 @@ import java.io.InputStream;
 /**
  * Created by Waverunner on 4/3/2017
  */
-@SuppressWarnings("Duplicates")
 public class GalaxyResourceItemViewModel implements ViewModel {
     private ReadOnlyStringWrapper name = new ReadOnlyStringWrapper();
     private ReadOnlyStringWrapper type = new ReadOnlyStringWrapper();

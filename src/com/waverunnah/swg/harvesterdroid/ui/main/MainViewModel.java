@@ -45,7 +45,6 @@ import static com.waverunnah.swg.harvesterdroid.app.HarvesterDroidData.XML_SCHEM
 /**
  * Created by Waverunner on 4/3/2017
  */
-@SuppressWarnings("Duplicates")
 @Singleton
 @ScopeProvider(scopes = {SchematicScope.class, GalaxyScope.class, ResourceScope.class})
 public class MainViewModel implements ViewModel {

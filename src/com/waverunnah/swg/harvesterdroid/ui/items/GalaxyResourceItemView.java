@@ -44,7 +44,6 @@ import java.util.ResourceBundle;
 /**
  * Created by Waverunner on 4/3/2017
  */
-@SuppressWarnings("Duplicates")
 public class GalaxyResourceItemView implements FxmlView<GalaxyResourceItemViewModel>, Initializable {
     @FXML
     ImageView resourceImage;
