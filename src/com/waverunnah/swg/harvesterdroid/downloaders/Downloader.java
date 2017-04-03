@@ -20,6 +20,7 @@ package com.waverunnah.swg.harvesterdroid.downloaders;
 
 import com.waverunnah.swg.harvesterdroid.app.Watcher;
 import com.waverunnah.swg.harvesterdroid.data.resources.GalaxyResource;
+import com.waverunnah.swg.harvesterdroid.data.resources.ResourceType;
 import com.waverunnah.swg.harvesterdroid.ui.dialog.ExceptionDialog;
 
 import java.io.File;
@@ -104,7 +105,7 @@ public abstract class Downloader {
         return null;
     }
 
-    public final DownloadResult downloadCurrentResources() throws IOException {
+    public final DownloadResult downloadCurrentResources(Map<String, ResourceType> resourceTypeMap) throws IOException {
         InputStream in = null;
 
         File file = new File(getRootDownloadsPath() + "current_resources" + getGalaxy() + ".dl");
@@ -119,7 +120,7 @@ public abstract class Downloader {
             // Just in-case the user messes with something, we can re-download the XML
             Watcher.createFileWatcher(new File(getRootDownloadsPath() + "current_resources" + getGalaxy() + ".dl"), () -> {
                 try {
-                    downloadCurrentResources();
+                    downloadCurrentResources(resourceTypeMap);
                 } catch (IOException e) {
                     ExceptionDialog.display(e);
                 }
@@ -136,11 +137,21 @@ public abstract class Downloader {
             return DownloadResult.FAILED;
 
         parseCurrentResources(new FileInputStream(file));
+        currentResources.values().forEach(galaxyResource -> populateResourceFromType(galaxyResource, resourceTypeMap));
 
         return DownloadResult.SUCCESS;
     }
 
-    public final GalaxyResource downloadGalaxyResource(String resource) {
+    private void populateResourceFromType(GalaxyResource galaxyResource, Map<String, ResourceType> resourceTypeMap) {
+        ResourceType type = resourceTypeMap.get(galaxyResource.getResourceTypeString());
+        if (type == null) {
+            System.out.println("No resource type " + galaxyResource.getResourceTypeString());
+            return;
+        }
+        galaxyResource.setResourceType(type);
+    }
+
+    public final GalaxyResource downloadGalaxyResource(String resource, Map<String, ResourceType> resourceTypeMap) {
         InputStream in;
 
         File file = new File(getRootDownloadsPath() + resource + ".dl");
@@ -152,7 +163,10 @@ public abstract class Downloader {
 
             Files.copy(in, Paths.get(file.toURI()), StandardCopyOption.REPLACE_EXISTING);
 
-            return parseGalaxyResource(new FileInputStream(file));
+            GalaxyResource galaxyResource = parseGalaxyResource(new FileInputStream(file));
+            if (galaxyResource != null)
+                populateResourceFromType(galaxyResource, resourceTypeMap);
+            return galaxyResource;
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -195,7 +209,7 @@ public abstract class Downloader {
 
     public enum DownloadResult {
         FAILED,
-        NO_ACTION, SUCCESS
+        SUCCESS
     }
 
 }

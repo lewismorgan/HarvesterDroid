@@ -20,7 +20,6 @@ package com.waverunnah.swg.harvesterdroid.app;
 
 import com.waverunnah.swg.harvesterdroid.data.resources.GalaxyResource;
 import com.waverunnah.swg.harvesterdroid.data.resources.InventoryResource;
-import com.waverunnah.swg.harvesterdroid.data.resources.ResourceType;
 import com.waverunnah.swg.harvesterdroid.data.schematics.Schematic;
 import com.waverunnah.swg.harvesterdroid.downloaders.Downloader;
 import com.waverunnah.swg.harvesterdroid.xml.XmlFactory;
@@ -157,10 +156,7 @@ public class HarvesterDroid {
 
             galaxies = downloader.downloadGalaxyList();
 
-            downloader.downloadCurrentResources();
-            for (GalaxyResource downloadedResource : downloader.getCurrentResources()) {
-                populateResourceFromType(downloadedResource);
-            }
+            downloader.downloadCurrentResources(data.getResourceTypeMap());
 
             resources.clear();
             resources.addAll(downloader.getCurrentResources());
@@ -187,11 +183,10 @@ public class HarvesterDroid {
             return existing;
         }
 
-        GalaxyResource galaxyResource = downloader.downloadGalaxyResource(resource);
+        GalaxyResource galaxyResource = downloader.downloadGalaxyResource(resource, data.getResourceTypeMap());
         if (galaxyResource == null)
             return null;
 
-        populateResourceFromType(galaxyResource);
         resources.add(galaxyResource);
         return galaxyResource;
     }
@@ -202,15 +197,6 @@ public class HarvesterDroid {
 
         downloader.setGalaxy(galaxy);
         updateResources();
-    }
-
-    private void populateResourceFromType(GalaxyResource galaxyResource) {
-        ResourceType type = data.getResourceTypeMap().get(galaxyResource.getResourceTypeString());
-        if (type == null) {
-            System.out.println("No resource type " + galaxyResource.getResourceTypeString());
-            return;
-        }
-        galaxyResource.setResourceType(type);
     }
 
     public void addInventoryResource(GalaxyResource galaxyResource) {
