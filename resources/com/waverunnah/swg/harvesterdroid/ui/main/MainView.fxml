@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
@@ -15,35 +13,32 @@
 <?import javafx.scene.layout.VBox?>
 <?import org.controlsfx.control.StatusBar?>
 
-<VBox prefHeight="800.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="com.waverunnah.swg.harvesterdroid.ui.main.MainView">
+<VBox prefHeight="800.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.waverunnah.swg.harvesterdroid.ui.main.MainView">
     <MenuBar VBox.vgrow="ALWAYS">
         <Menu mnemonicParsing="false" text="File">
-            <MenuItem mnemonicParsing="false" onAction="#save" text="Save"/>
-            <MenuItem mnemonicParsing="false" onAction="#preferences" text="Preferences"/>
-            <SeparatorMenuItem mnemonicParsing="false"/>
-            <MenuItem mnemonicParsing="false" onAction="#close" text="Quit"/>
+            <MenuItem mnemonicParsing="false" onAction="#save" text="Save" />
+            <MenuItem mnemonicParsing="false" onAction="#preferences" text="Preferences" />
+            <SeparatorMenuItem mnemonicParsing="false" />
+            <MenuItem mnemonicParsing="false" onAction="#close" text="Quit" />
         </Menu>
         <Menu mnemonicParsing="false" text="Help">
-            <MenuItem mnemonicParsing="false" onAction="#about" text="About"/>
+            <MenuItem mnemonicParsing="false" onAction="#about" text="About" />
         </Menu>
     </MenuBar>
     <GridPane VBox.vgrow="ALWAYS">
         <columnConstraints>
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="50.0"/>
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="50.0"/>
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="50.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="50.0" />
         </columnConstraints>
         <rowConstraints>
-            <RowConstraints minHeight="10.0" vgrow="SOMETIMES"/>
-            <RowConstraints vgrow="SOMETIMES"/>
+            <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+            <RowConstraints vgrow="SOMETIMES" />
         </rowConstraints>
         <VBox.margin>
-            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
         </VBox.margin>
         <AnchorPane GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
-            <TitledPane alignment="TOP_LEFT" animated="false" collapsible="false"
-                        nodeOrientation="LEFT_TO_RIGHT" text="Inventory" AnchorPane.bottomAnchor="0.0"
-                        AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <TitledPane alignment="TOP_LEFT" animated="false" collapsible="false" nodeOrientation="LEFT_TO_RIGHT" text="Inventory" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                 <!--<InventoryControl fx:id="inventoryControl">
                                <padding>
                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
@@ -51,32 +46,20 @@
                            </InventoryControl>-->
             </TitledPane>
         </AnchorPane>
-        <AnchorPane layoutX="10.0" layoutY="10.0" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS"
-                    GridPane.vgrow="ALWAYS">
+        <AnchorPane layoutX="10.0" layoutY="10.0" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
             <GridPane.margin>
-                <Insets left="5.0"/>
+                <Insets left="5.0" />
             </GridPane.margin>
-            <TitledPane alignment="TOP_LEFT" animated="false" collapsible="false"
-                        nodeOrientation="LEFT_TO_RIGHT" text="Schematics" AnchorPane.bottomAnchor="0.0"
-                        AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                <fx:include source="../schematics/SchematicsView.fxml"/>
+            <TitledPane alignment="TOP_LEFT" animated="false" collapsible="false" nodeOrientation="LEFT_TO_RIGHT" text="Schematics" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                <fx:include source="../schematics/SchematicsView.fxml" />
             </TitledPane>
         </AnchorPane>
-        <AnchorPane layoutX="290.0" layoutY="10.0" GridPane.columnSpan="2" GridPane.hgrow="ALWAYS"
-                    GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
+        <AnchorPane layoutX="290.0" layoutY="10.0" GridPane.columnSpan="2" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
             <GridPane.margin>
-                <Insets top="5.0"/>
+                <Insets top="5.0" />
             </GridPane.margin>
-            <TitledPane fx:id="bestResourcesPane" alignment="TOP_LEFT" animated="false" collapsible="false"
-                        nodeOrientation="LEFT_TO_RIGHT" text="Best Resources" AnchorPane.bottomAnchor="0.0"
-                        AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                <ListView fx:id="bestResourcesListView" disable="true">
-                    <placeholder>
-                        <Label text="Select a schematic to view the Best Resources"/>
-                    </placeholder>
-                </ListView>
-            </TitledPane>
+             <fx:include source="../resources/ResourcesView.fxml" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0" />
         </AnchorPane>
     </GridPane>
-    <StatusBar text="Idle" VBox.vgrow="SOMETIMES"/>
+    <StatusBar text="Idle" VBox.vgrow="SOMETIMES" />
 </VBox>

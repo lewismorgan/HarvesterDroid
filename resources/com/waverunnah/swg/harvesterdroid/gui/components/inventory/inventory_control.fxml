@@ -28,7 +28,7 @@
    <children>
       <ListView fx:id="inventoryListView" disable="true" VBox.vgrow="ALWAYS">
           <placeholder>
-              <Label text="There's no resources in your inventory!" />
+              <Label text="There's no galaxyResources in your inventory!" />
           </placeholder>
       </ListView>
       <ButtonBar prefHeight="40.0" prefWidth="200.0" VBox.vgrow="ALWAYS">

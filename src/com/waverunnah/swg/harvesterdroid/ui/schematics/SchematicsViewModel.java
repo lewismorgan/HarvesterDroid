@@ -55,10 +55,9 @@ public class SchematicsViewModel implements ViewModel {
 
     public SchematicsViewModel(HarvesterDroid harvesterDroid){
         this.harvesterDroid = harvesterDroid;
-        init();
     }
 
-    private void init() {
+    public void initialize() {
         schematics.set(FXCollections.observableArrayList(harvesterDroid.getSchematics()));
 
         removeCommand = new DelegateCommand(() -> new Action() {
@@ -87,7 +86,7 @@ public class SchematicsViewModel implements ViewModel {
 
     private void handleSchematicSelected(Schematic schematic) {
         schematicScope.setSchematic(schematic);
-        schematicScope.publish(SchematicScope.ACTIVE);
+        schematicScope.publish(SchematicScope.ACTIVE, schematic);
     }
 
     private void handleEditSelectedSchematic() {
@@ -107,6 +106,7 @@ public class SchematicsViewModel implements ViewModel {
 
         Schematic schematic = result.get();
         schematics.add(schematic);
+        selected.set(schematic);
     }
 
     private void displaySchematicDialog(Schematic schematic) {
@@ -116,8 +116,10 @@ public class SchematicsViewModel implements ViewModel {
         if (!result.isPresent())
             return;
 
-        schematics.remove(schematic);
-        schematics.add(result.get());
+        Schematic updated = result.get();
+        schematicScope.setSchematic(updated);
+        schematicScope.publish(SchematicScope.UPDATE, updated);
+        publish("SchematicUpdated", updated);
     }
 
     public ObservableList<Schematic> getSchematics() {

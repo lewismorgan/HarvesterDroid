@@ -61,7 +61,7 @@
                            <children>
                               <ListView fx:id="resourceListView">
                                  <placeholder>
-                                    <Label text="No resources have been added" />
+                                    <Label text="No galaxyResources have been added" />
                                  </placeholder>
                               </ListView>
                               <ButtonBar>

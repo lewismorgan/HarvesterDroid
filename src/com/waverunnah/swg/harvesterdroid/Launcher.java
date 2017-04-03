@@ -23,12 +23,13 @@ import com.waverunnah.swg.harvesterdroid.app.Watcher;
 import com.waverunnah.swg.harvesterdroid.downloaders.Downloader;
 import com.waverunnah.swg.harvesterdroid.downloaders.GalaxyHarvesterDownloader;
 import com.waverunnah.swg.harvesterdroid.gui.dialog.ExceptionDialog;
+import com.waverunnah.swg.harvesterdroid.ui.main.MainView;
 import com.waverunnah.swg.harvesterdroid.xml.XmlFactory;
 import com.waverunnah.swg.harvesterdroid.xml.app.SchematicsXml;
+import de.saxsys.mvvmfx.FluentViewLoader;
 import de.saxsys.mvvmfx.easydi.MvvmfxEasyDIApplication;
 import eu.lestard.easydi.EasyDI;
 import javafx.application.Platform;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -108,8 +109,8 @@ public class Launcher extends MvvmfxEasyDIApplication {
     public void startMvvmfx(Stage primaryStage) throws Exception {
         stage = primaryStage;
 
-        Parent root = FXMLLoader.load(getClass().getResource("gui/main.fxml"));
-        //Parent root = FluentViewLoader.fxmlView(MainView.class).load().getView();
+        //Parent root = FXMLLoader.load(getClass().getResource("gui/main.fxml"));
+        Parent root = FluentViewLoader.fxmlView(MainView.class).load().getView();
         primaryStage.setTitle("Harvester Droid");
         primaryStage.setScene(new Scene(root));
         primaryStage.getIcons().add(getAppIcon());

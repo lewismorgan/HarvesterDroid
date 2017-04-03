@@ -28,7 +28,7 @@
 <fx:root spacing="2.0" type="HBox" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <ImageView fx:id="resourceImage" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS">
-         <Image url="@images/resources/gemstone.png" />
+         <Image url="@images/galaxyResources/gemstone.png" />
       </ImageView>
       <VBox HBox.hgrow="ALWAYS">
          <Label fx:id="resourceName" text="resource_name">

@@ -18,16 +18,62 @@
 
 package com.waverunnah.swg.harvesterdroid.ui.main;
 
+import com.waverunnah.swg.harvesterdroid.DroidProperties;
+import com.waverunnah.swg.harvesterdroid.app.HarvesterDroid;
+import com.waverunnah.swg.harvesterdroid.gui.dialog.preferences.PreferencesDialog;
+import com.waverunnah.swg.harvesterdroid.ui.scopes.GalaxyScope;
 import com.waverunnah.swg.harvesterdroid.ui.scopes.SchematicScope;
+import de.saxsys.mvvmfx.InjectScope;
 import de.saxsys.mvvmfx.ScopeProvider;
 import de.saxsys.mvvmfx.ViewModel;
+import de.saxsys.mvvmfx.utils.commands.Action;
+import de.saxsys.mvvmfx.utils.commands.Command;
+import de.saxsys.mvvmfx.utils.commands.DelegateCommand;
+import javafx.collections.FXCollections;
 
 import javax.inject.Singleton;
+import java.util.Optional;
+import java.util.Properties;
 
 /**
  * Created by Waverunner on 4/3/2017
  */
+@SuppressWarnings("Duplicates")
 @Singleton
-@ScopeProvider(scopes = {SchematicScope.class})
+@ScopeProvider(scopes = {SchematicScope.class, GalaxyScope.class})
 public class MainViewModel implements ViewModel {
+
+    private final HarvesterDroid harvesterDroid;
+
+    private Command preferencesCommand;
+
+    @InjectScope
+    private GalaxyScope galaxyScope;
+
+    public MainViewModel(HarvesterDroid harvesterDroid) {
+        this.harvesterDroid = harvesterDroid;
+    }
+
+    public void initialize() {
+        preferencesCommand = new DelegateCommand(() -> new Action() {
+            @Override
+            protected void action() throws Exception {
+                PreferencesDialog dialog = new PreferencesDialog();
+                dialog.setGalaxies(FXCollections.observableMap(harvesterDroid.getGalaxies()));
+                dialog.setProperties(DroidProperties.getProperties());
+                Optional<Properties> result = dialog.showAndWait();
+                if (result.isPresent()) {
+                    Properties properties = result.get();
+                    harvesterDroid.switchToGalaxy(properties.getProperty(DroidProperties.GALAXY));
+                    DroidProperties.setProperties(properties);
+
+                    galaxyScope.publish(GalaxyScope.CHANGED);
+                }
+            }
+        });
+    }
+
+    public Command getPreferencesCommand() {
+        return preferencesCommand;
+    }
 }

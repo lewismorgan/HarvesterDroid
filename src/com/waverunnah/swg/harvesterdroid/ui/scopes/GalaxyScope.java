@@ -16,40 +16,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.waverunnah.swg.harvesterdroid.ui.main;
+package com.waverunnah.swg.harvesterdroid.ui.scopes;
 
-import de.saxsys.mvvmfx.FxmlView;
-import de.saxsys.mvvmfx.InjectViewModel;
-import javafx.event.ActionEvent;
-import javafx.fxml.Initializable;
-
-import java.net.URL;
-import java.util.ResourceBundle;
+import de.saxsys.mvvmfx.Scope;
 
 /**
  * Created by Waverunner on 4/3/2017
  */
-public class MainView implements FxmlView<MainViewModel>, Initializable {
-
-    @InjectViewModel
-    private MainViewModel viewModel;
-
-    public void initialize(URL location, ResourceBundle resources) {
-
-    }
-
-    public void save(ActionEvent actionEvent) {
-
-    }
-
-    public void preferences(ActionEvent actionEvent) {
-        viewModel.getPreferencesCommand().execute();
-    }
-
-    public void close(ActionEvent actionEvent) {
-
-    }
-
-    public void about(ActionEvent actionEvent) {}
-
+public class GalaxyScope implements Scope {
+    public static final String CHANGED = "GalaxyScope.Changed";
 }

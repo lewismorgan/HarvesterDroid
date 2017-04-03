@@ -59,6 +59,11 @@ public class SchematicsView implements FxmlView<SchematicsViewModel>, Initializa
         removeSchematicButton.disableProperty().bind(viewModel.getRemoveCommand().executableProperty().not());
         editSchematicButton.disableProperty().bind(viewModel.getEditCommand().executableProperty().not());
 
+        viewModel.subscribe("SchematicUpdated", (s, objects) -> {
+            updateTreeView();
+            viewModel.setSelected((Schematic) objects[0]);
+        });
+
         updateTreeView();
     }
 
@@ -75,6 +80,8 @@ public class SchematicsView implements FxmlView<SchematicsViewModel>, Initializa
                 }
             }
         });
+
+        viewModel.selectedProperty().addListener(((observable, oldValue, newValue) -> onSchematicSelected(newValue)));
 
         schematicsTreeView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null && !newValue.getValue().getIdentifier().isEmpty())
@@ -93,6 +100,17 @@ public class SchematicsView implements FxmlView<SchematicsViewModel>, Initializa
 
     public void displaySchematicDialog() {
         viewModel.getAddCommand().execute();
+    }
+
+    private void onSchematicSelected(Schematic schematic) {
+        if (schematic == null) {
+            schematicsTreeView.getSelectionModel().clearSelection();
+            return;
+        }
+
+        TreeItem<SchematicsTreeItem> toSelect = getSchematicsTreeItem(schematicsTreeView.getRoot(), schematic.getId());
+        if (schematicsTreeView.getSelectionModel().getSelectedItem() != toSelect)
+            schematicsTreeView.getSelectionModel().select(toSelect);
     }
 
     private void onSchematicTreeItemSelected(TreeItem<SchematicsTreeItem> selected) {
