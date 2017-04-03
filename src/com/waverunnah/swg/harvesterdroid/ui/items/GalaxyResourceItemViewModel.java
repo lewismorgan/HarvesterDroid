@@ -58,7 +58,7 @@ public class GalaxyResourceItemViewModel implements ViewModel {
             container = container.split("_")[0];
             is = getClass().getResourceAsStream("/images/resources/" + container + ".png");
             if (is == null) {
-                System.out.println("Could not find image /images/resources/" + container + ".png");
+//                System.out.println("Could not find image /images/resources/" + container + ".png");
                 return null;
             }
         }

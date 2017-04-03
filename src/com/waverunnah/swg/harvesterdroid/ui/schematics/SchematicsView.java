@@ -100,10 +100,8 @@ public class SchematicsView implements FxmlView<SchematicsViewModel>, Initializa
     }
 
     private void onSchematicSelected(Schematic schematic) {
-        if (schematic == null) {
-            schematicsTreeView.getSelectionModel().clearSelection();
+        if (schematic == null)
             return;
-        }
 
         TreeItem<SchematicsTreeItem> toSelect = getSchematicsTreeItem(schematicsTreeView.getRoot(), schematic.getId());
         if (schematicsTreeView.getSelectionModel().getSelectedItem() != toSelect)

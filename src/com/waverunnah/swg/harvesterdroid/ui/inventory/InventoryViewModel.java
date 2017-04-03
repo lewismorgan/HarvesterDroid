@@ -23,6 +23,7 @@ import com.waverunnah.swg.harvesterdroid.data.resources.GalaxyResource;
 import com.waverunnah.swg.harvesterdroid.data.resources.InventoryResource;
 import com.waverunnah.swg.harvesterdroid.ui.dialog.resource.ResourceDialog;
 import com.waverunnah.swg.harvesterdroid.ui.items.GalaxyResourceItemViewModel;
+import com.waverunnah.swg.harvesterdroid.ui.scopes.GalaxyScope;
 import com.waverunnah.swg.harvesterdroid.ui.scopes.ResourceScope;
 import de.saxsys.mvvmfx.InjectScope;
 import de.saxsys.mvvmfx.ViewModel;
@@ -53,12 +54,51 @@ public class InventoryViewModel implements ViewModel {
 
     @InjectScope
     private ResourceScope resourceScope;
+    @InjectScope
+    private GalaxyScope galaxyScope;
 
     public InventoryViewModel(HarvesterDroid harvesterDroid) {
         this.harvesterDroid = harvesterDroid;
     }
 
     public void initialize() {
+        initializeCommands();
+
+        inventory.set(FXCollections.observableArrayList());
+
+        refreshInventoryView();
+
+        resourceScope.subscribe(ResourceScope.FAVORITE, (s, objects) -> {
+            for (Object object : objects) {
+                createGalaxyResourceItem(((GalaxyResourceItemViewModel) object).getGalaxyResource());
+            }
+        });
+
+        galaxyScope.subscribe(GalaxyScope.CHANGED, (s, objects) -> refreshInventoryView());
+
+        inventory.addListener((ListChangeListener<GalaxyResourceItemViewModel>) c -> {
+            while (c.next()) {
+                if (c.wasAdded()) {
+                    c.getAddedSubList().forEach(item -> harvesterDroid.addInventoryResource(item.getGalaxyResource()));
+                }
+
+                if (c.wasRemoved()) {
+                    c.getRemoved().forEach(item -> harvesterDroid.removeInventoryResource(item.getGalaxyResource()));
+                }
+            }
+        });
+    }
+
+    private void refreshInventoryView() {
+        inventory.clear();
+        for (InventoryResource inventoryResource : harvesterDroid.getInventory()) {
+            GalaxyResource galaxyResource = harvesterDroid.getGalaxyResource(inventoryResource);
+            if (galaxyResource != null)
+                inventory.add(new GalaxyResourceItemViewModel(galaxyResource));
+        }
+    }
+
+    private void initializeCommands() {
         addCommand = new DelegateCommand(() -> new Action() {
             @Override
             protected void action() throws Exception {
@@ -78,32 +118,6 @@ public class InventoryViewModel implements ViewModel {
                 inventory.remove(selected.get());
             }
         }, selected.isNotNull());
-
-        inventory.set(FXCollections.observableArrayList());
-
-        for (InventoryResource inventoryResource : harvesterDroid.getInventory()) {
-            GalaxyResource galaxyResource = harvesterDroid.getGalaxyResource(inventoryResource);
-            if (galaxyResource != null)
-                inventory.add(new GalaxyResourceItemViewModel(galaxyResource));
-        }
-
-        resourceScope.subscribe(ResourceScope.FAVORITE, (s, objects) -> {
-            for (Object object : objects) {
-                createGalaxyResourceItem(((GalaxyResourceItemViewModel) object).getGalaxyResource());
-            }
-        });
-
-        inventory.addListener((ListChangeListener<GalaxyResourceItemViewModel>) c -> {
-            while (c.next()) {
-                if (c.wasAdded()) {
-                    c.getAddedSubList().forEach(item -> harvesterDroid.addInventoryResource(item.getGalaxyResource()));
-                }
-
-                if (c.wasRemoved()) {
-                    c.getRemoved().forEach(item -> harvesterDroid.removeInventoryResource(item.getGalaxyResource()));
-                }
-            }
-        });
     }
 
     private void createGalaxyResourceItem(GalaxyResource galaxyResource) {

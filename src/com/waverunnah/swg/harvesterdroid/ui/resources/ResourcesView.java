@@ -23,8 +23,10 @@ import com.waverunnah.swg.harvesterdroid.ui.items.GalaxyResourceItemViewModel;
 import de.saxsys.mvvmfx.FxmlView;
 import de.saxsys.mvvmfx.InjectViewModel;
 import de.saxsys.mvvmfx.utils.viewlist.CachedViewModelCellFactory;
+import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.input.MouseButton;
 
@@ -43,7 +45,7 @@ public class ResourcesView implements FxmlView<ResourcesViewModel>, Initializabl
     private ResourcesViewModel viewModel;
 
     public void initialize(URL location, ResourceBundle resources) {
-        listView.disableProperty().bind(viewModel.galaxyResourcesProperty().emptyProperty());
+        listView.disableProperty().bind(Bindings.isEmpty(viewModel.getResources()));
 
         listView.setCellFactory(CachedViewModelCellFactory.createForFxmlView(GalaxyResourceItemView.class));
         listView.itemsProperty().bind(viewModel.resourcesProperty());
@@ -54,6 +56,13 @@ public class ResourcesView implements FxmlView<ResourcesViewModel>, Initializabl
                 }
             }
         });
+
+        Label placeholder = new Label();
+        placeholder.textProperty().bind(Bindings.when(viewModel.galaxyResourcesProperty().emptyProperty().not().not())
+                        .then("No Current Resources for this Galaxy, try adding one to your inventory")
+                        .otherwise("Select a schematic to view the best resources"));
+        listView.setPlaceholder(placeholder);
+
         viewModel.selectedProperty().bind(listView.getSelectionModel().selectedItemProperty());
     }
 }
