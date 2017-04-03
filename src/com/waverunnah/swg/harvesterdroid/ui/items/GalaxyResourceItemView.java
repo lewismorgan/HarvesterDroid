@@ -21,7 +21,7 @@ package com.waverunnah.swg.harvesterdroid.ui.items;
 import com.waverunnah.swg.harvesterdroid.app.Attributes;
 import com.waverunnah.swg.harvesterdroid.data.resources.GalaxyResource;
 import com.waverunnah.swg.harvesterdroid.data.resources.ResourceType;
-import com.waverunnah.swg.harvesterdroid.gui.converters.ResourceValueConverter;
+import com.waverunnah.swg.harvesterdroid.ui.converters.ResourceValueConverter;
 import de.saxsys.mvvmfx.FxmlView;
 import de.saxsys.mvvmfx.InjectViewModel;
 import javafx.beans.binding.Bindings;
@@ -39,8 +39,6 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 
 import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.ResourceBundle;
 
 /**

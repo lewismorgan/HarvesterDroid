@@ -19,8 +19,6 @@
 package com.waverunnah.swg.harvesterdroid.ui.schematics;
 
 import com.waverunnah.swg.harvesterdroid.data.schematics.Schematic;
-import com.waverunnah.swg.harvesterdroid.gui.components.schematics.SchematicsTreeCellFactory;
-import com.waverunnah.swg.harvesterdroid.gui.components.schematics.SchematicsTreeItem;
 import de.saxsys.mvvmfx.FxmlView;
 import de.saxsys.mvvmfx.InjectViewModel;
 import javafx.collections.ListChangeListener;

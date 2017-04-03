@@ -20,8 +20,8 @@ package com.waverunnah.swg.harvesterdroid.ui.main;
 
 import com.waverunnah.swg.harvesterdroid.DroidProperties;
 import com.waverunnah.swg.harvesterdroid.app.HarvesterDroid;
-import com.waverunnah.swg.harvesterdroid.gui.dialog.about.AboutDialog;
-import com.waverunnah.swg.harvesterdroid.gui.dialog.preferences.PreferencesDialog;
+import com.waverunnah.swg.harvesterdroid.ui.dialog.about.AboutDialog;
+import com.waverunnah.swg.harvesterdroid.ui.dialog.preferences.PreferencesDialog;
 import com.waverunnah.swg.harvesterdroid.ui.scopes.GalaxyScope;
 import com.waverunnah.swg.harvesterdroid.ui.scopes.ResourceScope;
 import com.waverunnah.swg.harvesterdroid.ui.scopes.SchematicScope;

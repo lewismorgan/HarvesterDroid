@@ -20,7 +20,7 @@ package com.waverunnah.swg.harvesterdroid.ui.schematics;
 
 import com.waverunnah.swg.harvesterdroid.app.HarvesterDroid;
 import com.waverunnah.swg.harvesterdroid.data.schematics.Schematic;
-import com.waverunnah.swg.harvesterdroid.gui.dialog.schematic.SchematicDialog;
+import com.waverunnah.swg.harvesterdroid.ui.dialog.schematic.SchematicDialog;
 import com.waverunnah.swg.harvesterdroid.ui.scopes.SchematicScope;
 import de.saxsys.mvvmfx.InjectScope;
 import de.saxsys.mvvmfx.ViewModel;

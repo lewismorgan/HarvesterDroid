@@ -21,7 +21,7 @@ package com.waverunnah.swg.harvesterdroid.ui.inventory;
 import com.waverunnah.swg.harvesterdroid.app.HarvesterDroid;
 import com.waverunnah.swg.harvesterdroid.data.resources.GalaxyResource;
 import com.waverunnah.swg.harvesterdroid.data.resources.InventoryResource;
-import com.waverunnah.swg.harvesterdroid.gui.dialog.resource.ResourceDialog;
+import com.waverunnah.swg.harvesterdroid.ui.dialog.resource.ResourceDialog;
 import com.waverunnah.swg.harvesterdroid.ui.items.GalaxyResourceItemViewModel;
 import com.waverunnah.swg.harvesterdroid.ui.scopes.ResourceScope;
 import de.saxsys.mvvmfx.InjectScope;

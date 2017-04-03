@@ -22,7 +22,7 @@ import com.waverunnah.swg.harvesterdroid.app.HarvesterDroid;
 import com.waverunnah.swg.harvesterdroid.app.Watcher;
 import com.waverunnah.swg.harvesterdroid.downloaders.Downloader;
 import com.waverunnah.swg.harvesterdroid.downloaders.GalaxyHarvesterDownloader;
-import com.waverunnah.swg.harvesterdroid.gui.dialog.ExceptionDialog;
+import com.waverunnah.swg.harvesterdroid.ui.dialog.ExceptionDialog;
 import com.waverunnah.swg.harvesterdroid.ui.main.MainView;
 import de.saxsys.mvvmfx.FluentViewLoader;
 import de.saxsys.mvvmfx.easydi.MvvmfxEasyDIApplication;

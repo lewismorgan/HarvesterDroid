@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  ~ HarvesterDroid - A Resource Tracker for Star Wars Galaxies
+  ~ Copyright (C) 2017  Waverunner
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<VBox xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.waverunnah.swg.harvesterdroid.ui.dialog.resource.ResourceDialogController">
+   <children>
+      <HBox alignment="CENTER" spacing="5.0" VBox.vgrow="ALWAYS">
+         <children>
+            <Label text="Name" />
+            <TextField fx:id="nameField" promptText="Enter a Resource Name" />
+            <Label text="Type" />
+            <TextField fx:id="resourceTypeField" disable="true" editable="false" />
+            <Button mnemonicParsing="false" onAction="#retrieveStats" text="Retrieve Stats">
+               <HBox.margin>
+                  <Insets left="5.0" />
+               </HBox.margin>
+            </Button>
+         </children>
+         <VBox.margin>
+            <Insets top="5.0" />
+         </VBox.margin>
+      </HBox>
+      <HBox fx:id="attributesGroup" alignment="CENTER" spacing="15.0">
+         <VBox.margin>
+            <Insets />
+         </VBox.margin>
+         <padding>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </padding>
+      </HBox>
+      <HBox alignment="CENTER_RIGHT" spacing="5.0">
+         <children>
+            <HBox fx:id="infoGroup" spacing="4.0">
+               <children>
+                  <Label fx:id="infoLeftLabel" text="Enter a resource id and the stats will be retreived automatically" />
+                  <Label fx:id="infoRightLabel" />
+               </children>
+            </HBox>
+         </children>
+      </HBox>
+   </children>
+</VBox>
