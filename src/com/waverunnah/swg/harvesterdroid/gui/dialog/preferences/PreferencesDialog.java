@@ -20,9 +20,13 @@ package com.waverunnah.swg.harvesterdroid.gui.dialog.preferences;
 
 import com.waverunnah.swg.harvesterdroid.DroidProperties;
 import com.waverunnah.swg.harvesterdroid.gui.dialog.BaseDialog;
+import javafx.beans.property.MapProperty;
 import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleMapProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
+import javafx.collections.MapChangeListener;
+import javafx.collections.ObservableMap;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ButtonType;
@@ -53,19 +57,24 @@ public class PreferencesDialog extends BaseDialog<Properties> implements Initial
     //endregion
 
     private ObjectProperty<Properties> properties;
-    private Map<String, String> galaxies;
+    private MapProperty<String, String> galaxies;
 
-    public PreferencesDialog(Map<String, String> galaxies) {
+    public PreferencesDialog() {
         super("HarvesterDroid Preferences");
-        this.galaxies = galaxies;
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         properties = new SimpleObjectProperty<>();
+        galaxies = new SimpleMapProperty<>();
+        galaxies.addListener(((observable, oldValue, newValue) -> {
+            if (newValue == null || newValue.isEmpty())
+                return;
 
-        galaxies.forEach((key, value) -> galaxyChoiceBox.getItems().add(value));
-
+            galaxyChoiceBox.getItems().clear();
+            newValue.forEach((key, value) -> galaxyChoiceBox.getItems().add(value));
+            galaxyChoiceBox.getSelectionModel().select(0);
+        }));
         trackerComboBox.setItems(FXCollections.observableArrayList("GalaxyHarvester"));
         trackerComboBox.getSelectionModel().select(0);
         trackerComboBox.setDisable(true);
@@ -81,7 +90,13 @@ public class PreferencesDialog extends BaseDialog<Properties> implements Initial
             saveNagCheckBox.selectedProperty().set(Boolean.parseBoolean(newValue.getProperty(DroidProperties.SAVE_NAG)));
         });
 
-        galaxyChoiceBox.getSelectionModel().selectedItemProperty().addListener(((observable, oldValue, newValue) -> properties.get().setProperty(DroidProperties.GALAXY, getGalaxyKey(newValue))));
+        galaxyChoiceBox.getSelectionModel().selectedItemProperty().addListener(((observable, oldValue, newValue) -> {
+            if (properties.get() == null)
+                return;
+            String key = getGalaxyKey(newValue);
+            if (key != null)
+                properties.get().setProperty(DroidProperties.GALAXY, key);
+        }));
         downloadBufferTextField.textProperty().addListener((observable, oldValue, newValue) -> properties.get().setProperty(DroidProperties.DOWNLOAD_BUFFER, String.valueOf(newValue)));
         autosaveCheckBox.selectedProperty().addListener((observable, oldValue, newValue) -> properties.get().setProperty(DroidProperties.AUTOSAVE, String.valueOf(newValue)));
         saveNagCheckBox.selectedProperty().addListener((observable, oldValue, newValue) -> properties.get().setProperty(DroidProperties.SAVE_NAG, String.valueOf(newValue)));
@@ -115,6 +130,16 @@ public class PreferencesDialog extends BaseDialog<Properties> implements Initial
 
     private void selectGalaxy(String key) {
         galaxyChoiceBox.getSelectionModel().select(galaxies.get(key));
+    }
+
+    public void setGalaxies(ObservableMap<String, String> galaxies) {
+        this.galaxies.set(galaxies);
+        galaxies.addListener((MapChangeListener<? super String, ? super String>) change -> {
+            if (change.wasAdded())
+                galaxyChoiceBox.getItems().add(change.getValueAdded());
+            else if (change.wasRemoved())
+                galaxyChoiceBox.getItems().remove(change.getValueRemoved());
+        });
     }
 
     public void setProperties(Properties properties) {

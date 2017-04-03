@@ -160,7 +160,8 @@ public class MainController implements Initializable {
     }
 
     public void onPreferencesMenuItem() {
-        PreferencesDialog dialog = new PreferencesDialog(app.getGalaxies());
+        PreferencesDialog dialog = new PreferencesDialog();
+        dialog.setGalaxies(FXCollections.observableMap(app.getGalaxies()));
         dialog.setProperties(DroidProperties.getProperties());
         Optional<Properties> result = dialog.showAndWait();
         if (result.isPresent()) {

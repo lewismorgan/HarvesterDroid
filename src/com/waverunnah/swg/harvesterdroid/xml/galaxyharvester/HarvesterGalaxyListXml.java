@@ -3,7 +3,6 @@ package com.waverunnah.swg.harvesterdroid.xml.galaxyharvester;
 import com.waverunnah.swg.harvesterdroid.xml.BaseXml;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -34,14 +33,14 @@ public class HarvesterGalaxyListXml extends BaseXml {
         processElement(root, node -> {
             switch(node.getNodeName()) {
                 case "galaxy_values":
-                    processElement(node, galaxyValue -> galaxyIds.add(galaxyValue.getNodeValue()));
+                    processElement(node, galaxyValue -> galaxyIds.add(galaxyValue.getTextContent()));
                     break;
                 case "galaxy_names":
-                    processElement(node, galaxyName -> galaxyNames.add(galaxyName.getNodeValue()));
+                    processElement(node, galaxyName -> galaxyNames.add(galaxyName.getTextContent()));
 
                     break;
                 case "galaxy_prop1":
-                    processElement(node, galaxyProp -> galaxyActive.add(galaxyProp.getNodeValue()));
+                    processElement(node, galaxyProp -> galaxyActive.add(galaxyProp.getTextContent()));
                     break;
             }
         });
