@@ -25,7 +25,8 @@ import com.waverunnah.swg.harvesterdroid.downloaders.GalaxyHarvesterDownloader;
 import com.waverunnah.swg.harvesterdroid.gui.dialog.ExceptionDialog;
 import com.waverunnah.swg.harvesterdroid.xml.XmlFactory;
 import com.waverunnah.swg.harvesterdroid.xml.app.SchematicsXml;
-import javafx.application.Application;
+import de.saxsys.mvvmfx.easydi.MvvmfxEasyDIApplication;
+import eu.lestard.easydi.EasyDI;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -44,7 +45,7 @@ import java.nio.file.Paths;
 import java.util.Map;
 import java.util.Optional;
 
-public class Launcher extends Application {
+public class Launcher extends MvvmfxEasyDIApplication {
     private static boolean DEBUG = false;
     // TODO Finish refactoring business logic into HarvesterDroid
 
@@ -68,24 +69,8 @@ public class Launcher extends Application {
         launch(args);
     }
 
-    public static Stage getStage() {
-        return stage;
-    }
-
-    public static Map<String, String> getResourceTypes() {
-        return app.getResourceTypes();
-    }
-
-    public static HarvesterDroid getApp() {
-        return app;
-    }
-
-    public static Image getAppIcon() {
-        return new Image(Launcher.class.getResourceAsStream("/images/icon.png"));
-    }
-
     @Override
-    public void init() throws Exception {
+    public void initMvvmfx() throws Exception {
         updateLoadingProgress("Setting up bare essentials...", 0.1);
 
         if (Files.exists(Paths.get(ROOT_DIR + "/harvesterdroid.properties")))
@@ -95,12 +80,12 @@ public class Launcher extends Application {
         DEBUG = DroidProperties.getBoolean(DroidProperties.DEBUG);
 
         // TODO Decide what downloader to use based on preferences
-        Downloader downloader = new GalaxyHarvesterDownloader(DroidProperties.getString(DroidProperties.GALAXY));
-        app = new HarvesterDroid(XML_INVENTORY, "galaxyharvester", downloader);
 
         if (!new File(ROOT_DIR).exists())
             new File(ROOT_DIR).mkdir();
 
+        Downloader downloader = new GalaxyHarvesterDownloader(DroidProperties.getString(DroidProperties.GALAXY));
+        app.setDownloader(downloader);
         updateLoadingProgress("Finding the latest resources...", -1);
         app.updateResources();
         updateLoadingProgress("Loading saved data...", -1);
@@ -114,10 +99,17 @@ public class Launcher extends Application {
     }
 
     @Override
-    public void start(Stage primaryStage) throws Exception {
+    protected void initEasyDi(EasyDI context) throws Exception {
+        app = new HarvesterDroid(XML_INVENTORY, "galaxyharvester", null);
+        context.bindInstance(HarvesterDroid.class, app);
+    }
+
+    @Override
+    public void startMvvmfx(Stage primaryStage) throws Exception {
         stage = primaryStage;
 
         Parent root = FXMLLoader.load(getClass().getResource("gui/main.fxml"));
+        //Parent root = FluentViewLoader.fxmlView(MainView.class).load().getView();
         primaryStage.setTitle("Harvester Droid");
         primaryStage.setScene(new Scene(root));
         primaryStage.getIcons().add(getAppIcon());
@@ -135,6 +127,11 @@ public class Launcher extends Application {
                 save();
             close();
         });
+    }
+
+    @Override
+    public void stopMvvmfx() throws Exception {
+
     }
 
     private void showSaveConfirmation() {
@@ -184,5 +181,21 @@ public class Launcher extends Application {
 
     private void updateLoadingProgress(String status, double value) {
         notifyPreloader(new PreloaderStatusNotification(status, value));
+    }
+
+    public static Stage getStage() {
+        return stage;
+    }
+
+    public static Map<String, String> getResourceTypes() {
+        return app.getResourceTypes();
+    }
+
+    public static HarvesterDroid getApp() {
+        return app;
+    }
+
+    public static Image getAppIcon() {
+        return new Image(Launcher.class.getResourceAsStream("/images/icon.png"));
     }
 }

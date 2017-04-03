@@ -56,7 +56,7 @@ public class HarvesterDroid {
 
     private final HarvesterDroidData data;
 
-    private final Downloader downloader;
+    private Downloader downloader;
 
     private InventoryXml inventoryXml;
 
@@ -312,5 +312,9 @@ public class HarvesterDroid {
         Map<String, String> types = new HashMap<>();
         data.getResourceTypeMap().forEach((key, value) -> types.put(key, value.getName()));
         return types;
+    }
+
+    public void setDownloader(Downloader downloader) {
+        this.downloader = downloader;
     }
 }

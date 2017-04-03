@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ButtonBar?>
+<?import javafx.scene.control.TreeView?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox prefHeight="400.0" prefWidth="600.0" spacing="5.0" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.waverunnah.swg.harvesterdroid.ui.schematics.SchematicsView">
+    <TreeView fx:id="schematicsTreeView" disable="true" showRoot="false" VBox.vgrow="ALWAYS" />
+    <ButtonBar prefHeight="40.0" prefWidth="200.0">
+        <buttons>
+            <Button fx:id="removeSchematicButton" disable="true" layoutX="243.0" layoutY="10.0" mnemonicParsing="false" onAction="#removeSelectedSchematic" text="Remove" />
+            <Button fx:id="editSchematicButton" disable="true" layoutX="158.0" layoutY="10.0" mnemonicParsing="false" onAction="#editSelectedSchematic" text="Edit" />
+            <Button layoutX="243.0" layoutY="10.0" mnemonicParsing="false" onAction="#displaySchematicDialog" text="Add" />
+        </buttons>
+        <VBox.margin>
+            <Insets />
+        </VBox.margin>
+    </ButtonBar>
+</VBox>
