@@ -20,13 +20,13 @@ package com.waverunnah.swg.harvesterdroid.ui.items;
 
 import com.waverunnah.swg.harvesterdroid.data.resources.GalaxyResource;
 import de.saxsys.mvvmfx.ViewModel;
-import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ReadOnlyMapProperty;
 import javafx.beans.property.ReadOnlyMapWrapper;
 import javafx.beans.property.ReadOnlyObjectProperty;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.ReadOnlyStringProperty;
 import javafx.beans.property.ReadOnlyStringWrapper;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableMap;
 import javafx.scene.image.Image;
 
@@ -39,14 +39,14 @@ public class GalaxyResourceItemViewModel implements ViewModel {
     private ReadOnlyStringWrapper name = new ReadOnlyStringWrapper();
     private ReadOnlyStringWrapper type = new ReadOnlyStringWrapper();
     private ReadOnlyObjectWrapper<Image> image = new ReadOnlyObjectWrapper<>();
-    private ReadOnlyMapWrapper<String, IntegerProperty> attributes = new ReadOnlyMapWrapper<>();
+    private ReadOnlyMapWrapper<String, Integer> attributes = new ReadOnlyMapWrapper<>();
     private GalaxyResource galaxyResource;
 
     public GalaxyResourceItemViewModel(GalaxyResource galaxyResource) {
         this.galaxyResource = galaxyResource;
         name.set(galaxyResource.getName());
         type.set(galaxyResource.getResourceType().getName());
-        attributes.set(galaxyResource.getAttributes());
+        attributes.set(FXCollections.observableMap(galaxyResource.getAttributes()));
         image.set(createImage(galaxyResource.getContainer()));
     }
 
@@ -89,11 +89,11 @@ public class GalaxyResourceItemViewModel implements ViewModel {
         return type;
     }
 
-    public ObservableMap<String, IntegerProperty> getAttributes() {
+    public ObservableMap<String, Integer> getAttributes() {
         return attributes.get();
     }
 
-    public ReadOnlyMapProperty<String, IntegerProperty> attributesProperty() {
+    public ReadOnlyMapProperty<String, Integer> attributesProperty() {
         return attributes;
     }
 

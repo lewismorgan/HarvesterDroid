@@ -19,129 +19,98 @@
 package com.waverunnah.swg.harvesterdroid.data.resources;
 
 import com.waverunnah.swg.harvesterdroid.app.Attributes;
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.collections.ObservableMap;
 
-import java.util.Collection;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class GalaxyResource {
-    private StringProperty name = new SimpleStringProperty();
-    private StringProperty date = new SimpleStringProperty();
-    private ObjectProperty<ResourceType> resourceType = new SimpleObjectProperty<>();
-    private StringProperty container = new SimpleStringProperty();
-    private StringProperty despawnDate = new SimpleStringProperty();
+    private String name;
+    private String date;
+    private ResourceType resourceType;
+    private String container;
+    private String despawnDate;
 
-    private ObservableList<Planet> planets = FXCollections.observableArrayList();
-    private ObservableMap<String, IntegerProperty> attributes;
+    private List<Planet> planets;
+    private Map<String, Integer> attributes;
 
-    private StringProperty resourceTypeString = new SimpleStringProperty();
+    private String resourceTypeString;
 
     public GalaxyResource() {
-        Map<String, IntegerProperty> attributesMap = new HashMap<>(Attributes.size());
-        Attributes.forEach((primary, secondary) -> attributesMap.put(primary, new SimpleIntegerProperty(-1)));
-        attributes = FXCollections.observableMap(attributesMap);
+        planets = new ArrayList<>();
+        attributes = new HashMap<>(Attributes.size());
+        Attributes.forEach((primary, secondary) -> attributes.put(primary, -1));
     }
 
     public String getName() {
-        return name.get();
-    }
-
-    public void setName(String name) {
-        this.name.set(name);
-    }
-
-    public StringProperty nameProperty() {
         return name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public String getDate() {
-        return date.get();
-    }
-
-    public void setDate(String date) {
-        this.date.set(date);
-    }
-
-    public StringProperty dateProperty() {
         return date;
     }
 
+    public void setDate(String date) {
+        this.date = date;
+    }
+
     public ResourceType getResourceType() {
-        return resourceType.get();
-    }
-
-    public void setResourceType(ResourceType resourceType) {
-        this.resourceType.set(resourceType);
-    }
-
-    public ObjectProperty<ResourceType> resourceTypeProperty() {
         return resourceType;
     }
 
-    public String getResourceTypeString() {
-        return resourceTypeString.get();
-    }
-
-    public void setResourceTypeString(String resourceTypeString) {
-        this.resourceTypeString.set(resourceTypeString);
-    }
-
-    public StringProperty resourceTypeStringProperty() {
-        return resourceTypeString;
+    public void setResourceType(ResourceType resourceType) {
+        this.resourceType = resourceType;
     }
 
     public String getContainer() {
-        return container.get();
-    }
-
-    public void setContainer(String container) {
-        this.container.set(container);
-    }
-
-    public StringProperty containerProperty() {
         return container;
     }
 
+    public void setContainer(String container) {
+        this.container = container;
+    }
+
     public String getDespawnDate() {
-        return despawnDate.get();
-    }
-
-    public void setDespawnDate(String despawnDate) {
-        this.despawnDate.set(despawnDate);
-    }
-
-    public StringProperty despawnDateProperty() {
         return despawnDate;
     }
 
-    public ObservableMap<String, IntegerProperty> getAttributes() {
-        return attributes;
+    public void setDespawnDate(String despawnDate) {
+        this.despawnDate = despawnDate;
     }
 
-    public void setAttribute(String attribute, int value) {
-        IntegerProperty property = attributes.get(attribute);
-        if (property != null)
-            property.set(value);
-        else attributes.put(attribute, new SimpleIntegerProperty(value));
-    }
-
-    public ObservableList<Planet> getPlanets() {
+    public List<Planet> getPlanets() {
         return planets;
     }
 
-    public void setPlanets(Collection<Planet> planets) {
-        this.planets.clear();
-        this.planets.addAll(planets);
+    public void setPlanets(List<Planet> planets) {
+        this.planets = planets;
     }
+
+    public Map<String, Integer> getAttributes() {
+        return attributes;
+    }
+
+    public void setAttributes(Map<String, Integer> attributes) {
+        this.attributes = attributes;
+    }
+
+    public String getResourceTypeString() {
+        return resourceTypeString;
+    }
+
+    public void setResourceTypeString(String resourceTypeString) {
+        this.resourceTypeString = resourceTypeString;
+    }
+
+    public void setAttribute(String attribute, int value) {
+        attributes.put(attribute, value);
+    }
+
 
     @Override
     public String toString() {
@@ -153,6 +122,6 @@ public class GalaxyResource {
     }
 
     public int getAttribute(String name) {
-        return attributes.get(name).getValue();
+        return attributes.get(name);
     }
 }

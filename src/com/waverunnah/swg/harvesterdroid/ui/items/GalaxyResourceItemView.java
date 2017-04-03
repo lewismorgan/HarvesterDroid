@@ -21,11 +21,8 @@ package com.waverunnah.swg.harvesterdroid.ui.items;
 import com.waverunnah.swg.harvesterdroid.app.Attributes;
 import com.waverunnah.swg.harvesterdroid.data.resources.GalaxyResource;
 import com.waverunnah.swg.harvesterdroid.data.resources.ResourceType;
-import com.waverunnah.swg.harvesterdroid.ui.converters.ResourceValueConverter;
 import de.saxsys.mvvmfx.FxmlView;
 import de.saxsys.mvvmfx.InjectViewModel;
-import javafx.beans.binding.Bindings;
-import javafx.beans.property.IntegerProperty;
 import javafx.collections.MapChangeListener;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -62,7 +59,7 @@ public class GalaxyResourceItemView implements FxmlView<GalaxyResourceItemViewMo
         resourceName.textProperty().bind(viewModel.nameProperty());
         resourceType.textProperty().bind(viewModel.typeProperty());
 
-        viewModel.attributesProperty().addListener((MapChangeListener<String, IntegerProperty>) change -> {
+        viewModel.attributesProperty().addListener((MapChangeListener<String, Integer>) change -> {
             refreshAttributesUI();
         });
 
@@ -72,30 +69,28 @@ public class GalaxyResourceItemView implements FxmlView<GalaxyResourceItemViewMo
     private void refreshAttributesUI() {
         resourceStatsBox.getChildren().clear();
         Attributes.forEach((primary, secondary) -> {
-            IntegerProperty value = viewModel.getAttributes().get(primary);
+            int value = viewModel.getAttributes().get(primary);
             Label percentage = createPercentageLabel(primary, viewModel.getGalaxyResource());
             createAttributeUI(secondary, value, percentage);
         });
     }
 
-    private void createAttributeUI(String simple, IntegerProperty valueProperty, Label percentageLabel) {
+    private void createAttributeUI(String simple, int value, Label percentageLabel) {
         VBox group = new VBox();
         group.setAlignment(Pos.CENTER);
         group.setPadding(new Insets(5.0, 5, 5, 5));
-        group.disableProperty().bind(valueProperty.isEqualTo(-1));
+        group.disableProperty().set(value == -1);
 
         Label nameLabel = new Label(simple);
         nameLabel.setContentDisplay(ContentDisplay.CENTER);
         group.getChildren().add(nameLabel);
 
-        Label valueLabel = new Label("--");
+        Label valueLabel = new Label(value == -1 ? "--" : String.valueOf(value));
         valueLabel.setContentDisplay(ContentDisplay.CENTER);
         group.getChildren().add(valueLabel);
 
         percentageLabel.setContentDisplay(ContentDisplay.CENTER);
         group.getChildren().add(percentageLabel);
-
-        Bindings.bindBidirectional(valueLabel.textProperty(), valueProperty, new ResourceValueConverter());
 
         resourceStatsBox.getChildren().add(group);
     }

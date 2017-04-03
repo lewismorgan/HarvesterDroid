@@ -19,13 +19,8 @@
 package com.waverunnah.swg.harvesterdroid.ui.dialog.resource;
 
 import com.waverunnah.swg.harvesterdroid.Launcher;
-import com.waverunnah.swg.harvesterdroid.data.resources.GalaxyResource;
-import com.waverunnah.swg.harvesterdroid.data.resources.ResourceType;
-import com.waverunnah.swg.harvesterdroid.ui.converters.ResourceValueConverter;
 import com.waverunnah.swg.harvesterdroid.app.Attributes;
-import javafx.beans.binding.Bindings;
-import javafx.beans.binding.When;
-import javafx.beans.property.IntegerProperty;
+import com.waverunnah.swg.harvesterdroid.data.resources.GalaxyResource;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.fxml.FXML;
@@ -37,7 +32,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.util.StringConverter;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -68,39 +62,31 @@ public class ResourceDialogController implements Initializable {
 
     private void populateFromGalaxyResource(GalaxyResource galaxyResource) {
         attributesGroup.getChildren().clear();
-        resourceTypeField.textProperty().bindBidirectional(galaxyResource.resourceTypeProperty(), new StringConverter<ResourceType>() {
-            @Override
-            public String toString(ResourceType object) {
-                return object.getName();
-            }
-
-            @Override
-            public ResourceType fromString(String string) {
-                return null;
-            }
-        });
+        resourceTypeField.setText(galaxyResource.getResourceType().getName());
         Attributes.forEach((primary, secondary) -> bindAttribute(primary, galaxyResource.getAttributes().get(primary)));
 
-        When whenUnavailable = Bindings.when(galaxyResource.despawnDateProperty().isNotEmpty());
-        infoLeftLabel.textProperty().bind(whenUnavailable.then("Despawned on").otherwise("Available since"));
-        infoRightLabel.textProperty().bind(whenUnavailable.then(galaxyResource.despawnDateProperty()).otherwise(galaxyResource.dateProperty()));
+        if (galaxyResource.getDespawnDate() != null && !galaxyResource.getDespawnDate().isEmpty()) {
+            infoLeftLabel.setText("Despawned on ");
+            infoRightLabel.setText(galaxyResource.getDespawnDate());
+        } else {
+            infoLeftLabel.setText("Available since ");
+            infoRightLabel.setText(galaxyResource.getDate());
+        }
     }
 
-    private void bindAttribute(String attribute, IntegerProperty property) {
+    private void bindAttribute(String attribute, int value) {
         VBox group = new VBox();
         group.setAlignment(Pos.CENTER);
         group.setPadding(new Insets(5.0, 0, 0, 0));
-        group.disableProperty().bind(property.isEqualTo(-1));
+        group.disableProperty().set(value == -1);
 
         Label nameLabel = new Label(Attributes.getAbbreviation(attribute));
         nameLabel.setContentDisplay(ContentDisplay.CENTER);
         group.getChildren().add(nameLabel);
 
-        Label valueLabel = new Label("--");
+        Label valueLabel = new Label(value == -1 ? "--" : String.valueOf(value));
         valueLabel.setContentDisplay(ContentDisplay.CENTER);
         group.getChildren().add(valueLabel);
-
-        Bindings.bindBidirectional(valueLabel.textProperty(), property, new ResourceValueConverter());
 
         attributesGroup.getChildren().add(group);
     }
