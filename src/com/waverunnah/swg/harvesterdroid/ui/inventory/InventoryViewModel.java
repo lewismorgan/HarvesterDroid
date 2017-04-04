@@ -80,8 +80,8 @@ public class InventoryViewModel implements ViewModel {
             while (c.next()) {
                 if (c.wasAdded()) {
                     c.getAddedSubList().forEach(item -> {
-                        harvesterDroid.addInventoryResource(item.getGalaxyResource());
-                        resourceScope.publish(ResourceScope.IMPORTED, item.getGalaxyResource());
+                        if (harvesterDroid.addInventoryResource(item.getGalaxyResource()))
+                            resourceScope.publish(ResourceScope.IMPORT_ADDED, item.getGalaxyResource());
                     });
                 }
 

@@ -36,7 +36,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -55,6 +54,7 @@ public class HarvesterDroid {
     private Map<String, String> galaxies;
 
     private String currentResourceTimestamp;
+    private String galaxy;
 
     public HarvesterDroid(Downloader downloader) {
         this.downloader = downloader;
@@ -148,22 +148,24 @@ public class HarvesterDroid {
 
     public void updateResources() {
         try {
-            if (!needsUpdate(downloader.getCurrentResourcesTimestamp())) {
+            if (downloader.getGalaxy().equals(galaxy) && !needsUpdate(downloader.getCurrentResourcesTimestamp())) {
                 if (downloader.getCurrentResourcesTimestamp().toString().equals(getCurrentResourceTimestamp())) {
                     currentResourceTimestamp = downloader.getCurrentResourcesTimestamp().toString();
                 }
+            } else {
+                galaxies = downloader.downloadGalaxyList();
+
+                downloader.downloadCurrentResources();
+
+                resources.clear();
+                resources.addAll(downloader.getCurrentResources());
+
+                resources.forEach(galaxyResource -> data.populateMinMax(galaxyResource.getResourceType()));
+                inventory.forEach(this::getGalaxyResource);
+
+                currentResourceTimestamp = downloader.getCurrentResourcesTimestamp().toString();
+                galaxy = downloader.getGalaxy();
             }
-
-            galaxies = downloader.downloadGalaxyList();
-
-            downloader.downloadCurrentResources();
-
-            resources.clear();
-            resources.addAll(downloader.getCurrentResources());
-
-            resources.forEach(galaxyResource -> data.populateMinMax(galaxyResource.getResourceType()));
-
-            currentResourceTimestamp = downloader.getCurrentResourcesTimestamp().toString();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -196,20 +198,20 @@ public class HarvesterDroid {
     }
 
     public void switchToGalaxy(String galaxy) {
-        if (Objects.equals(galaxy, downloader.getGalaxy()))
+        if (this.galaxy.equals(galaxy))
             return;
 
         downloader.setGalaxy(galaxy);
         updateResources();
     }
 
-    public void addInventoryResource(GalaxyResource galaxyResource) {
+    public boolean addInventoryResource(GalaxyResource galaxyResource) {
         for (InventoryResource inventoryResource : inventory) {
-            if (inventoryResource.getName().equals(galaxyResource.getName()))
-                return;
+            if (inventoryResource.getGalaxy().equals(downloader.getGalaxy()) && inventoryResource.getName().equals(galaxyResource.getName()))
+                return false;
         }
 
-        inventory.add(new InventoryResource(galaxyResource.getName(), getTracker(), downloader.getGalaxy()));
+        return inventory.add(new InventoryResource(galaxyResource.getName(), getTracker(), downloader.getGalaxy()));
     }
 
     public void removeInventoryResource(GalaxyResource galaxyResource) {
@@ -245,8 +247,10 @@ public class HarvesterDroid {
 
     public void loadInventory(InputStream inputStream) {
         InventoryXml inventoryXml = XmlFactory.read(InventoryXml.class, inputStream);
-        if (inventoryXml != null && inventoryXml.getInventory() != null)
+        if (inventoryXml != null && inventoryXml.getInventory() != null) {
             inventory = inventoryXml.getInventory();
+            inventory.forEach(this::getGalaxyResource);
+        }
     }
 
     public List<InventoryResource> getInventory() {
@@ -288,6 +292,6 @@ public class HarvesterDroid {
     }
 
     public String getGalaxy() {
-        return galaxies.get(downloader.getGalaxy());
+        return galaxies.get(galaxy);
     }
 }

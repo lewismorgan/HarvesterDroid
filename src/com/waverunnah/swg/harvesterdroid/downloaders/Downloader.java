@@ -18,10 +18,8 @@
 
 package com.waverunnah.swg.harvesterdroid.downloaders;
 
-import com.waverunnah.swg.harvesterdroid.app.Watcher;
 import com.waverunnah.swg.harvesterdroid.data.resources.GalaxyResource;
 import com.waverunnah.swg.harvesterdroid.data.resources.ResourceType;
-import com.waverunnah.swg.harvesterdroid.ui.dialog.ExceptionDialog;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -120,7 +118,7 @@ public abstract class Downloader {
     public final DownloadResult downloadCurrentResources() throws IOException {
         InputStream in = null;
 
-        File file = new File(getRootDownloadsPath() + "current_resources" + getGalaxy() + ".dl");
+        File file = new File(getRootDownloadsPath() + "current_resources_" + getGalaxy() + ".dl");
         if (!file.exists() && !file.mkdirs())
             return DownloadResult.FAILED;
 
@@ -128,15 +126,6 @@ public abstract class Downloader {
             in = getCurrentResourcesStream();
 
             Files.copy(in, Paths.get(file.toURI()), StandardCopyOption.REPLACE_EXISTING);
-
-            // Just in-case the user messes with something, we can re-download the XML
-            Watcher.createFileWatcher(new File(getRootDownloadsPath() + "current_resources" + getGalaxy() + ".dl"), () -> {
-                try {
-                    downloadCurrentResources();
-                } catch (IOException e) {
-                    ExceptionDialog.display(e);
-                }
-            });
         } catch (ConnectException e) {
             return DownloadResult.FAILED;
         } finally {
@@ -164,26 +153,14 @@ public abstract class Downloader {
     }
 
     public final GalaxyResource downloadGalaxyResource(String resource) {
-        InputStream in;
-
-        File file = new File(getRootDownloadsPath() + resource + ".dl");
-        if (!file.exists())
-            file.mkdirs();
-
         try {
-            in = getGalaxyResourceStream(resource);
-
-            Files.copy(in, Paths.get(file.toURI()), StandardCopyOption.REPLACE_EXISTING);
-
-            GalaxyResource galaxyResource = parseGalaxyResource(new FileInputStream(file));
+            GalaxyResource galaxyResource = parseGalaxyResource(getGalaxyResourceStream(resource));
             if (galaxyResource != null)
                 populateResourceFromType(galaxyResource);
             return galaxyResource;
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new RuntimeException("Error downloading resource " + resource);
         }
-
-        return null;
     }
 
     protected final void populateCurrentResourcesMap(Map<String, GalaxyResource> parsedCurrentResources) {

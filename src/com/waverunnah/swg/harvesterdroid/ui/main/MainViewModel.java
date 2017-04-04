@@ -31,8 +31,11 @@ import de.saxsys.mvvmfx.ViewModel;
 import de.saxsys.mvvmfx.utils.commands.Action;
 import de.saxsys.mvvmfx.utils.commands.Command;
 import de.saxsys.mvvmfx.utils.commands.DelegateCommand;
+import javafx.beans.binding.Bindings;
 import javafx.beans.property.ReadOnlyStringProperty;
 import javafx.beans.property.ReadOnlyStringWrapper;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 
 import javax.inject.Singleton;
@@ -61,6 +64,11 @@ public class MainViewModel implements ViewModel {
 
     @InjectScope
     private GalaxyScope galaxyScope;
+    @InjectScope
+    private ResourceScope resourceScope;
+
+    private StringProperty galaxyString = new SimpleStringProperty();
+    private StringProperty resourcesString = new SimpleStringProperty();
 
     public MainViewModel(HarvesterDroid harvesterDroid) {
         this.harvesterDroid = harvesterDroid;
@@ -99,8 +107,24 @@ public class MainViewModel implements ViewModel {
             }
         });
 
-        galaxyScope.subscribe(GalaxyScope.CHANGED, (s, objects) -> statusText.set("Current Resources:\t" + harvesterDroid.getResources().size()));
-        statusText.set("Current Resources:\t" + harvesterDroid.getResources().size());
+        galaxyScope.subscribe(GalaxyScope.CHANGED, (s, objects) -> updateStatusText(harvesterDroid.getGalaxy(), harvesterDroid.getResources().size()));
+        resourceScope.subscribe(ResourceScope.UPDATED_LIST, (s, objects) -> updateResourceStatus(harvesterDroid.getResources().size()));
+
+        statusText.bind(Bindings.concat("Galaxy: ", galaxyString, "  |  ", "Loaded Resources: ", resourcesString));
+        updateStatusText(harvesterDroid.getGalaxy(), harvesterDroid.getResources().size());
+    }
+
+    private void updateStatusText(String galaxy, int resources) {
+        updateGalaxyStatus(galaxy);
+        updateResourceStatus(resources);
+    }
+
+    private void updateGalaxyStatus(String galaxy) {
+        galaxyString.set(galaxy);
+    }
+
+    private void updateResourceStatus(int resources) {
+        resourcesString.set(String.valueOf(resources));
     }
 
     public Command getPreferencesCommand() {

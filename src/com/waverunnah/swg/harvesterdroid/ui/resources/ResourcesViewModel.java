@@ -102,10 +102,14 @@ public class ResourcesViewModel implements ViewModel {
 
         schematicScope.subscribe(SchematicScope.ACTIVE, (s, objects) -> onSchematicSelected((Schematic) objects[0]));
 
-        galaxyScope.subscribe(GalaxyScope.CHANGED, (s, objects) -> galaxyResources.set(FXCollections.observableArrayList(harvesterDroid.getResources()
-                .stream().map(GalaxyResourceItemViewModel::new).collect(Collectors.toList()))));
+        galaxyScope.subscribe(GalaxyScope.CHANGED, (s, objects) -> {
+            galaxyResources.set(FXCollections.observableArrayList(harvesterDroid.getResources()
+                .stream().map(GalaxyResourceItemViewModel::new).collect(Collectors.toList())));
 
-        resourceScope.subscribe(ResourceScope.IMPORTED, (s, objects) -> {
+            schematicScope.publish(SchematicScope.REFRESH);
+        });
+
+        resourceScope.subscribe(ResourceScope.IMPORT_ADDED, (s, objects) -> {
             for (Object object : objects) {
                 galaxyResources.add(new GalaxyResourceItemViewModel((GalaxyResource) object));
             }
@@ -144,7 +148,6 @@ public class ResourcesViewModel implements ViewModel {
         }
 
         List<GalaxyResource> bestResources = harvesterDroid.getBestResourcesList(newValue);
-        bestResources.forEach(System.out::println);
         resources.get().setPredicate(param -> bestResources.contains(param.getGalaxyResource()));
         schematicSelected.set(true);
     }

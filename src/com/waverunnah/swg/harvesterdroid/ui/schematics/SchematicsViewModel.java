@@ -21,6 +21,7 @@ package com.waverunnah.swg.harvesterdroid.ui.schematics;
 import com.waverunnah.swg.harvesterdroid.app.HarvesterDroid;
 import com.waverunnah.swg.harvesterdroid.data.schematics.Schematic;
 import com.waverunnah.swg.harvesterdroid.ui.dialog.schematic.SchematicDialog;
+import com.waverunnah.swg.harvesterdroid.ui.scopes.GalaxyScope;
 import com.waverunnah.swg.harvesterdroid.ui.scopes.ResourceScope;
 import com.waverunnah.swg.harvesterdroid.ui.scopes.SchematicScope;
 import de.saxsys.mvvmfx.InjectScope;
@@ -53,6 +54,8 @@ public class SchematicsViewModel implements ViewModel {
     private SchematicScope schematicScope;
     @InjectScope
     private ResourceScope resourceScope;
+    @InjectScope
+    private GalaxyScope galaxyScope;
 
     private final HarvesterDroid harvesterDroid;
 
@@ -95,11 +98,16 @@ public class SchematicsViewModel implements ViewModel {
             }
         });
 
-        resourceScope.subscribe(ResourceScope.UPDATED_LIST, (s, objects) -> {
-            Schematic selected = getSelected();
-            setSelected(null);
-            setSelected(selected);
-        });
+        resourceScope.subscribe(ResourceScope.UPDATED_LIST, (s, objects) -> reselectSchematic());
+        galaxyScope.subscribe(GalaxyScope.CHANGED, (s, objects) -> reselectSchematic());
+        schematicScope.subscribe(SchematicScope.REFRESH, (s, objects) -> reselectSchematic());
+    }
+
+    private void reselectSchematic() {
+        Schematic selected = getSelected();
+        setSelected(null);
+        setSelected(selected);
+
     }
 
     private void handleSchematicSelected(Schematic schematic) {
