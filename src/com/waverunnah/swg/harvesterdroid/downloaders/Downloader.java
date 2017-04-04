@@ -35,6 +35,7 @@ import java.nio.file.StandardCopyOption;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -50,6 +51,9 @@ public abstract class Downloader {
     private final String baseUrl;
     private final String identifier;
 
+    private Map<String, ResourceType> resourceTypeMap = new HashMap<>();
+    private Map<String, List<String>> resourceGroups = new HashMap<>();
+
     private final Map<String, GalaxyResource> currentResources = new HashMap<>();
 
     protected Downloader(String root, String identifier, String baseUrl, String galaxy) {
@@ -61,6 +65,12 @@ public abstract class Downloader {
     }
 
     private void init() {
+        try {
+            downloadResourceTypes(resourceTypeMap, resourceGroups);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         File currentResources = new File(getRootDownloadsPath() + "current_resources" + getGalaxy() + ".dl");
         if (currentResources.exists()) {
             try {
@@ -105,7 +115,9 @@ public abstract class Downloader {
         return null;
     }
 
-    public final DownloadResult downloadCurrentResources(Map<String, ResourceType> resourceTypeMap) throws IOException {
+    protected abstract void downloadResourceTypes(Map<String, ResourceType> resourceTypeMap, Map<String, List<String>> resourceGroups) throws IOException;
+
+    public final DownloadResult downloadCurrentResources() throws IOException {
         InputStream in = null;
 
         File file = new File(getRootDownloadsPath() + "current_resources" + getGalaxy() + ".dl");
@@ -120,7 +132,7 @@ public abstract class Downloader {
             // Just in-case the user messes with something, we can re-download the XML
             Watcher.createFileWatcher(new File(getRootDownloadsPath() + "current_resources" + getGalaxy() + ".dl"), () -> {
                 try {
-                    downloadCurrentResources(resourceTypeMap);
+                    downloadCurrentResources();
                 } catch (IOException e) {
                     ExceptionDialog.display(e);
                 }
@@ -137,12 +149,12 @@ public abstract class Downloader {
             return DownloadResult.FAILED;
 
         parseCurrentResources(new FileInputStream(file));
-        currentResources.values().forEach(galaxyResource -> populateResourceFromType(galaxyResource, resourceTypeMap));
+        currentResources.values().forEach(this::populateResourceFromType);
 
         return DownloadResult.SUCCESS;
     }
 
-    private void populateResourceFromType(GalaxyResource galaxyResource, Map<String, ResourceType> resourceTypeMap) {
+    private void populateResourceFromType(GalaxyResource galaxyResource) {
         ResourceType type = resourceTypeMap.get(galaxyResource.getResourceTypeString());
         if (type == null) {
             System.out.println("No resource type " + galaxyResource.getResourceTypeString());
@@ -151,7 +163,7 @@ public abstract class Downloader {
         galaxyResource.setResourceType(type);
     }
 
-    public final GalaxyResource downloadGalaxyResource(String resource, Map<String, ResourceType> resourceTypeMap) {
+    public final GalaxyResource downloadGalaxyResource(String resource) {
         InputStream in;
 
         File file = new File(getRootDownloadsPath() + resource + ".dl");
@@ -165,7 +177,7 @@ public abstract class Downloader {
 
             GalaxyResource galaxyResource = parseGalaxyResource(new FileInputStream(file));
             if (galaxyResource != null)
-                populateResourceFromType(galaxyResource, resourceTypeMap);
+                populateResourceFromType(galaxyResource);
             return galaxyResource;
         } catch (IOException e) {
             e.printStackTrace();
@@ -205,6 +217,14 @@ public abstract class Downloader {
 
     public final void setGalaxy(String galaxy) {
         this.galaxy = galaxy;
+    }
+
+    public List<String> getResourceGroups(String group) {
+        return resourceGroups.get(group);
+    }
+
+    public Map<String, ResourceType> getResourceTypeMap() {
+        return resourceTypeMap;
     }
 
     public enum DownloadResult {

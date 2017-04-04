@@ -18,6 +18,7 @@
 
 package com.waverunnah.swg.harvesterdroid.data.resources;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -26,12 +27,10 @@ import java.util.Map;
 public class ResourceType {
     private String id;
     private String name;
-    private String container;
-    private String group;
-    private boolean recylced;
     private Map<String, Integer> minMaxMap;
 
     public ResourceType() {
+        minMaxMap = new HashMap<>();
     }
 
     public String getId() {
@@ -50,22 +49,6 @@ public class ResourceType {
         this.name = name;
     }
 
-    public String getGroup() {
-        return group;
-    }
-
-    public void setGroup(String group) {
-        this.group = group;
-    }
-
-    public String getContainer() {
-        return container;
-    }
-
-    public void setContainer(String container) {
-        this.container = container;
-    }
-
     public Map<String, Integer> getMinMaxMap() {
         return minMaxMap;
     }
@@ -74,11 +57,11 @@ public class ResourceType {
         this.minMaxMap = minMaxMap;
     }
 
-    public boolean isRecylced() {
-        return recylced;
-    }
-
-    public void setRecylced(boolean recylced) {
-        this.recylced = recylced;
+    @Override
+    public String toString() {
+        return "ResourceType{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                '}';
     }
 }

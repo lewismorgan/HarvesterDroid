@@ -69,7 +69,7 @@ public class HarvesterDroidData {
             ResourceType type = new ResourceType();
             type.setId(line[0]);
             type.setName(line[1]);
-            type.setRecylced(Boolean.valueOf(line[2]));
+            /*type.setRecylced(Boolean.valueOf(line[2]));*/
             Map<String, Integer> minMax = new HashMap<>();
             minMax.put("CRmin", Integer.valueOf(line[3]));
             minMax.put("CRmax", Integer.valueOf(line[4]));

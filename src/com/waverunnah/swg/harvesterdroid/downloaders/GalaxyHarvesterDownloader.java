@@ -19,8 +19,12 @@
 package com.waverunnah.swg.harvesterdroid.downloaders;
 
 import com.waverunnah.swg.harvesterdroid.data.resources.GalaxyResource;
+import com.waverunnah.swg.harvesterdroid.data.resources.ResourceType;
 import com.waverunnah.swg.harvesterdroid.xml.galaxyharvester.HarvesterCurrentResourcesXml;
 import com.waverunnah.swg.harvesterdroid.xml.galaxyharvester.HarvesterGalaxyListXml;
+import com.waverunnah.swg.harvesterdroid.xml.galaxyharvester.HarvesterResourceGroupXml;
+import com.waverunnah.swg.harvesterdroid.xml.galaxyharvester.HarvesterResourceTypeGroupXml;
+import com.waverunnah.swg.harvesterdroid.xml.galaxyharvester.HarvesterResourceTypeXml;
 import com.waverunnah.swg.harvesterdroid.xml.galaxyharvester.HarvesterResourceXml;
 import org.xml.sax.SAXException;
 
@@ -32,6 +36,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 public final class GalaxyHarvesterDownloader extends Downloader {
@@ -97,9 +102,12 @@ public final class GalaxyHarvesterDownloader extends Downloader {
 
     @Override
     protected InputStream getGalaxyListStream() throws IOException {
-        return getInputStreamFromUrl("getList.py?listType=galaxy");
+        return getListTypeStream("galaxy");
     }
 
+    private InputStream getListTypeStream(String listType) throws IOException {
+        return getInputStreamFromUrl("getList.py?listType=" + listType);
+    }
 
     @Override
     public Date getCurrentResourcesTimestamp() {
@@ -113,5 +121,27 @@ public final class GalaxyHarvesterDownloader extends Downloader {
             e.printStackTrace();
         }
         return null;
+    }
+
+    @Override
+    protected void downloadResourceTypes(Map<String, ResourceType> resourceTypeMap, Map<String, List<String>> resourceGroups) throws IOException {
+        try {
+            if (xmlFactory == null)
+                xmlFactory = DocumentBuilderFactory.newInstance();
+            HarvesterResourceTypeXml resourceTypeXml = new HarvesterResourceTypeXml(xmlFactory.newDocumentBuilder());
+            HarvesterResourceGroupXml resourceGroupXml = new HarvesterResourceGroupXml(xmlFactory.newDocumentBuilder());
+            HarvesterResourceTypeGroupXml resourceTypeGroupXml = new HarvesterResourceTypeGroupXml(xmlFactory.newDocumentBuilder());
+            resourceTypeXml.load(getListTypeStream("resource_type"));
+            resourceGroupXml.load(getListTypeStream("resource_group"));
+            resourceTypeGroupXml.load(getListTypeStream("resource_type_group"));
+
+
+            resourceTypeMap.putAll(resourceGroupXml.getResourceTypeMap());
+            resourceTypeMap.putAll(resourceTypeXml.getResourceTypeMap());
+
+            resourceGroups.putAll(resourceTypeGroupXml.getTypeGroupMap());
+        } catch (ParserConfigurationException | SAXException e) {
+            e.printStackTrace();
+        }
     }
 }

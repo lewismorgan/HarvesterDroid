@@ -43,7 +43,7 @@ import java.util.stream.Collectors;
 public class HarvesterDroid {
     private final static int DOWNLOAD_HOURS = 2;
 
-    private final HarvesterDroidData data;
+    //private final HarvesterDroidData data;
 
     private Downloader downloader;
 
@@ -59,7 +59,7 @@ public class HarvesterDroid {
     public HarvesterDroid(Downloader downloader) {
         this.downloader = downloader;
         this.currentResourceTimestamp = "";
-        this.data = new HarvesterDroidData();
+        //this.data = new HarvesterDroidData();
         this.inventory = new ArrayList<>();
         this.resources = new ArrayList<>();
         this.schematics = new ArrayList<>();
@@ -113,7 +113,7 @@ public class HarvesterDroid {
     }
 
     public List<GalaxyResource> findGalaxyResourcesById(String id) {
-        List<String> resourceGroups = data.getResourceGroups(id);
+        List<String> resourceGroups = downloader.getResourceGroups(id);
         if (resourceGroups != null) {
             // ID that was entered is a group of resources
             List<GalaxyResource> master = new ArrayList<>();
@@ -156,7 +156,7 @@ public class HarvesterDroid {
 
             galaxies = downloader.downloadGalaxyList();
 
-            downloader.downloadCurrentResources(data.getResourceTypeMap());
+            downloader.downloadCurrentResources();
 
             resources.clear();
             resources.addAll(downloader.getCurrentResources());
@@ -183,7 +183,7 @@ public class HarvesterDroid {
             return existing;
         }
 
-        GalaxyResource galaxyResource = downloader.downloadGalaxyResource(resource, data.getResourceTypeMap());
+        GalaxyResource galaxyResource = downloader.downloadGalaxyResource(resource);
         if (galaxyResource == null)
             return null;
 
@@ -271,7 +271,7 @@ public class HarvesterDroid {
 
     public Map<String, String> getResourceTypes() {
         Map<String, String> types = new HashMap<>();
-        data.getResourceTypeMap().forEach((key, value) -> types.put(key, value.getName()));
+        downloader.getResourceTypeMap().forEach((key, value) -> types.put(key, value.getName()));
         return types;
     }
 
