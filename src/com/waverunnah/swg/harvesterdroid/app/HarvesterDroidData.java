@@ -64,6 +64,13 @@ public class HarvesterDroidData {
 
     }
 
+    public void populateMinMax(ResourceType resourceType) {
+        if (!resourceTypeMap.containsKey(resourceType.getId()))
+            return;
+
+        resourceType.setMinMaxMap(resourceTypeMap.get(resourceType.getId()).getMinMaxMap());
+    }
+
     private void loadResourceTypes() {
         readCsv("/data/resource_tree.txt", line -> {
             ResourceType type = new ResourceType();

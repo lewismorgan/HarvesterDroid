@@ -43,7 +43,7 @@ import java.util.stream.Collectors;
 public class HarvesterDroid {
     private final static int DOWNLOAD_HOURS = 2;
 
-    //private final HarvesterDroidData data;
+    private final HarvesterDroidData data;
 
     private Downloader downloader;
 
@@ -59,7 +59,7 @@ public class HarvesterDroid {
     public HarvesterDroid(Downloader downloader) {
         this.downloader = downloader;
         this.currentResourceTimestamp = "";
-        //this.data = new HarvesterDroidData();
+        this.data = new HarvesterDroidData();
         this.inventory = new ArrayList<>();
         this.resources = new ArrayList<>();
         this.schematics = new ArrayList<>();
@@ -160,6 +160,9 @@ public class HarvesterDroid {
 
             resources.clear();
             resources.addAll(downloader.getCurrentResources());
+
+            resources.forEach(galaxyResource -> data.populateMinMax(galaxyResource.getResourceType()));
+
             currentResourceTimestamp = downloader.getCurrentResourcesTimestamp().toString();
         } catch (IOException e) {
             e.printStackTrace();
