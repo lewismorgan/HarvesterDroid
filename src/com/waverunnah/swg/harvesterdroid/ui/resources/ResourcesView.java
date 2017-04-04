@@ -45,7 +45,7 @@ public class ResourcesView implements FxmlView<ResourcesViewModel>, Initializabl
     private ResourcesViewModel viewModel;
 
     public void initialize(URL location, ResourceBundle resources) {
-        listView.disableProperty().bind(Bindings.isEmpty(viewModel.getResources()));
+        //listView.disableProperty().bind(Bindings.isEmpty(viewModel.getResources()));
 
         listView.setCellFactory(CachedViewModelCellFactory.createForFxmlView(GalaxyResourceItemView.class));
         listView.itemsProperty().bind(viewModel.resourcesProperty());

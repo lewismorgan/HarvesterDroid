@@ -47,7 +47,7 @@ public class GalaxyResourceItemViewModel implements ViewModel {
         name.set(galaxyResource.getName());
         type.set(galaxyResource.getResourceType().getName());
         attributes.set(FXCollections.observableMap(galaxyResource.getAttributes()));
-        image.set(createImage(galaxyResource.getContainer()));
+        image.set(createImage(galaxyResource.getResourceType().getId()));
     }
 
     private Image createImage(String container) {
@@ -58,7 +58,7 @@ public class GalaxyResourceItemViewModel implements ViewModel {
             container = container.split("_")[0];
             is = getClass().getResourceAsStream("/images/resources/" + container + ".png");
             if (is == null) {
-//                System.out.println("Could not find image /images/resources/" + container + ".png");
+                System.out.println("Could not find image /images/resources/" + container + ".png");
                 return null;
             }
         }
