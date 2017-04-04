@@ -19,7 +19,6 @@
 package com.waverunnah.swg.harvesterdroid.xml.galaxyharvester;
 
 import com.waverunnah.swg.harvesterdroid.data.resources.GalaxyResource;
-import com.waverunnah.swg.harvesterdroid.data.resources.Planet;
 import com.waverunnah.swg.harvesterdroid.ui.dialog.ExceptionDialog;
 import com.waverunnah.swg.harvesterdroid.app.Attributes;
 import com.waverunnah.swg.harvesterdroid.xml.app.ResourceXml;
@@ -63,7 +62,7 @@ public class HarvesterResourceXml extends ResourceXml {
                     galaxyResource.setDate(node.getTextContent());
                     break;
                 case "planet":
-                    galaxyResource.getPlanets().add(Planet.toPlanet(node.getTextContent()));
+                    galaxyResource.getPlanets().add(node.getTextContent());
                     break;
                 case "unavailable":
                     galaxyResource.setDespawnDate(node.getTextContent());

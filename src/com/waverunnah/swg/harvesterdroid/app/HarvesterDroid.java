@@ -23,12 +23,17 @@ import com.waverunnah.swg.harvesterdroid.data.resources.InventoryResource;
 import com.waverunnah.swg.harvesterdroid.data.schematics.Schematic;
 import com.waverunnah.swg.harvesterdroid.downloaders.Downloader;
 import com.waverunnah.swg.harvesterdroid.xml.XmlFactory;
+import com.waverunnah.swg.harvesterdroid.xml.app.GalaxyResourcesXml;
 import com.waverunnah.swg.harvesterdroid.xml.app.InventoryXml;
 import com.waverunnah.swg.harvesterdroid.xml.app.SchematicsXml;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.Reader;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
@@ -54,7 +59,7 @@ public class HarvesterDroid {
     private Map<String, String> galaxies;
 
     private String currentResourceTimestamp;
-    private String galaxy;
+    private String activeGalaxy;
 
     public HarvesterDroid(Downloader downloader) {
         this.downloader = downloader;
@@ -148,7 +153,7 @@ public class HarvesterDroid {
 
     public void updateResources() {
         try {
-            if (downloader.getGalaxy().equals(galaxy) && !needsUpdate(downloader.getCurrentResourcesTimestamp())) {
+            if (downloader.getGalaxy().equals(activeGalaxy) && !needsUpdate(downloader.getCurrentResourcesTimestamp())) {
                 if (downloader.getCurrentResourcesTimestamp().toString().equals(getCurrentResourceTimestamp())) {
                     currentResourceTimestamp = downloader.getCurrentResourcesTimestamp().toString();
                 }
@@ -157,14 +162,26 @@ public class HarvesterDroid {
 
                 downloader.downloadCurrentResources();
 
-                resources.clear();
+                for (GalaxyResource currentResource : downloader.getCurrentResources()) {
+                    // Remove any current loaded resources that are saved because they're probably is updated information
+                    GalaxyResource duplicate = null;
+                    for (GalaxyResource resource : resources) {
+                        if (resource.getName().equals(currentResource.getName())) {
+                            duplicate = resource;
+                            break;
+                        }
+                    }
+                    if (duplicate != null)
+                        resources.remove(duplicate);
+                }
+
                 resources.addAll(downloader.getCurrentResources());
 
                 resources.forEach(galaxyResource -> data.populateMinMax(galaxyResource.getResourceType()));
                 inventory.forEach(this::getGalaxyResource);
 
                 currentResourceTimestamp = downloader.getCurrentResourcesTimestamp().toString();
-                galaxy = downloader.getGalaxy();
+                activeGalaxy = downloader.getGalaxy();
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -198,10 +215,18 @@ public class HarvesterDroid {
     }
 
     public void switchToGalaxy(String galaxy) {
-        if (this.galaxy.equals(galaxy))
+        if (this.activeGalaxy.equals(galaxy))
             return;
 
+        activeGalaxy = galaxy;
         downloader.setGalaxy(galaxy);
+        resources.clear();
+        try {
+            if (new File(getSavedResourcesPath()).exists())
+                loadResources(new FileReader(getSavedResourcesPath()));
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException();
+        }
         updateResources();
     }
 
@@ -238,6 +263,17 @@ public class HarvesterDroid {
         inventoryXml.setInventory(inventory);
         XmlFactory.write(inventoryXml, outputStream);
     }
+
+    public void saveResources(OutputStream outputStream) {
+        GalaxyResourcesXml resourcesXml = new GalaxyResourcesXml();
+        resourcesXml.setGalaxyResources(resources);
+        XmlFactory.write(resourcesXml, outputStream);
+    }
+
+    public void loadResources(Reader reader) {
+        resources = XmlFactory.loadList(GalaxyResource.class, reader);
+    }
+
 
     public void loadSchematics(InputStream inputStream) {
         SchematicsXml schematicsXml = XmlFactory.read(SchematicsXml.class, inputStream);
@@ -283,6 +319,10 @@ public class HarvesterDroid {
         return types;
     }
 
+    public String getSavedResourcesPath() {
+        return downloader.getResourcesPath();
+    }
+
     public void setDownloader(Downloader downloader) {
         this.downloader = downloader;
     }
@@ -291,7 +331,7 @@ public class HarvesterDroid {
         return downloader.getIdentifier();
     }
 
-    public String getGalaxy() {
-        return galaxies.get(galaxy);
+    public String getActiveGalaxy() {
+        return galaxies.get(activeGalaxy);
     }
 }

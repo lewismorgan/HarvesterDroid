@@ -188,6 +188,10 @@ public abstract class Downloader {
         return root + "/" + getIdentifier() + "/";
     }
 
+    public final String getResourcesPath() {
+        return getRootDownloadsPath() + "resources.xml";
+    }
+
     public final String getGalaxy() {
         return galaxy;
     }

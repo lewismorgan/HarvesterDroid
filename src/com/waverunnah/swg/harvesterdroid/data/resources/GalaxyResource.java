@@ -20,22 +20,37 @@ package com.waverunnah.swg.harvesterdroid.data.resources;
 
 import com.waverunnah.swg.harvesterdroid.app.Attributes;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@XmlRootElement(name="galaxy_resource")
+@XmlAccessorType(XmlAccessType.FIELD)
 public class GalaxyResource {
+    @XmlAttribute(name="name")
     private String name;
+    @XmlAttribute(name="spawn_date")
     private String date;
-    private ResourceType resourceType;
+    @XmlAttribute(name="container")
     private String container;
+    @XmlAttribute(name="despawn_date")
     private String despawnDate;
-
-    private List<Planet> planets;
+    @XmlElementWrapper(name="planets") @XmlElement(name="planet")
+    private List<String> planets;
+    @XmlElementWrapper(name="attributes")
     private Map<String, Integer> attributes;
-
+    @XmlAttribute(name="group")
     private String resourceTypeString;
+
+    @XmlElement(name="resource_type")
+    private ResourceType resourceType;
 
     public GalaxyResource() {
         planets = new ArrayList<>();
@@ -83,11 +98,11 @@ public class GalaxyResource {
         this.despawnDate = despawnDate;
     }
 
-    public List<Planet> getPlanets() {
+    public List<String> getPlanets() {
         return planets;
     }
 
-    public void setPlanets(List<Planet> planets) {
+    public void setPlanets(List<String> planets) {
         this.planets = planets;
     }
 

@@ -39,6 +39,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Map;
@@ -86,6 +87,12 @@ public class Launcher extends MvvmfxEasyDIApplication {
 
         Downloader downloader = new GalaxyHarvesterDownloader(ROOT_DIR, DroidProperties.getString(DroidProperties.GALAXY));
         app.setDownloader(downloader);
+
+        if (new File(app.getSavedResourcesPath()).exists()) {
+            updateLoadingProgress("Retrieving saved resources...", -1);
+            app.loadResources(new FileReader(app.getSavedResourcesPath()));
+        }
+
         updateLoadingProgress("Finding the latest resources...", -1);
         app.updateResources();
         updateLoadingProgress("Loading saved data...", -1);
@@ -151,6 +158,7 @@ public class Launcher extends MvvmfxEasyDIApplication {
         try {
             app.saveInventory(new FileOutputStream(new File(XML_INVENTORY)));
             app.saveSchematics(new FileOutputStream(new File(XML_SCHEMATICS)));
+            app.saveResources(new FileOutputStream(new File(app.getSavedResourcesPath())));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }

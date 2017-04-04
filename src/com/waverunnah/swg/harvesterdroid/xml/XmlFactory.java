@@ -22,8 +22,15 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
+import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.XMLStreamConstants;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamReader;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.Reader;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Simple JAXB utility class for easy reading and writing of classes
@@ -32,6 +39,28 @@ import java.io.OutputStream;
  */
 @SuppressWarnings("unchecked")
 public class XmlFactory {
+
+    public static <T> List<T> loadList(Class<T> classToRead, Reader reader) {
+        try {
+            XMLInputFactory xif = XMLInputFactory.newInstance();
+            XMLStreamReader xsr = xif.createXMLStreamReader(reader);
+            xsr.nextTag(); // Advance to statements element
+
+            JAXBContext jc = JAXBContext.newInstance(classToRead);
+            Unmarshaller unmarshaller = jc.createUnmarshaller();
+
+            List<T> list = new ArrayList<>();
+            while (xsr.nextTag() == XMLStreamConstants.START_ELEMENT) {
+                T element = (T) unmarshaller.unmarshal(xsr);
+                list.add(element);
+            }
+            return list;
+        } catch (XMLStreamException | JAXBException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     public static <T> T read(Class<T> classToLoad, InputStream inputStream) {
         JAXBContext context;
         try {

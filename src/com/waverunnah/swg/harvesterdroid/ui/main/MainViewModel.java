@@ -107,11 +107,11 @@ public class MainViewModel implements ViewModel {
             }
         });
 
-        galaxyScope.subscribe(GalaxyScope.CHANGED, (s, objects) -> updateStatusText(harvesterDroid.getGalaxy(), harvesterDroid.getResources().size()));
+        galaxyScope.subscribe(GalaxyScope.CHANGED, (s, objects) -> updateStatusText(harvesterDroid.getActiveGalaxy(), harvesterDroid.getResources().size()));
         resourceScope.subscribe(ResourceScope.UPDATED_LIST, (s, objects) -> updateResourceStatus(harvesterDroid.getResources().size()));
 
         statusText.bind(Bindings.concat("Galaxy: ", galaxyString, "  |  ", "Loaded Resources: ", resourcesString));
-        updateStatusText(harvesterDroid.getGalaxy(), harvesterDroid.getResources().size());
+        updateStatusText(harvesterDroid.getActiveGalaxy(), harvesterDroid.getResources().size());
     }
 
     private void updateStatusText(String galaxy, int resources) {

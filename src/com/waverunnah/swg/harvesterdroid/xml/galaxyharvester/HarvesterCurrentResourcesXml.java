@@ -19,7 +19,6 @@
 package com.waverunnah.swg.harvesterdroid.xml.galaxyharvester;
 
 import com.waverunnah.swg.harvesterdroid.data.resources.GalaxyResource;
-import com.waverunnah.swg.harvesterdroid.data.resources.Planet;
 import com.waverunnah.swg.harvesterdroid.xml.app.CurrentResourcesXml;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -86,7 +85,7 @@ public final class HarvesterCurrentResourcesXml extends CurrentResourcesXml {
             if (!child.getNodeName().equals("planet"))
                 return;
 
-            galaxyResource.getPlanets().add(Planet.toPlanet(child.getTextContent()));
+            galaxyResource.getPlanets().add(child.getTextContent());
         });
     }
 

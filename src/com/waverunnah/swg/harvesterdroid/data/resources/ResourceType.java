@@ -18,15 +18,25 @@
 
 package com.waverunnah.swg.harvesterdroid.data.resources;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.util.HashMap;
 import java.util.Map;
 
 /**
  * Created by Waverunner on 3/23/2017
  */
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlRootElement(name="resource_type")
 public class ResourceType {
+    @XmlAttribute(name="id")
     private String id;
+    @XmlAttribute(name="name")
     private String name;
+    @XmlElementWrapper(name="min_max")
     private Map<String, Integer> minMaxMap;
 
     public ResourceType() {
