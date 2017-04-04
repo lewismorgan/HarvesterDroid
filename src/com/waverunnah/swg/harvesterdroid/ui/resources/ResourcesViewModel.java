@@ -93,9 +93,13 @@ public class ResourcesViewModel implements ViewModel {
 
         galaxyResources.addListener((ListChangeListener<GalaxyResourceItemViewModel>) c -> {
             while (c.next()) {
-                if (c.wasAdded())
-                    harvesterDroid.getResources().addAll(c.getAddedSubList().stream().map(GalaxyResourceItemViewModel::getGalaxyResource).collect(Collectors.toList()));
-                else if (c.wasRemoved())
+                if (c.wasAdded()) {
+                    List<GalaxyResource> toAdd = c.getAddedSubList().stream().map(GalaxyResourceItemViewModel::getGalaxyResource).collect(Collectors.toList());
+                    toAdd.forEach(resource -> {
+                        if (!harvesterDroid.getResources().contains(resource))
+                            harvesterDroid.getResources().add(resource);
+                    });
+                } else if (c.wasRemoved())
                     harvesterDroid.getResources().removeAll(c.getRemoved().stream().map(GalaxyResourceItemViewModel::getGalaxyResource).collect(Collectors.toList()));
             }
         });
