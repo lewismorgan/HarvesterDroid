@@ -35,6 +35,7 @@ import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleListProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 
@@ -81,10 +82,44 @@ public class ResourcesViewModel implements ViewModel {
         galaxyResources.set(FXCollections.observableArrayList(harvesterDroid.getResources()
                 .stream().map(GalaxyResourceItemViewModel::new).collect(Collectors.toList())));
 
+        galaxyResources.addListener((ListChangeListener<GalaxyResourceItemViewModel>) c -> {
+            while (c.next()) {
+                if (c.wasAdded())
+                    harvesterDroid.getResources().addAll(c.getAddedSubList().stream().map(GalaxyResourceItemViewModel::getGalaxyResource).collect(Collectors.toList()));
+                else if (c.wasRemoved())
+                    harvesterDroid.getResources().removeAll(c.getRemoved().stream().map(GalaxyResourceItemViewModel::getGalaxyResource).collect(Collectors.toList()));
+            }
+        });
+
         schematicScope.subscribe(SchematicScope.ACTIVE, (s, objects) -> onSchematicSelected((Schematic) objects[0]));
 
         galaxyScope.subscribe(GalaxyScope.CHANGED, (s, objects) -> galaxyResources.set(FXCollections.observableArrayList(harvesterDroid.getResources()
                 .stream().map(GalaxyResourceItemViewModel::new).collect(Collectors.toList()))));
+
+        resourceScope.subscribe(ResourceScope.IMPORTED, (s, objects) -> {
+            for (Object object : objects) {
+                galaxyResources.add(new GalaxyResourceItemViewModel((GalaxyResource) object));
+            }
+            resourceScope.publish(ResourceScope.UPDATED_LIST);
+        });
+
+        resourceScope.subscribe(ResourceScope.IMPORT_REMOVED, (s, objects) -> {
+            for (Object object : objects) {
+                GalaxyResource galaxyResource = (GalaxyResource) object;
+                if (galaxyResource.getDespawnDate() == null || galaxyResource.getDespawnDate().isEmpty())
+                    continue;
+
+                GalaxyResourceItemViewModel toRemove = null;
+                for (GalaxyResourceItemViewModel resource : galaxyResources) {
+                    if (resource.getGalaxyResource().equals(galaxyResource)) {
+                        toRemove = resource;
+                        break;
+                    }
+                }
+                galaxyResources.remove(toRemove);
+                resourceScope.publish(ResourceScope.UPDATED_LIST);
+            }
+        });
     }
 
     private void onSchematicSelected(Schematic newValue) {
@@ -94,6 +129,7 @@ public class ResourcesViewModel implements ViewModel {
         }
 
         List<GalaxyResource> bestResources = harvesterDroid.getBestResourcesList(newValue);
+        bestResources.forEach(System.out::println);
         resources.get().setPredicate(param -> bestResources.contains(param.getGalaxyResource()));
     }
 

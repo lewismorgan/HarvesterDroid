@@ -29,8 +29,9 @@ import javafx.beans.property.SimpleObjectProperty;
 public class SchematicScope implements Scope {
     private ObjectProperty<Schematic> schematic = new SimpleObjectProperty<>();
 
-    public static String UPDATE = "SchematicScope.Update";
-    public static String ACTIVE = "SchematicScope.Active";
+    public static final String UPDATE = "SchematicScope.Update";
+    public static final String ACTIVE = "SchematicScope.Active";
+    public static final String REFRESH = "SchematicScope.Refresh";
 
     public Schematic getSchematic() {
         return schematic.get();

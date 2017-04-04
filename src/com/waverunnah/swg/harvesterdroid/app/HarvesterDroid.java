@@ -190,6 +190,7 @@ public class HarvesterDroid {
         if (galaxyResource == null)
             return null;
 
+        data.populateMinMax(galaxyResource.getResourceType());
         resources.add(galaxyResource);
         return galaxyResource;
     }
@@ -238,13 +239,13 @@ public class HarvesterDroid {
 
     public void loadSchematics(InputStream inputStream) {
         SchematicsXml schematicsXml = XmlFactory.read(SchematicsXml.class, inputStream);
-        if (schematicsXml != null)
+        if (schematicsXml != null && schematicsXml.getSchematics() != null)
             schematics = schematicsXml.getSchematics();
     }
 
     public void loadInventory(InputStream inputStream) {
         InventoryXml inventoryXml = XmlFactory.read(InventoryXml.class, inputStream);
-        if (inventoryXml != null)
+        if (inventoryXml != null && inventoryXml.getInventory() != null)
             inventory = inventoryXml.getInventory();
     }
 

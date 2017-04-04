@@ -79,11 +79,17 @@ public class InventoryViewModel implements ViewModel {
         inventory.addListener((ListChangeListener<GalaxyResourceItemViewModel>) c -> {
             while (c.next()) {
                 if (c.wasAdded()) {
-                    c.getAddedSubList().forEach(item -> harvesterDroid.addInventoryResource(item.getGalaxyResource()));
+                    c.getAddedSubList().forEach(item -> {
+                        harvesterDroid.addInventoryResource(item.getGalaxyResource());
+                        resourceScope.publish(ResourceScope.IMPORTED, item.getGalaxyResource());
+                    });
                 }
 
                 if (c.wasRemoved()) {
-                    c.getRemoved().forEach(item -> harvesterDroid.removeInventoryResource(item.getGalaxyResource()));
+                    c.getRemoved().forEach(item -> {
+                        harvesterDroid.removeInventoryResource(item.getGalaxyResource());
+                        resourceScope.publish(ResourceScope.IMPORT_REMOVED, item.getGalaxyResource());
+                    });
                 }
             }
         });

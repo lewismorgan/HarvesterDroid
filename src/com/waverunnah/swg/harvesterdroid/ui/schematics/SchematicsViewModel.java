@@ -21,6 +21,7 @@ package com.waverunnah.swg.harvesterdroid.ui.schematics;
 import com.waverunnah.swg.harvesterdroid.app.HarvesterDroid;
 import com.waverunnah.swg.harvesterdroid.data.schematics.Schematic;
 import com.waverunnah.swg.harvesterdroid.ui.dialog.schematic.SchematicDialog;
+import com.waverunnah.swg.harvesterdroid.ui.scopes.ResourceScope;
 import com.waverunnah.swg.harvesterdroid.ui.scopes.SchematicScope;
 import de.saxsys.mvvmfx.InjectScope;
 import de.saxsys.mvvmfx.ViewModel;
@@ -32,6 +33,7 @@ import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleListProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 
 import java.util.Optional;
@@ -49,6 +51,8 @@ public class SchematicsViewModel implements ViewModel {
 
     @InjectScope
     private SchematicScope schematicScope;
+    @InjectScope
+    private ResourceScope resourceScope;
 
     private final HarvesterDroid harvesterDroid;
 
@@ -81,6 +85,21 @@ public class SchematicsViewModel implements ViewModel {
         });
 
         selected.addListener(((observable, oldValue, newValue) -> handleSchematicSelected(newValue)));
+
+        schematics.addListener((ListChangeListener<Schematic>) c -> {
+            while (c.next()) {
+                if (c.wasAdded())
+                    harvesterDroid.getSchematics().addAll(c.getAddedSubList());
+                else if (c.wasRemoved())
+                    harvesterDroid.getSchematics().removeAll(c.getRemoved());
+            }
+        });
+
+        resourceScope.subscribe(ResourceScope.UPDATED_LIST, (s, objects) -> {
+            Schematic selected = getSelected();
+            setSelected(null);
+            setSelected(selected);
+        });
     }
 
     private void handleSchematicSelected(Schematic schematic) {
