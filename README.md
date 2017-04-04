@@ -8,16 +8,16 @@ I started on this project almost a year ago and it is fairly complete for the mo
 Programmed with love by Waverunner <3
 
 #### Features
-* Track resources based on their best weight from a schematic
-* Easily organize your schematics with groups
-* Display the best obtainable resources for a schematic
+* Track resources based on their best weight from a defined schematic
+* Easily organize your schematics within groups
+* Display the best resources for a schematic
 * Keep track of your top resources through the inventory
 
 ### Future
-* Finalize support for use with other resource tracking websites (50% done!)
-* Server selection
+* Finalize support for use with other tracking websites (80% done!)
+* Import resources without having to use the inventory system
 * Update Getting Started images
-* Allow custom loading of resource trees from game files
+* Add tracking from SWGCraft
 
 # Getting Started
 Using HarvesterDroid is super easy! First off we start by creating a schematic.
