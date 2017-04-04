@@ -54,7 +54,7 @@
          <children>
             <HBox fx:id="infoGroup" spacing="4.0">
                <children>
-                  <Label fx:id="infoLeftLabel" text="Enter a resource id and the stats will be retreived automatically" />
+                  <Label fx:id="infoLeftLabel" text="Enter a resource id and the stats will be obtained automatically" />
                   <Label fx:id="infoRightLabel" />
                </children>
             </HBox>
