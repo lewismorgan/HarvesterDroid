@@ -115,7 +115,15 @@ public class ResourcesViewModel implements ViewModel {
 
         resourceScope.subscribe(ResourceScope.IMPORT_ADDED, (s, objects) -> {
             for (Object object : objects) {
-                galaxyResources.add(new GalaxyResourceItemViewModel((GalaxyResource) object));
+                boolean exists = false;
+                for (GalaxyResourceItemViewModel galaxyResource : galaxyResources.get()) {
+                    if (galaxyResource.getGalaxyResource() == object) {
+                        exists = true;
+                        break;
+                    }
+                }
+                if (!exists)
+                    galaxyResources.add(new GalaxyResourceItemViewModel((GalaxyResource) object));
             }
             resourceScope.publish(ResourceScope.UPDATED_LIST);
         });
