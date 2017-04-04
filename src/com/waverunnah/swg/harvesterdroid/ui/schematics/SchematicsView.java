@@ -149,6 +149,11 @@ public class SchematicsView implements FxmlView<SchematicsViewModel>, Initializa
 
     private void createSchematicsTree(Schematic schematic) {
         String[] groups = schematic.getGroup().split(":");
+        if (groups.length == 0 || (groups.length == 1 && (groups[0] == null || groups[0].isEmpty()))) {
+            schematicsTreeView.getRoot().getChildren().add(createSchematicsTreeItem(schematic));
+            return;
+        }
+
         TreeItem<SchematicsTreeItem> groupTree = getSubGroupTree(schematicsTreeView.getRoot(), groups, 0);
 
         if (groupTree == null) {
@@ -229,7 +234,10 @@ public class SchematicsView implements FxmlView<SchematicsViewModel>, Initializa
     }
 
     private TreeItem<SchematicsTreeItem> createSchematicsTreeItem(Schematic schematic) {
-        return new TreeItem<>(new SchematicsTreeItem(schematic.getName(), schematic.getId(), false));
+        String name = schematic.getName();
+        if (name == null || name.isEmpty())
+            name = "Unnamed";
+        return new TreeItem<>(new SchematicsTreeItem(name, schematic.getId(), false));
     }
 
     private TreeItem<SchematicsTreeItem> createGroupTreeItem(String[] groups, int index) {
@@ -247,8 +255,9 @@ public class SchematicsView implements FxmlView<SchematicsViewModel>, Initializa
         String[] group = schematic.getGroup().split(":");
 
         TreeItem<SchematicsTreeItem> groupRoot = getSubGroupTree(schematicsTreeView.getRoot(), group, 0);
-        if (groupRoot == null)
-            return;
+        if (groupRoot == null && group.length == 0 || (group.length == 1 && (group[0] == null || group[0].isEmpty())))
+            groupRoot = schematicsTreeView.getRoot();
+        else return;
 
         TreeItem<SchematicsTreeItem> toRemove = null;
         for (TreeItem<SchematicsTreeItem> treeItem : groupRoot.getChildren()) {

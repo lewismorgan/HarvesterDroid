@@ -30,8 +30,13 @@ import de.saxsys.mvvmfx.ViewModel;
 import de.saxsys.mvvmfx.utils.commands.Action;
 import de.saxsys.mvvmfx.utils.commands.Command;
 import de.saxsys.mvvmfx.utils.commands.DelegateCommand;
+import javafx.beans.binding.Bindings;
+import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ListProperty;
 import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.ReadOnlyStringProperty;
+import javafx.beans.property.ReadOnlyStringWrapper;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleListProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
@@ -49,6 +54,10 @@ public class ResourcesViewModel implements ViewModel {
     private ListProperty<GalaxyResourceItemViewModel> galaxyResources = new SimpleListProperty<>();
     private ObjectProperty<FilteredList<GalaxyResourceItemViewModel>> resources = new SimpleObjectProperty<>();
     private ObjectProperty<GalaxyResourceItemViewModel> selected = new SimpleObjectProperty<>();
+
+    private ReadOnlyStringWrapper statusText = new ReadOnlyStringWrapper();
+
+    private BooleanProperty schematicSelected = new SimpleBooleanProperty(false);
 
     private Command favoriteCommand;
 
@@ -120,17 +129,24 @@ public class ResourcesViewModel implements ViewModel {
                 resourceScope.publish(ResourceScope.UPDATED_LIST);
             }
         });
+
+        statusText.bind(Bindings.when(galaxyResources.emptyProperty()).then("No resources available for this galaxy, try adding one to your inventory")
+                .otherwise(Bindings.when(schematicSelected.not()).then("Select a schematic to view the best available resources")
+                        .otherwise(Bindings.when(Bindings.isEmpty(resources.get())).then("No resources available for this schematic")
+                                .otherwise(""))));
     }
 
     private void onSchematicSelected(Schematic newValue) {
         if (newValue == null) {
             resources.get().setPredicate(param -> false);
+            schematicSelected.set(false);
             return;
         }
 
         List<GalaxyResource> bestResources = harvesterDroid.getBestResourcesList(newValue);
         bestResources.forEach(System.out::println);
         resources.get().setPredicate(param -> bestResources.contains(param.getGalaxyResource()));
+        schematicSelected.set(true);
     }
 
     public ObservableList<GalaxyResourceItemViewModel> getGalaxyResources() {
@@ -171,5 +187,13 @@ public class ResourcesViewModel implements ViewModel {
 
     public Command getFavoriteCommand() {
         return favoriteCommand;
+    }
+
+    public String getStatusText() {
+        return statusText.get();
+    }
+
+    public ReadOnlyStringProperty statusTextProperty() {
+        return statusText.getReadOnlyProperty();
     }
 }
