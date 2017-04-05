@@ -1,0 +1,99 @@
+/* Radius: top-left top-right bottom-right and bottom-left*/
+/* Border Style: top right bottom left */
+/* Global Colors */
+{
+    -background-color: #E8E2D4;
+    -bar-background-color: #B8AF92;
+    -hover-color: #c4b7aa;
+}
+
+.root {
+    -fx-background-color: -background-color;
+}
+
+.status-bar {
+    -fx-background-color: -bar-background-color;
+    -fx-border-color: black;
+    -fx-border-style: solid hidden hidden hidden;
+}
+
+/*region Titled Pane*/
+.titled-pane > *.content {
+    -fx-background-color: -background-color;
+    -fx-box-border: black;
+}
+
+.titled-pane:expanded > .title {
+    -fx-background-color: -bar-background-color;
+    -fx-background-radius: 5 0 0 0;
+    -fx-border-color: black;
+    -fx-border-radius: 5 0 0 0;
+    /*-fx-border-style: solid solid solid solid;*/
+}
+/*endregion*/
+
+/*region Menu Bar*/
+.menu-bar {
+    -fx-background-color: -bar-background-color;
+    -fx-border-color: black;
+    -fx-border-style: hidden hidden solid hidden;
+}
+
+.menu-button:hover, .menu-button:showing, .menu-item:focused, .menu-item:showing {
+    -fx-background-color: -hover-color;
+}
+
+.menu-item {
+    -fx-background-color: #dbd6d2;
+}
+/*endregion*/
+
+/*region Button*/
+.button {
+    -fx-background-color: whitesmoke;
+    -fx-background-radius: 0px;
+    -fx-border-color: dimgray;
+    -fx-background-insets: 0px;
+}
+
+.button:hover {
+    -fx-background-color: -hover-color;
+}
+
+.button:focused {
+    -fx-background-color: linear-gradient(-hover-color 0%, -background-color 100%)
+}
+/*endregion*/
+
+.list-view:focused,
+.tree-view:focused {
+    -fx-background-color: transparent;
+    -fx-background-insets: 0px;
+    -fx-border-color: black;
+    -fx-padding: 0px;
+}
+
+
+/*region List Cell*/
+.list-cell:filled:selected:focused, .list-cell:filled:selected {
+    -fx-background-color: -hover-color;
+}
+
+.list-cell:even {
+    -fx-background-color: whitesmoke,
+            linear-gradient(whitesmoke 10%, -background-color 90%, whitesmoke 100%);
+}
+/*endregion*/
+
+/*region Tree Cell*/
+.tree-cell:selected {
+    -fx-background-color: -hover-color;
+}
+/*endregion*/
+
+.context-menu {
+    -fx-skin: "com.sun.javafx.scene.control.skin.ContextMenuSkin";
+    -fx-background-color: #dbd6d2;
+    /*-fx-background-insets: 0, 1, 2;*/
+    -fx-background-radius: 0 6 6 6, 0 5 5 5, 0 4 4 4;
+}

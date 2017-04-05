@@ -65,9 +65,10 @@ public class HarvesterDroid {
         this.downloader = downloader;
         this.currentResourceTimestamp = "";
         this.data = new HarvesterDroidData();
-        this.inventory = new ArrayList<>();
-        this.resources = new ArrayList<>();
-        this.schematics = new ArrayList<>();
+        this.inventory = new ArrayList<>(0);
+        this.resources = new ArrayList<>(0);
+        this.schematics = new ArrayList<>(0);
+        this.galaxies = new HashMap<>(0);
     }
 
     public List<GalaxyResource> getBestResourcesList(Schematic schematic, boolean onlyAvailable) {
@@ -345,6 +346,6 @@ public class HarvesterDroid {
     }
 
     public String getActiveGalaxy() {
-        return galaxies.get(activeGalaxy);
+        return (galaxies.get(activeGalaxy) != null ? galaxies.get(activeGalaxy) : "No Active Galaxy");
     }
 }
