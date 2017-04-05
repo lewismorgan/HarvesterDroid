@@ -70,11 +70,16 @@ public class HarvesterDroid {
         this.schematics = new ArrayList<>();
     }
 
-    public List<GalaxyResource> getBestResourcesList(Schematic schematic) {
+    public List<GalaxyResource> getBestResourcesList(Schematic schematic, boolean onlyAvailable) {
         List<GalaxyResource> bestResources = new ArrayList<>(schematic.getResources().size());
         schematic.getResources().forEach(id -> {
             List<GalaxyResource> matchedResources = findGalaxyResourcesById(id);
             if (matchedResources != null) {
+                if (onlyAvailable)
+                    matchedResources = matchedResources.stream()
+                            .filter(resource -> resource.getDespawnDate() == null || resource.getDespawnDate().isEmpty() || inventoryContainsResource(resource))
+                            .collect(Collectors.toList());
+
                 GalaxyResource bestResource = collectBestResourceForSchematic(schematic, matchedResources);
                 if (bestResource != null && !bestResources.contains(bestResource))
                     bestResources.add(bestResource);
@@ -212,6 +217,14 @@ public class HarvesterDroid {
         data.populateMinMax(galaxyResource.getResourceType());
         resources.add(galaxyResource);
         return galaxyResource;
+    }
+
+    public boolean inventoryContainsResource(GalaxyResource galaxyResource) {
+        for (InventoryResource inventoryResource : inventory) {
+            if (galaxyResource.getName().equals(inventoryResource.getName()))
+                return true;
+        }
+        return false;
     }
 
     public void switchToGalaxy(String galaxy) {

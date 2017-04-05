@@ -53,6 +53,7 @@ public class ResourcesViewModel implements ViewModel {
     private ListProperty<GalaxyResourceItemViewModel> galaxyResources = new SimpleListProperty<>();
     private ObjectProperty<FilteredList<GalaxyResourceItemViewModel>> resources = new SimpleObjectProperty<>();
     private ObjectProperty<GalaxyResourceItemViewModel> selected = new SimpleObjectProperty<>();
+    private BooleanProperty showOnlyAvailableResources = new SimpleBooleanProperty();
 
     private ReadOnlyStringWrapper statusText = new ReadOnlyStringWrapper();
 
@@ -74,6 +75,8 @@ public class ResourcesViewModel implements ViewModel {
     }
 
     public void initialize() {
+        subscribeScopes();
+        createListeners();
 
         favoriteCommand = new DelegateCommand(() -> new Action() {
             @Override
@@ -82,14 +85,27 @@ public class ResourcesViewModel implements ViewModel {
             }
         });
 
+        galaxyResources.set(FXCollections.observableArrayList(harvesterDroid.getResources()
+                .stream().map(GalaxyResourceItemViewModel::new).collect(Collectors.toList())));
+
+        statusText.bind(Bindings.when(galaxyResources.emptyProperty()).then("No resources available for this galaxy, try adding one to your inventory")
+                .otherwise(Bindings.when(schematicSelected.not()).then("Select a schematic to view the best available resources")
+                        .otherwise(Bindings.when(Bindings.isEmpty(resources.get())).then("No resources available for this schematic")
+                                .otherwise(""))));
+    }
+
+    private void createListeners() {
         galaxyResources.addListener(((observable, oldValue, newValue) -> {
             if (newValue != null)
                 resources.set(new FilteredList<>(newValue, galaxyResource -> false));
         }));
 
-        galaxyResources.set(FXCollections.observableArrayList(harvesterDroid.getResources()
-                .stream().map(GalaxyResourceItemViewModel::new).collect(Collectors.toList())));
+        showOnlyAvailableResources.addListener((observable, oldValue, newValue) -> {
+            schematicScope.publish(SchematicScope.REFRESH);
+        });
+    }
 
+    private void subscribeScopes() {
         schematicScope.subscribe(SchematicScope.ACTIVE, (s, objects) -> onSchematicSelected((Schematic) objects[0]));
 
         galaxyScope.subscribe(GalaxyScope.CHANGED, (s, objects) -> {
@@ -113,11 +129,6 @@ public class ResourcesViewModel implements ViewModel {
             }
             resourceScope.publish(ResourceScope.UPDATED_LIST);
         });
-
-        statusText.bind(Bindings.when(galaxyResources.emptyProperty()).then("No resources available for this galaxy, try adding one to your inventory")
-                .otherwise(Bindings.when(schematicSelected.not()).then("Select a schematic to view the best available resources")
-                        .otherwise(Bindings.when(Bindings.isEmpty(resources.get())).then("No resources available for this schematic")
-                                .otherwise(""))));
     }
 
     private void onSchematicSelected(Schematic newValue) {
@@ -127,7 +138,7 @@ public class ResourcesViewModel implements ViewModel {
             return;
         }
 
-        List<GalaxyResource> bestResources = harvesterDroid.getBestResourcesList(newValue);
+        List<GalaxyResource> bestResources = harvesterDroid.getBestResourcesList(newValue, showOnlyAvailableResources.get());
         resources.get().setPredicate(param -> bestResources.contains(param.getGalaxyResource()));
         schematicSelected.set(true);
     }
@@ -178,5 +189,17 @@ public class ResourcesViewModel implements ViewModel {
 
     public ReadOnlyStringProperty statusTextProperty() {
         return statusText.getReadOnlyProperty();
+    }
+
+    public boolean isShowOnlyAvailableResources() {
+        return showOnlyAvailableResources.get();
+    }
+
+    public BooleanProperty showOnlyAvailableResourcesProperty() {
+        return showOnlyAvailableResources;
+    }
+
+    public void setShowOnlyAvailableResources(boolean showOnlyAvailableResources) {
+        this.showOnlyAvailableResources.set(showOnlyAvailableResources);
     }
 }

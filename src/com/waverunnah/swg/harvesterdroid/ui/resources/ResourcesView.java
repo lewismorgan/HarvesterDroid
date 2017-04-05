@@ -25,6 +25,7 @@ import de.saxsys.mvvmfx.InjectViewModel;
 import de.saxsys.mvvmfx.utils.viewlist.CachedViewModelCellFactory;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.input.MouseButton;
@@ -37,6 +38,8 @@ import java.util.ResourceBundle;
  */
 public class ResourcesView implements FxmlView<ResourcesViewModel>, Initializable {
 
+    @FXML
+    private CheckBox onlyAvailableCheckbox;
     @FXML
     private ListView<GalaxyResourceItemViewModel> listView;
 
@@ -60,5 +63,7 @@ public class ResourcesView implements FxmlView<ResourcesViewModel>, Initializabl
         listView.setPlaceholder(placeholder);
 
         viewModel.selectedProperty().bind(listView.getSelectionModel().selectedItemProperty());
+
+        viewModel.showOnlyAvailableResourcesProperty().bind(onlyAvailableCheckbox.selectedProperty());
     }
 }
