@@ -19,6 +19,7 @@
 package com.waverunnah.swg.harvesterdroid.ui.dialog.preferences;
 
 import com.waverunnah.swg.harvesterdroid.DroidProperties;
+import com.waverunnah.swg.harvesterdroid.Launcher;
 import com.waverunnah.swg.harvesterdroid.ui.dialog.BaseDialog;
 import javafx.beans.property.MapProperty;
 import javafx.beans.property.ObjectProperty;
@@ -32,6 +33,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 
 import java.net.URL;
@@ -54,6 +56,8 @@ public class PreferencesDialog extends BaseDialog<Properties> implements Initial
     private CheckBox autosaveCheckBox;
     @FXML
     private CheckBox saveNagCheckBox;
+    @FXML
+    private ComboBox<String> themeComboBox;
     //endregion
 
     private ObjectProperty<Properties> properties;
@@ -75,9 +79,13 @@ public class PreferencesDialog extends BaseDialog<Properties> implements Initial
             newValue.forEach((key, value) -> galaxyChoiceBox.getItems().add(value));
             galaxyChoiceBox.getSelectionModel().select(0);
         }));
+        themeComboBox.setItems(FXCollections.observableArrayList(Launcher.getApp().getThemes().keySet()));
+        if (themeComboBox.getItems().size() <= 1)
+            themeComboBox.setDisable(true);
         trackerComboBox.setItems(FXCollections.observableArrayList("GalaxyHarvester"));
+        if (trackerComboBox.getItems().size() <= 1)
+            trackerComboBox.setDisable(true);
         trackerComboBox.getSelectionModel().select(0);
-        trackerComboBox.setDisable(true);
 
         createListeners();
     }
@@ -88,6 +96,7 @@ public class PreferencesDialog extends BaseDialog<Properties> implements Initial
             downloadBufferTextField.setText(newValue.getProperty(DroidProperties.DOWNLOAD_BUFFER));
             autosaveCheckBox.selectedProperty().set(Boolean.parseBoolean(newValue.getProperty(DroidProperties.AUTOSAVE)));
             saveNagCheckBox.selectedProperty().set(Boolean.parseBoolean(newValue.getProperty(DroidProperties.SAVE_NAG)));
+            themeComboBox.getSelectionModel().select(newValue.getProperty(DroidProperties.THEME));
         });
 
         galaxyChoiceBox.getSelectionModel().selectedItemProperty().addListener(((observable, oldValue, newValue) -> {
@@ -97,9 +106,12 @@ public class PreferencesDialog extends BaseDialog<Properties> implements Initial
             if (key != null)
                 properties.get().setProperty(DroidProperties.GALAXY, key);
         }));
+        if (galaxies.size() <= 1)
+            galaxyChoiceBox.setDisable(true);
         downloadBufferTextField.textProperty().addListener((observable, oldValue, newValue) -> properties.get().setProperty(DroidProperties.DOWNLOAD_BUFFER, String.valueOf(newValue)));
         autosaveCheckBox.selectedProperty().addListener((observable, oldValue, newValue) -> properties.get().setProperty(DroidProperties.AUTOSAVE, String.valueOf(newValue)));
         saveNagCheckBox.selectedProperty().addListener((observable, oldValue, newValue) -> properties.get().setProperty(DroidProperties.SAVE_NAG, String.valueOf(newValue)));
+        themeComboBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> properties.get().setProperty(DroidProperties.THEME, newValue));
     }
 
     @Override

@@ -58,8 +58,11 @@ public class HarvesterDroid {
 
     private Map<String, String> galaxies;
 
+    private Map<String, String> themes;
+
     private String currentResourceTimestamp;
     private String activeGalaxy;
+    private String activeTheme;
 
     public HarvesterDroid(Downloader downloader) {
         this.downloader = downloader;
@@ -69,6 +72,7 @@ public class HarvesterDroid {
         this.resources = new ArrayList<>(0);
         this.schematics = new ArrayList<>(0);
         this.galaxies = new HashMap<>(0);
+        this.themes = new HashMap<>();
     }
 
     public List<GalaxyResource> getBestResourcesList(Schematic schematic, boolean onlyAvailable) {
@@ -347,5 +351,21 @@ public class HarvesterDroid {
 
     public String getActiveGalaxy() {
         return (galaxies.get(activeGalaxy) != null ? galaxies.get(activeGalaxy) : "No Active Galaxy");
+    }
+
+    public Map<String, String> getThemes() {
+        return themes;
+    }
+
+    public void setThemes(Map<String, String> themes) {
+        this.themes = themes;
+    }
+
+    public String getActiveTheme() {
+        return activeTheme;
+    }
+
+    public void setActiveTheme(String activeTheme) {
+        this.activeTheme = activeTheme;
     }
 }

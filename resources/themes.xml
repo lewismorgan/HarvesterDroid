@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<themes>
+    <theme name="Flat Droid" path="/css/flat_droid.css"/>
+    <!-- Use the default installed java UI (modena unless changed by the user) -->
+    <theme name="Java" path="/css/modena.css"/>
+</themes>

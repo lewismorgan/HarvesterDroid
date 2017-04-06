@@ -24,6 +24,8 @@ import com.waverunnah.swg.harvesterdroid.downloaders.Downloader;
 import com.waverunnah.swg.harvesterdroid.downloaders.GalaxyHarvesterDownloader;
 import com.waverunnah.swg.harvesterdroid.ui.dialog.ExceptionDialog;
 import com.waverunnah.swg.harvesterdroid.ui.main.MainView;
+import com.waverunnah.swg.harvesterdroid.xml.XmlFactory;
+import com.waverunnah.swg.harvesterdroid.xml.app.ThemesXml;
 import de.saxsys.mvvmfx.FluentViewLoader;
 import de.saxsys.mvvmfx.easydi.MvvmfxEasyDIApplication;
 import eu.lestard.easydi.EasyDI;
@@ -42,6 +44,7 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
@@ -65,7 +68,6 @@ public class Launcher extends MvvmfxEasyDIApplication {
                 e.printStackTrace();
             }
         });
-
         launch(args);
     }
 
@@ -81,6 +83,8 @@ public class Launcher extends MvvmfxEasyDIApplication {
         DEBUG = DroidProperties.getBoolean(DroidProperties.DEBUG);
 
         // TODO Decide what downloader to use based on preferences
+
+        // TODO "Blank Slate" state where no tracker is loaded, will help abstract away GalaxyHarvester dependencies
 
         if (!new File(ROOT_DIR).exists())
             new File(ROOT_DIR).mkdir();
@@ -117,8 +121,10 @@ public class Launcher extends MvvmfxEasyDIApplication {
         stage = primaryStage;
 
         Parent root = FluentViewLoader.fxmlView(MainView.class).load().getView();
+        Scene scene = new Scene(root);
+        setupStylesheets(scene);
+        primaryStage.setScene(scene);
         primaryStage.setTitle("Harvester Droid");
-        primaryStage.setScene(new Scene(root));
         primaryStage.getIcons().add(getAppIcon());
 
         primaryStage.setFullScreen(DroidProperties.getBoolean(DroidProperties.FULLSCREEN));
@@ -133,6 +139,25 @@ public class Launcher extends MvvmfxEasyDIApplication {
             else if (DroidProperties.getBoolean(DroidProperties.AUTOSAVE))
                 save();
         });
+    }
+
+    private void setupStylesheets(Scene scene) {
+        Map<String, String> stylesheets = new HashMap<>();
+
+        ThemesXml themesXml = XmlFactory.read(ThemesXml.class, getClass().getResourceAsStream("/themes.xml"));
+        if (themesXml == null)
+            return;
+
+        themesXml.getThemes().forEach(theme -> stylesheets.put(theme.name, theme.path));
+
+        String activeTheme = DroidProperties.getString(DroidProperties.THEME);
+        scene.getRoot().getStylesheets().clear();
+        scene.getStylesheets().clear();
+
+        scene.getStylesheets().add(stylesheets.get(activeTheme));
+
+        app.setThemes(stylesheets);
+        app.setActiveTheme(activeTheme);
     }
 
     @Override

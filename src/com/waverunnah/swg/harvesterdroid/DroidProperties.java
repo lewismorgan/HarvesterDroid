@@ -33,6 +33,7 @@ public class DroidProperties {
     public static String GALAXY = "activegalaxy";
     public static String DOWNLOAD_BUFFER = "download.buffer";
 
+    public static String THEME = "theme";
     public static String WIDTH = "width";
     public static String HEIGHT = "height";
     public static String FULLSCREEN = "fullscreen";
@@ -82,6 +83,7 @@ public class DroidProperties {
         defaults.setProperty(SAVE_NAG, "true");
         defaults.setProperty(AUTOSAVE, "true");
         defaults.setProperty(DEBUG, "false");
+        defaults.setProperty(THEME, "Flat Droid");
         return defaults;
     }
 
