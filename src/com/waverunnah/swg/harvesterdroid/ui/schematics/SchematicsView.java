@@ -21,6 +21,7 @@ package com.waverunnah.swg.harvesterdroid.ui.schematics;
 import com.waverunnah.swg.harvesterdroid.data.schematics.Schematic;
 import de.saxsys.mvvmfx.FxmlView;
 import de.saxsys.mvvmfx.InjectViewModel;
+import javafx.beans.binding.Bindings;
 import javafx.collections.ListChangeListener;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -50,7 +51,7 @@ public class SchematicsView implements FxmlView<SchematicsViewModel>, Initializa
         createListeners();
 
         schematicsTreeView.setRoot(createSchematicsTreeItem("root"));
-        schematicsTreeView.disableProperty().bind(viewModel.schematicsProperty().emptyProperty());
+        schematicsTreeView.disableProperty().bind(Bindings.isEmpty(schematicsTreeView.getRoot().getChildren()));
         schematicsTreeView.setCellFactory(param -> new SchematicsTreeCellFactory());
 
         removeSchematicButton.disableProperty().bind(viewModel.getRemoveCommand().executableProperty().not());

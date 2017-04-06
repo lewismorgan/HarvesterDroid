@@ -98,7 +98,7 @@ public class Launcher extends MvvmfxEasyDIApplication {
         }
 
         updateLoadingProgress("Finding the latest resources...", -1);
-        //app.updateResources();
+        app.updateResources();
         updateLoadingProgress("Loading saved data...", -1);
         if (new File(XML_SCHEMATICS).exists()) {
             app.loadSchematics(new FileInputStream(new File(XML_SCHEMATICS)));

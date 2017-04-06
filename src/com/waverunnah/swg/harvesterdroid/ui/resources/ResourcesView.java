@@ -23,6 +23,7 @@ import com.waverunnah.swg.harvesterdroid.ui.items.GalaxyResourceItemViewModel;
 import de.saxsys.mvvmfx.FxmlView;
 import de.saxsys.mvvmfx.InjectViewModel;
 import de.saxsys.mvvmfx.utils.viewlist.CachedViewModelCellFactory;
+import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.CheckBox;
@@ -65,5 +66,10 @@ public class ResourcesView implements FxmlView<ResourcesViewModel>, Initializabl
         viewModel.selectedProperty().bind(listView.getSelectionModel().selectedItemProperty());
 
         viewModel.showOnlyAvailableResourcesProperty().bind(onlyAvailableCheckbox.selectedProperty());
+        onlyAvailableCheckbox.disableProperty().bind(Bindings.when(Bindings.isEmpty(listView.getItems())).then(Bindings.isEmpty(viewModel.getGalaxyResources()))
+                .otherwise(false));
+        
+        listView.disableProperty().bind(Bindings.when(Bindings.isEmpty(listView.getItems())).then(viewModel.galaxyResourcesProperty().emptyProperty())
+                .otherwise(false));
     }
 }

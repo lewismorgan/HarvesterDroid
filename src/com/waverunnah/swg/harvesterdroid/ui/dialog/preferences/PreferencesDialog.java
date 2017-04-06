@@ -21,6 +21,7 @@ package com.waverunnah.swg.harvesterdroid.ui.dialog.preferences;
 import com.waverunnah.swg.harvesterdroid.DroidProperties;
 import com.waverunnah.swg.harvesterdroid.Launcher;
 import com.waverunnah.swg.harvesterdroid.ui.dialog.BaseDialog;
+import javafx.beans.binding.Bindings;
 import javafx.beans.property.MapProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleMapProperty;
@@ -87,6 +88,8 @@ public class PreferencesDialog extends BaseDialog<Properties> implements Initial
             trackerComboBox.setDisable(true);
         trackerComboBox.getSelectionModel().select(0);
 
+        galaxyChoiceBox.disableProperty().bind(Bindings.isEmpty(galaxyChoiceBox.getItems()));
+
         createListeners();
     }
 
@@ -106,8 +109,6 @@ public class PreferencesDialog extends BaseDialog<Properties> implements Initial
             if (key != null)
                 properties.get().setProperty(DroidProperties.GALAXY, key);
         }));
-        if (galaxies.size() <= 1)
-            galaxyChoiceBox.setDisable(true);
         downloadBufferTextField.textProperty().addListener((observable, oldValue, newValue) -> properties.get().setProperty(DroidProperties.DOWNLOAD_BUFFER, String.valueOf(newValue)));
         autosaveCheckBox.selectedProperty().addListener((observable, oldValue, newValue) -> properties.get().setProperty(DroidProperties.AUTOSAVE, String.valueOf(newValue)));
         saveNagCheckBox.selectedProperty().addListener((observable, oldValue, newValue) -> properties.get().setProperty(DroidProperties.SAVE_NAG, String.valueOf(newValue)));
