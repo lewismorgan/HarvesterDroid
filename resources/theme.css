@@ -17,6 +17,19 @@
     -fx-border-style: solid hidden hidden hidden;
 }
 
+.check-box .box {
+    -fx-background-color: -bar-background-color;
+    -fx-background-radius: 0;
+    -fx-background-insets: 0;
+    -fx-border-color: derive(black, 80%);
+
+}
+
+.check-box:focused:selected .box {
+    -fx-background-color: -hover-color;
+    -fx-border-color: derive(yellow, 80%);
+}
+
 /*region Titled Pane*/
 .titled-pane > *.content {
     -fx-background-color: -background-color;
@@ -32,7 +45,7 @@
 }
 /*endregion*/
 
-/*region Menu Bar*/
+/*region Menu*/
 .menu-bar {
     -fx-background-color: -bar-background-color;
     -fx-border-color: black;
@@ -44,7 +57,25 @@
 }
 
 .menu-item {
-    -fx-background-color: #dbd6d2;
+    -fx-background-color: derive(-bar-background-color, 50%);
+}
+
+.menu-item .separator:horizontal .line {
+    -fx-border-color: black;
+}
+
+.context-menu {
+    -fx-skin: "com.sun.javafx.scene.control.skin.ContextMenuSkin";
+    -fx-background-color: derive(-bar-background-color, 50%);
+    -fx-background-insets: 0, 1, 2;
+    -fx-background-radius: 0 0 6 6, 0 0 5 5, 0 0 4 4;
+    -fx-border-insets: 0, 1, 2;
+    -fx-border-radius: 0 0 6 6, 0 0 5 5, 0 0 4 4;
+    -fx-border-color: -hover-color;
+}
+
+.context-menu .separator:horizontal .line {
+    -fx-border-color: derive(-hover-color, 20%);
 }
 /*endregion*/
 
@@ -61,7 +92,7 @@
 }
 
 .button:focused {
-    -fx-background-color: linear-gradient(-hover-color 0%, -background-color 100%)
+    -fx-background-color: -hover-color, -background-color, derive(-bar-background-color, 30%);
 }
 /*endregion*/
 
@@ -90,10 +121,3 @@
     -fx-background-color: -hover-color;
 }
 /*endregion*/
-
-.context-menu {
-    -fx-skin: "com.sun.javafx.scene.control.skin.ContextMenuSkin";
-    -fx-background-color: #dbd6d2;
-    /*-fx-background-insets: 0, 1, 2;*/
-    -fx-background-radius: 0 6 6 6, 0 5 5 5, 0 4 4 4;
-}
