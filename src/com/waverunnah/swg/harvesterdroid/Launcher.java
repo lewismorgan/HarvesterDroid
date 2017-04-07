@@ -44,13 +44,12 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-import static com.waverunnah.swg.harvesterdroid.app.HarvesterDroidData.ROOT_DIR;
-import static com.waverunnah.swg.harvesterdroid.app.HarvesterDroidData.XML_INVENTORY;
-import static com.waverunnah.swg.harvesterdroid.app.HarvesterDroidData.XML_SCHEMATICS;
+import static com.waverunnah.swg.harvesterdroid.app.HarvesterDroidData.*;
 
 public class Launcher extends MvvmfxEasyDIApplication {
     private static boolean DEBUG = false;
@@ -149,6 +148,24 @@ public class Launcher extends MvvmfxEasyDIApplication {
             return;
 
         themesXml.getThemes().forEach(theme -> stylesheets.put(theme.name, theme.path));
+
+        File customThemes = new File(XML_THEMES);
+        if (customThemes.exists()) {
+            try {
+                themesXml = XmlFactory.read(ThemesXml.class, new FileInputStream(customThemes));
+                if (themesXml != null && themesXml.getThemes() != null)
+                    themesXml.getThemes().forEach(theme -> stylesheets.put(theme.name, "file:///" + ROOT_DIR + "/" + theme.path));
+            } catch (FileNotFoundException e) {
+                throw new RuntimeException("Could not load custom themes xml!");
+            }
+        } else {
+            themesXml.setThemes(new ArrayList<>());
+            try {
+                XmlFactory.write(themesXml, new FileOutputStream(XML_THEMES));
+            } catch (FileNotFoundException e) {
+                throw new RuntimeException("Could not create themes.xml!");
+            }
+        }
 
         String activeTheme = DroidProperties.getString(DroidProperties.THEME);
         scene.getRoot().getStylesheets().clear();
