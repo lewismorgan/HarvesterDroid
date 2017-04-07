@@ -111,8 +111,7 @@
 }
 
 .list-cell:even {
-    -fx-background-color: whitesmoke,
-            linear-gradient(whitesmoke 10%, -background-color 90%, whitesmoke 100%);
+    -fx-background-color: derive(-bar-background-color, 80%);
 }
 /*endregion*/
 

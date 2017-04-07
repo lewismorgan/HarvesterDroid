@@ -5,8 +5,8 @@ I started on this project almost a year ago and it is fairly complete for the mo
 Programmed with love by Waverunner <3
 
 #### Credits
-* GalaxyHarvester & SWGCraft
+* Resource data provided by GalaxyHarvester & SWGCraft
 * SWG Emulator communities
 * ModTheGalaxy
 * SoE
-* controls(fx) and flexmark
+* controls(fx), flexmark, mvvmfx

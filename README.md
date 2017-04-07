@@ -12,10 +12,11 @@ Programmed with love by Waverunner <3
 * Easily organize your schematics within groups
 * Display the best resources for a schematic
 * Keep track of your top resources through the inventory
+* Import a list of resources into HarvesterDroid by name
 
 ### Future
 * Finalize support for use with other tracking websites (80% done!)
-* Import resources without having to use the inventory system
+* Inform what new resources have spawned since last resource update
 * Update Getting Started images
 * Add tracking from SWGCraft
 
