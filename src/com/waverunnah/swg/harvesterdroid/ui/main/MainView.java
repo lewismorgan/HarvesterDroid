@@ -63,4 +63,7 @@ public class MainView implements FxmlView<MainViewModel>, Initializable {
         viewModel.getAboutCommand().execute();
     }
 
+    public void importResources(ActionEvent actionEvent) {
+        viewModel.getImportResourcesCommand().execute();
+    }
 }

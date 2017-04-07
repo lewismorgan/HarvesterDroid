@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.VBox?>
+
+
+<VBox spacing="5.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <TextArea fx:id="textAreaResources" prefHeight="200.0" prefWidth="400.0" promptText="Enter the names of the resources you wish to import. Use a semi-colon (;), space, comma (,) or a new line between each resource name." />
+   </children>
+</VBox>

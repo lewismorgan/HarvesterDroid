@@ -21,6 +21,11 @@
             <SeparatorMenuItem mnemonicParsing="false" />
             <MenuItem mnemonicParsing="false" onAction="#close" text="Quit" />
         </Menu>
+      <Menu mnemonicParsing="false" text="Import">
+        <items>
+          <MenuItem mnemonicParsing="false" onAction="#importResources" text="Resources..." />
+        </items>
+      </Menu>
         <Menu mnemonicParsing="false" text="Help">
             <MenuItem mnemonicParsing="false" onAction="#about" text="About" />
         </Menu>

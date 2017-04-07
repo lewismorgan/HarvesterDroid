@@ -20,8 +20,10 @@ package com.waverunnah.swg.harvesterdroid.ui.main;
 
 import com.waverunnah.swg.harvesterdroid.DroidProperties;
 import com.waverunnah.swg.harvesterdroid.app.HarvesterDroid;
+import com.waverunnah.swg.harvesterdroid.data.resources.GalaxyResource;
 import com.waverunnah.swg.harvesterdroid.ui.dialog.about.AboutDialog;
 import com.waverunnah.swg.harvesterdroid.ui.dialog.preferences.PreferencesDialog;
+import com.waverunnah.swg.harvesterdroid.ui.dialog.resource.ImportResourcesDialog;
 import com.waverunnah.swg.harvesterdroid.ui.scopes.GalaxyScope;
 import com.waverunnah.swg.harvesterdroid.ui.scopes.ResourceScope;
 import com.waverunnah.swg.harvesterdroid.ui.scopes.SchematicScope;
@@ -41,6 +43,8 @@ import javafx.collections.FXCollections;
 import javax.inject.Singleton;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.Properties;
 
@@ -61,6 +65,7 @@ public class MainViewModel implements ViewModel {
     private Command preferencesCommand;
     private Command saveCommand;
     private Command aboutCommand;
+    private Command importResourcesCommand;
 
     @InjectScope
     private GalaxyScope galaxyScope;
@@ -75,6 +80,16 @@ public class MainViewModel implements ViewModel {
     }
 
     public void initialize() {
+        createCommands();
+
+        galaxyScope.subscribe(GalaxyScope.CHANGED, (s, objects) -> updateStatusText(harvesterDroid.getActiveGalaxy(), harvesterDroid.getResources().size()));
+        resourceScope.subscribe(ResourceScope.UPDATED_LIST, (s, objects) -> updateResourceStatus(harvesterDroid.getResources().size()));
+
+        statusText.bind(Bindings.concat("Galaxy: ", galaxyString, "  |  ", "Loaded Resources: ", resourcesString));
+        updateStatusText(harvesterDroid.getActiveGalaxy(), harvesterDroid.getResources().size());
+    }
+
+    private void createCommands() {
         preferencesCommand = new DelegateCommand(() -> new Action() {
             @Override
             protected void action() throws Exception {
@@ -107,11 +122,27 @@ public class MainViewModel implements ViewModel {
             }
         });
 
-        galaxyScope.subscribe(GalaxyScope.CHANGED, (s, objects) -> updateStatusText(harvesterDroid.getActiveGalaxy(), harvesterDroid.getResources().size()));
-        resourceScope.subscribe(ResourceScope.UPDATED_LIST, (s, objects) -> updateResourceStatus(harvesterDroid.getResources().size()));
+        importResourcesCommand = new DelegateCommand(() -> new Action() {
+            @Override
+            protected void action() throws Exception {
+                ImportResourcesDialog dialog = new ImportResourcesDialog();
+                Optional<List<String>> resourceNames = dialog.showAndWait();
+                resourceNames.ifPresent(strings -> {
+                    GalaxyResource[] toImport = new GalaxyResource[strings.size()];
+                    for (int i = 0; i < strings.size(); i++) {
+                        toImport[i] = harvesterDroid.retrieveGalaxyResource(strings.get(i));
+                    }
 
-        statusText.bind(Bindings.concat("Galaxy: ", galaxyString, "  |  ", "Loaded Resources: ", resourcesString));
-        updateStatusText(harvesterDroid.getActiveGalaxy(), harvesterDroid.getResources().size());
+                    List<GalaxyResource> imported = new ArrayList<>();
+                    for (GalaxyResource galaxyResource : toImport) {
+                        if (galaxyResource != null)
+                            imported.add(galaxyResource);
+                    }
+
+                    resourceScope.publish(ResourceScope.IMPORT_ADDED, imported.toArray());
+                });
+            }
+        });
     }
 
     private void updateStatusText(String galaxy, int resources) {
@@ -137,6 +168,10 @@ public class MainViewModel implements ViewModel {
 
     public Command getAboutCommand() {
         return aboutCommand;
+    }
+
+    public Command getImportResourcesCommand() {
+        return importResourcesCommand;
     }
 
     public String getStatusText() {
