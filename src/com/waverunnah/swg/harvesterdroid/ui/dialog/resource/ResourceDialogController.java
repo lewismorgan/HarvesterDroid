@@ -65,12 +65,12 @@ public class ResourceDialogController implements Initializable {
         resourceTypeField.setText(galaxyResource.getResourceType().getName());
         Attributes.forEach((primary, secondary) -> bindAttribute(primary, galaxyResource.getAttributes().get(primary)));
 
-        if (galaxyResource.getDespawnDate() != null && !galaxyResource.getDespawnDate().isEmpty()) {
+        if (galaxyResource.getDespawnDate() != null) {
             infoLeftLabel.setText("Despawned on");
-            infoRightLabel.setText(galaxyResource.getDespawnDate());
+            infoRightLabel.setText(galaxyResource.getDespawnDate().toString());
         } else {
             infoLeftLabel.setText("Available since");
-            infoRightLabel.setText(galaxyResource.getDate());
+            infoRightLabel.setText(galaxyResource.getDate().toString());
         }
     }
 

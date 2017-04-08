@@ -60,7 +60,7 @@ public abstract class BaseDialog<R> extends Dialog<R> {
 
             createDialog();
         } catch (IOException e) {
-            throw new RuntimeException();
+            throw new RuntimeException(e);
         }
     }
 

@@ -27,6 +27,10 @@ import org.xml.sax.SAXException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public final class HarvesterCurrentResourcesXml extends CurrentResourcesXml {
 
@@ -59,7 +63,7 @@ public final class HarvesterCurrentResourcesXml extends CurrentResourcesXml {
                     galaxyResource.setName(child.getTextContent());
                     break;
                 case "enter_date":
-                    galaxyResource.setDate(child.getTextContent());
+                    galaxyResource.setDate(formatDate(child.getTextContent()));
                     break;
                 case "resource_type":
                     galaxyResource.setResourceTypeString(((Element) child).getAttribute("id"));
@@ -78,6 +82,15 @@ public final class HarvesterCurrentResourcesXml extends CurrentResourcesXml {
         });
 
         return galaxyResource;
+    }
+
+    private Date formatDate(String timestamp) {
+        DateFormat dateFormat = new SimpleDateFormat("E, dd MMMM yyyy HH:mm:ss Z");
+        try {
+            return dateFormat.parse(timestamp);
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private void parsePlanets(Node node, GalaxyResource galaxyResource) {

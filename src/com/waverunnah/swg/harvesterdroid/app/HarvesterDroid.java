@@ -60,13 +60,15 @@ public class HarvesterDroid {
 
     private Map<String, String> themes;
 
-    private String currentResourceTimestamp;
+    private long lastUpdateTimestamp;
+
+    private long currentResourceTimestamp;
     private String activeGalaxy;
     private String activeTheme;
 
     public HarvesterDroid(Downloader downloader) {
         this.downloader = downloader;
-        this.currentResourceTimestamp = "";
+        this.currentResourceTimestamp = 0;
         this.data = new HarvesterDroidData();
         this.inventory = new ArrayList<>(0);
         this.resources = new ArrayList<>(0);
@@ -82,7 +84,7 @@ public class HarvesterDroid {
             if (matchedResources != null) {
                 if (onlyAvailable)
                     matchedResources = matchedResources.stream()
-                            .filter(resource -> resource.getDespawnDate() == null || resource.getDespawnDate().isEmpty() || inventoryContainsResource(resource))
+                            .filter(resource -> resource.getDespawnDate() == null || inventoryContainsResource(resource))
                             .collect(Collectors.toList());
 
                 GalaxyResource bestResource = collectBestResourceForSchematic(schematic, matchedResources);
@@ -165,7 +167,7 @@ public class HarvesterDroid {
         try {
             if (downloader.getGalaxy().equals(activeGalaxy) && !needsUpdate(downloader.getCurrentResourcesTimestamp())) {
                 if (downloader.getCurrentResourcesTimestamp().toString().equals(getCurrentResourceTimestamp())) {
-                    currentResourceTimestamp = downloader.getCurrentResourcesTimestamp().toString();
+                    currentResourceTimestamp = downloader.getCurrentResourcesTimestamp().getTime();
                 }
             } else {
                 galaxies = downloader.downloadGalaxyList();
@@ -190,7 +192,7 @@ public class HarvesterDroid {
                 resources.forEach(galaxyResource -> data.populateMinMax(galaxyResource.getResourceType()));
                 inventory.forEach(this::getGalaxyResource);
 
-                currentResourceTimestamp = downloader.getCurrentResourcesTimestamp().toString();
+                currentResourceTimestamp = downloader.getCurrentResourcesTimestamp().getTime();
                 activeGalaxy = downloader.getGalaxy();
             }
         } catch (IOException e) {
@@ -323,7 +325,7 @@ public class HarvesterDroid {
         this.schematics = schematics;
     }
 
-    public String getCurrentResourceTimestamp() {
+    public long getCurrentResourceTimestamp() {
         return currentResourceTimestamp;
     }
 
@@ -367,5 +369,13 @@ public class HarvesterDroid {
 
     public void setActiveTheme(String activeTheme) {
         this.activeTheme = activeTheme;
+    }
+
+    public long getLastUpdateTimestamp() {
+        return lastUpdateTimestamp;
+    }
+
+    public void setLastUpdateTimestamp(long lastUpdateTimestamp) {
+        this.lastUpdateTimestamp = lastUpdateTimestamp;
     }
 }

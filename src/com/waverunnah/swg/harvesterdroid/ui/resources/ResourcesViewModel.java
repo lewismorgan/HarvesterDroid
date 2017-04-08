@@ -18,9 +18,11 @@
 
 package com.waverunnah.swg.harvesterdroid.ui.resources;
 
+import com.waverunnah.swg.harvesterdroid.DroidProperties;
 import com.waverunnah.swg.harvesterdroid.app.HarvesterDroid;
 import com.waverunnah.swg.harvesterdroid.data.resources.GalaxyResource;
 import com.waverunnah.swg.harvesterdroid.data.schematics.Schematic;
+import com.waverunnah.swg.harvesterdroid.ui.dialog.resource.NewSpawnsDialog;
 import com.waverunnah.swg.harvesterdroid.ui.items.GalaxyResourceItemViewModel;
 import com.waverunnah.swg.harvesterdroid.ui.scopes.GalaxyScope;
 import com.waverunnah.swg.harvesterdroid.ui.scopes.ResourceScope;
@@ -43,6 +45,10 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -92,6 +98,24 @@ public class ResourcesViewModel implements ViewModel {
                 .otherwise(Bindings.when(schematicSelected.not()).then("Select a schematic to view the best available resources")
                         .otherwise(Bindings.when(Bindings.isEmpty(resources.get())).then("No resources available for this schematic")
                                 .otherwise(""))));
+
+        if (harvesterDroid.getLastUpdateTimestamp() != 0) {
+            System.out.println(harvesterDroid.getLastUpdateTimestamp());
+
+            List<GalaxyResourceItemViewModel> newSpawns = new ArrayList<>();
+            Date lastUpdate = new Date(harvesterDroid.getLastUpdateTimestamp());
+
+            galaxyResources.forEach(item -> {
+                if (item.getGalaxyResource().getDate().after(lastUpdate))
+                    newSpawns.add(item);
+            });
+
+            if (newSpawns.size() != 0) {
+                NewSpawnsDialog newSpawnsDialog = new NewSpawnsDialog();
+                newSpawnsDialog.setNewSpawns(newSpawns);
+                newSpawnsDialog.showAndWait();
+            }
+        }
     }
 
     private void createListeners() {

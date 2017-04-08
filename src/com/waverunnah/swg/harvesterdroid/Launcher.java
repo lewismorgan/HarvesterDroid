@@ -90,7 +90,7 @@ public class Launcher extends MvvmfxEasyDIApplication {
 
         Downloader downloader = new GalaxyHarvesterDownloader(ROOT_DIR, DroidProperties.getString(DroidProperties.GALAXY));
         app.setDownloader(downloader);
-
+        app.setLastUpdateTimestamp(Long.valueOf(DroidProperties.getString(DroidProperties.LAST_UPDATE)));
         if (new File(app.getSavedResourcesPath()).exists()) {
             updateLoadingProgress("Retrieving saved resources...", -1);
             app.loadResources(new FileReader(app.getSavedResourcesPath()));
@@ -105,7 +105,6 @@ public class Launcher extends MvvmfxEasyDIApplication {
         if (new File(XML_INVENTORY).exists()) {
             app.loadInventory(new FileInputStream(new File(XML_INVENTORY)));
         }
-
         updateLoadingProgress("Punch it Chewie!", -1);
     }
 
@@ -201,6 +200,7 @@ public class Launcher extends MvvmfxEasyDIApplication {
             app.saveInventory(new FileOutputStream(new File(XML_INVENTORY)));
             app.saveSchematics(new FileOutputStream(new File(XML_SCHEMATICS)));
             app.saveResources(new FileOutputStream(new File(app.getSavedResourcesPath())));
+            DroidProperties.set(DroidProperties.LAST_UPDATE, app.getCurrentResourceTimestamp());
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }

@@ -41,6 +41,7 @@ public class DroidProperties {
     public static String SAVE_NAG = "save.nag";
     public static String AUTOSAVE = "autosave";
 
+    public static String LAST_UPDATE = "last.update";
     public static String DEBUG = "debug";
 
     public static void save(OutputStream outputStream) {
@@ -84,6 +85,7 @@ public class DroidProperties {
         defaults.setProperty(AUTOSAVE, "true");
         defaults.setProperty(DEBUG, "false");
         defaults.setProperty(THEME, "Flat Droid");
+        defaults.setProperty(LAST_UPDATE, "0");
         return defaults;
     }
 

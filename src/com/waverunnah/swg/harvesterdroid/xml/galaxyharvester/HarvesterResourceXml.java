@@ -29,6 +29,10 @@ import org.xml.sax.SAXException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class HarvesterResourceXml extends ResourceXml {
@@ -59,13 +63,13 @@ public class HarvesterResourceXml extends ResourceXml {
                     galaxyResource.setContainer(node.getTextContent());
                     break;
                 case "entered":
-                    galaxyResource.setDate(node.getTextContent());
+                    galaxyResource.setDate(formatDate(node.getTextContent()));
                     break;
                 case "planet":
                     galaxyResource.getPlanets().add(node.getTextContent());
                     break;
                 case "unavailable":
-                    galaxyResource.setDespawnDate(node.getTextContent());
+                    galaxyResource.setDespawnDate(formatDate(node.getTextContent()));
                     break;
                 case "CR":
                 case "CD":
@@ -99,6 +103,15 @@ public class HarvesterResourceXml extends ResourceXml {
             galaxyResource.setAttribute(Attributes.getFullName(node.getNodeName()), value);
         } catch (NumberFormatException e) {
             ExceptionDialog.display(e);
+        }
+    }
+
+    private Date formatDate(String timestamp) {
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-DD HH:mm:ss");
+        try {
+            return dateFormat.parse(timestamp);
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
         }
     }
 }

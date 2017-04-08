@@ -26,10 +26,7 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @XmlRootElement(name="galaxy_resource")
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -37,11 +34,11 @@ public class GalaxyResource {
     @XmlAttribute(name="name")
     private String name;
     @XmlAttribute(name="spawn_date")
-    private String date;
+    private Date date;
     @XmlAttribute(name="container")
     private String container;
     @XmlAttribute(name="despawn_date")
-    private String despawnDate;
+    private Date despawnDate;
     @XmlElementWrapper(name="planets") @XmlElement(name="planet")
     private List<String> planets;
     @XmlElementWrapper(name="attributes")
@@ -66,11 +63,11 @@ public class GalaxyResource {
         this.name = name;
     }
 
-    public String getDate() {
+    public Date getDate() {
         return date;
     }
 
-    public void setDate(String date) {
+    public void setDate(Date date) {
         this.date = date;
     }
 
@@ -90,11 +87,11 @@ public class GalaxyResource {
         this.container = container;
     }
 
-    public String getDespawnDate() {
+    public Date getDespawnDate() {
         return despawnDate;
     }
 
-    public void setDespawnDate(String despawnDate) {
+    public void setDespawnDate(Date despawnDate) {
         this.despawnDate = despawnDate;
     }
 
