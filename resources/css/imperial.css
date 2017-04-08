@@ -1,0 +1,168 @@
+/* Radius: top-left top-right bottom-right and bottom-left*/
+/* Border Style: top right bottom left */
+/* Global Colors */
+
+.root {
+    -fx-background-color: linear-gradient(#a2a2a2, #373737 40%, #747474 100%);
+}
+
+.text {
+    -fx-fill: white;
+}
+
+.status-bar {
+    -fx-background-color: linear-gradient(#505050 10%, #000000 100%);
+    -fx-background-insets: 0;
+    -fx-border-style: hidden;
+}
+
+.check-box .box {
+    -fx-background-color: dimgray;
+    -fx-background-insets: 0;
+    -fx-padding: .1em;
+}
+
+/*region Titled Pane*/
+
+.titled-pane {
+    -fx-effect: dropshadow(gaussian, #000000, 10, 0.0, 4, 2);
+    -fx-padding: 10;
+}
+
+.titled-pane > *.content {
+    -fx-background-color: #939393;
+    -fx-background-insets: 0;
+    -fx-border-style: hidden;
+    -fx-border-insets: 0;
+    -fx-padding: 0;
+    -fx-background-radius: 0 0 5 5;
+}
+
+.titled-pane:expanded > .title {
+    -fx-background-color: linear-gradient(#000000, #363636 50%, #505050 100%);
+    -fx-background-insets: 0;
+    -fx-background-radius: 5 5 0 0;
+    -fx-border-insets: 0;
+}
+
+/*endregion*/
+
+/*region Menu*/
+.menu-bar {
+    -fx-background-color: linear-gradient(#505050 10%, #000000 100%);
+    -fx-background-insets: 0;
+
+}
+
+.menu-button:hover, .menu-button:showing, .menu-item:focused, .menu-item:showing {
+    -fx-background-color: #656565;
+    -fx-background-insets: 0;
+    -fx-background-radius: 0 0 5 5;
+}
+
+.menu-item {
+    -fx-background-color: derive(black, 50%);
+    -fx-background-insets: 0;
+}
+
+.menu-item .separator:horizontal .line {
+    -fx-border-color: derive(black, 70%);
+}
+
+.context-menu {
+    -fx-background-color: derive(black, 50%);
+    -fx-background-insets: 0;
+    -fx-background-radius: 0 0 5 5;
+    -fx-border-insets: 0;
+    -fx-border-style: hidden;
+}
+
+/*endregion*/
+
+/*region Button*/
+.button {
+    -fx-background-color: linear-gradient(#4b4b4b, #202020);
+    -fx-background-insets: 0;
+    -fx-background-radius: 0 6 0 6;
+    -fx-background-insets: 0;
+}
+
+.button:hover {
+    -fx-background-color: #1d1d1d;
+}
+
+.button:focused {
+    -fx-background-color: #1d1d1d;
+}
+
+/*endregion*/
+
+/*region scroll-bar*/
+.scroll-bar {
+    -fx-background-color: #656565;
+    -fx-border-color: #414141;
+}
+
+.scroll-bar:vertical .increment-button,
+.scroll-bar:vertical .decrement-button {
+    -fx-padding: 2;
+}
+
+.scroll-bar .increment-arrow,
+.scroll-bar .decrement-arrow {
+    -fx-shape: " ";
+}
+
+.scroll-bar .thumb:pressed {
+    -fx-background-color: transparent, black;
+}
+
+.scroll-bar:vertical {
+    -fx-border-style: hidden hidden hidden solid;
+}
+
+.scroll-bar:horizontal {
+    -fx-border-style: solid hidden hidden hidden;
+}
+
+.scroll-bar .thumb {
+    -fx-background-color: transparent, #1f1f1f;
+    -fx-background-radius: 5;
+    -fx-background-insets: 0, 3.5;
+}
+/*endregion*/
+
+.list-view,
+.tree-view {
+    -fx-background-color: darkgray;
+    -fx-background-insets: 0;
+}
+
+/*region List Cell*/
+.list-cell:filled:selected:focused, .list-cell:filled:selected {
+    -fx-background-color: black;
+
+}
+
+.list-cell:odd {
+    -fx-background-color: #656565
+    /*   linear-gradient(#414141, #000000 50%, #414141 100%);  */
+
+}
+
+.list-cell:even {
+    -fx-background-color: #414141;
+}
+
+/*endregion*/
+
+/*region Tree Cell*/
+.tree-cell {
+    -fx-background-color: darkgray;
+    -fx-background-insets: 0;
+}
+.tree-cell:selected {
+    -fx-background-color: black;
+}
+
+/*endregion*/

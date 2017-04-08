@@ -27,7 +27,7 @@
 
 <TitledPane animated="false" collapsible="false" nodeOrientation="LEFT_TO_RIGHT" text="Inventory" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.waverunnah.swg.harvesterdroid.ui.inventory.InventoryView">
    <VBox spacing="5.0">
-      <ListView fx:id="listView" disable="true" VBox.vgrow="ALWAYS">
+      <ListView fx:id="listView" VBox.vgrow="ALWAYS">
          <placeholder>
             <Label text="There's no resources in your inventory" />
          </placeholder>
