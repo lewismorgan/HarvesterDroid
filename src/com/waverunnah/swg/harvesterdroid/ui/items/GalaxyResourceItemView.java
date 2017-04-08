@@ -30,6 +30,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
+import javafx.scene.control.Tooltip;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -49,6 +50,8 @@ public class GalaxyResourceItemView implements FxmlView<GalaxyResourceItemViewMo
     @FXML
     private Label resourceType;
     @FXML
+    private Label resourcePlanets;
+    @FXML
     private HBox resourceStatsBox;
 
     @InjectViewModel
@@ -58,10 +61,14 @@ public class GalaxyResourceItemView implements FxmlView<GalaxyResourceItemViewMo
         resourceImage.imageProperty().bind(viewModel.imageProperty());
         resourceName.textProperty().bind(viewModel.nameProperty());
         resourceType.textProperty().bind(viewModel.typeProperty());
+        resourcePlanets.textProperty().bind(viewModel.planetsProperty());
+        resourcePlanets.visibleProperty().bind(viewModel.planetsProperty().isEmpty().not());
 
-        viewModel.attributesProperty().addListener((MapChangeListener<String, Integer>) change -> {
-            refreshAttributesUI();
-        });
+        Tooltip planetsTooltip = new Tooltip();
+        planetsTooltip.textProperty().bind(viewModel.planetsTooltipProperty());
+        Tooltip.install(resourcePlanets, planetsTooltip);
+
+        viewModel.attributesProperty().addListener((MapChangeListener<String, Integer>) change -> refreshAttributesUI());
 
         refreshAttributesUI();
     }

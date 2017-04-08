@@ -38,6 +38,8 @@ import java.io.InputStream;
 public class GalaxyResourceItemViewModel implements ViewModel {
     private ReadOnlyStringWrapper name = new ReadOnlyStringWrapper();
     private ReadOnlyStringWrapper type = new ReadOnlyStringWrapper();
+    private ReadOnlyStringWrapper planets = new ReadOnlyStringWrapper();
+    private ReadOnlyStringWrapper planetsTooltip = new ReadOnlyStringWrapper();
     private ReadOnlyObjectWrapper<Image> image = new ReadOnlyObjectWrapper<>();
     private ReadOnlyMapWrapper<String, Integer> attributes = new ReadOnlyMapWrapper<>();
     private GalaxyResource galaxyResource;
@@ -48,6 +50,15 @@ public class GalaxyResourceItemViewModel implements ViewModel {
         type.set(galaxyResource.getResourceType().getName());
         attributes.set(FXCollections.observableMap(galaxyResource.getAttributes()));
         image.set(createImage(galaxyResource.getResourceType().getId()));
+        if (galaxyResource.getDespawnDate() == null) {
+            planets.set("  Spawns on " + galaxyResource.getPlanets().size() + (galaxyResource.getPlanets().size() == 1 ? " planet" : " planets"));
+            StringBuilder planetStrings = new StringBuilder();
+            for (String s : galaxyResource.getPlanets()) {
+                planetStrings.append("\n").append(s);
+            }
+
+            planetsTooltip.set("Available on:" + planetStrings.toString());
+        }
     }
 
     private Image createImage(String container) {
@@ -95,6 +106,22 @@ public class GalaxyResourceItemViewModel implements ViewModel {
 
     public ReadOnlyMapProperty<String, Integer> attributesProperty() {
         return attributes;
+    }
+
+    public String getPlanets() {
+        return planets.get();
+    }
+
+    public ReadOnlyStringProperty planetsProperty() {
+        return planets.getReadOnlyProperty();
+    }
+
+    public String getPlanetsTooltip() {
+        return planetsTooltip.get();
+    }
+
+    public ReadOnlyStringProperty planetsTooltipProperty() {
+        return planetsTooltip.getReadOnlyProperty();
     }
 
     public GalaxyResource getGalaxyResource() {
