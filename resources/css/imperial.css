@@ -10,8 +10,8 @@
     -fx-background-color: transparent;
 }
 
-.text {
-    -fx-fill: white;
+.label {
+    -fx-text-fill: white;
 }
 
 .status-bar {
@@ -31,6 +31,7 @@
 .titled-pane {
     -fx-effect: dropshadow(gaussian, #000000, 10, 0.0, 4, 2);
     -fx-padding: 10;
+    -fx-text-fill: white;
 }
 
 .titled-pane > *.content {
@@ -55,7 +56,7 @@
 .menu-bar {
     -fx-background-color: linear-gradient(#505050 10%, #000000 100%);
     -fx-background-insets: 0;
-
+    -fx-text-fill: white;
 }
 
 .menu-button:showing {
@@ -92,6 +93,7 @@
     -fx-background-color: linear-gradient(#4b4b4b, #202020);
     -fx-background-insets: 0;
     -fx-background-radius: 0 6 0 6;
+    -fx-text-fill: white;
 }
 
 .button:hover {

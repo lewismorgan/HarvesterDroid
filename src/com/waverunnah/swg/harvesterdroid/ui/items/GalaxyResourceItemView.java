@@ -126,12 +126,16 @@ public class GalaxyResourceItemView implements FxmlView<GalaxyResourceItemViewMo
 
         Label label = new Label();
         label.setText("(" + String.valueOf(Math.round(result * 100)) + "%" + ")");
-        if (result == 1)
+        if (result >= .9) {
+            label.getStyleClass().remove("label");
             label.setTextFill(Color.RED);
-        else if (result >= .8)
+        } else if (result >= .8) {
+            label.getStyleClass().remove("label");
             label.setTextFill(Color.DARKORANGE);
-        else if (result >= .7)
+        } else if (result >= .7) {
+            label.getStyleClass().remove("label");
             label.setTextFill(Color.ORANGE);
+        }
         return label;
     }
 }
