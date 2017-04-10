@@ -20,18 +20,26 @@ package com.waverunnah.swg.harvesterdroid.data.resources;
 
 import com.waverunnah.swg.harvesterdroid.app.Attributes;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
-import java.util.*;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-@XmlRootElement(name="galaxy_resource")
-@XmlAccessorType(XmlAccessType.FIELD)
-public class GalaxyResource {
-    @XmlAttribute(name="name")
+@XmlRootElement(name="galaxy_resource") @XmlAccessorType(XmlAccessType.FIELD)
+@Entity
+public class GalaxyResource implements Serializable {
+    @Id @XmlAttribute(name="name")
     private String name;
     @XmlAttribute(name="spawn_date")
     private Date date;
@@ -43,11 +51,11 @@ public class GalaxyResource {
     private List<String> planets;
     @XmlElementWrapper(name="attributes")
     private Map<String, Integer> attributes;
-    @XmlAttribute(name="group")
-    private String resourceTypeString;
 
     @XmlElement(name="resource_type")
     private ResourceType resourceType;
+
+    private transient String resourceTypeString;
 
     public GalaxyResource() {
         planets = new ArrayList<>();
@@ -112,6 +120,8 @@ public class GalaxyResource {
     }
 
     public String getResourceTypeString() {
+        if (resourceTypeString == null && resourceType != null)
+            return resourceType.getId();
         return resourceTypeString;
     }
 

@@ -18,8 +18,10 @@
 
 package com.waverunnah.swg.harvesterdroid;
 
+import com.sun.javafx.application.LauncherImpl;
 import com.waverunnah.swg.harvesterdroid.app.HarvesterDroid;
 import com.waverunnah.swg.harvesterdroid.app.Watcher;
+import com.waverunnah.swg.harvesterdroid.database.DatabaseManager;
 import com.waverunnah.swg.harvesterdroid.downloaders.Downloader;
 import com.waverunnah.swg.harvesterdroid.downloaders.GalaxyHarvesterDownloader;
 import com.waverunnah.swg.harvesterdroid.ui.dialog.ExceptionDialog;
@@ -41,7 +43,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -49,7 +50,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-import static com.waverunnah.swg.harvesterdroid.app.HarvesterDroidData.*;
+import static com.waverunnah.swg.harvesterdroid.app.HarvesterDroidData.ROOT_DIR;
+import static com.waverunnah.swg.harvesterdroid.app.HarvesterDroidData.XML_INVENTORY;
+import static com.waverunnah.swg.harvesterdroid.app.HarvesterDroidData.XML_SCHEMATICS;
+import static com.waverunnah.swg.harvesterdroid.app.HarvesterDroidData.XML_THEMES;
 
 public class Launcher extends MvvmfxEasyDIApplication {
     private static boolean DEBUG = false;
@@ -67,13 +71,13 @@ public class Launcher extends MvvmfxEasyDIApplication {
                 e.printStackTrace();
             }
         });
-        launch(args);
+        LauncherImpl.launchApplication(Launcher.class, LauncherPreloader.class, args);
     }
 
 
     @Override
     public void initMvvmfx() throws Exception {
-        updateLoadingProgress("Setting up bare essentials...", 0.1);
+        updateLoadingProgress("Setting up bare essentials...", -1);
 
         if (Files.exists(Paths.get(ROOT_DIR + "/harvesterdroid.properties")))
             DroidProperties.load(new FileInputStream(Paths.get(ROOT_DIR + "/harvesterdroid.properties").toFile()));
@@ -91,14 +95,14 @@ public class Launcher extends MvvmfxEasyDIApplication {
         Downloader downloader = new GalaxyHarvesterDownloader(ROOT_DIR, DroidProperties.getString(DroidProperties.GALAXY));
         app.setDownloader(downloader);
         app.setLastUpdateTimestamp(Long.valueOf(DroidProperties.getString(DroidProperties.LAST_UPDATE)));
-        if (new File(app.getSavedResourcesPath()).exists()) {
+        if (new File(app.getSavedResourcesPath() + ".mv.db").exists()) {
             updateLoadingProgress("Retrieving saved resources...", -1);
-            app.loadResources(new FileReader(app.getSavedResourcesPath()));
+            app.loadResources(app.getSavedResourcesPath());
         }
 
         updateLoadingProgress("Finding the latest resources...", -1);
         app.updateResources();
-        updateLoadingProgress("Loading saved data...", -1);
+        updateLoadingProgress("Loading saved user data...", -1);
         if (new File(XML_SCHEMATICS).exists()) {
             app.loadSchematics(new FileInputStream(new File(XML_SCHEMATICS)));
         }
@@ -110,7 +114,7 @@ public class Launcher extends MvvmfxEasyDIApplication {
 
     @Override
     protected void initEasyDi(EasyDI context) throws Exception {
-        app = new HarvesterDroid(null);
+        app = new HarvesterDroid(null, new DatabaseManager());
         context.bindInstance(HarvesterDroid.class, app);
     }
 
@@ -180,6 +184,7 @@ public class Launcher extends MvvmfxEasyDIApplication {
     public void stopMvvmfx() throws Exception {
         Watcher.shutdown();
         saveProperties();
+        app.shutdown();
     }
 
     private void showSaveConfirmation() {
@@ -199,7 +204,7 @@ public class Launcher extends MvvmfxEasyDIApplication {
         try {
             app.saveInventory(new FileOutputStream(new File(XML_INVENTORY)));
             app.saveSchematics(new FileOutputStream(new File(XML_SCHEMATICS)));
-            app.saveResources(new FileOutputStream(new File(app.getSavedResourcesPath())));
+            app.saveResources();
             DroidProperties.set(DroidProperties.LAST_UPDATE, app.getCurrentResourceTimestamp());
         } catch (FileNotFoundException e) {
             e.printStackTrace();

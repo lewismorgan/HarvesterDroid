@@ -40,7 +40,7 @@ class GalaxyHarvesterDownloaderTest {
     @Test
     void parseCurrentResources() {
         try {
-            assert(downloader.downloadCurrentResources(data.getResourceTypeMap()) != Downloader.DownloadResult.FAILED);
+            assert(downloader.downloadCurrentResources() != Downloader.DownloadResult.FAILED);
             downloader.getCurrentResources().forEach(this::checkGalaxyResource);
         } catch (IOException e) {
             e.printStackTrace();

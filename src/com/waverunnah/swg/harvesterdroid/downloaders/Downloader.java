@@ -189,7 +189,7 @@ public abstract class Downloader {
     }
 
     public final String getResourcesPath() {
-        return getRootDownloadsPath() + "resources_" + getGalaxy() + ".xml";
+        return getRootDownloadsPath() + "resources_" + getGalaxy() + ".odb";
     }
 
     public final String getGalaxy() {
