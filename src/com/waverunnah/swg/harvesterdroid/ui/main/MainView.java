@@ -47,21 +47,9 @@ public class MainView implements FxmlView<MainViewModel>, Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         statusBar.textProperty().bind(viewModel.statusTextProperty());
 
-        viewModel.subscribe("StatusUpdate", (s, objects) -> {
-            Platform.runLater(() -> {
-                statusBar.setProgress(-1);
-                System.out.println("Set the progress!");
-            });
+        viewModel.subscribe("StatusUpdate", (s, objects) -> Platform.runLater(() -> statusBar.setProgress(-1)));
 
-
-        });
-
-        viewModel.subscribe("StatusUpdate.Finished", (s, objects) -> {
-            Platform.runLater(() -> {
-                statusBar.setProgress(0);
-                System.out.println("Refreshed the progress to 0");
-            });
-        });
+        viewModel.subscribe("StatusUpdate.Finished", (s, objects) -> Platform.runLater(() -> statusBar.setProgress(0)));
     }
 
     public void save(ActionEvent actionEvent) {
