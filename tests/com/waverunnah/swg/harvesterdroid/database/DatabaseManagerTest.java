@@ -21,64 +21,42 @@ package com.waverunnah.swg.harvesterdroid.database;
 import com.waverunnah.swg.harvesterdroid.app.HarvesterDroid;
 import com.waverunnah.swg.harvesterdroid.app.HarvesterDroidData;
 import com.waverunnah.swg.harvesterdroid.data.resources.GalaxyResource;
-import com.waverunnah.swg.harvesterdroid.data.resources.ResourceType;
 import com.waverunnah.swg.harvesterdroid.downloaders.GalaxyHarvesterDownloader;
-import com.waverunnah.swg.harvesterdroid.xml.XmlFactory;
-import com.waverunnah.swg.harvesterdroid.xml.app.GalaxyResourcesXml;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import javax.persistence.EntityManager;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.util.Collections;
-import java.util.Date;
+import java.util.List;
 
 /**
  * Created by Waverunner on 4/10/2017
  */
 class DatabaseManagerTest {
+    private HarvesterDroid harvesterDroid;
+    private DatabaseManager databaseManager;
+
+    @BeforeEach
+    void setUp() {
+        harvesterDroid = new HarvesterDroid(new GalaxyHarvesterDownloader(HarvesterDroidData.ROOT_DIR, "48"));
+        harvesterDroid.updateResources();
+
+        databaseManager = new DatabaseManager(HarvesterDroidData.ROOT_DIR + "/");
+    }
 
     @Test
     void getEntityManager() {
-        EntityManager entityManager = DatabaseManager.getEntityManager(HarvesterDroidData.ROOT_DIR + "/database");
-        HarvesterDroid harvesterDroid = new HarvesterDroid(new GalaxyHarvesterDownloader(HarvesterDroidData.ROOT_DIR, "48"));
-        harvesterDroid.updateResources();
+        EntityManager entityManager = databaseManager.createDatabase("database");
 
-        ResourceType resourceType = harvesterDroid.getResources().get(0).getResourceType();
-
-        for (int i=0; i < 10000; i++) {
-            GalaxyResource resource = new GalaxyResource();
-            resource.setName("spam_resource_" + i);
-            resource.setResourceType(resourceType);
-            resource.setAttribute("OQ", 1000);
-            resource.setContainer("water");
-            resource.setDate(new Date(System.currentTimeMillis()));
-            resource.setPlanets(Collections.singletonList("Tatooine"));
-            harvesterDroid.getResources().add(resource);
-        }
-
-        long databaseStart = System.nanoTime();
         entityManager.getTransaction().begin();
         harvesterDroid.getResources().forEach(entityManager::persist);
         entityManager.getTransaction().commit();
-        long databaseEnd = System.nanoTime();
-
-
-        GalaxyResourcesXml resourcesXml = new GalaxyResourcesXml();
-        resourcesXml.setGalaxyResources(harvesterDroid.getResources());
-
-        long xmlStart = 0;
-        long xmlEnd = 0;
-        try {
-            xmlStart = System.nanoTime();
-            XmlFactory.write(resourcesXml, new FileOutputStream(new File(HarvesterDroidData.ROOT_DIR + "/massive_list.xml")));
-            xmlEnd = System.nanoTime();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-
-        System.out.println("Wrote " + harvesterDroid.getResources().size() + " resources to database in " + (databaseEnd - databaseStart) + " and in xml in " + (xmlEnd - xmlStart));
     }
 
+    @Test
+    void getList() {
+        EntityManager entityManager = databaseManager.loadDatabase("database");
+
+        List<GalaxyResource> resources = DatabaseManager.getList(entityManager, GalaxyResource.class);
+        resources.forEach(System.out::println);
+    }
 }
