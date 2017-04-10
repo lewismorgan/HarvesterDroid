@@ -6,6 +6,10 @@
     -fx-background-color: linear-gradient(#a2a2a2, #373737 40%, #747474 100%);
 }
 
+.root.popup {
+    -fx-background-color: transparent;
+}
+
 .text {
     -fx-fill: white;
 }
@@ -54,14 +58,18 @@
 
 }
 
-.menu-button:hover, .menu-button:showing, .menu-item:focused, .menu-item:showing {
-    -fx-background-color: #656565;
-    -fx-background-insets: 0;
-    -fx-background-radius: 0 0 5 5;
+.menu-button:showing {
+    -fx-background-color: black;
 }
 
-.menu-item {
-    -fx-background-color: derive(black, 50%);
+.menu-button:hover, .menu-item:focused {
+    -fx-background-color: #656565;
+    -fx-background-insets: 0;
+    -fx-background-radius: 0;
+}
+
+.menu-item:showing {
+    -fx-background-color: black;
     -fx-background-insets: 0;
 }
 
@@ -70,7 +78,7 @@
 }
 
 .context-menu {
-    -fx-background-color: derive(black, 50%);
+    -fx-background-color: black;
     -fx-background-insets: 0;
     -fx-background-radius: 0 0 5 5;
     -fx-border-insets: 0;
@@ -84,17 +92,11 @@
     -fx-background-color: linear-gradient(#4b4b4b, #202020);
     -fx-background-insets: 0;
     -fx-background-radius: 0 6 0 6;
-    -fx-background-insets: 0;
 }
 
 .button:hover {
     -fx-background-color: #1d1d1d;
 }
-
-.button:focused {
-    -fx-background-color: #1d1d1d;
-}
-
 /*endregion*/
 
 /*region scroll-bar*/
