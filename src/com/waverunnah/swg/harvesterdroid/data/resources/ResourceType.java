@@ -18,6 +18,12 @@
 
 package com.waverunnah.swg.harvesterdroid.data.resources;
 
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.MapKeyColumn;
+import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
@@ -29,14 +35,15 @@ import java.util.Map;
 /**
  * Created by Waverunner on 3/23/2017
  */
-@XmlAccessorType(XmlAccessType.FIELD)
-@XmlRootElement(name="resource_type")
+@XmlAccessorType(XmlAccessType.FIELD) @XmlRootElement(name="resource_type")
+@Entity @Table(name="ResourceType")
 public class ResourceType {
-    @XmlAttribute(name="id")
+    @Id
+    @Column(name="ID") @XmlAttribute(name="id")
     private String id;
-    @XmlAttribute(name="name")
+    @Column(name="Name") @XmlAttribute(name="name")
     private String name;
-    @XmlElementWrapper(name="min_max")
+    @ElementCollection @MapKeyColumn(name="Attribute") @Column(name="Value") @XmlElementWrapper(name="min_max")
     private Map<String, Integer> minMaxMap;
 
     public ResourceType() {

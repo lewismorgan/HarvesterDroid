@@ -20,34 +20,50 @@ package com.waverunnah.swg.harvesterdroid.data.resources;
 
 import com.waverunnah.swg.harvesterdroid.app.Attributes;
 
+import javax.persistence.CascadeType;
+import javax.persistence.CollectionTable;
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.MapKeyColumn;
+import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-@XmlRootElement(name="galaxy_resource")
-@XmlAccessorType(XmlAccessType.FIELD)
+@XmlRootElement(name="galaxy_resource") @XmlAccessorType(XmlAccessType.FIELD)
+@Entity @Table(name="GalaxyResource")
 public class GalaxyResource {
-    @XmlAttribute(name="name")
+    @Id @Column(name="Name") @XmlAttribute(name="name")
     private String name;
-    @XmlAttribute(name="spawn_date")
+    @Column(name="SpawnDate") @XmlAttribute(name="spawn_date")
     private Date date;
-    @XmlAttribute(name="container")
+    @Column(name="Container") @XmlAttribute(name="container")
     private String container;
-    @XmlAttribute(name="despawn_date")
+    @Column(name="DespawnDate") @XmlAttribute(name="despawn_date")
     private Date despawnDate;
+    @ElementCollection @CollectionTable(name="GalaxyResource_Planets") @Column(name="Planet")
     @XmlElementWrapper(name="planets") @XmlElement(name="planet")
     private List<String> planets;
-    @XmlElementWrapper(name="attributes")
+    @ElementCollection @MapKeyColumn(name="Attribute") @Column(name="Value") @XmlElementWrapper(name="attributes")
     private Map<String, Integer> attributes;
-    @XmlAttribute(name="group")
-    private String resourceTypeString;
 
-    @XmlElement(name="resource_type")
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL) @XmlElement(name="resource_type")
     private ResourceType resourceType;
+
+    private transient String resourceTypeString;
 
     public GalaxyResource() {
         planets = new ArrayList<>();
@@ -112,6 +128,8 @@ public class GalaxyResource {
     }
 
     public String getResourceTypeString() {
+        if (resourceTypeString == null && resourceType != null)
+            return resourceType.getId();
         return resourceTypeString;
     }
 
