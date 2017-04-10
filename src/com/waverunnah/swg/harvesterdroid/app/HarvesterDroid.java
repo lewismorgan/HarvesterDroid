@@ -203,7 +203,7 @@ public class HarvesterDroid {
     }
 
     public GalaxyResource getGalaxyResource(InventoryResource inventoryResource) {
-        if (!inventoryResource.getTracker().equals(getTracker()) || !inventoryResource.getGalaxy().equals(downloader.getGalaxy()))
+        if (!inventoryResource.getTracker().equals(getTracker()) && !inventoryResource.getGalaxy().equals(downloader.getGalaxy()))
             return null;
 
         GalaxyResource galaxyResource = getGalaxyResource(inventoryResource.getName());
@@ -236,16 +236,18 @@ public class HarvesterDroid {
         return false;
     }
 
-    public void switchToGalaxy(String galaxy) {
+    public boolean switchToGalaxy(String galaxy) {
         if (this.activeGalaxy.equals(galaxy))
-            return;
+            return false;
 
+        saveResources();
         activeGalaxy = galaxy;
         downloader.setGalaxy(galaxy);
         resources.clear();
-        if (new File(getSavedResourcesPath() + ".mv.db").exists())
+        if (new File(getSavedResourcesPath()).exists())
             loadResources(getSavedResourcesPath());
         updateResources();
+        return true;
     }
 
     public boolean addInventoryResource(GalaxyResource galaxyResource) {

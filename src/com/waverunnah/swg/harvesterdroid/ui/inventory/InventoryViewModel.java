@@ -84,13 +84,6 @@ public class InventoryViewModel implements ViewModel {
                             resourceScope.publish(ResourceScope.IMPORT_ADDED, item.getGalaxyResource());
                     });
                 }
-
-                if (c.wasRemoved()) {
-                    c.getRemoved().forEach(item -> {
-                        harvesterDroid.removeInventoryResource(item.getGalaxyResource());
-                        resourceScope.publish(ResourceScope.IMPORT_REMOVED, item.getGalaxyResource());
-                    });
-                }
             }
         });
     }
@@ -121,9 +114,16 @@ public class InventoryViewModel implements ViewModel {
         removeCommand = new DelegateCommand(() -> new Action() {
             @Override
             protected void action() throws Exception {
-                inventory.remove(selected.get());
+                removeInventoryItem(selected.get());
             }
         }, selected.isNotNull());
+    }
+
+    private void removeInventoryItem(GalaxyResourceItemViewModel inventoryItem) {
+        inventory.remove(inventoryItem);
+        harvesterDroid.removeInventoryResource(inventoryItem.getGalaxyResource());
+
+        resourceScope.publish(ResourceScope.IMPORT_REMOVED, inventoryItem.getGalaxyResource());
     }
 
     private void createGalaxyResourceItem(GalaxyResource galaxyResource) {

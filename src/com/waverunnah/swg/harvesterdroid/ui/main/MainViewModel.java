@@ -99,10 +99,9 @@ public class MainViewModel implements ViewModel {
                 Optional<Properties> result = dialog.showAndWait();
                 if (result.isPresent()) {
                     Properties properties = result.get();
-                    harvesterDroid.switchToGalaxy(properties.getProperty(DroidProperties.GALAXY));
                     DroidProperties.setProperties(properties);
-
-                    galaxyScope.publish(GalaxyScope.CHANGED);
+                    if (harvesterDroid.switchToGalaxy(properties.getProperty(DroidProperties.GALAXY)))
+                        galaxyScope.publish(GalaxyScope.CHANGED);
                 }
             }
         });
