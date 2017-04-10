@@ -61,7 +61,7 @@ public class DatabaseManager {
         entityFactories.remove(database);
     }
 
-    public void shutdown() {
+    public void closeDatabases() {
         entityFactories.forEach((key, factory) -> factory.close());
         entityFactories.clear();
     }

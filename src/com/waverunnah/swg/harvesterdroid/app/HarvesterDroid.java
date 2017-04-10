@@ -297,10 +297,12 @@ public class HarvesterDroid {
         entityManager.getTransaction().begin();
         resources.forEach(entityManager::persist);
         entityManager.getTransaction().commit();
+
+        databaseManager.closeDatabases();
     }
 
     public void shutdown() {
-        databaseManager.shutdown();
+        databaseManager.closeDatabases();
     }
 
     public void loadResources(String database) {

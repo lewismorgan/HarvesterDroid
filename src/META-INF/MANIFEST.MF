@@ -1,4 +1,0 @@
-Manifest-Version: 1.0
-JavaFX-Class-Path: Preloader.jar
-Main-Class: com.waverunnah.swg.harvesterdroid.Launcher
-

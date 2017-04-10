@@ -18,6 +18,7 @@
 
 package com.waverunnah.swg.harvesterdroid;
 
+import com.sun.javafx.application.LauncherImpl;
 import com.waverunnah.swg.harvesterdroid.app.HarvesterDroid;
 import com.waverunnah.swg.harvesterdroid.app.Watcher;
 import com.waverunnah.swg.harvesterdroid.database.DatabaseManager;
@@ -70,13 +71,13 @@ public class Launcher extends MvvmfxEasyDIApplication {
                 e.printStackTrace();
             }
         });
-        launch(args);
+        LauncherImpl.launchApplication(Launcher.class, LauncherPreloader.class, args);
     }
 
 
     @Override
     public void initMvvmfx() throws Exception {
-        updateLoadingProgress("Setting up bare essentials...", 0.1);
+        updateLoadingProgress("Setting up bare essentials...", -1);
 
         if (Files.exists(Paths.get(ROOT_DIR + "/harvesterdroid.properties")))
             DroidProperties.load(new FileInputStream(Paths.get(ROOT_DIR + "/harvesterdroid.properties").toFile()));
