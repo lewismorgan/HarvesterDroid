@@ -76,6 +76,8 @@ public class GalaxyResourceItemView implements FxmlView<GalaxyResourceItemViewMo
     private void refreshAttributesUI() {
         resourceStatsBox.getChildren().clear();
         Attributes.forEach((primary, secondary) -> {
+            if (viewModel.getAttributes() == null)
+                System.out.println("Null attributes for " + viewModel.getGalaxyResource());
             int value = viewModel.getAttributes().get(primary);
             Label percentage = createPercentageLabel(primary, viewModel.getGalaxyResource());
             createAttributeUI(secondary, value, percentage);

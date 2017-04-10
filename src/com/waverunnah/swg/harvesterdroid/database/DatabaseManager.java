@@ -24,74 +24,61 @@ import javax.persistence.Persistence;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.logging.Level;
 
 /**
  * Created by Waverunner on 4/10/2017
  */
 public class DatabaseManager {
-    private HashMap<String, EntityManager> entityManagers = new HashMap<>();
-    private final String root;
+    private HashMap<String, EntityManagerFactory> entityFactories = new HashMap<>();
 
-    public DatabaseManager(String root) {
-        this.root = root;
-        java.util.logging.Logger.getLogger("org.hibernate").setLevel(Level.SEVERE);
+    public DatabaseManager() {
     }
 
     public EntityManager createDatabase(String database) {
-        Map<String, String> properties = getDatabaseProperties(database);
-        properties.put("hibernate.hbm2ddl.auto", "create");
-
-        EntityManagerFactory emf = createFactory(properties);
+        EntityManagerFactory emf = createFactory(database);
 
         EntityManager entityManager = emf.createEntityManager();
-        entityManagers.put(database, entityManager);
+        entityFactories.put(database, emf);
 
         return entityManager;
     }
 
     public EntityManager loadDatabase(String database) {
-        if (entityManagers.containsKey(database))
+        if (entityFactories.containsKey(database))
             closeDatabase(database);
 
-        EntityManagerFactory emf = createFactory(getDatabaseProperties(database));
+        EntityManagerFactory emf = createFactory(database);
 
         EntityManager entityManager = emf.createEntityManager();
-        entityManagers.put(database, entityManager);
+        entityFactories.put(database, emf);
 
         return entityManager;
     }
 
     public void closeDatabase(String database) {
-        EntityManager entityManager = getEntityManager(database);
-        entityManager.close();
-        entityManagers.remove(database);
+        EntityManagerFactory factory = getFactory(database);
+        factory.close();
+        entityFactories.remove(database);
     }
 
     public void shutdown() {
-        entityManagers.forEach((key, value) -> closeDatabase(key));
+        entityFactories.forEach((key, factory) -> factory.close());
+        entityFactories.clear();
     }
 
-    public EntityManager getEntityManager(String database) {
-        return entityManagers.get(database);
+    public EntityManagerFactory getFactory(String database) {
+        return entityFactories.get(database);
     }
 
     public static <T> List<T> getList(EntityManager entityManager, Class<T> tClass) {
-        List<T> resultList = entityManager.createQuery("from " + tClass.getSimpleName()).getResultList();
+        List<T> query = entityManager.createQuery("Select o from " + tClass.getSimpleName() + " o", tClass).getResultList();
 
-        return new ArrayList<>(resultList);
+        return new ArrayList<>(query);
     }
 
-    private Map<String, String> getDatabaseProperties(String database) {
-        Map<String, String> properties = new HashMap<>();
-        properties.put("javax.persistence.jdbc.url", "jdbc:h2:" + root + database);
-        return properties;
-    }
-
-    private EntityManagerFactory createFactory(Map<String, String> properties) {
+    private EntityManagerFactory createFactory(String database) {
         try {
-            return Persistence.createEntityManagerFactory("GalaxyResources", properties);
+            return Persistence.createEntityManagerFactory(database);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

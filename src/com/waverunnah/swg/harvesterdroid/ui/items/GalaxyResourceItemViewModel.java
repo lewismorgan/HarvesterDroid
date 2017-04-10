@@ -48,6 +48,8 @@ public class GalaxyResourceItemViewModel implements ViewModel {
         this.galaxyResource = galaxyResource;
         name.set(galaxyResource.getName());
         type.set(galaxyResource.getResourceType().getName());
+        if (galaxyResource.getAttributes() == null)
+            System.err.println("Null attributes for " + galaxyResource.getName());
         attributes.set(FXCollections.observableMap(galaxyResource.getAttributes()));
         image.set(createImage(galaxyResource.getResourceType().getId()));
         if (galaxyResource.getDespawnDate() == null) {

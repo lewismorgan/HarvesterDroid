@@ -110,8 +110,12 @@ public class MainViewModel implements ViewModel {
         saveCommand = new DelegateCommand(() -> new Action() {
             @Override
             protected void action() throws Exception {
+
                 harvesterDroid.saveSchematics(new FileOutputStream(new File(XML_SCHEMATICS)));
                 harvesterDroid.saveInventory(new FileOutputStream(new File(XML_INVENTORY)));
+                publish("StatusUpdate", "Saving Resources");
+                harvesterDroid.saveResources();
+                publish("StatusUpdate.Finished");
             }
         });
 

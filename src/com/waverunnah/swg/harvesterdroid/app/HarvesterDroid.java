@@ -21,19 +21,18 @@ package com.waverunnah.swg.harvesterdroid.app;
 import com.waverunnah.swg.harvesterdroid.data.resources.GalaxyResource;
 import com.waverunnah.swg.harvesterdroid.data.resources.InventoryResource;
 import com.waverunnah.swg.harvesterdroid.data.schematics.Schematic;
+import com.waverunnah.swg.harvesterdroid.database.DatabaseManager;
 import com.waverunnah.swg.harvesterdroid.downloaders.Downloader;
 import com.waverunnah.swg.harvesterdroid.xml.XmlFactory;
-import com.waverunnah.swg.harvesterdroid.xml.app.GalaxyResourcesXml;
 import com.waverunnah.swg.harvesterdroid.xml.app.InventoryXml;
 import com.waverunnah.swg.harvesterdroid.xml.app.SchematicsXml;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceException;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.Reader;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
@@ -48,6 +47,8 @@ public class HarvesterDroid {
     private final static int DOWNLOAD_HOURS = 2;
 
     private final HarvesterDroidData data;
+    private final DatabaseManager databaseManager;
+
 
     private Downloader downloader;
 
@@ -66,8 +67,9 @@ public class HarvesterDroid {
     private String activeGalaxy;
     private String activeTheme;
 
-    public HarvesterDroid(Downloader downloader) {
+    public HarvesterDroid(Downloader downloader, DatabaseManager databaseManager) {
         this.downloader = downloader;
+        this.databaseManager = databaseManager;
         this.currentResourceTimestamp = 0;
         this.data = new HarvesterDroidData();
         this.inventory = new ArrayList<>(0);
@@ -241,12 +243,8 @@ public class HarvesterDroid {
         activeGalaxy = galaxy;
         downloader.setGalaxy(galaxy);
         resources.clear();
-        try {
-            if (new File(getSavedResourcesPath()).exists())
-                loadResources(new FileReader(getSavedResourcesPath()));
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException();
-        }
+        if (new File(getSavedResourcesPath() + ".mv.db").exists())
+            loadResources(getSavedResourcesPath());
         updateResources();
     }
 
@@ -284,14 +282,32 @@ public class HarvesterDroid {
         XmlFactory.write(inventoryXml, outputStream);
     }
 
-    public void saveResources(OutputStream outputStream) {
-        GalaxyResourcesXml resourcesXml = new GalaxyResourcesXml();
-        resourcesXml.setGalaxyResources(resources);
-        XmlFactory.write(resourcesXml, outputStream);
+    public void saveResources() {
+        EntityManager entityManager = databaseManager.createDatabase(getSavedResourcesPath());
+
+        entityManager.getTransaction().begin();
+        try {
+            entityManager.createQuery("DELETE from GalaxyResource").executeUpdate();
+            entityManager.createQuery("DELETE from ResourceType").executeUpdate();
+        } catch (PersistenceException exc) {
+            // db never existed so no need to clear
+        }
+        entityManager.getTransaction().commit();
+
+        entityManager.getTransaction().begin();
+        resources.forEach(entityManager::persist);
+        entityManager.getTransaction().commit();
     }
 
-    public void loadResources(Reader reader) {
-        resources = XmlFactory.loadList(GalaxyResource.class, reader);
+    public void shutdown() {
+        databaseManager.shutdown();
+    }
+
+    public void loadResources(String database) {
+        EntityManager entityManager = databaseManager.loadDatabase(database);
+        resources = DatabaseManager.getList(entityManager, GalaxyResource.class);
+
+        databaseManager.closeDatabase(database);
     }
 
 

@@ -20,22 +20,16 @@ package com.waverunnah.swg.harvesterdroid.data.resources;
 
 import com.waverunnah.swg.harvesterdroid.app.Attributes;
 
-import javax.persistence.CascadeType;
-import javax.persistence.CollectionTable;
-import javax.persistence.Column;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.MapKeyColumn;
-import javax.persistence.Table;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -43,23 +37,22 @@ import java.util.List;
 import java.util.Map;
 
 @XmlRootElement(name="galaxy_resource") @XmlAccessorType(XmlAccessType.FIELD)
-@Entity @Table(name="GalaxyResource")
-public class GalaxyResource {
-    @Id @Column(name="Name") @XmlAttribute(name="name")
+@Entity
+public class GalaxyResource implements Serializable {
+    @Id @XmlAttribute(name="name")
     private String name;
-    @Column(name="SpawnDate") @XmlAttribute(name="spawn_date")
+    @XmlAttribute(name="spawn_date")
     private Date date;
-    @Column(name="Container") @XmlAttribute(name="container")
+    @XmlAttribute(name="container")
     private String container;
-    @Column(name="DespawnDate") @XmlAttribute(name="despawn_date")
+    @XmlAttribute(name="despawn_date")
     private Date despawnDate;
-    @ElementCollection @CollectionTable(name="GalaxyResource_Planets") @Column(name="Planet")
     @XmlElementWrapper(name="planets") @XmlElement(name="planet")
     private List<String> planets;
-    @ElementCollection @MapKeyColumn(name="Attribute") @Column(name="Value") @XmlElementWrapper(name="attributes")
+    @XmlElementWrapper(name="attributes")
     private Map<String, Integer> attributes;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL) @XmlElement(name="resource_type")
+    @XmlElement(name="resource_type")
     private ResourceType resourceType;
 
     private transient String resourceTypeString;

@@ -37,24 +37,26 @@ class DatabaseManagerTest {
 
     @BeforeEach
     void setUp() {
-        harvesterDroid = new HarvesterDroid(new GalaxyHarvesterDownloader(HarvesterDroidData.ROOT_DIR, "48"));
+        databaseManager = new DatabaseManager();
+        harvesterDroid = new HarvesterDroid(new GalaxyHarvesterDownloader(HarvesterDroidData.ROOT_DIR, "48"), databaseManager);
         harvesterDroid.updateResources();
 
-        databaseManager = new DatabaseManager(HarvesterDroidData.ROOT_DIR + "/");
     }
 
     @Test
     void getEntityManager() {
-        EntityManager entityManager = databaseManager.createDatabase("database");
+        EntityManager entityManager = databaseManager.createDatabase("test");
 
         entityManager.getTransaction().begin();
         harvesterDroid.getResources().forEach(entityManager::persist);
         entityManager.getTransaction().commit();
+
+
     }
 
     @Test
     void getList() {
-        EntityManager entityManager = databaseManager.loadDatabase("database");
+        EntityManager entityManager = databaseManager.loadDatabase("test");
 
         List<GalaxyResource> resources = DatabaseManager.getList(entityManager, GalaxyResource.class);
         resources.forEach(System.out::println);
