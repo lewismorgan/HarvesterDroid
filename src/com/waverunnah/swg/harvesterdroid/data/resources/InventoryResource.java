@@ -27,7 +27,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  * Created by Waverunner on 3/31/2017
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlRootElement(name="resource")
+@XmlRootElement(name = "resource")
 public class InventoryResource {
     @XmlAttribute
     private String name;
@@ -36,7 +36,8 @@ public class InventoryResource {
     @XmlAttribute
     private String galaxy;
 
-    public InventoryResource() {}
+    public InventoryResource() {
+    }
 
     public InventoryResource(String name, String tracker, String galaxy) {
         this.name = name;

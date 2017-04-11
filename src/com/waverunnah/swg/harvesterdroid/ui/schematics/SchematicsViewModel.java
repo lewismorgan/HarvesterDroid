@@ -43,13 +43,12 @@ import java.util.Optional;
  * Created by Waverunner on 4/3/2017
  */
 public class SchematicsViewModel implements ViewModel {
+    private final HarvesterDroid harvesterDroid;
     private ListProperty<Schematic> schematics = new SimpleListProperty<>();
     private ObjectProperty<Schematic> selected = new SimpleObjectProperty<>();
-
     private Command removeCommand;
     private Command addCommand;
     private Command editCommand;
-
     @InjectScope
     private SchematicScope schematicScope;
     @InjectScope
@@ -57,9 +56,7 @@ public class SchematicsViewModel implements ViewModel {
     @InjectScope
     private GalaxyScope galaxyScope;
 
-    private final HarvesterDroid harvesterDroid;
-
-    public SchematicsViewModel(HarvesterDroid harvesterDroid){
+    public SchematicsViewModel(HarvesterDroid harvesterDroid) {
         this.harvesterDroid = harvesterDroid;
     }
 
@@ -161,24 +158,24 @@ public class SchematicsViewModel implements ViewModel {
         return schematics.get();
     }
 
-    public ListProperty<Schematic> schematicsProperty() {
-        return schematics;
-    }
-
     public void setSchematics(ObservableList<Schematic> schematics) {
         this.schematics.set(schematics);
+    }
+
+    public ListProperty<Schematic> schematicsProperty() {
+        return schematics;
     }
 
     public Schematic getSelected() {
         return selected.get();
     }
 
-    public ObjectProperty<Schematic> selectedProperty() {
-        return selected;
-    }
-
     public void setSelected(Schematic selected) {
         this.selected.set(selected);
+    }
+
+    public ObjectProperty<Schematic> selectedProperty() {
+        return selected;
     }
 
     public Command getRemoveCommand() {

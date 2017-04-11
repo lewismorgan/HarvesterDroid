@@ -34,6 +34,12 @@ public class DatabaseManager {
     public DatabaseManager() {
     }
 
+    public static <T> List<T> getList(EntityManager entityManager, Class<T> tClass) {
+        List<T> query = entityManager.createQuery("Select o from " + tClass.getSimpleName() + " o", tClass).getResultList();
+
+        return new ArrayList<>(query);
+    }
+
     public EntityManager createDatabase(String database) {
         EntityManagerFactory emf = createFactory(database);
 
@@ -68,12 +74,6 @@ public class DatabaseManager {
 
     public EntityManagerFactory getFactory(String database) {
         return entityFactories.get(database);
-    }
-
-    public static <T> List<T> getList(EntityManager entityManager, Class<T> tClass) {
-        List<T> query = entityManager.createQuery("Select o from " + tClass.getSimpleName() + " o", tClass).getResultList();
-
-        return new ArrayList<>(query);
     }
 
     private EntityManagerFactory createFactory(String database) {

@@ -93,10 +93,6 @@ public class MainViewModel implements ViewModel {
 
         statusText.bind(Bindings.concat("Galaxy: ", galaxyString, "  |  ", "Loaded Resources: ", resourcesString));
         updateStatusText(harvesterDroid.getActiveGalaxy(), harvesterDroid.getResources().size());
-
-        subscribe("Import.Schematics", (s, objects) -> {
-
-        });
     }
 
     private void createCommands() {
@@ -204,11 +200,11 @@ public class MainViewModel implements ViewModel {
         return statusText.get();
     }
 
-    public ReadOnlyStringProperty statusTextProperty() {
-        return statusText.getReadOnlyProperty();
-    }
-
     public void setStatusText(String statusText) {
         this.statusText.set(statusText);
+    }
+
+    public ReadOnlyStringProperty statusTextProperty() {
+        return statusText.getReadOnlyProperty();
     }
 }

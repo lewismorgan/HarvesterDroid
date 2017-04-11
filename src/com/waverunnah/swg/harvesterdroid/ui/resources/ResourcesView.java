@@ -68,7 +68,7 @@ public class ResourcesView implements FxmlView<ResourcesViewModel>, Initializabl
         viewModel.showOnlyAvailableResourcesProperty().bind(onlyAvailableCheckbox.selectedProperty());
         onlyAvailableCheckbox.disableProperty().bind(Bindings.when(Bindings.isEmpty(listView.getItems())).then(Bindings.isEmpty(viewModel.getGalaxyResources()))
                 .otherwise(false));
-        
+
         listView.disableProperty().bind(Bindings.when(Bindings.isEmpty(listView.getItems())).then(viewModel.galaxyResourcesProperty().emptyProperty())
                 .otherwise(false));
     }

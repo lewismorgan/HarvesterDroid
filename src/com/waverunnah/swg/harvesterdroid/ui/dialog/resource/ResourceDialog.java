@@ -32,13 +32,9 @@ public class ResourceDialog extends BaseDialog<GalaxyResource> {
         super("Add Resource");
     }
 
-    public static void setController(ResourceDialogController controller) {
-        ResourceDialog.controller = controller;
-    }
-
     @Override
     protected ButtonType[] getButtonTypes() {
-        return new ButtonType[] {
+        return new ButtonType[]{
                 ADD,
                 ButtonType.CANCEL
         };
@@ -57,5 +53,9 @@ public class ResourceDialog extends BaseDialog<GalaxyResource> {
     @Override
     protected boolean isController() {
         return false;
+    }
+
+    public static void setController(ResourceDialogController controller) {
+        ResourceDialog.controller = controller;
     }
 }

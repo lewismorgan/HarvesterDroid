@@ -74,6 +74,17 @@ public class Launcher extends MvvmfxEasyDIApplication {
         LauncherImpl.launchApplication(Launcher.class, LauncherPreloader.class, args);
     }
 
+    public static Map<String, String> getResourceTypes() {
+        return app.getResourceTypes();
+    }
+
+    public static HarvesterDroid getApp() {
+        return app;
+    }
+
+    public static Image getAppIcon() {
+        return new Image(Launcher.class.getResourceAsStream("/images/icon.png"));
+    }
 
     @Override
     public void initMvvmfx() throws Exception {
@@ -227,17 +238,5 @@ public class Launcher extends MvvmfxEasyDIApplication {
 
     private void updateLoadingProgress(String status, double value) {
         notifyPreloader(new PreloaderStatusNotification(status, value));
-    }
-
-    public static Map<String, String> getResourceTypes() {
-        return app.getResourceTypes();
-    }
-
-    public static HarvesterDroid getApp() {
-        return app;
-    }
-
-    public static Image getAppIcon() {
-        return new Image(Launcher.class.getResourceAsStream("/images/icon.png"));
     }
 }

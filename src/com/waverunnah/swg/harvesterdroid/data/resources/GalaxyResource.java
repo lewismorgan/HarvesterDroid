@@ -22,7 +22,6 @@ import com.waverunnah.swg.harvesterdroid.app.Attributes;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
-
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
@@ -36,23 +35,26 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@XmlRootElement(name="galaxy_resource") @XmlAccessorType(XmlAccessType.FIELD)
+@XmlRootElement(name = "galaxy_resource")
+@XmlAccessorType(XmlAccessType.FIELD)
 @Entity
 public class GalaxyResource implements Serializable {
-    @Id @XmlAttribute(name="name")
+    @Id
+    @XmlAttribute(name = "name")
     private String name;
-    @XmlAttribute(name="spawn_date")
+    @XmlAttribute(name = "spawn_date")
     private Date date;
-    @XmlAttribute(name="container")
+    @XmlAttribute(name = "container")
     private String container;
-    @XmlAttribute(name="despawn_date")
+    @XmlAttribute(name = "despawn_date")
     private Date despawnDate;
-    @XmlElementWrapper(name="planets") @XmlElement(name="planet")
+    @XmlElementWrapper(name = "planets")
+    @XmlElement(name = "planet")
     private List<String> planets;
-    @XmlElementWrapper(name="attributes")
+    @XmlElementWrapper(name = "attributes")
     private Map<String, Integer> attributes;
 
-    @XmlElement(name="resource_type")
+    @XmlElement(name = "resource_type")
     private ResourceType resourceType;
 
     private transient String resourceTypeString;

@@ -38,10 +38,6 @@ public class SchematicDialog extends BaseDialog<Schematic> {
             controller.readSchematic(schematic);
     }
 
-    public static void setController(SchematicDialogController controller) {
-        SchematicDialog.controller = controller;
-    }
-
     @Override
     protected ButtonType[] getButtonTypes() {
         return new ButtonType[]{
@@ -65,6 +61,10 @@ public class SchematicDialog extends BaseDialog<Schematic> {
     @Override
     protected boolean isController() {
         return false;
+    }
+
+    public static void setController(SchematicDialogController controller) {
+        SchematicDialog.controller = controller;
     }
 
     public void readSchematic(Schematic schematic) {

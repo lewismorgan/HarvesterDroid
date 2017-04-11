@@ -30,9 +30,9 @@ import java.util.List;
  * Created by Waverunner on 4/4/2017
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlRootElement(name="galaxy_resources")
+@XmlRootElement(name = "galaxy_resources")
 public class GalaxyResourcesXml {
-    @XmlElement(name="galaxy_resource")
+    @XmlElement(name = "galaxy_resource")
     private List<GalaxyResource> galaxyResources;
 
     public List<GalaxyResource> getGalaxyResources() {

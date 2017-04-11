@@ -18,9 +18,9 @@
 
 package com.waverunnah.swg.harvesterdroid.xml.galaxyharvester;
 
+import com.waverunnah.swg.harvesterdroid.app.Attributes;
 import com.waverunnah.swg.harvesterdroid.data.resources.GalaxyResource;
 import com.waverunnah.swg.harvesterdroid.ui.dialog.ExceptionDialog;
-import com.waverunnah.swg.harvesterdroid.app.Attributes;
 import com.waverunnah.swg.harvesterdroid.xml.app.ResourceXml;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;

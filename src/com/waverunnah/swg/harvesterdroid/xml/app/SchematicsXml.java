@@ -30,9 +30,9 @@ import java.util.List;
  * Created by Waverunner on 3/31/2017
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlRootElement(name="schematics")
+@XmlRootElement(name = "schematics")
 public class SchematicsXml {
-    @XmlElement(name="schematic")
+    @XmlElement(name = "schematic")
     private List<Schematic> schematics;
 
     public List<Schematic> getSchematics() {

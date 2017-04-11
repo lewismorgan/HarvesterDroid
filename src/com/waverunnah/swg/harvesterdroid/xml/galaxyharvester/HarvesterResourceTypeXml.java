@@ -51,7 +51,7 @@ public final class HarvesterResourceTypeXml extends BaseXml {
         List<String> caps = new ArrayList<>();
 
         processElement(root, node -> {
-            switch(node.getNodeName()) {
+            switch (node.getNodeName()) {
                 case "resource_type_values":
                     processElement(node, id -> ids.add(id.getTextContent()));
                     break;

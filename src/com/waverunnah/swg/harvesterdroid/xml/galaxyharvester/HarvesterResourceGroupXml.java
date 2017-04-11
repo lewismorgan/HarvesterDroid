@@ -51,7 +51,7 @@ public class HarvesterResourceGroupXml extends BaseXml {
         List<String> caps = new ArrayList<>();
 
         processElement(root, node -> {
-            switch(node.getNodeName()) {
+            switch (node.getNodeName()) {
                 case "resource_group_values":
                     processElement(node, id -> ids.add(id.getTextContent()));
                     break;

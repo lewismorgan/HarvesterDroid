@@ -34,7 +34,7 @@ import java.util.List;
 
 /**
  * Simple JAXB utility class for easy reading and writing of classes
- *
+ * <p>
  * Created by Waverunner on 3/31/2017
  */
 @SuppressWarnings("unchecked")
@@ -82,7 +82,7 @@ public class XmlFactory {
             m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
             m.marshal(object, outputStream);
 
-        }catch (JAXBException e) {
+        } catch (JAXBException e) {
             e.printStackTrace();
         }
     }

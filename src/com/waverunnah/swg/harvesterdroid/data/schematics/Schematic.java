@@ -30,7 +30,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-@XmlRootElement(name="schematic")
+@XmlRootElement(name = "schematic")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Schematic {
     private final transient String id;
@@ -40,12 +40,12 @@ public class Schematic {
     @XmlAttribute
     private String name;
 
-    @XmlElementWrapper(name="resources")
+    @XmlElementWrapper(name = "resources")
     @XmlElement(name = "resource")
     private List<String> resources;
 
-    @XmlElementWrapper(name="modifiers")
-    @XmlElement(name="modifier")
+    @XmlElementWrapper(name = "modifiers")
+    @XmlElement(name = "modifier")
     private Map<String, Integer> modifiers;
 
     public Schematic() {

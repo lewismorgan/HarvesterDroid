@@ -49,7 +49,6 @@ public class HarvesterDroid {
     private final HarvesterDroidData data;
     private final DatabaseManager databaseManager;
 
-
     private Downloader downloader;
 
     private List<InventoryResource> inventory;

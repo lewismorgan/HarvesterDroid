@@ -29,7 +29,7 @@ import java.io.IOException;
 
 /**
  * Abstract class for boilerplate code in the creation of dialogs for HarvesterDroid
- *
+ * <p>
  * Created by Waverunner on 3/29/2017
  */
 public abstract class BaseDialog<R> extends Dialog<R> {
@@ -64,8 +64,10 @@ public abstract class BaseDialog<R> extends Dialog<R> {
         }
     }
 
-    protected void createDialog() {}
+    protected void createDialog() {
+    }
 
     protected abstract ButtonType[] getButtonTypes();
+
     protected abstract boolean isController();
 }

@@ -27,12 +27,11 @@ import javafx.beans.property.SimpleObjectProperty;
  * Created by Waverunner on 4/3/2017
  */
 public class SchematicScope implements Scope {
-    private ObjectProperty<Schematic> schematic = new SimpleObjectProperty<>();
-
     public static final String UPDATE = "SchematicScope.Update";
     public static final String ACTIVE = "SchematicScope.Active";
     public static final String REFRESH = "SchematicScope.Refresh";
     public static final String IMPORT = "SchematicScope.Import";
+    private ObjectProperty<Schematic> schematic = new SimpleObjectProperty<>();
 
     public Schematic getSchematic() {
         return schematic.get();

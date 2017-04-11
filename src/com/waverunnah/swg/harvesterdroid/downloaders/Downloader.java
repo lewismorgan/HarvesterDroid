@@ -44,15 +44,13 @@ import java.util.Map;
  * sub-classes to know how the data is stored and convert them to the resources map.
  */
 public abstract class Downloader {
-    private String galaxy;
     private final String root;
     private final String baseUrl;
     private final String identifier;
-
+    private final Map<String, GalaxyResource> currentResources = new HashMap<>();
+    private String galaxy;
     private Map<String, ResourceType> resourceTypeMap = new HashMap<>();
     private Map<String, List<String>> resourceGroups = new HashMap<>();
-
-    private final Map<String, GalaxyResource> currentResources = new HashMap<>();
 
     protected Downloader(String root, String identifier, String baseUrl, String galaxy) {
         this.root = root;
@@ -81,7 +79,7 @@ public abstract class Downloader {
 
     protected abstract void parseCurrentResources(InputStream currentResourcesStream) throws IOException;
 
-    protected abstract Map<String,String> parseGalaxyList(InputStream galaxyListStream);
+    protected abstract Map<String, String> parseGalaxyList(InputStream galaxyListStream);
 
     protected abstract GalaxyResource parseGalaxyResource(InputStream galaxyResourceStream);
 

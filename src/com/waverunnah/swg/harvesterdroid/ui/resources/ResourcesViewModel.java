@@ -53,25 +53,20 @@ import java.util.stream.Collectors;
  * Created by Waverunner on 4/3/2017
  */
 public class ResourcesViewModel implements ViewModel {
+    private final HarvesterDroid harvesterDroid;
     private ListProperty<GalaxyResourceItemViewModel> galaxyResources = new SimpleListProperty<>();
     private ObjectProperty<FilteredList<GalaxyResourceItemViewModel>> resources = new SimpleObjectProperty<>();
     private ObjectProperty<GalaxyResourceItemViewModel> selected = new SimpleObjectProperty<>();
     private BooleanProperty showOnlyAvailableResources = new SimpleBooleanProperty();
-
     private ReadOnlyStringWrapper statusText = new ReadOnlyStringWrapper();
-
     private BooleanProperty schematicSelected = new SimpleBooleanProperty(false);
-
     private Command favoriteCommand;
-
     @InjectScope
     private SchematicScope schematicScope;
     @InjectScope
     private GalaxyScope galaxyScope;
     @InjectScope
     private ResourceScope resourceScope;
-
-    private final HarvesterDroid harvesterDroid;
 
     public ResourcesViewModel(HarvesterDroid harvesterDroid) {
         this.harvesterDroid = harvesterDroid;
@@ -129,7 +124,7 @@ public class ResourcesViewModel implements ViewModel {
 
         galaxyScope.subscribe(GalaxyScope.CHANGED, (s, objects) -> {
             galaxyResources.set(FXCollections.observableArrayList(harvesterDroid.getResources()
-                .stream().map(GalaxyResourceItemViewModel::new).collect(Collectors.toList())));
+                    .stream().map(GalaxyResourceItemViewModel::new).collect(Collectors.toList())));
 
             schematicScope.publish(SchematicScope.REFRESH);
         });
@@ -166,36 +161,36 @@ public class ResourcesViewModel implements ViewModel {
         return galaxyResources.get();
     }
 
-    public ListProperty<GalaxyResourceItemViewModel> galaxyResourcesProperty() {
-        return galaxyResources;
-    }
-
     public void setGalaxyResources(ObservableList<GalaxyResourceItemViewModel> galaxyResources) {
         this.galaxyResources.set(galaxyResources);
+    }
+
+    public ListProperty<GalaxyResourceItemViewModel> galaxyResourcesProperty() {
+        return galaxyResources;
     }
 
     public FilteredList<GalaxyResourceItemViewModel> getResources() {
         return resources.get();
     }
 
-    public ObjectProperty<FilteredList<GalaxyResourceItemViewModel>> resourcesProperty() {
-        return resources;
-    }
-
     public void setResources(FilteredList<GalaxyResourceItemViewModel> resources) {
         this.resources.set(resources);
+    }
+
+    public ObjectProperty<FilteredList<GalaxyResourceItemViewModel>> resourcesProperty() {
+        return resources;
     }
 
     public GalaxyResourceItemViewModel getSelected() {
         return selected.get();
     }
 
-    public ObjectProperty<GalaxyResourceItemViewModel> selectedProperty() {
-        return selected;
-    }
-
     public void setSelected(GalaxyResourceItemViewModel selected) {
         this.selected.set(selected);
+    }
+
+    public ObjectProperty<GalaxyResourceItemViewModel> selectedProperty() {
+        return selected;
     }
 
     public Command getFavoriteCommand() {
@@ -214,11 +209,11 @@ public class ResourcesViewModel implements ViewModel {
         return showOnlyAvailableResources.get();
     }
 
-    public BooleanProperty showOnlyAvailableResourcesProperty() {
-        return showOnlyAvailableResources;
-    }
-
     public void setShowOnlyAvailableResources(boolean showOnlyAvailableResources) {
         this.showOnlyAvailableResources.set(showOnlyAvailableResources);
+    }
+
+    public BooleanProperty showOnlyAvailableResourcesProperty() {
+        return showOnlyAvailableResources;
     }
 }

@@ -28,23 +28,19 @@ import java.util.Properties;
  * Created by Waverunner on 3/31/2017
  */
 public class DroidProperties {
-    private static Properties properties;
     public static String TRACKER = "tracker";
     public static String GALAXY = "activegalaxy";
     public static String DOWNLOAD_BUFFER = "download.buffer";
-
     public static String THEME = "theme";
     public static String WIDTH = "width";
     public static String HEIGHT = "height";
     public static String FULLSCREEN = "fullscreen";
-
     public static String SAVE_NAG = "save.nag";
     public static String AUTOSAVE = "autosave";
-
     public static String LAST_DIRECTORY = "last.directory";
-
     public static String LAST_UPDATE = "last.update";
     public static String DEBUG = "debug";
+    private static Properties properties;
 
     public static void save(OutputStream outputStream) {
         try {

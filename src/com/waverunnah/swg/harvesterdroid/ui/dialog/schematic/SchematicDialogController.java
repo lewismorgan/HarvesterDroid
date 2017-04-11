@@ -298,6 +298,40 @@ public class SchematicDialogController extends VBox implements Initializable {
         return schematic;
     }
 
+    public static class Modifier {
+        private StringProperty name = new SimpleStringProperty();
+        private IntegerProperty value = new SimpleIntegerProperty();
+
+        public Modifier(String name, int value) {
+            setName(name);
+            setValue(value);
+        }
+
+        public String getName() {
+            return name.get();
+        }
+
+        public void setName(String name) {
+            this.name.set(name);
+        }
+
+        public StringProperty nameProperty() {
+            return name;
+        }
+
+        public int getValue() {
+            return value.get();
+        }
+
+        public void setValue(int value) {
+            this.value.set(value);
+        }
+
+        public IntegerProperty valueProperty() {
+            return value;
+        }
+    }
+
     class PercentEditingCell extends TableCell<Modifier, Integer> {
         private IntegerTextField textField;
 
@@ -402,40 +436,6 @@ public class SchematicDialogController extends VBox implements Initializable {
             comboBox.valueProperty().set(getItem());
             comboBox.setMinWidth(this.getWidth() - this.getGraphicTextGap() * 2);
             comboBox.setOnAction((e) -> commitEdit(comboBox.getSelectionModel().getSelectedItem()));
-        }
-    }
-
-    public static class Modifier {
-        private StringProperty name = new SimpleStringProperty();
-        private IntegerProperty value = new SimpleIntegerProperty();
-
-        public Modifier(String name, int value) {
-            setName(name);
-            setValue(value);
-        }
-
-        public String getName() {
-            return name.get();
-        }
-
-        public void setName(String name) {
-            this.name.set(name);
-        }
-
-        public StringProperty nameProperty() {
-            return name;
-        }
-
-        public int getValue() {
-            return value.get();
-        }
-
-        public void setValue(int value) {
-            this.value.set(value);
-        }
-
-        public IntegerProperty valueProperty() {
-            return value;
         }
     }
 }

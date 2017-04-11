@@ -44,14 +44,11 @@ import java.util.Optional;
  * Created by Waverunner on 4/3/2017
  */
 public class InventoryViewModel implements ViewModel {
+    private final HarvesterDroid harvesterDroid;
     private ListProperty<GalaxyResourceItemViewModel> inventory = new SimpleListProperty<>();
     private ObjectProperty<GalaxyResourceItemViewModel> selected = new SimpleObjectProperty<>();
-
     private Command addCommand;
     private Command removeCommand;
-
-    private final HarvesterDroid harvesterDroid;
-
     @InjectScope
     private ResourceScope resourceScope;
     @InjectScope
@@ -145,24 +142,24 @@ public class InventoryViewModel implements ViewModel {
         return inventory.get();
     }
 
-    public ListProperty<GalaxyResourceItemViewModel> inventoryProperty() {
-        return inventory;
-    }
-
     public void setInventory(ObservableList<GalaxyResourceItemViewModel> inventory) {
         this.inventory.set(inventory);
+    }
+
+    public ListProperty<GalaxyResourceItemViewModel> inventoryProperty() {
+        return inventory;
     }
 
     public GalaxyResourceItemViewModel getSelected() {
         return selected.get();
     }
 
-    public ObjectProperty<GalaxyResourceItemViewModel> selectedProperty() {
-        return selected;
-    }
-
     public void setSelected(GalaxyResourceItemViewModel selected) {
         this.selected.set(selected);
+    }
+
+    public ObjectProperty<GalaxyResourceItemViewModel> selectedProperty() {
+        return selected;
     }
 
     public Command getAddCommand() {

@@ -48,7 +48,7 @@ public class HarvesterResourceTypeGroupXml extends BaseXml {
         List<String> group = new ArrayList<>();
 
         processElement(root, node -> {
-            switch(node.getNodeName()) {
+            switch (node.getNodeName()) {
                 case "resource_type_group_values":
                     processElement(node, id -> ids.add(id.getTextContent()));
                     break;

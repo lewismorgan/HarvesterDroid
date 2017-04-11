@@ -31,15 +31,16 @@ import java.util.Map;
 /**
  * Created by Waverunner on 3/23/2017
  */
-@XmlAccessorType(XmlAccessType.FIELD) @XmlRootElement(name="resource_type")
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlRootElement(name = "resource_type")
 @Entity
 public class ResourceType {
     @Id
-    @XmlAttribute(name="id")
+    @XmlAttribute(name = "id")
     private String id;
-    @XmlAttribute(name="name")
+    @XmlAttribute(name = "name")
     private String name;
-    @XmlElementWrapper(name="min_max")
+    @XmlElementWrapper(name = "min_max")
     private Map<String, Integer> minMaxMap;
 
     public ResourceType() {

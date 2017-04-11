@@ -29,9 +29,9 @@ import java.util.List;
  * Created by Waverunner on 4/6/2017
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlRootElement(name="themes")
+@XmlRootElement(name = "themes")
 public class ThemesXml {
-    @XmlElement(name="theme")
+    @XmlElement(name = "theme")
     private List<Theme> themes;
 
     public List<Theme> getThemes() {
@@ -43,14 +43,15 @@ public class ThemesXml {
     }
 
     @XmlAccessorType(XmlAccessType.FIELD)
-    @XmlRootElement(name="theme")
+    @XmlRootElement(name = "theme")
     public static class Theme {
-        @XmlAttribute(name="name")
+        @XmlAttribute(name = "name")
         public String name;
-        @XmlAttribute(name="path")
+        @XmlAttribute(name = "path")
         public String path;
 
-        public Theme() {}
+        public Theme() {
+        }
 
         public Theme(String name, String path) {
             this.name = name;

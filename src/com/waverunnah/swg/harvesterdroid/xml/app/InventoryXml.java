@@ -28,9 +28,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlRootElement(name="inventory")
+@XmlRootElement(name = "inventory")
 public class InventoryXml {
-    @XmlElement(name="resource")
+    @XmlElement(name = "resource")
     private List<InventoryResource> inventory = new ArrayList<>();
 
     public List<InventoryResource> getInventory() {
