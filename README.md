@@ -19,7 +19,6 @@ Programmed with love by Waverunner <3
 ### Future
 
 * Finalize support for use with other tracking websites (80% done!)
-* Update Getting Started images
 * Add tracking from SWGCraft
 
 # Getting Started
