@@ -56,7 +56,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.ResourceBundle;
-import java.util.UUID;
 
 public class SchematicDialogController extends VBox implements Initializable {
     @FXML
@@ -289,7 +288,6 @@ public class SchematicDialogController extends VBox implements Initializable {
         if (schematic == null)
             schematic = new Schematic();
 
-        schematic.setId(UUID.randomUUID().toString());
         schematic.setName(nameField.getText());
         schematic.setGroup(groupField.getText());
         schematic.setResources(resources.get());

@@ -32,6 +32,7 @@ public class SchematicScope implements Scope {
     public static final String UPDATE = "SchematicScope.Update";
     public static final String ACTIVE = "SchematicScope.Active";
     public static final String REFRESH = "SchematicScope.Refresh";
+    public static final String IMPORT = "SchematicScope.Import";
 
     public Schematic getSchematic() {
         return schematic.get();

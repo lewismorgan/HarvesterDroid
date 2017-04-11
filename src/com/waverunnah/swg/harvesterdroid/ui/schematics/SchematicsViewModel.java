@@ -101,6 +101,16 @@ public class SchematicsViewModel implements ViewModel {
         resourceScope.subscribe(ResourceScope.UPDATED_LIST, (s, objects) -> reselectSchematic());
         galaxyScope.subscribe(GalaxyScope.CHANGED, (s, objects) -> reselectSchematic());
         schematicScope.subscribe(SchematicScope.REFRESH, (s, objects) -> reselectSchematic());
+        schematicScope.subscribe(SchematicScope.UPDATE, (s, objects) -> publish("SchematicUpdated"));
+        schematicScope.subscribe(SchematicScope.IMPORT, (s, objects) -> {
+            for (Object object : objects) {
+                Schematic schematic = (Schematic) object;
+                if (schematic == null)
+                    continue;
+
+                schematics.add(schematic);
+            }
+        });
     }
 
     private void reselectSchematic() {
@@ -145,7 +155,6 @@ public class SchematicsViewModel implements ViewModel {
         Schematic updated = result.get();
         schematicScope.setSchematic(updated);
         schematicScope.publish(SchematicScope.UPDATE, updated);
-        publish("SchematicUpdated", updated);
     }
 
     public ObservableList<Schematic> getSchematics() {

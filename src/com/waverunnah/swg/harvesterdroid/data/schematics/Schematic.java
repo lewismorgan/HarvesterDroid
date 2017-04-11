@@ -28,12 +28,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 @XmlRootElement(name="schematic")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Schematic {
-    @XmlAttribute
-    private String id;
+    private final transient String id;
+
     @XmlAttribute
     private String group;
     @XmlAttribute
@@ -48,7 +49,7 @@ public class Schematic {
     private Map<String, Integer> modifiers;
 
     public Schematic() {
-        this.id = "";
+        this.id = UUID.randomUUID().toString();
         this.group = "";
         this.name = "";
         this.resources = new ArrayList<>();
@@ -81,10 +82,6 @@ public class Schematic {
 
     public String getId() {
         return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     public Map<String, Integer> getModifiers() {

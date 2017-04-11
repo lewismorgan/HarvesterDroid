@@ -18,6 +18,7 @@
 
 package com.waverunnah.swg.harvesterdroid.ui.main;
 
+import com.waverunnah.swg.harvesterdroid.DroidProperties;
 import de.saxsys.mvvmfx.FxmlView;
 import de.saxsys.mvvmfx.InjectViewModel;
 import javafx.application.Platform;
@@ -25,9 +26,11 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.MenuBar;
+import javafx.stage.FileChooser;
 import javafx.stage.WindowEvent;
 import org.controlsfx.control.StatusBar;
 
+import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -70,5 +73,23 @@ public class MainView implements FxmlView<MainViewModel>, Initializable {
 
     public void importResources(ActionEvent actionEvent) {
         viewModel.getImportResourcesCommand().execute();
+    }
+
+    public void importSchematics(ActionEvent actionEvent) {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Import Schematics");
+        String lastDir = DroidProperties.getString(DroidProperties.LAST_DIRECTORY);
+        if (!lastDir.isEmpty()) {
+            if (new File(lastDir).exists())
+                fileChooser.setInitialDirectory(new File(lastDir));
+        }
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Schematics", "*.xml"));
+
+        File result = fileChooser.showOpenDialog(menuBar.getScene().getWindow());
+        if (result != null) {
+            if (result.getParent() != null)
+                DroidProperties.set(DroidProperties.LAST_DIRECTORY, result.getParent());
+            viewModel.publish("Import.Schematics", result);
+        }
     }
 }
