@@ -76,16 +76,11 @@ public class DroidProperties {
 
     private static Properties createDefaultProperties() {
         Properties defaults = new Properties();
-        defaults.setProperty(TRACKER, "galaxyharvester");
-        defaults.setProperty(GALAXY, "48");
-        defaults.setProperty(DOWNLOAD_BUFFER, "12");
-        defaults.setProperty(WIDTH, "800");
-        defaults.setProperty(HEIGHT, "600");
-        defaults.setProperty(SAVE_NAG, "true");
-        defaults.setProperty(AUTOSAVE, "true");
-        defaults.setProperty(DEBUG, "false");
-        defaults.setProperty(THEME, "Flat Droid");
-        defaults.setProperty(LAST_UPDATE, "0");
+        try {
+            defaults.load(DroidProperties.class.getResourceAsStream("/harvesterdroid.properties"));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         return defaults;
     }
 

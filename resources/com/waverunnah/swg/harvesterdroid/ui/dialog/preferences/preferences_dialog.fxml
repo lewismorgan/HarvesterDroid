@@ -19,7 +19,7 @@
             <Label text="Galaxy" />
             <ChoiceBox fx:id="galaxyChoiceBox" />
             <Label text="Download Buffer (hrs)" />
-            <TextField fx:id="downloadBufferTextField" prefWidth="35.0" />
+            <TextField disable="true" fx:id="downloadBufferTextField" prefWidth="35.0" />
          </children>
          <padding>
             <Insets bottom="5.0" />
