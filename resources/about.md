@@ -4,6 +4,8 @@ I started on this project almost a year ago and it is fairly complete for the mo
 
 Programmed with love by Waverunner <3
 
+I will shamelessly plug in a PayPal.me link [here](http://paypal.me/HiImLewis/5), do with it what you will
+
 #### Credits
 
 * Resource data provided by GalaxyHarvester & SWGCraft
