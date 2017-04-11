@@ -258,7 +258,8 @@ public class SchematicsView implements FxmlView<SchematicsViewModel>, Initializa
         TreeItem<SchematicsTreeItem> groupRoot = getSubGroupTree(schematicsTreeView.getRoot(), group, 0);
         if (groupRoot == null && group.length == 0 || (group.length == 1 && (group[0] == null || group[0].isEmpty())))
             groupRoot = schematicsTreeView.getRoot();
-        else return;
+        if (groupRoot == null)
+            return;
 
         TreeItem<SchematicsTreeItem> toRemove = null;
         for (TreeItem<SchematicsTreeItem> treeItem : groupRoot.getChildren()) {
