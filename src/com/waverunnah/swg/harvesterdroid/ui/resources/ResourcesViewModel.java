@@ -18,7 +18,6 @@
 
 package com.waverunnah.swg.harvesterdroid.ui.resources;
 
-import com.waverunnah.swg.harvesterdroid.DroidProperties;
 import com.waverunnah.swg.harvesterdroid.app.HarvesterDroid;
 import com.waverunnah.swg.harvesterdroid.data.resources.GalaxyResource;
 import com.waverunnah.swg.harvesterdroid.data.schematics.Schematic;
@@ -45,8 +44,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -100,8 +97,6 @@ public class ResourcesViewModel implements ViewModel {
                                 .otherwise(""))));
 
         if (harvesterDroid.getLastUpdateTimestamp() != 0) {
-            System.out.println(harvesterDroid.getLastUpdateTimestamp());
-
             List<GalaxyResourceItemViewModel> newSpawns = new ArrayList<>();
             Date lastUpdate = new Date(harvesterDroid.getLastUpdateTimestamp());
 

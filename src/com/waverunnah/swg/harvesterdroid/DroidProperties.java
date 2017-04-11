@@ -41,6 +41,8 @@ public class DroidProperties {
     public static String SAVE_NAG = "save.nag";
     public static String AUTOSAVE = "autosave";
 
+    public static String LAST_DIRECTORY = "last.directory";
+
     public static String LAST_UPDATE = "last.update";
     public static String DEBUG = "debug";
 

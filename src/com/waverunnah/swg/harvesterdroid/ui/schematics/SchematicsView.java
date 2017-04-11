@@ -59,7 +59,9 @@ public class SchematicsView implements FxmlView<SchematicsViewModel>, Initializa
 
         viewModel.subscribe("SchematicUpdated", (s, objects) -> {
             updateTreeView();
-            viewModel.setSelected((Schematic) objects[0]);
+            if (objects != null && objects instanceof Schematic[]) {
+                viewModel.setSelected((Schematic) objects[0]);
+            }
         });
 
         updateTreeView();

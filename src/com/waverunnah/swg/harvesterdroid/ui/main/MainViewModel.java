@@ -27,6 +27,8 @@ import com.waverunnah.swg.harvesterdroid.ui.dialog.resource.ImportResourcesDialo
 import com.waverunnah.swg.harvesterdroid.ui.scopes.GalaxyScope;
 import com.waverunnah.swg.harvesterdroid.ui.scopes.ResourceScope;
 import com.waverunnah.swg.harvesterdroid.ui.scopes.SchematicScope;
+import com.waverunnah.swg.harvesterdroid.xml.XmlFactory;
+import com.waverunnah.swg.harvesterdroid.xml.app.SchematicsXml;
 import de.saxsys.mvvmfx.InjectScope;
 import de.saxsys.mvvmfx.ScopeProvider;
 import de.saxsys.mvvmfx.ViewModel;
@@ -42,6 +44,8 @@ import javafx.collections.FXCollections;
 
 import javax.inject.Singleton;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -71,6 +75,8 @@ public class MainViewModel implements ViewModel {
     private GalaxyScope galaxyScope;
     @InjectScope
     private ResourceScope resourceScope;
+    @InjectScope
+    private SchematicScope schematicScope;
 
     private StringProperty galaxyString = new SimpleStringProperty();
     private StringProperty resourcesString = new SimpleStringProperty();
@@ -87,6 +93,10 @@ public class MainViewModel implements ViewModel {
 
         statusText.bind(Bindings.concat("Galaxy: ", galaxyString, "  |  ", "Loaded Resources: ", resourcesString));
         updateStatusText(harvesterDroid.getActiveGalaxy(), harvesterDroid.getResources().size());
+
+        subscribe("Import.Schematics", (s, objects) -> {
+
+        });
     }
 
     private void createCommands() {
@@ -151,6 +161,19 @@ public class MainViewModel implements ViewModel {
     private void updateStatusText(String galaxy, int resources) {
         updateGalaxyStatus(galaxy);
         updateResourceStatus(resources);
+    }
+
+    public void importSchematics(File... schematicsFiles) {
+        for (File file : schematicsFiles) {
+            try {
+
+                SchematicsXml schematicsXml = XmlFactory.read(SchematicsXml.class, new FileInputStream(file));
+                if (schematicsXml != null && schematicsXml.getSchematics() != null)
+                    schematicScope.publish(SchematicScope.IMPORT, schematicsXml.getSchematics().toArray());
+            } catch (FileNotFoundException e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 
     private void updateGalaxyStatus(String galaxy) {
