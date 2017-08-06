@@ -1,7 +1,8 @@
 .idea/
 *.iml
 /out
-
+.gradle/
+/build
 
 /data/current_resources.dl
 /data/user
