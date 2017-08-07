@@ -8,19 +8,23 @@
 
 // Apply the java plugin to add support for Java
 apply plugin: 'java'
+apply plugin: 'javafx-gradle-plugin'
 
-// Apply the application plugin to add support for building an application
-apply plugin: 'application'
+buildscript {
+    dependencies {
+        classpath 'de.dynamicfiles.projects.gradle.plugins:javafx-gradle-plugin:8.8.2'
+    }
+    repositories {
+        jcenter()
 
-// In this section you declare where to find the dependencies of your project
+    }
+}
+
 repositories {
-    // Use jcenter for resolving your dependencies.
-    // You can declare any Maven/Ivy/file repository here.
     jcenter()
 }
 
 dependencies {
-    // This dependency is found on compile classpath of this component and consumers.
     compile project(':Preloader')
     compile 'de.saxsys:mvvmfx:1.6.0'
     compile 'de.saxsys:mvvmfx-easydi:1.6.0'
@@ -32,10 +36,21 @@ dependencies {
     compile files('lib/objectdb.jar')
 
     // Use JUnit test framework
-    testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.0.0-RC2'
-
+    testCompile 'org.junit.jupiter:junit-jupiter-engine:5.0.0-RC2'
 }
 
-// Define the main class for the application
-mainClassName = 'com.waverunnah.swg.harvesterdroid.Launcher'
+jfx {
+    // minimal requirement for jfxJar-task
+    mainClass = 'com.waverunnah.swg.harvesterdroid.Launcher'
+    libFolderName = 'lib'
 
+    // gradle jfxJar
+    preLoader = 'com.waverunnah.swg.harvesterdroid.LauncherPreloader' // String
+
+    // gradle jfxNative
+    vendor = 'Waverunner'
+    bundleArguments = [
+            // dont bundle JRE (not recommended, but increases build-size/-speed)
+            runtime: null
+    ]
+}
