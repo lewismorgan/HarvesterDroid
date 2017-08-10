@@ -18,6 +18,16 @@
 
 package io.github.waverunner.harvesterdroid.ui.main;
 
+import static io.github.waverunner.harvesterdroid.app.HarvesterDroidData.XML_INVENTORY;
+import static io.github.waverunner.harvesterdroid.app.HarvesterDroidData.XML_SCHEMATICS;
+
+import de.saxsys.mvvmfx.InjectScope;
+import de.saxsys.mvvmfx.ScopeProvider;
+import de.saxsys.mvvmfx.ViewModel;
+import de.saxsys.mvvmfx.utils.commands.Action;
+import de.saxsys.mvvmfx.utils.commands.Command;
+import de.saxsys.mvvmfx.utils.commands.DelegateCommand;
+
 import io.github.waverunner.harvesterdroid.DroidProperties;
 import io.github.waverunner.harvesterdroid.app.HarvesterDroid;
 import io.github.waverunner.harvesterdroid.data.resources.GalaxyResource;
@@ -29,20 +39,7 @@ import io.github.waverunner.harvesterdroid.ui.scopes.ResourceScope;
 import io.github.waverunner.harvesterdroid.ui.scopes.SchematicScope;
 import io.github.waverunner.harvesterdroid.xml.XmlFactory;
 import io.github.waverunner.harvesterdroid.xml.app.SchematicsXml;
-import de.saxsys.mvvmfx.InjectScope;
-import de.saxsys.mvvmfx.ScopeProvider;
-import de.saxsys.mvvmfx.ViewModel;
-import de.saxsys.mvvmfx.utils.commands.Action;
-import de.saxsys.mvvmfx.utils.commands.Command;
-import de.saxsys.mvvmfx.utils.commands.DelegateCommand;
-import javafx.beans.binding.Bindings;
-import javafx.beans.property.ReadOnlyStringProperty;
-import javafx.beans.property.ReadOnlyStringWrapper;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
-import javafx.collections.FXCollections;
 
-import javax.inject.Singleton;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -52,159 +49,169 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Properties;
 
-import static io.github.waverunner.harvesterdroid.app.HarvesterDroidData.XML_INVENTORY;
-import static io.github.waverunner.harvesterdroid.app.HarvesterDroidData.XML_SCHEMATICS;
+import javafx.beans.binding.Bindings;
+import javafx.beans.property.ReadOnlyStringProperty;
+import javafx.beans.property.ReadOnlyStringWrapper;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+import javafx.collections.FXCollections;
+
+import javax.inject.Singleton;
 
 /**
- * Created by Waverunner on 4/3/2017
+ * Created by Waverunner on 4/3/2017.
  */
 @Singleton
 @ScopeProvider(scopes = {SchematicScope.class, GalaxyScope.class, ResourceScope.class})
 public class MainViewModel implements ViewModel {
 
-    private final HarvesterDroid harvesterDroid;
+  private final HarvesterDroid harvesterDroid;
 
-    private ReadOnlyStringWrapper statusText = new ReadOnlyStringWrapper();
+  private ReadOnlyStringWrapper statusText = new ReadOnlyStringWrapper();
 
-    private Command preferencesCommand;
-    private Command saveCommand;
-    private Command aboutCommand;
-    private Command importResourcesCommand;
+  private Command preferencesCommand;
+  private Command saveCommand;
+  private Command aboutCommand;
+  private Command importResourcesCommand;
 
-    @InjectScope
-    private GalaxyScope galaxyScope;
-    @InjectScope
-    private ResourceScope resourceScope;
-    @InjectScope
-    private SchematicScope schematicScope;
+  @InjectScope
+  private GalaxyScope galaxyScope;
+  @InjectScope
+  private ResourceScope resourceScope;
+  @InjectScope
+  private SchematicScope schematicScope;
 
-    private StringProperty galaxyString = new SimpleStringProperty();
-    private StringProperty resourcesString = new SimpleStringProperty();
+  private StringProperty galaxyString = new SimpleStringProperty();
+  private StringProperty resourcesString = new SimpleStringProperty();
 
-    public MainViewModel(HarvesterDroid harvesterDroid) {
-        this.harvesterDroid = harvesterDroid;
-    }
+  public MainViewModel(HarvesterDroid harvesterDroid) {
+    this.harvesterDroid = harvesterDroid;
+  }
 
-    public void initialize() {
-        createCommands();
+  public void initialize() {
+    createCommands();
 
-        galaxyScope.subscribe(GalaxyScope.CHANGED, (s, objects) -> updateStatusText(harvesterDroid.getActiveGalaxy(), harvesterDroid.getResources().size()));
-        resourceScope.subscribe(ResourceScope.UPDATED_LIST, (s, objects) -> updateResourceStatus(harvesterDroid.getResources().size()));
+    galaxyScope.subscribe(GalaxyScope.CHANGED, (s, objects) -> updateStatusText(harvesterDroid.getActiveGalaxy(),
+        harvesterDroid.getResources().size()));
+    resourceScope.subscribe(ResourceScope.UPDATED_LIST, (s, objects) -> updateResourceStatus(harvesterDroid.getResources().size()));
 
-        statusText.bind(Bindings.concat("Galaxy: ", galaxyString, "  |  ", "Loaded Resources: ", resourcesString));
-        updateStatusText(harvesterDroid.getActiveGalaxy(), harvesterDroid.getResources().size());
-    }
+    statusText.bind(Bindings.concat("Galaxy: ", galaxyString, "  |  ", "Loaded Resources: ", resourcesString));
+    updateStatusText(harvesterDroid.getActiveGalaxy(), harvesterDroid.getResources().size());
+  }
 
-    private void createCommands() {
-        preferencesCommand = new DelegateCommand(() -> new Action() {
-            @Override
-            protected void action() throws Exception {
-                PreferencesDialog dialog = new PreferencesDialog();
-                dialog.setGalaxies(FXCollections.observableMap(harvesterDroid.getGalaxies()));
-                dialog.setProperties(DroidProperties.getProperties());
-                Optional<Properties> result = dialog.showAndWait();
-                if (result.isPresent()) {
-                    Properties properties = result.get();
-                    DroidProperties.setProperties(properties);
-                    if (harvesterDroid.switchToGalaxy(properties.getProperty(DroidProperties.GALAXY)))
-                        galaxyScope.publish(GalaxyScope.CHANGED);
-                }
-            }
-        });
-
-        saveCommand = new DelegateCommand(() -> new Action() {
-            @Override
-            protected void action() throws Exception {
-
-                harvesterDroid.saveSchematics(new FileOutputStream(new File(XML_SCHEMATICS)));
-                harvesterDroid.saveInventory(new FileOutputStream(new File(XML_INVENTORY)));
-                publish("StatusUpdate", "Saving Resources");
-                harvesterDroid.saveResources();
-                publish("StatusUpdate.Finished");
-            }
-        });
-
-        aboutCommand = new DelegateCommand(() -> new Action() {
-            @Override
-            protected void action() throws Exception {
-                new AboutDialog().show();
-            }
-        });
-
-        importResourcesCommand = new DelegateCommand(() -> new Action() {
-            @Override
-            protected void action() throws Exception {
-                ImportResourcesDialog dialog = new ImportResourcesDialog();
-                Optional<List<String>> resourceNames = dialog.showAndWait();
-                resourceNames.ifPresent(strings -> {
-                    GalaxyResource[] toImport = new GalaxyResource[strings.size()];
-                    for (int i = 0; i < strings.size(); i++) {
-                        toImport[i] = harvesterDroid.retrieveGalaxyResource(strings.get(i));
-                    }
-
-                    List<GalaxyResource> imported = new ArrayList<>();
-                    for (GalaxyResource galaxyResource : toImport) {
-                        if (galaxyResource != null)
-                            imported.add(galaxyResource);
-                    }
-
-                    resourceScope.publish(ResourceScope.IMPORT_ADDED, imported.toArray());
-                });
-            }
-        });
-    }
-
-    private void updateStatusText(String galaxy, int resources) {
-        updateGalaxyStatus(galaxy);
-        updateResourceStatus(resources);
-    }
-
-    public void importSchematics(File... schematicsFiles) {
-        for (File file : schematicsFiles) {
-            try {
-
-                SchematicsXml schematicsXml = XmlFactory.read(SchematicsXml.class, new FileInputStream(file));
-                if (schematicsXml != null && schematicsXml.getSchematics() != null)
-                    schematicScope.publish(SchematicScope.IMPORT, schematicsXml.getSchematics().toArray());
-            } catch (FileNotFoundException e) {
-                throw new RuntimeException(e);
-            }
+  private void createCommands() {
+    preferencesCommand = new DelegateCommand(() -> new Action() {
+      @Override
+      protected void action() throws Exception {
+        PreferencesDialog dialog = new PreferencesDialog();
+        dialog.setGalaxies(FXCollections.observableMap(harvesterDroid.getGalaxies()));
+        dialog.setProperties(DroidProperties.getProperties());
+        Optional<Properties> result = dialog.showAndWait();
+        if (result.isPresent()) {
+          Properties properties = result.get();
+          DroidProperties.setProperties(properties);
+          if (harvesterDroid.switchToGalaxy(properties.getProperty(DroidProperties.GALAXY))) {
+            galaxyScope.publish(GalaxyScope.CHANGED);
+          }
         }
-    }
+      }
+    });
 
-    private void updateGalaxyStatus(String galaxy) {
-        galaxyString.set(galaxy);
-    }
+    saveCommand = new DelegateCommand(() -> new Action() {
+      @Override
+      protected void action() throws Exception {
 
-    private void updateResourceStatus(int resources) {
-        resourcesString.set(String.valueOf(resources));
-    }
+        harvesterDroid.saveSchematics(new FileOutputStream(new File(XML_SCHEMATICS)));
+        harvesterDroid.saveInventory(new FileOutputStream(new File(XML_INVENTORY)));
+        publish("StatusUpdate", "Saving Resources");
+        harvesterDroid.saveResources();
+        publish("StatusUpdate.Finished");
+      }
+    });
 
-    public Command getPreferencesCommand() {
-        return preferencesCommand;
-    }
+    aboutCommand = new DelegateCommand(() -> new Action() {
+      @Override
+      protected void action() throws Exception {
+        new AboutDialog().show();
+      }
+    });
 
-    public Command getSaveCommand() {
-        return saveCommand;
-    }
+    importResourcesCommand = new DelegateCommand(() -> new Action() {
+      @Override
+      protected void action() throws Exception {
+        ImportResourcesDialog dialog = new ImportResourcesDialog();
+        Optional<List<String>> resourceNames = dialog.showAndWait();
+        resourceNames.ifPresent(strings -> {
+          GalaxyResource[] toImport = new GalaxyResource[strings.size()];
+          for (int i = 0; i < strings.size(); i++) {
+            toImport[i] = harvesterDroid.retrieveGalaxyResource(strings.get(i));
+          }
 
-    public Command getAboutCommand() {
-        return aboutCommand;
-    }
+          List<GalaxyResource> imported = new ArrayList<>();
+          for (GalaxyResource galaxyResource : toImport) {
+            if (galaxyResource != null) {
+              imported.add(galaxyResource);
+            }
+          }
 
-    public Command getImportResourcesCommand() {
-        return importResourcesCommand;
-    }
+          resourceScope.publish(ResourceScope.IMPORT_ADDED, imported.toArray());
+        });
+      }
+    });
+  }
 
-    public String getStatusText() {
-        return statusText.get();
-    }
+  private void updateStatusText(String galaxy, int resources) {
+    updateGalaxyStatus(galaxy);
+    updateResourceStatus(resources);
+  }
 
-    public void setStatusText(String statusText) {
-        this.statusText.set(statusText);
-    }
+  public void importSchematics(File... schematicsFiles) {
+    for (File file : schematicsFiles) {
+      try {
 
-    public ReadOnlyStringProperty statusTextProperty() {
-        return statusText.getReadOnlyProperty();
+        SchematicsXml schematicsXml = XmlFactory.read(SchematicsXml.class, new FileInputStream(file));
+        if (schematicsXml != null && schematicsXml.getSchematics() != null) {
+          schematicScope.publish(SchematicScope.IMPORT, schematicsXml.getSchematics().toArray());
+        }
+      } catch (FileNotFoundException e) {
+        throw new RuntimeException(e);
+      }
     }
+  }
+
+  private void updateGalaxyStatus(String galaxy) {
+    galaxyString.set(galaxy);
+  }
+
+  private void updateResourceStatus(int resources) {
+    resourcesString.set(String.valueOf(resources));
+  }
+
+  public Command getPreferencesCommand() {
+    return preferencesCommand;
+  }
+
+  public Command getSaveCommand() {
+    return saveCommand;
+  }
+
+  public Command getAboutCommand() {
+    return aboutCommand;
+  }
+
+  public Command getImportResourcesCommand() {
+    return importResourcesCommand;
+  }
+
+  public String getStatusText() {
+    return statusText.get();
+  }
+
+  public void setStatusText(String statusText) {
+    this.statusText.set(statusText);
+  }
+
+  public ReadOnlyStringProperty statusTextProperty() {
+    return statusText.getReadOnlyProperty();
+  }
 }

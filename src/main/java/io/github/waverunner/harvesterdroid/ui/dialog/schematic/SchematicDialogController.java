@@ -23,6 +23,14 @@ import io.github.waverunner.harvesterdroid.app.Attributes;
 import io.github.waverunner.harvesterdroid.data.schematics.Schematic;
 import io.github.waverunner.harvesterdroid.ui.IntegerTextField;
 import io.github.waverunner.harvesterdroid.ui.dialog.AddResourceTypeDialog;
+
+import java.net.URL;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.ResourceBundle;
+
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ListProperty;
@@ -50,392 +58,404 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 
-import java.net.URL;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.ResourceBundle;
-
 public class SchematicDialogController extends VBox implements Initializable {
-    @FXML
-    TextField nameField;
-    @FXML
-    TextField groupField;
-    @FXML
-    ListView<String> resourceListView;
-    @FXML
-    TableView<Modifier> attributesTableView;
-    @FXML
-    ComboBox<String> addModifierComboBox;
-    @FXML
-    TitledPane attributesPane;
-    @FXML
-    TitledPane resourcesPane;
-    @FXML
-    Button addAttributeButton;
-    @FXML
-    Button removeAttributeButton;
-    @FXML
-    Button removeResourceButton;
+  @FXML
+  TextField nameField;
+  @FXML
+  TextField groupField;
+  @FXML
+  ListView<String> resourceListView;
+  @FXML
+  TableView<Modifier> attributesTableView;
+  @FXML
+  ComboBox<String> addModifierComboBox;
+  @FXML
+  TitledPane attributesPane;
+  @FXML
+  TitledPane resourcesPane;
+  @FXML
+  Button addAttributeButton;
+  @FXML
+  Button removeAttributeButton;
+  @FXML
+  Button removeResourceButton;
 
-    private FilteredList<String> availableModifiers = new FilteredList<>(FXCollections.observableArrayList(Attributes.get()));
-    private ListProperty<Modifier> modifiers = new SimpleListProperty<>(FXCollections.observableArrayList());
-    private ListProperty<String> resources = new SimpleListProperty<>(FXCollections.observableArrayList());
-    private Map<String, String> resourceTypes;
+  private FilteredList<String> availableModifiers = new FilteredList<>(FXCollections.observableArrayList(Attributes.get()));
+  private ListProperty<Modifier> modifiers = new SimpleListProperty<>(FXCollections.observableArrayList());
+  private ListProperty<String> resources = new SimpleListProperty<>(FXCollections.observableArrayList());
+  private Map<String, String> resourceTypes;
 
-    private Schematic schematic;
+  private Schematic schematic;
 
-    public void readSchematic(Schematic schematic) {
-        if (schematic == null)
-            return;
-
-        this.schematic = schematic;
-
-        nameField.setText(schematic.getName());
-        groupField.setText(schematic.getGroup());
-        resources.addAll(schematic.getResources());
-
-        schematic.getModifiers().forEach((s, integer) -> modifiers.add(new Modifier(s, integer)));
+  public void readSchematic(Schematic schematic) {
+    if (schematic == null) {
+      return;
     }
 
-    private void refreshModifiers() {
-        addModifierComboBox.getSelectionModel().clearSelection();
-        availableModifiers.setPredicate(avail -> {
-            for (Modifier modifier : modifiers) {
-                if (modifier.getName().equals(avail))
-                    return false;
-            }
-            return true;
-        });
-        addModifierComboBox.getSelectionModel().selectFirst();
-    }
+    this.schematic = schematic;
 
-    public void addResource() {
-        Map<String, String> choices = new HashMap<>();
-        resourceTypes.keySet().stream().filter(type -> !resources.contains(type))
-                .forEach(choice -> choices.put(resourceTypes.get(choice), choice));
-        AddResourceTypeDialog dialog = new AddResourceTypeDialog(choices);
+    nameField.setText(schematic.getName());
+    groupField.setText(schematic.getGroup());
+    resources.addAll(schematic.getResources());
 
-        Optional<List<String>> result = dialog.showAndWait();
-        result.ifPresent(selection -> selection.forEach(type -> {
-            if (!resources.contains(type))
-                resources.add(type);
-        }));
-    }
+    schematic.getModifiers().forEach((s, integer) -> modifiers.add(new Modifier(s, integer)));
+  }
 
-    public void removeResource() {
-        String resource = resourceListView.getSelectionModel().getSelectedItem();
-        if (resource == null || !resources.contains(resource))
-            return;
-
-        resourceListView.getSelectionModel().clearSelection();
-        resources.remove(resource);
-    }
-
-    public void addAttribute() {
-        String modifier = addModifierComboBox.getSelectionModel().getSelectedItem();
-        if (modifier == null || modifier.isEmpty())
-            return;
-
-        int total = 0;
-        for (Modifier existing : modifiers) {
-            if (existing.getName().equals(modifier)) {
-                return;
-            }
-            total += existing.getValue();
+  private void refreshModifiers() {
+    addModifierComboBox.getSelectionModel().clearSelection();
+    availableModifiers.setPredicate(avail -> {
+      for (Modifier modifier : modifiers) {
+        if (modifier.getName().equals(avail)) {
+          return false;
         }
+      }
+      return true;
+    });
+    addModifierComboBox.getSelectionModel().selectFirst();
+  }
 
-        // divide last mod by number mods so total always = 100
-        if (total >= 100) {
-            Modifier lastMod = modifiers.get(modifiers.size() - 1);
-            int oldValue = lastMod.getValue();
-            total -= oldValue;
-            lastMod.setValue(Math.round(lastMod.getValue() / (modifiers.size() + 1)));
-            total += lastMod.getValue();
-        }
+  public void addResource() {
+    Map<String, String> choices = new HashMap<>();
+    resourceTypes.keySet().stream().filter(type -> !resources.contains(type))
+        .forEach(choice -> choices.put(resourceTypes.get(choice), choice));
+    AddResourceTypeDialog dialog = new AddResourceTypeDialog(choices);
 
-        modifiers.add(new Modifier(modifier, 100 - total));
+    Optional<List<String>> result = dialog.showAndWait();
+    result.ifPresent(selection -> selection.forEach(type -> {
+      if (!resources.contains(type)) {
+        resources.add(type);
+      }
+    }));
+  }
+
+  public void removeResource() {
+    String resource = resourceListView.getSelectionModel().getSelectedItem();
+    if (resource == null || !resources.contains(resource)) {
+      return;
     }
 
-    public void removeAttribute() {
-        Modifier selected = attributesTableView.getSelectionModel().getSelectedItem();
-        if (selected == null)
-            return;
+    resourceListView.getSelectionModel().clearSelection();
+    resources.remove(resource);
+  }
 
-        if (modifiers.size() > 1) {
-            Modifier mod = null;
-            for (Modifier modifier : modifiers) {
-                if (modifier != selected) {
-                    mod = modifier;
-                    break;
-                }
-            }
-            if (mod != null)
-                mod.setValue(mod.getValue() + selected.getValue());
-        }
-
-        modifiers.remove(selected);
+  public void addAttribute() {
+    String modifier = addModifierComboBox.getSelectionModel().getSelectedItem();
+    if (modifier == null || modifier.isEmpty()) {
+      return;
     }
 
-    @SuppressWarnings("unchecked")
-    private void createColumns() {
-        TableColumn<Modifier, String> attributeColumn = new TableColumn<>("Attribute");
-        TableColumn<Modifier, Integer> valueColumn = new TableColumn<>("Value");
-
-        attributeColumn.setOnEditCommit((TableColumn.CellEditEvent<Modifier, String> val) -> {
-            Optional<Modifier> existing = modifiers.stream().filter(modifier -> modifier.getName().equals(val.getNewValue())).findFirst();
-            if (!existing.isPresent()) {
-                val.getTableView().getItems().get(val.getTablePosition().getRow()).setName(val.getNewValue());
-                refreshModifiers();
-            }
-        });
-
-        attributeColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
-        attributeColumn.setCellFactory(param -> new ModifierBoxEditingCell());
-
-        valueColumn.setCellValueFactory(new PropertyValueFactory<>("value"));
-        valueColumn.setCellFactory(param -> new PercentEditingCell());
-
-        valueColumn.setOnEditCommit(val -> {
-            if (isModifiersBetweenCap(val.getTableView().getItems(), val.getNewValue(), val.getRowValue())) {
-                val.getTableView().getItems().get(val.getTablePosition().getRow()).setValue(val.getNewValue());
-            }
-        });
-
-        attributesTableView.getColumns().addAll(attributeColumn, valueColumn);
+    int total = 0;
+    for (Modifier existing : modifiers) {
+      if (existing.getName().equals(modifier)) {
+        return;
+      }
+      total += existing.getValue();
     }
 
-    private boolean isModifiersBetweenCap(List<Modifier> modifiers, int newVal, Modifier change) {
-        int total = (newVal - change.getValue());
-        for (Modifier modifier : modifiers) {
-            total += modifier.getValue();
+    // divide last mod by number mods so total always = 100
+    if (total >= 100) {
+      Modifier lastMod = modifiers.get(modifiers.size() - 1);
+      int oldValue = lastMod.getValue();
+      total -= oldValue;
+      lastMod.setValue(Math.round(lastMod.getValue() / (modifiers.size() + 1)));
+      total += lastMod.getValue();
+    }
+
+    modifiers.add(new Modifier(modifier, 100 - total));
+  }
+
+  public void removeAttribute() {
+    Modifier selected = attributesTableView.getSelectionModel().getSelectedItem();
+    if (selected == null) {
+      return;
+    }
+
+    if (modifiers.size() > 1) {
+      Modifier mod = null;
+      for (Modifier modifier : modifiers) {
+        if (modifier != selected) {
+          mod = modifier;
+          break;
         }
-        return total >= 100 || total <= 100;
+      }
+      if (mod != null) {
+        mod.setValue(mod.getValue() + selected.getValue());
+      }
+    }
+
+    modifiers.remove(selected);
+  }
+
+  @SuppressWarnings("unchecked")
+  private void createColumns() {
+    TableColumn<Modifier, String> attributeColumn = new TableColumn<>("Attribute");
+
+    attributeColumn.setOnEditCommit((TableColumn.CellEditEvent<Modifier, String> val) -> {
+      Optional<Modifier> existing = modifiers.stream().filter(modifier -> modifier.getName().equals(val.getNewValue())).findFirst();
+      if (!existing.isPresent()) {
+        val.getTableView().getItems().get(val.getTablePosition().getRow()).setName(val.getNewValue());
+        refreshModifiers();
+      }
+    });
+
+    attributeColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+    attributeColumn.setCellFactory(param -> new ModifierBoxEditingCell());
+
+    TableColumn<Modifier, Integer> valueColumn = new TableColumn<>("Value");
+
+    valueColumn.setCellValueFactory(new PropertyValueFactory<>("value"));
+    valueColumn.setCellFactory(param -> new PercentEditingCell());
+
+    valueColumn.setOnEditCommit(val -> {
+      if (isModifiersBetweenCap(val.getTableView().getItems(), val.getNewValue(), val.getRowValue())) {
+        val.getTableView().getItems().get(val.getTablePosition().getRow()).setValue(val.getNewValue());
+      }
+    });
+
+    attributesTableView.getColumns().addAll(attributeColumn, valueColumn);
+  }
+
+  private boolean isModifiersBetweenCap(List<Modifier> modifiers, int newVal, Modifier change) {
+    int total = (newVal - change.getValue());
+    for (Modifier modifier : modifiers) {
+      total += modifier.getValue();
+    }
+    return total >= 100 || total <= 100;
+  }
+
+  @Override
+  public void initialize(URL location, ResourceBundle resourceBundle) {
+    resourceTypes = Launcher.getResourceTypes();
+    SchematicDialog.setController(this);
+
+    createAttributesTable();
+
+    removeAttributeButton.disableProperty().bind(Bindings.isEmpty(attributesTableView.getSelectionModel().getSelectedItems()));
+    addAttributeButton.disableProperty().bind(Bindings.isEmpty(availableModifiers));
+
+    addModifierComboBox.setItems(availableModifiers);
+    addModifierComboBox.disableProperty().bind(Bindings.isEmpty(availableModifiers));
+    addModifierComboBox.getSelectionModel().select(0);
+
+    removeResourceButton.disableProperty().bind(Bindings.isEmpty(resourceListView.getSelectionModel().getSelectedItems()));
+
+    resourceListView.itemsProperty().bind(resources);
+
+    addModifierComboBox.setCellFactory(param -> new ListCell<String>() {
+      @Override
+      protected void updateItem(String item, boolean empty) {
+        super.updateItem(item, empty);
+        if (empty) {
+          setText(null);
+        } else {
+          setText(Attributes.getLocalizedName(item));
+        }
+      }
+    });
+    addModifierComboBox.setButtonCell(new ListCell<String>() {
+      @Override
+      protected void updateItem(String item, boolean empty) {
+        super.updateItem(item, empty);
+        if (empty) {
+          setText(null);
+        } else {
+          setText(Attributes.getLocalizedName(item));
+        }
+      }
+    });
+
+    resourceListView.setCellFactory(param -> new ListCell<String>() {
+      @Override
+      protected void updateItem(String item, boolean empty) {
+        super.updateItem(item, empty);
+        if (item != null) {
+          setText(resourceTypes.get(item));
+        } else {
+          setText(null);
+        }
+      }
+    });
+
+    modifiers.addListener((ListChangeListener<Modifier>) c -> {
+      while (c.next()) {
+        refreshModifiers();
+      }
+    });
+  }
+
+  private void createAttributesTable() {
+    createColumns();
+
+    attributesTableView.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+      if (event.getButton() != MouseButton.PRIMARY) {
+        return;
+      }
+
+      TablePosition focusedCellPosition = attributesTableView.getFocusModel().getFocusedCell();
+      attributesTableView.edit(focusedCellPosition.getRow(), focusedCellPosition.getTableColumn());
+    });
+
+    attributesTableView.itemsProperty().bind(modifiers);
+  }
+
+  public Schematic createSchematic() {
+    if (schematic == null) {
+      schematic = new Schematic();
+    }
+
+    schematic.setName(nameField.getText());
+    schematic.setGroup(groupField.getText());
+    schematic.setResources(resources.get());
+    Map<String, Integer> modifiers = new HashMap<>();
+    this.modifiers.get().forEach(modifier -> modifiers.put(modifier.getName(), modifier.getValue()));
+    schematic.setModifiers(modifiers);
+
+    return schematic;
+  }
+
+  public static class Modifier {
+    private StringProperty name = new SimpleStringProperty();
+    private IntegerProperty value = new SimpleIntegerProperty();
+
+    public Modifier(String name, int value) {
+      setName(name);
+      setValue(value);
+    }
+
+    public String getName() {
+      return name.get();
+    }
+
+    public void setName(String name) {
+      this.name.set(name);
+    }
+
+    public StringProperty nameProperty() {
+      return name;
+    }
+
+    public int getValue() {
+      return value.get();
+    }
+
+    public void setValue(int value) {
+      this.value.set(value);
+    }
+
+    public IntegerProperty valueProperty() {
+      return value;
+    }
+  }
+
+  class PercentEditingCell extends TableCell<Modifier, Integer> {
+    private IntegerTextField textField;
+
+    @Override
+    public void startEdit() {
+      if (isEmpty()) {
+        return;
+      }
+
+      super.startEdit();
+      createTextField();
+      setText(null);
+      setGraphic(textField);
     }
 
     @Override
-    public void initialize(URL location, ResourceBundle resourceBundle) {
-        resourceTypes = Launcher.getResourceTypes();
-        SchematicDialog.setController(this);
+    public void cancelEdit() {
+      super.cancelEdit();
 
-        createAttributesTable();
-
-        removeAttributeButton.disableProperty().bind(Bindings.isEmpty(attributesTableView.getSelectionModel().getSelectedItems()));
-        addAttributeButton.disableProperty().bind(Bindings.isEmpty(availableModifiers));
-
-        addModifierComboBox.setItems(availableModifiers);
-        addModifierComboBox.disableProperty().bind(Bindings.isEmpty(availableModifiers));
-        addModifierComboBox.getSelectionModel().select(0);
-
-        removeResourceButton.disableProperty().bind(Bindings.isEmpty(resourceListView.getSelectionModel().getSelectedItems()));
-
-        resourceListView.itemsProperty().bind(resources);
-
-        addModifierComboBox.setCellFactory(param -> new ListCell<String>() {
-            @Override
-            protected void updateItem(String item, boolean empty) {
-                super.updateItem(item, empty);
-                if (empty)
-                    setText(null);
-                else setText(Attributes.getLocalizedName(item));
-            }
-        });
-        addModifierComboBox.setButtonCell(new ListCell<String>() {
-            @Override
-            protected void updateItem(String item, boolean empty) {
-                super.updateItem(item, empty);
-                if (empty)
-                    setText(null);
-                else setText(Attributes.getLocalizedName(item));
-            }
-        });
-
-        resourceListView.setCellFactory(param -> new ListCell<String>() {
-            @Override
-            protected void updateItem(String item, boolean empty) {
-                super.updateItem(item, empty);
-                if (item != null) {
-                    setText(resourceTypes.get(item));
-                } else {
-                    setText(null);
-                }
-            }
-        });
-
-        modifiers.addListener((ListChangeListener<Modifier>) c -> {
-            while (c.next()) {
-                refreshModifiers();
-            }
-        });
+      setText(String.valueOf(getItem()));
+      setGraphic(null);
     }
 
-    private void createAttributesTable() {
-        createColumns();
+    @Override
+    public void updateItem(Integer item, boolean empty) {
+      super.updateItem(item, empty);
 
-        attributesTableView.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-            if (event.getButton() != MouseButton.PRIMARY)
-                return;
+      if (empty) {
+        setText(null);
+        setGraphic(null);
+      } else {
+        if (isEditing()) {
+          if (textField != null) {
+            textField.setText(String.valueOf(item));
+          }
 
-            TablePosition focusedCellPosition = attributesTableView.getFocusModel().getFocusedCell();
-            attributesTableView.edit(focusedCellPosition.getRow(), focusedCellPosition.getTableColumn());
-        });
-
-        attributesTableView.itemsProperty().bind(modifiers);
+          setGraphic(textField);
+        } else {
+          setText(String.valueOf(item));
+          setGraphic(null);
+        }
+      }
     }
 
-    public Schematic createSchematic() {
-        if (schematic == null)
-            schematic = new Schematic();
-
-        schematic.setName(nameField.getText());
-        schematic.setGroup(groupField.getText());
-        schematic.setResources(resources.get());
-        Map<String, Integer> modifiers = new HashMap<>();
-        this.modifiers.get().forEach(modifier -> modifiers.put(modifier.getName(), modifier.getValue()));
-        schematic.setModifiers(modifiers);
-
-        return schematic;
+    private void createTextField() {
+      textField = new IntegerTextField(0, 100, 0);
+      textField.focusedProperty().addListener((observable, oldValue, newValue) -> {
+        if (newValue) {
+          return;
+        }
+        commitEdit(textField.getValue());
+      });
+      textField.setValue(getItem());
+      textField.setMinWidth(this.getWidth() - this.getGraphicTextGap() * 2);
+      textField.setOnAction((e) -> commitEdit(textField.getValue()));
     }
 
-    public static class Modifier {
-        private StringProperty name = new SimpleStringProperty();
-        private IntegerProperty value = new SimpleIntegerProperty();
+  }
 
-        public Modifier(String name, int value) {
-            setName(name);
-            setValue(value);
-        }
+  class ModifierBoxEditingCell extends TableCell<Modifier, String> {
+    private ComboBox<String> comboBox;
 
-        public String getName() {
-            return name.get();
-        }
+    @Override
+    public void startEdit() {
+      if (isEmpty()) {
+        return;
+      }
 
-        public void setName(String name) {
-            this.name.set(name);
-        }
-
-        public StringProperty nameProperty() {
-            return name;
-        }
-
-        public int getValue() {
-            return value.get();
-        }
-
-        public void setValue(int value) {
-            this.value.set(value);
-        }
-
-        public IntegerProperty valueProperty() {
-            return value;
-        }
+      super.startEdit();
+      createComboBox();
+      setText(null);
+      setGraphic(comboBox);
     }
 
-    class PercentEditingCell extends TableCell<Modifier, Integer> {
-        private IntegerTextField textField;
+    @Override
+    public void cancelEdit() {
+      super.cancelEdit();
 
-        @Override
-        public void startEdit() {
-            if (isEmpty())
-                return;
-
-            super.startEdit();
-            createTextField();
-            setText(null);
-            setGraphic(textField);
-        }
-
-        @Override
-        public void cancelEdit() {
-            super.cancelEdit();
-
-            setText(String.valueOf(getItem()));
-            setGraphic(null);
-        }
-
-        @Override
-        public void updateItem(Integer item, boolean empty) {
-            super.updateItem(item, empty);
-
-            if (empty) {
-                setText(null);
-                setGraphic(null);
-            } else {
-                if (isEditing()) {
-                    if (textField != null)
-                        textField.setText(String.valueOf(item));
-
-                    setGraphic(textField);
-                } else {
-                    setText(String.valueOf(item));
-                    setGraphic(null);
-                }
-            }
-        }
-
-        private void createTextField() {
-            textField = new IntegerTextField(0, 100, 0);
-            textField.focusedProperty().addListener((observable, oldValue, newValue) -> {
-                if (newValue)
-                    return;
-                commitEdit(textField.getValue());
-            });
-            textField.setValue(getItem());
-            textField.setMinWidth(this.getWidth() - this.getGraphicTextGap() * 2);
-            textField.setOnAction((e) -> commitEdit(textField.getValue()));
-        }
-
+      setText(getItem());
+      setGraphic(null);
     }
 
-    class ModifierBoxEditingCell extends TableCell<Modifier, String> {
-        private ComboBox<String> comboBox;
+    @Override
+    public void updateItem(String item, boolean empty) {
+      super.updateItem(item, empty);
 
-        @Override
-        public void startEdit() {
-            if (isEmpty())
-                return;
+      if (empty) {
+        setText(null);
+        setGraphic(null);
+      } else {
+        if (isEditing()) {
+          if (comboBox != null) {
+            comboBox.setValue(item);
+          }
 
-            super.startEdit();
-            createComboBox();
-            setText(null);
-            setGraphic(comboBox);
+          setText(item);
+          setGraphic(comboBox);
+        } else {
+          setText(item);
+          setGraphic(null);
         }
-
-        @Override
-        public void cancelEdit() {
-            super.cancelEdit();
-
-            setText(getItem());
-            setGraphic(null);
-        }
-
-        @Override
-        public void updateItem(String item, boolean empty) {
-            super.updateItem(item, empty);
-
-            if (empty) {
-                setText(null);
-                setGraphic(null);
-            } else {
-                if (isEditing()) {
-                    if (comboBox != null)
-                        comboBox.setValue(item);
-
-                    setText(item);
-                    setGraphic(comboBox);
-                } else {
-                    setText(item);
-                    setGraphic(null);
-                }
-            }
-        }
-
-        private void createComboBox() {
-            comboBox = new ComboBox<>(availableModifiers);
-            comboBox.valueProperty().set(getItem());
-            comboBox.setMinWidth(this.getWidth() - this.getGraphicTextGap() * 2);
-            comboBox.setOnAction((e) -> commitEdit(comboBox.getSelectionModel().getSelectedItem()));
-        }
+      }
     }
+
+    private void createComboBox() {
+      comboBox = new ComboBox<>(availableModifiers);
+      comboBox.valueProperty().set(getItem());
+      comboBox.setMinWidth(this.getWidth() - this.getGraphicTextGap() * 2);
+      comboBox.setOnAction((e) -> commitEdit(comboBox.getSelectionModel().getSelectedItem()));
+    }
+  }
 }

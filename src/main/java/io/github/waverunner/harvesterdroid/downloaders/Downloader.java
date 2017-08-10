@@ -37,178 +37,183 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Abstract class used by HarvesterDroid in the downloading of required data to function
- * <p>
- * This base class should have no knowledge of "how" the data is stored, only that it can be downloaded
+ * Abstract class used by HarvesterDroid in the downloading of required data to function.
+ *
+ * <p>This base class should have no knowledge of "how" the data is stored, only that it can be downloaded
  * from some location and turned into something usable for HarvesterDroid. The responsibility lies on
  * sub-classes to know how the data is stored and convert them to the resources map.
  */
 public abstract class Downloader {
-    private final String root;
-    private final String baseUrl;
-    private final String identifier;
-    private final Map<String, GalaxyResource> currentResources = new HashMap<>();
-    private String galaxy;
-    private Map<String, ResourceType> resourceTypeMap = new HashMap<>();
-    private Map<String, List<String>> resourceGroups = new HashMap<>();
+  private final String root;
+  private final String baseUrl;
+  private final String identifier;
+  private final Map<String, GalaxyResource> currentResources = new HashMap<>();
+  private String galaxy;
+  private Map<String, ResourceType> resourceTypeMap = new HashMap<>();
+  private Map<String, List<String>> resourceGroups = new HashMap<>();
 
-    protected Downloader(String root, String identifier, String baseUrl, String galaxy) {
-        this.root = root;
-        this.identifier = identifier;
-        this.baseUrl = baseUrl;
-        this.galaxy = galaxy;
-        init();
+  protected Downloader(String root, String identifier, String baseUrl, String galaxy) {
+    this.root = root;
+    this.identifier = identifier;
+    this.baseUrl = baseUrl;
+    this.galaxy = galaxy;
+    init();
+  }
+
+  private void init() {
+    try {
+      downloadResourceTypes(resourceTypeMap, resourceGroups);
+    } catch (IOException e) {
+      e.printStackTrace();
     }
 
-    private void init() {
-        try {
-            downloadResourceTypes(resourceTypeMap, resourceGroups);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    File currentResources = new File(getRootDownloadsPath() + "current_resources" + getGalaxy() + ".dl");
+    if (currentResources.exists()) {
+      try {
+        parseCurrentResources(new FileInputStream(currentResources));
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+    }
+  }
 
-        File currentResources = new File(getRootDownloadsPath() + "current_resources" + getGalaxy() + ".dl");
-        if (currentResources.exists()) {
-            try {
-                parseCurrentResources(new FileInputStream(currentResources));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+  protected abstract void parseCurrentResources(InputStream currentResourcesStream) throws IOException;
+
+  protected abstract Map<String, String> parseGalaxyList(InputStream galaxyListStream);
+
+  protected abstract GalaxyResource parseGalaxyResource(InputStream galaxyResourceStream);
+
+  protected abstract InputStream getCurrentResourcesStream() throws IOException;
+
+  protected abstract InputStream getGalaxyResourceStream(String resource) throws IOException;
+
+  protected abstract InputStream getGalaxyListStream() throws IOException;
+
+  public abstract Date getCurrentResourcesTimestamp();
+
+  public final Map<String, String> downloadGalaxyList() {
+    InputStream in;
+
+    File file = new File(getRootDownloadsPath() + "servers.dl");
+    if (!file.exists() && !file.mkdirs()) {
+      return null;
     }
 
-    protected abstract void parseCurrentResources(InputStream currentResourcesStream) throws IOException;
+    try {
+      in = getGalaxyListStream();
 
-    protected abstract Map<String, String> parseGalaxyList(InputStream galaxyListStream);
+      Files.copy(in, Paths.get(file.toURI()), StandardCopyOption.REPLACE_EXISTING);
 
-    protected abstract GalaxyResource parseGalaxyResource(InputStream galaxyResourceStream);
-
-    protected abstract InputStream getCurrentResourcesStream() throws IOException;
-
-    protected abstract InputStream getGalaxyResourceStream(String resource) throws IOException;
-
-    protected abstract InputStream getGalaxyListStream() throws IOException;
-
-    public abstract Date getCurrentResourcesTimestamp();
-
-    public final Map<String, String> downloadGalaxyList() {
-        InputStream in;
-
-        File file = new File(getRootDownloadsPath() + "servers.dl");
-        if (!file.exists() && !file.mkdirs())
-            return null;
-
-        try {
-            in = getGalaxyListStream();
-
-            Files.copy(in, Paths.get(file.toURI()), StandardCopyOption.REPLACE_EXISTING);
-
-            return parseGalaxyList(new FileInputStream(file));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return null;
+      return parseGalaxyList(new FileInputStream(file));
+    } catch (IOException e) {
+      e.printStackTrace();
     }
 
-    protected abstract void downloadResourceTypes(Map<String, ResourceType> resourceTypeMap, Map<String, List<String>> resourceGroups) throws IOException;
+    return null;
+  }
 
-    public final DownloadResult downloadCurrentResources() throws IOException {
-        InputStream in = null;
+  protected abstract void downloadResourceTypes(Map<String, ResourceType> resourceTypeMap,
+                                                Map<String, List<String>> resourceGroups) throws IOException;
 
-        File file = new File(getRootDownloadsPath() + "current_resources_" + getGalaxy() + ".dl");
-        if (!file.exists() && !file.mkdirs())
-            return DownloadResult.FAILED;
+  public final DownloadResult downloadCurrentResources() throws IOException {
+    InputStream in = null;
 
-        try {
-            in = getCurrentResourcesStream();
-
-            Files.copy(in, Paths.get(file.toURI()), StandardCopyOption.REPLACE_EXISTING);
-        } catch (ConnectException e) {
-            return DownloadResult.FAILED;
-        } finally {
-            if (in != null) {
-                in.close();
-            }
-        }
-
-        if (!file.exists())
-            return DownloadResult.FAILED;
-
-        parseCurrentResources(new FileInputStream(file));
-        currentResources.values().forEach(this::populateResourceFromType);
-
-        return DownloadResult.SUCCESS;
+    File file = new File(getRootDownloadsPath() + "current_resources_" + getGalaxy() + ".dl");
+    if (!file.exists() && !file.mkdirs()) {
+      return DownloadResult.FAILED;
     }
 
-    private void populateResourceFromType(GalaxyResource galaxyResource) {
-        ResourceType type = resourceTypeMap.get(galaxyResource.getResourceTypeString());
-        if (type == null) {
-            System.out.println("No resource type " + galaxyResource.getResourceTypeString());
-            return;
-        }
-        galaxyResource.setResourceType(type);
+    try {
+      in = getCurrentResourcesStream();
+
+      Files.copy(in, Paths.get(file.toURI()), StandardCopyOption.REPLACE_EXISTING);
+    } catch (ConnectException e) {
+      return DownloadResult.FAILED;
+    } finally {
+      if (in != null) {
+        in.close();
+      }
     }
 
-    public final GalaxyResource downloadGalaxyResource(String resource) {
-        try {
-            GalaxyResource galaxyResource = parseGalaxyResource(getGalaxyResourceStream(resource));
-            if (galaxyResource != null)
-                populateResourceFromType(galaxyResource);
-            return galaxyResource;
-        } catch (IOException e) {
-            throw new RuntimeException("Error downloading resource " + resource);
-        }
+    if (!file.exists()) {
+      return DownloadResult.FAILED;
     }
 
-    protected final void populateCurrentResourcesMap(Map<String, GalaxyResource> parsedCurrentResources) {
-        currentResources.clear();
-        currentResources.putAll(parsedCurrentResources);
-    }
+    parseCurrentResources(new FileInputStream(file));
+    currentResources.values().forEach(this::populateResourceFromType);
 
-    public final InputStream getInputStreamFromUrl(String url) throws IOException {
-        return new URL(getBaseUrl() + url).openStream();
-    }
+    return DownloadResult.SUCCESS;
+  }
 
-    public final String getBaseUrl() {
-        return baseUrl;
+  private void populateResourceFromType(GalaxyResource galaxyResource) {
+    ResourceType type = resourceTypeMap.get(galaxyResource.getResourceTypeString());
+    if (type == null) {
+      System.out.println("No resource type " + galaxyResource.getResourceTypeString());
+      return;
     }
+    galaxyResource.setResourceType(type);
+  }
 
-    public final String getIdentifier() {
-        return identifier;
+  public final GalaxyResource downloadGalaxyResource(String resource) {
+    try {
+      GalaxyResource galaxyResource = parseGalaxyResource(getGalaxyResourceStream(resource));
+      if (galaxyResource != null) {
+        populateResourceFromType(galaxyResource);
+      }
+      return galaxyResource;
+    } catch (IOException e) {
+      throw new RuntimeException("Error downloading resource " + resource);
     }
+  }
 
-    public final Collection<GalaxyResource> getCurrentResources() {
-        return currentResources.values();
-    }
+  protected final void populateCurrentResourcesMap(Map<String, GalaxyResource> parsedCurrentResources) {
+    currentResources.clear();
+    currentResources.putAll(parsedCurrentResources);
+  }
 
-    private String getRootDownloadsPath() {
-        return root + "/" + getIdentifier() + "/";
-    }
+  public final InputStream getInputStreamFromUrl(String url) throws IOException {
+    return new URL(getBaseUrl() + url).openStream();
+  }
 
-    public final String getResourcesPath() {
-        return getRootDownloadsPath() + "resources_" + getGalaxy() + ".odb";
-    }
+  public final String getBaseUrl() {
+    return baseUrl;
+  }
 
-    public final String getGalaxy() {
-        return galaxy;
-    }
+  public final String getIdentifier() {
+    return identifier;
+  }
 
-    public final void setGalaxy(String galaxy) {
-        this.galaxy = galaxy;
-    }
+  public final Collection<GalaxyResource> getCurrentResources() {
+    return currentResources.values();
+  }
 
-    public List<String> getResourceGroups(String group) {
-        return resourceGroups.get(group);
-    }
+  private String getRootDownloadsPath() {
+    return root + "/" + getIdentifier() + "/";
+  }
 
-    public Map<String, ResourceType> getResourceTypeMap() {
-        return resourceTypeMap;
-    }
+  public final String getResourcesPath() {
+    return getRootDownloadsPath() + "resources_" + getGalaxy() + ".odb";
+  }
 
-    public enum DownloadResult {
-        FAILED,
-        SUCCESS
-    }
+  public final String getGalaxy() {
+    return galaxy;
+  }
+
+  public final void setGalaxy(String galaxy) {
+    this.galaxy = galaxy;
+  }
+
+  public List<String> getResourceGroups(String group) {
+    return resourceGroups.get(group);
+  }
+
+  public Map<String, ResourceType> getResourceTypeMap() {
+    return resourceTypeMap;
+  }
+
+  public enum DownloadResult {
+    FAILED,
+    SUCCESS
+  }
 
 }

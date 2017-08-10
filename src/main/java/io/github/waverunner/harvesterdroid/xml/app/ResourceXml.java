@@ -20,27 +20,28 @@ package io.github.waverunner.harvesterdroid.xml.app;
 
 import io.github.waverunner.harvesterdroid.data.resources.GalaxyResource;
 import io.github.waverunner.harvesterdroid.xml.BaseXml;
-import org.w3c.dom.Document;
 
 import javax.xml.parsers.DocumentBuilder;
 
+import org.w3c.dom.Document;
+
 public abstract class ResourceXml extends BaseXml {
-    private GalaxyResource galaxyResource;
+  private GalaxyResource galaxyResource;
 
-    public ResourceXml(DocumentBuilder documentBuilder) {
-        super(documentBuilder);
-    }
+  public ResourceXml(DocumentBuilder documentBuilder) {
+    super(documentBuilder);
+  }
 
-    public GalaxyResource getGalaxyResource() {
-        return galaxyResource;
-    }
+  public GalaxyResource getGalaxyResource() {
+    return galaxyResource;
+  }
 
-    protected void setGalaxyResource(GalaxyResource galaxyResource) {
-        this.galaxyResource = galaxyResource;
-    }
+  protected void setGalaxyResource(GalaxyResource galaxyResource) {
+    this.galaxyResource = galaxyResource;
+  }
 
-    @Override
-    protected final void write(Document document) {
-        throw new UnsupportedOperationException();
-    }
+  @Override
+  protected final void write(Document document) {
+    throw new UnsupportedOperationException();
+  }
 }

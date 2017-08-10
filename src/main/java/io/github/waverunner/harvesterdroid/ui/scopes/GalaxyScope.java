@@ -21,8 +21,8 @@ package io.github.waverunner.harvesterdroid.ui.scopes;
 import de.saxsys.mvvmfx.Scope;
 
 /**
- * Created by Waverunner on 4/3/2017
+ * Created by Waverunner on 4/3/2017.
  */
 public class GalaxyScope implements Scope {
-    public static final String CHANGED = "GalaxyScope.Changed";
+  public static final String CHANGED = "GalaxyScope.Changed";
 }

@@ -18,6 +18,12 @@
 
 package io.github.waverunner.harvesterdroid.ui.inventory;
 
+import de.saxsys.mvvmfx.InjectScope;
+import de.saxsys.mvvmfx.ViewModel;
+import de.saxsys.mvvmfx.utils.commands.Action;
+import de.saxsys.mvvmfx.utils.commands.Command;
+import de.saxsys.mvvmfx.utils.commands.DelegateCommand;
+
 import io.github.waverunner.harvesterdroid.app.HarvesterDroid;
 import io.github.waverunner.harvesterdroid.data.resources.GalaxyResource;
 import io.github.waverunner.harvesterdroid.data.resources.InventoryResource;
@@ -25,11 +31,9 @@ import io.github.waverunner.harvesterdroid.ui.dialog.resource.ResourceDialog;
 import io.github.waverunner.harvesterdroid.ui.items.GalaxyResourceItemViewModel;
 import io.github.waverunner.harvesterdroid.ui.scopes.GalaxyScope;
 import io.github.waverunner.harvesterdroid.ui.scopes.ResourceScope;
-import de.saxsys.mvvmfx.InjectScope;
-import de.saxsys.mvvmfx.ViewModel;
-import de.saxsys.mvvmfx.utils.commands.Action;
-import de.saxsys.mvvmfx.utils.commands.Command;
-import de.saxsys.mvvmfx.utils.commands.DelegateCommand;
+
+import java.util.Optional;
+
 import javafx.beans.property.ListProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleListProperty;
@@ -38,135 +42,137 @@ import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 
-import java.util.Optional;
-
 /**
- * Created by Waverunner on 4/3/2017
+ * Created by Waverunner on 4/3/2017.
  */
 public class InventoryViewModel implements ViewModel {
-    private final HarvesterDroid harvesterDroid;
-    private ListProperty<GalaxyResourceItemViewModel> inventory = new SimpleListProperty<>();
-    private ObjectProperty<GalaxyResourceItemViewModel> selected = new SimpleObjectProperty<>();
-    private Command addCommand;
-    private Command removeCommand;
-    @InjectScope
-    private ResourceScope resourceScope;
-    @InjectScope
-    private GalaxyScope galaxyScope;
+  private final HarvesterDroid harvesterDroid;
+  private ListProperty<GalaxyResourceItemViewModel> inventory = new SimpleListProperty<>();
+  private ObjectProperty<GalaxyResourceItemViewModel> selected = new SimpleObjectProperty<>();
+  private Command addCommand;
+  private Command removeCommand;
+  @InjectScope
+  private ResourceScope resourceScope;
+  @InjectScope
+  private GalaxyScope galaxyScope;
 
-    public InventoryViewModel(HarvesterDroid harvesterDroid) {
-        this.harvesterDroid = harvesterDroid;
-    }
+  public InventoryViewModel(HarvesterDroid harvesterDroid) {
+    this.harvesterDroid = harvesterDroid;
+  }
 
-    public void initialize() {
-        initializeCommands();
+  public void initialize() {
+    initializeCommands();
 
-        inventory.set(FXCollections.observableArrayList());
+    inventory.set(FXCollections.observableArrayList());
 
-        refreshInventoryView();
+    refreshInventoryView();
 
-        resourceScope.subscribe(ResourceScope.FAVORITE, (s, objects) -> {
-            for (Object object : objects) {
-                createGalaxyResourceItem(((GalaxyResourceItemViewModel) object).getGalaxyResource());
+    resourceScope.subscribe(ResourceScope.FAVORITE, (s, objects) -> {
+      for (Object object : objects) {
+        createGalaxyResourceItem(((GalaxyResourceItemViewModel) object).getGalaxyResource());
+      }
+    });
+
+    galaxyScope.subscribe(GalaxyScope.CHANGED, (s, objects) -> refreshInventoryView());
+
+    inventory.addListener((ListChangeListener<GalaxyResourceItemViewModel>) c -> {
+      while (c.next()) {
+        if (c.wasAdded()) {
+          c.getAddedSubList().forEach(item -> {
+            if (harvesterDroid.addInventoryResource(item.getGalaxyResource())) {
+              resourceScope.publish(ResourceScope.IMPORT_ADDED, item.getGalaxyResource());
             }
-        });
-
-        galaxyScope.subscribe(GalaxyScope.CHANGED, (s, objects) -> refreshInventoryView());
-
-        inventory.addListener((ListChangeListener<GalaxyResourceItemViewModel>) c -> {
-            while (c.next()) {
-                if (c.wasAdded()) {
-                    c.getAddedSubList().forEach(item -> {
-                        if (harvesterDroid.addInventoryResource(item.getGalaxyResource()))
-                            resourceScope.publish(ResourceScope.IMPORT_ADDED, item.getGalaxyResource());
-                    });
-                }
-            }
-        });
-    }
-
-    private void refreshInventoryView() {
-        inventory.clear();
-        for (InventoryResource inventoryResource : harvesterDroid.getInventory()) {
-            GalaxyResource galaxyResource = harvesterDroid.getGalaxyResource(inventoryResource);
-            if (galaxyResource != null)
-                inventory.add(new GalaxyResourceItemViewModel(galaxyResource));
+          });
         }
+      }
+    });
+  }
+
+  private void refreshInventoryView() {
+    inventory.clear();
+    for (InventoryResource inventoryResource : harvesterDroid.getInventory()) {
+      GalaxyResource galaxyResource = harvesterDroid.getGalaxyResource(inventoryResource);
+      if (galaxyResource != null) {
+        inventory.add(new GalaxyResourceItemViewModel(galaxyResource));
+      }
     }
+  }
 
-    private void initializeCommands() {
-        addCommand = new DelegateCommand(() -> new Action() {
-            @Override
-            protected void action() throws Exception {
-                ResourceDialog dialog = new ResourceDialog();
-                Optional<GalaxyResource> result = dialog.showAndWait();
-                if (!result.isPresent())
-                    return;
-
-                GalaxyResource galaxyResource = result.get();
-                createGalaxyResourceItem(galaxyResource);
-            }
-        });
-
-        removeCommand = new DelegateCommand(() -> new Action() {
-            @Override
-            protected void action() throws Exception {
-                removeInventoryItem(selected.get());
-            }
-        }, selected.isNotNull());
-    }
-
-    private void removeInventoryItem(GalaxyResourceItemViewModel inventoryItem) {
-        inventory.remove(inventoryItem);
-        harvesterDroid.removeInventoryResource(inventoryItem.getGalaxyResource());
-
-        resourceScope.publish(ResourceScope.IMPORT_REMOVED, inventoryItem.getGalaxyResource());
-    }
-
-    private void createGalaxyResourceItem(GalaxyResource galaxyResource) {
-        boolean exists = false;
-        for (GalaxyResourceItemViewModel inventoryResource : inventory) {
-            GalaxyResource resource = inventoryResource.getGalaxyResource();
-            if (resource.getName().equals(galaxyResource.getName())) {
-                exists = true;
-                break;
-            }
+  private void initializeCommands() {
+    addCommand = new DelegateCommand(() -> new Action() {
+      @Override
+      protected void action() throws Exception {
+        ResourceDialog dialog = new ResourceDialog();
+        Optional<GalaxyResource> result = dialog.showAndWait();
+        if (!result.isPresent()) {
+          return;
         }
 
-        if (!exists)
-            inventory.add(new GalaxyResourceItemViewModel(galaxyResource));
+        GalaxyResource galaxyResource = result.get();
+        createGalaxyResourceItem(galaxyResource);
+      }
+    });
+
+    removeCommand = new DelegateCommand(() -> new Action() {
+      @Override
+      protected void action() throws Exception {
+        removeInventoryItem(selected.get());
+      }
+    }, selected.isNotNull());
+  }
+
+  private void removeInventoryItem(GalaxyResourceItemViewModel inventoryItem) {
+    inventory.remove(inventoryItem);
+    harvesterDroid.removeInventoryResource(inventoryItem.getGalaxyResource());
+
+    resourceScope.publish(ResourceScope.IMPORT_REMOVED, inventoryItem.getGalaxyResource());
+  }
+
+  private void createGalaxyResourceItem(GalaxyResource galaxyResource) {
+    boolean exists = false;
+    for (GalaxyResourceItemViewModel inventoryResource : inventory) {
+      GalaxyResource resource = inventoryResource.getGalaxyResource();
+      if (resource.getName().equals(galaxyResource.getName())) {
+        exists = true;
+        break;
+      }
     }
 
-
-    public ObservableList<GalaxyResourceItemViewModel> getInventory() {
-        return inventory.get();
+    if (!exists) {
+      inventory.add(new GalaxyResourceItemViewModel(galaxyResource));
     }
+  }
 
-    public void setInventory(ObservableList<GalaxyResourceItemViewModel> inventory) {
-        this.inventory.set(inventory);
-    }
 
-    public ListProperty<GalaxyResourceItemViewModel> inventoryProperty() {
-        return inventory;
-    }
+  public ObservableList<GalaxyResourceItemViewModel> getInventory() {
+    return inventory.get();
+  }
 
-    public GalaxyResourceItemViewModel getSelected() {
-        return selected.get();
-    }
+  public void setInventory(ObservableList<GalaxyResourceItemViewModel> inventory) {
+    this.inventory.set(inventory);
+  }
 
-    public void setSelected(GalaxyResourceItemViewModel selected) {
-        this.selected.set(selected);
-    }
+  public ListProperty<GalaxyResourceItemViewModel> inventoryProperty() {
+    return inventory;
+  }
 
-    public ObjectProperty<GalaxyResourceItemViewModel> selectedProperty() {
-        return selected;
-    }
+  public GalaxyResourceItemViewModel getSelected() {
+    return selected.get();
+  }
 
-    public Command getAddCommand() {
-        return addCommand;
-    }
+  public void setSelected(GalaxyResourceItemViewModel selected) {
+    this.selected.set(selected);
+  }
 
-    public Command getRemoveCommand() {
-        return removeCommand;
-    }
+  public ObjectProperty<GalaxyResourceItemViewModel> selectedProperty() {
+    return selected;
+  }
+
+  public Command getAddCommand() {
+    return addCommand;
+  }
+
+  public Command getRemoveCommand() {
+    return removeCommand;
+  }
 }

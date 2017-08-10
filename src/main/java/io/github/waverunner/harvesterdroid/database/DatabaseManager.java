@@ -18,69 +18,71 @@
 
 package io.github.waverunner.harvesterdroid.database;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+
 /**
- * Created by Waverunner on 4/10/2017
+ * Created by Waverunner on 4/10/2017.
  */
 public class DatabaseManager {
-    private HashMap<String, EntityManagerFactory> entityFactories = new HashMap<>();
+  private HashMap<String, EntityManagerFactory> entityFactories = new HashMap<>();
 
-    public DatabaseManager() {
+  public DatabaseManager() {
+  }
+
+  public static <T> List<T> getList(EntityManager entityManager, Class<T> classType) {
+    List<T> query = entityManager.createQuery("Select o from " + classType.getSimpleName() + " o", classType).getResultList();
+
+    return new ArrayList<>(query);
+  }
+
+  public EntityManager createDatabase(String database) {
+    EntityManagerFactory emf = createFactory(database);
+
+    EntityManager entityManager = emf.createEntityManager();
+    entityFactories.put(database, emf);
+
+    return entityManager;
+  }
+
+  public EntityManager loadDatabase(String database) {
+    if (entityFactories.containsKey(database)) {
+      closeDatabase(database);
     }
 
-    public static <T> List<T> getList(EntityManager entityManager, Class<T> tClass) {
-        List<T> query = entityManager.createQuery("Select o from " + tClass.getSimpleName() + " o", tClass).getResultList();
+    EntityManagerFactory emf = createFactory(database);
 
-        return new ArrayList<>(query);
+    EntityManager entityManager = emf.createEntityManager();
+    entityFactories.put(database, emf);
+
+    return entityManager;
+  }
+
+  public void closeDatabase(String database) {
+    EntityManagerFactory factory = getFactory(database);
+    factory.close();
+    entityFactories.remove(database);
+  }
+
+  public void closeDatabases() {
+    entityFactories.forEach((key, factory) -> factory.close());
+    entityFactories.clear();
+  }
+
+  public EntityManagerFactory getFactory(String database) {
+    return entityFactories.get(database);
+  }
+
+  private EntityManagerFactory createFactory(String database) {
+    try {
+      return Persistence.createEntityManagerFactory(database);
+    } catch (Exception e) {
+      throw new RuntimeException(e);
     }
-
-    public EntityManager createDatabase(String database) {
-        EntityManagerFactory emf = createFactory(database);
-
-        EntityManager entityManager = emf.createEntityManager();
-        entityFactories.put(database, emf);
-
-        return entityManager;
-    }
-
-    public EntityManager loadDatabase(String database) {
-        if (entityFactories.containsKey(database))
-            closeDatabase(database);
-
-        EntityManagerFactory emf = createFactory(database);
-
-        EntityManager entityManager = emf.createEntityManager();
-        entityFactories.put(database, emf);
-
-        return entityManager;
-    }
-
-    public void closeDatabase(String database) {
-        EntityManagerFactory factory = getFactory(database);
-        factory.close();
-        entityFactories.remove(database);
-    }
-
-    public void closeDatabases() {
-        entityFactories.forEach((key, factory) -> factory.close());
-        entityFactories.clear();
-    }
-
-    public EntityManagerFactory getFactory(String database) {
-        return entityFactories.get(database);
-    }
-
-    private EntityManagerFactory createFactory(String database) {
-        try {
-            return Persistence.createEntityManagerFactory(database);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
+  }
 }

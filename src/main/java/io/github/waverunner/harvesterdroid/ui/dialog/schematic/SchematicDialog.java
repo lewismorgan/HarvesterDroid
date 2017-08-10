@@ -20,54 +20,57 @@ package io.github.waverunner.harvesterdroid.ui.dialog.schematic;
 
 import io.github.waverunner.harvesterdroid.data.schematics.Schematic;
 import io.github.waverunner.harvesterdroid.ui.dialog.BaseDialog;
+
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
 
 public class SchematicDialog extends BaseDialog<Schematic> {
-    private static ButtonType SAVE = new ButtonType("Save", ButtonBar.ButtonData.APPLY);
-    private static SchematicDialogController controller;
+  private static ButtonType SAVE = new ButtonType("Save", ButtonBar.ButtonData.APPLY);
+  private static SchematicDialogController controller;
 
-    public SchematicDialog() {
-        this(new Schematic());
+  public SchematicDialog() {
+    this(new Schematic());
+  }
+
+  public SchematicDialog(Schematic schematic) {
+    super("Schematic Editor");
+    if (controller != null) {
+      controller.readSchematic(schematic);
     }
+  }
 
-    public SchematicDialog(Schematic schematic) {
-        super("Schematic Editor");
-        if (controller != null)
-            controller.readSchematic(schematic);
-    }
+  @Override
+  protected ButtonType[] getButtonTypes() {
+    return new ButtonType[] {
+        SAVE,
+        ButtonType.CANCEL
+    };
+  }
 
-    @Override
-    protected ButtonType[] getButtonTypes() {
-        return new ButtonType[]{
-                SAVE,
-                ButtonType.CANCEL
-        };
-    }
+  @Override
+  protected void createDialog() {
+    Button saveButton = (Button) getDialogPane().lookupButton(SAVE);
+    saveButton.setDefaultButton(true);
 
-    @Override
-    protected void createDialog() {
-        Button saveButton = (Button) getDialogPane().lookupButton(SAVE);
-        saveButton.setDefaultButton(true);
+    setResultConverter(buttonType -> {
+      if (buttonType != SAVE) {
+        return null;
+      }
+      return controller.createSchematic();
+    });
+  }
 
-        setResultConverter(buttonType -> {
-            if (buttonType != SAVE)
-                return null;
-            return controller.createSchematic();
-        });
-    }
+  @Override
+  protected boolean isController() {
+    return false;
+  }
 
-    @Override
-    protected boolean isController() {
-        return false;
-    }
+  public static void setController(SchematicDialogController controller) {
+    SchematicDialog.controller = controller;
+  }
 
-    public static void setController(SchematicDialogController controller) {
-        SchematicDialog.controller = controller;
-    }
-
-    public void readSchematic(Schematic schematic) {
-        controller.readSchematic(schematic);
-    }
+  public void readSchematic(Schematic schematic) {
+    controller.readSchematic(schematic);
+  }
 }

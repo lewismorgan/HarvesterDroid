@@ -20,46 +20,48 @@ package io.github.waverunner.harvesterdroid.downloaders;
 
 import io.github.waverunner.harvesterdroid.app.HarvesterDroidData;
 import io.github.waverunner.harvesterdroid.data.resources.GalaxyResource;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 /**
- * Created by Waverunner on 4/3/2017
+ * Created by Waverunner on 4/3/2017.
  */
 class GalaxyHarvesterDownloaderTest {
-    private GalaxyHarvesterDownloader downloader;
-    private HarvesterDroidData data;
-    @BeforeEach
-    void setup() {
-        downloader = new GalaxyHarvesterDownloader("test", "48");
-        data = new HarvesterDroidData();
-    }
+  private GalaxyHarvesterDownloader downloader;
+  private HarvesterDroidData data;
 
-    @Test
-    void parseCurrentResources() {
-        try {
-            assert(downloader.downloadCurrentResources() != Downloader.DownloadResult.FAILED);
-            downloader.getCurrentResources().forEach(this::checkGalaxyResource);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+  @BeforeEach
+  void setup() {
+    downloader = new GalaxyHarvesterDownloader("test", "48");
+    data = new HarvesterDroidData();
+  }
 
-    @Test
-    void parseGalaxyList() {
+  @Test
+  void parseCurrentResources() {
+    try {
+      assert (downloader.downloadCurrentResources() != Downloader.DownloadResult.FAILED);
+      downloader.getCurrentResources().forEach(this::checkGalaxyResource);
+    } catch (IOException e) {
+      e.printStackTrace();
     }
+  }
 
-    @Test
-    void parseGalaxyResource() {
-        checkGalaxyResource(downloader.downloadGalaxyResource("enabo"));
-    }
+  @Test
+  void parseGalaxyList() {
+  }
 
-    void checkGalaxyResource(GalaxyResource galaxyResource) {
-        assert(galaxyResource != null);
-        assert(galaxyResource.getName() != null);
-        assert(galaxyResource.getResourceType() != null);
-        assert(galaxyResource.getAttributes() != null);
-    }
+  @Test
+  void parseGalaxyResource() {
+    checkGalaxyResource(downloader.downloadGalaxyResource("enabo"));
+  }
+
+  private void checkGalaxyResource(GalaxyResource galaxyResource) {
+    assert (galaxyResource != null);
+    assert (galaxyResource.getName() != null);
+    assert (galaxyResource.getResourceType() != null);
+    assert (galaxyResource.getAttributes() != null);
+  }
 }

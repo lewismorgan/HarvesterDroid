@@ -18,25 +18,25 @@
 
 package io.github.waverunner.harvesterdroid.ui.dialog.about;
 
-
 import io.github.waverunner.harvesterdroid.ui.dialog.BaseDialog;
+
 import javafx.scene.control.ButtonType;
 
 public class AboutDialog extends BaseDialog {
 
-    public AboutDialog() {
-        super("About");
-    }
+  public AboutDialog() {
+    super("About");
+  }
 
-    @Override
-    protected ButtonType[] getButtonTypes() {
-        return new ButtonType[]{
-                ButtonType.CLOSE
-        };
-    }
+  @Override
+  protected ButtonType[] getButtonTypes() {
+    return new ButtonType[] {
+        ButtonType.CLOSE
+    };
+  }
 
-    @Override
-    protected boolean isController() {
-        return false;
-    }
+  @Override
+  protected boolean isController() {
+    return false;
+  }
 }

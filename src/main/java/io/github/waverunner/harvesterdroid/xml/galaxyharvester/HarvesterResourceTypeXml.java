@@ -20,70 +20,74 @@ package io.github.waverunner.harvesterdroid.xml.galaxyharvester;
 
 import io.github.waverunner.harvesterdroid.data.resources.ResourceType;
 import io.github.waverunner.harvesterdroid.xml.BaseXml;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.xml.sax.SAXException;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.xml.sax.SAXException;
+
 /**
- * Created by Waverunner on 4/3/2017
+ * Created by Waverunner on 4/3/2017.
  */
 public final class HarvesterResourceTypeXml extends BaseXml {
-    private Map<String, ResourceType> resourceTypeMap = new HashMap<>();
+  private Map<String, ResourceType> resourceTypeMap = new HashMap<>();
 
-    public HarvesterResourceTypeXml(DocumentBuilder documentBuilder) {
-        super(documentBuilder);
+  public HarvesterResourceTypeXml(DocumentBuilder documentBuilder) {
+    super(documentBuilder);
+  }
+
+  @SuppressWarnings("Duplicates")
+  @Override
+  protected void read(Element root) throws IOException, ParserConfigurationException, SAXException {
+    // <list_data>
+    List<String> ids = new ArrayList<>();
+    List<String> names = new ArrayList<>();
+    List<String> caps = new ArrayList<>();
+
+    processElement(root, node -> {
+      switch (node.getNodeName()) {
+        case "resource_type_values":
+          processElement(node, id -> ids.add(id.getTextContent()));
+          break;
+        case "resource_type_names":
+          processElement(node, name -> names.add(name.getTextContent()));
+
+          break;
+        case "resource_type_prop1":
+          processElement(node, cap -> caps.add(cap.getTextContent()));
+          break;
+        default: break;
+      }
+    });
+
+    if (ids.size() != names.size() || ids.size() != caps.size()) {
+      return;
     }
 
-    @SuppressWarnings("Duplicates")
-    @Override
-    protected void read(Element root) throws IOException, ParserConfigurationException, SAXException {
-        // <list_data>
-        List<String> ids = new ArrayList<>();
-        List<String> names = new ArrayList<>();
-        List<String> caps = new ArrayList<>();
+    for (int i = 0; i < ids.size(); i++) {
+      ResourceType resourceType = new ResourceType();
+      resourceType.setId(ids.get(i));
+      resourceType.setName(names.get(i));
 
-        processElement(root, node -> {
-            switch (node.getNodeName()) {
-                case "resource_type_values":
-                    processElement(node, id -> ids.add(id.getTextContent()));
-                    break;
-                case "resource_type_names":
-                    processElement(node, name -> names.add(name.getTextContent()));
-
-                    break;
-                case "resource_type_prop1":
-                    processElement(node, cap -> caps.add(cap.getTextContent()));
-                    break;
-            }
-        });
-
-        if (ids.size() != names.size() || ids.size() != caps.size())
-            return;
-
-        for (int i = 0; i < ids.size(); i++) {
-            ResourceType resourceType = new ResourceType();
-            resourceType.setId(ids.get(i));
-            resourceType.setName(names.get(i));
-
-            resourceTypeMap.put(ids.get(i), resourceType);
-        }
-        // </list_data>
+      resourceTypeMap.put(ids.get(i), resourceType);
     }
+    // </list_data>
+  }
 
-    @Override
-    protected void write(Document document) {
-        throw new UnsupportedOperationException();
-    }
+  @Override
+  protected void write(Document document) {
+    throw new UnsupportedOperationException();
+  }
 
-    public Map<String, ResourceType> getResourceTypeMap() {
-        return resourceTypeMap;
-    }
+  public Map<String, ResourceType> getResourceTypeMap() {
+    return resourceTypeMap;
+  }
 }

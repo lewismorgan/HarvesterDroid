@@ -18,30 +18,32 @@
 
 package io.github.waverunner.harvesterdroid.ui.scopes;
 
-import io.github.waverunner.harvesterdroid.data.schematics.Schematic;
 import de.saxsys.mvvmfx.Scope;
+
+import io.github.waverunner.harvesterdroid.data.schematics.Schematic;
+
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 
 /**
- * Created by Waverunner on 4/3/2017
+ * Created by Waverunner on 4/3/2017.
  */
 public class SchematicScope implements Scope {
-    public static final String UPDATE = "SchematicScope.Update";
-    public static final String ACTIVE = "SchematicScope.Active";
-    public static final String REFRESH = "SchematicScope.Refresh";
-    public static final String IMPORT = "SchematicScope.Import";
-    private ObjectProperty<Schematic> schematic = new SimpleObjectProperty<>();
+  public static final String UPDATE = "SchematicScope.Update";
+  public static final String ACTIVE = "SchematicScope.Active";
+  public static final String REFRESH = "SchematicScope.Refresh";
+  public static final String IMPORT = "SchematicScope.Import";
+  private ObjectProperty<Schematic> schematic = new SimpleObjectProperty<>();
 
-    public Schematic getSchematic() {
-        return schematic.get();
-    }
+  public Schematic getSchematic() {
+    return schematic.get();
+  }
 
-    public void setSchematic(Schematic schematic) {
-        this.schematic.set(schematic);
-    }
+  public void setSchematic(Schematic schematic) {
+    this.schematic.set(schematic);
+  }
 
-    public ObjectProperty<Schematic> schematicProperty() {
-        return schematic;
-    }
+  public ObjectProperty<Schematic> schematicProperty() {
+    return schematic;
+  }
 }

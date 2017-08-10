@@ -18,44 +18,45 @@
 
 package io.github.waverunner.harvesterdroid.xml.app;
 
+import java.util.List;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-import java.util.List;
 
 /**
- * Created by Waverunner on 4/6/2017
+ * Created by Waverunner on 4/6/2017.
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name = "themes")
 public class ThemesXml {
-    @XmlElement(name = "theme")
-    private List<Theme> themes;
+  @XmlElement(name = "theme")
+  private List<Theme> themes;
 
-    public List<Theme> getThemes() {
-        return themes;
+  public List<Theme> getThemes() {
+    return themes;
+  }
+
+  public void setThemes(List<Theme> themes) {
+    this.themes = themes;
+  }
+
+  @XmlAccessorType(XmlAccessType.FIELD)
+  @XmlRootElement(name = "theme")
+  public static class Theme {
+    @XmlAttribute(name = "name")
+    public String name;
+    @XmlAttribute(name = "path")
+    public String path;
+
+    public Theme() {
     }
 
-    public void setThemes(List<Theme> themes) {
-        this.themes = themes;
+    public Theme(String name, String path) {
+      this.name = name;
+      this.path = path;
     }
-
-    @XmlAccessorType(XmlAccessType.FIELD)
-    @XmlRootElement(name = "theme")
-    public static class Theme {
-        @XmlAttribute(name = "name")
-        public String name;
-        @XmlAttribute(name = "path")
-        public String path;
-
-        public Theme() {
-        }
-
-        public Theme(String name, String path) {
-            this.name = name;
-            this.path = path;
-        }
-    }
+  }
 }

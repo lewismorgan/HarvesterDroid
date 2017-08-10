@@ -20,42 +20,44 @@ package io.github.waverunner.harvesterdroid.ui.dialog.resource;
 
 import io.github.waverunner.harvesterdroid.data.resources.GalaxyResource;
 import io.github.waverunner.harvesterdroid.ui.dialog.BaseDialog;
+
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
 
 public class ResourceDialog extends BaseDialog<GalaxyResource> {
 
-    private static ButtonType ADD = new ButtonType("Add", ButtonBar.ButtonData.APPLY);
-    private static ResourceDialogController controller;
+  private static ButtonType ADD = new ButtonType("Add", ButtonBar.ButtonData.APPLY);
+  private static ResourceDialogController controller;
 
-    public ResourceDialog() {
-        super("Add Resource");
-    }
+  public ResourceDialog() {
+    super("Add Resource");
+  }
 
-    @Override
-    protected ButtonType[] getButtonTypes() {
-        return new ButtonType[]{
-                ADD,
-                ButtonType.CANCEL
-        };
-    }
+  @Override
+  protected ButtonType[] getButtonTypes() {
+    return new ButtonType[] {
+        ADD,
+        ButtonType.CANCEL
+    };
+  }
 
-    @Override
-    protected void createDialog() {
-        setResultConverter(buttonType -> {
-            if (buttonType != ADD)
-                return null;
-            controller.retrieveStats();
-            return controller.getGalaxyResource();
-        });
-    }
+  @Override
+  protected void createDialog() {
+    setResultConverter(buttonType -> {
+      if (buttonType != ADD) {
+        return null;
+      }
+      controller.retrieveStats();
+      return controller.getGalaxyResource();
+    });
+  }
 
-    @Override
-    protected boolean isController() {
-        return false;
-    }
+  @Override
+  protected boolean isController() {
+    return false;
+  }
 
-    public static void setController(ResourceDialogController controller) {
-        ResourceDialog.controller = controller;
-    }
+  public static void setController(ResourceDialogController controller) {
+    ResourceDialog.controller = controller;
+  }
 }

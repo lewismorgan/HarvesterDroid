@@ -20,26 +20,27 @@ package io.github.waverunner.harvesterdroid.xml.app;
 
 import io.github.waverunner.harvesterdroid.data.resources.GalaxyResource;
 
+import java.util.List;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-import java.util.List;
 
 /**
- * Created by Waverunner on 4/4/2017
+ * Created by Waverunner on 4/4/2017.
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name = "galaxy_resources")
 public class GalaxyResourcesXml {
-    @XmlElement(name = "galaxy_resource")
-    private List<GalaxyResource> galaxyResources;
+  @XmlElement(name = "galaxy_resource")
+  private List<GalaxyResource> galaxyResources;
 
-    public List<GalaxyResource> getGalaxyResources() {
-        return galaxyResources;
-    }
+  public List<GalaxyResource> getGalaxyResources() {
+    return galaxyResources;
+  }
 
-    public void setGalaxyResources(List<GalaxyResource> galaxyResources) {
-        this.galaxyResources = galaxyResources;
-    }
+  public void setGalaxyResources(List<GalaxyResource> galaxyResources) {
+    this.galaxyResources = galaxyResources;
+  }
 }

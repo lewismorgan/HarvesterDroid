@@ -18,47 +18,49 @@
 
 package io.github.waverunner.harvesterdroid.ui.inventory;
 
-import io.github.waverunner.harvesterdroid.ui.items.GalaxyResourceItemView;
-import io.github.waverunner.harvesterdroid.ui.items.GalaxyResourceItemViewModel;
 import de.saxsys.mvvmfx.FxmlView;
 import de.saxsys.mvvmfx.InjectViewModel;
 import de.saxsys.mvvmfx.utils.viewlist.CachedViewModelCellFactory;
+
+import io.github.waverunner.harvesterdroid.ui.items.GalaxyResourceItemView;
+import io.github.waverunner.harvesterdroid.ui.items.GalaxyResourceItemViewModel;
+
+import java.net.URL;
+import java.util.ResourceBundle;
+
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 
-import java.net.URL;
-import java.util.ResourceBundle;
-
 /**
- * Created by Waverunner on 4/3/2017
+ * Created by Waverunner on 4/3/2017.
  */
 public class InventoryView implements FxmlView<InventoryViewModel>, Initializable {
-    @FXML
-    private Button removeButton;
-    @FXML
-    private Button addButton;
+  @FXML
+  private Button removeButton;
+  @FXML
+  private Button addButton;
 
-    @InjectViewModel
-    private InventoryViewModel viewModel;
+  @InjectViewModel
+  private InventoryViewModel viewModel;
 
-    @FXML
-    private ListView<GalaxyResourceItemViewModel> listView;
+  @FXML
+  private ListView<GalaxyResourceItemViewModel> listView;
 
-    public void initialize(URL location, ResourceBundle resources) {
-        listView.disableProperty().bind(viewModel.inventoryProperty().emptyProperty());
-        listView.itemsProperty().bind(viewModel.inventoryProperty());
-        listView.setCellFactory(CachedViewModelCellFactory.createForFxmlView(GalaxyResourceItemView.class));
-        viewModel.selectedProperty().bind(listView.getSelectionModel().selectedItemProperty());
-        removeButton.disableProperty().bind(viewModel.getRemoveCommand().executableProperty().not());
-    }
+  public void initialize(URL location, ResourceBundle resources) {
+    listView.disableProperty().bind(viewModel.inventoryProperty().emptyProperty());
+    listView.itemsProperty().bind(viewModel.inventoryProperty());
+    listView.setCellFactory(CachedViewModelCellFactory.createForFxmlView(GalaxyResourceItemView.class));
+    viewModel.selectedProperty().bind(listView.getSelectionModel().selectedItemProperty());
+    removeButton.disableProperty().bind(viewModel.getRemoveCommand().executableProperty().not());
+  }
 
-    public void removeSelectedResource() {
-        viewModel.getRemoveCommand().execute();
-    }
+  public void removeSelectedResource() {
+    viewModel.getRemoveCommand().execute();
+  }
 
-    public void addGalaxyResource() {
-        viewModel.getAddCommand().execute();
-    }
+  public void addGalaxyResource() {
+    viewModel.getAddCommand().execute();
+  }
 }

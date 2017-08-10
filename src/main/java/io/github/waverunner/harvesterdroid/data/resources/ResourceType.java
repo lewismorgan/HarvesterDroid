@@ -18,6 +18,9 @@
 
 package io.github.waverunner.harvesterdroid.data.resources;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.xml.bind.annotation.XmlAccessType;
@@ -25,57 +28,55 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
- * Created by Waverunner on 3/23/2017
+ * Created by Waverunner on 3/23/2017.
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name = "resource_type")
 @Entity
 public class ResourceType {
-    @Id
-    @XmlAttribute(name = "id")
-    private String id;
-    @XmlAttribute(name = "name")
-    private String name;
-    @XmlElementWrapper(name = "min_max")
-    private Map<String, Integer> minMaxMap;
+  @Id
+  @XmlAttribute(name = "id")
+  private String id;
+  @XmlAttribute(name = "name")
+  private String name;
+  @XmlElementWrapper(name = "min_max")
+  private Map<String, Integer> minMaxMap;
 
-    public ResourceType() {
-        minMaxMap = new HashMap<>();
-    }
+  public ResourceType() {
+    minMaxMap = new HashMap<>();
+  }
 
-    public String getId() {
-        return id;
-    }
+  public String getId() {
+    return id;
+  }
 
-    public void setId(String id) {
-        this.id = id;
-    }
+  public void setId(String id) {
+    this.id = id;
+  }
 
-    public String getName() {
-        return name;
-    }
+  public String getName() {
+    return name;
+  }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+  public void setName(String name) {
+    this.name = name;
+  }
 
-    public Map<String, Integer> getMinMaxMap() {
-        return minMaxMap;
-    }
+  public Map<String, Integer> getMinMaxMap() {
+    return minMaxMap;
+  }
 
-    public void setMinMaxMap(Map<String, Integer> minMaxMap) {
-        this.minMaxMap = minMaxMap;
-    }
+  public void setMinMaxMap(Map<String, Integer> minMaxMap) {
+    this.minMaxMap = minMaxMap;
+  }
 
-    @Override
-    public String toString() {
-        return "ResourceType{" +
-                "id='" + id + '\'' +
-                ", name='" + name + '\'' +
-                '}';
-    }
+  @Override
+  public String toString() {
+    return "ResourceType{"
+        + "id='" + id + '\''
+        + ", name='" + name + '\''
+        + '}';
+  }
 }

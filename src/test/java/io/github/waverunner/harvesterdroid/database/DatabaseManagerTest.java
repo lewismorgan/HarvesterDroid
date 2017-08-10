@@ -22,43 +22,45 @@ import io.github.waverunner.harvesterdroid.app.HarvesterDroid;
 import io.github.waverunner.harvesterdroid.app.HarvesterDroidData;
 import io.github.waverunner.harvesterdroid.data.resources.GalaxyResource;
 import io.github.waverunner.harvesterdroid.downloaders.GalaxyHarvesterDownloader;
+
+import java.util.List;
+
+import javax.persistence.EntityManager;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import javax.persistence.EntityManager;
-import java.util.List;
-
 /**
- * Created by Waverunner on 4/10/2017
+ * Created by Waverunner on 4/10/2017.
  */
 class DatabaseManagerTest {
-    private HarvesterDroid harvesterDroid;
-    private DatabaseManager databaseManager;
+  private HarvesterDroid harvesterDroid;
+  private DatabaseManager databaseManager;
 
-    @BeforeEach
-    void setUp() {
-        databaseManager = new DatabaseManager();
-        harvesterDroid = new HarvesterDroid(new GalaxyHarvesterDownloader(HarvesterDroidData.ROOT_DIR, "48"), databaseManager);
-        harvesterDroid.updateResources();
+  @BeforeEach
+  void setUp() {
+    databaseManager = new DatabaseManager();
+    harvesterDroid = new HarvesterDroid(new GalaxyHarvesterDownloader(HarvesterDroidData.ROOT_DIR, "48"), databaseManager);
+    harvesterDroid.updateResources();
 
-    }
+  }
 
-    @Test
-    void getEntityManager() {
-        EntityManager entityManager = databaseManager.createDatabase("test");
+  @Test
+  void getEntityManager() {
+    EntityManager entityManager = databaseManager.createDatabase("test");
 
-        entityManager.getTransaction().begin();
-        harvesterDroid.getResources().forEach(entityManager::persist);
-        entityManager.getTransaction().commit();
+    entityManager.getTransaction().begin();
+    harvesterDroid.getResources().forEach(entityManager::persist);
+    entityManager.getTransaction().commit();
 
 
-    }
+  }
 
-    @Test
-    void getList() {
-        EntityManager entityManager = databaseManager.loadDatabase("test");
+  @Test
+  void getList() {
+    EntityManager entityManager = databaseManager.loadDatabase("test");
 
-        List<GalaxyResource> resources = DatabaseManager.getList(entityManager, GalaxyResource.class);
-        resources.forEach(System.out::println);
-    }
+    List<GalaxyResource> resources = DatabaseManager.getList(entityManager, GalaxyResource.class);
+    resources.forEach(System.out::println);
+  }
 }

@@ -21,6 +21,10 @@ package io.github.waverunner.harvesterdroid.ui.dialog.resource;
 import io.github.waverunner.harvesterdroid.Launcher;
 import io.github.waverunner.harvesterdroid.app.Attributes;
 import io.github.waverunner.harvesterdroid.data.resources.GalaxyResource;
+
+import java.net.URL;
+import java.util.ResourceBundle;
+
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.fxml.FXML;
@@ -33,78 +37,76 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
-import java.net.URL;
-import java.util.ResourceBundle;
-
 public class ResourceDialogController implements Initializable {
-    @FXML
-    TextField resourceTypeField;
-    @FXML
-    TextField nameField;
-    @FXML
-    HBox attributesGroup;
-    @FXML
-    Label infoRightLabel;
-    @FXML
-    Label infoLeftLabel;
-    @FXML
-    HBox infoGroup;
-    private ObjectProperty<GalaxyResource> galaxyResource = new SimpleObjectProperty<>();
+  @FXML
+  TextField resourceTypeField;
+  @FXML
+  TextField nameField;
+  @FXML
+  HBox attributesGroup;
+  @FXML
+  Label infoRightLabel;
+  @FXML
+  Label infoLeftLabel;
+  @FXML
+  HBox infoGroup;
+  private ObjectProperty<GalaxyResource> galaxyResource = new SimpleObjectProperty<>();
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        ResourceDialog.setController(this);
-        galaxyResource.addListener((observable, oldValue, newValue) -> {
-            if (newValue != null)
-                populateFromGalaxyResource(newValue);
-        });
+  @Override
+  public void initialize(URL location, ResourceBundle resources) {
+    ResourceDialog.setController(this);
+    galaxyResource.addListener((observable, oldValue, newValue) -> {
+      if (newValue != null) {
+        populateFromGalaxyResource(newValue);
+      }
+    });
+  }
+
+  private void populateFromGalaxyResource(GalaxyResource galaxyResource) {
+    attributesGroup.getChildren().clear();
+    resourceTypeField.setText(galaxyResource.getResourceType().getName());
+    Attributes.forEach((primary, secondary) -> bindAttribute(primary, galaxyResource.getAttributes().get(primary)));
+
+    if (galaxyResource.getDespawnDate() != null) {
+      infoLeftLabel.setText("Despawned on");
+      infoRightLabel.setText(galaxyResource.getDespawnDate().toString());
+    } else {
+      infoLeftLabel.setText("Available since");
+      infoRightLabel.setText(galaxyResource.getDate().toString());
+    }
+  }
+
+  private void bindAttribute(String attribute, int value) {
+    VBox group = new VBox();
+    group.setAlignment(Pos.CENTER);
+    group.setPadding(new Insets(5.0, 0, 0, 0));
+    group.disableProperty().set(value == -1);
+
+    Label nameLabel = new Label(Attributes.getAbbreviation(attribute));
+    nameLabel.setContentDisplay(ContentDisplay.CENTER);
+    group.getChildren().add(nameLabel);
+
+    Label valueLabel = new Label(value == -1 ? "--" : String.valueOf(value));
+    valueLabel.setContentDisplay(ContentDisplay.CENTER);
+    group.getChildren().add(valueLabel);
+
+    attributesGroup.getChildren().add(group);
+  }
+
+  public GalaxyResource getGalaxyResource() {
+    return galaxyResource.get();
+  }
+
+  public void retrieveStats() {
+    GalaxyResource galaxyResource = Launcher.getApp().retrieveGalaxyResource(nameField.getText());
+    if (galaxyResource == null) {
+      infoLeftLabel.setText("Couldn't find resource");
+      infoRightLabel.textProperty().unbind();
+      infoRightLabel.setText(nameField.getText());
+      nameField.setText(null);
+      return;
     }
 
-    private void populateFromGalaxyResource(GalaxyResource galaxyResource) {
-        attributesGroup.getChildren().clear();
-        resourceTypeField.setText(galaxyResource.getResourceType().getName());
-        Attributes.forEach((primary, secondary) -> bindAttribute(primary, galaxyResource.getAttributes().get(primary)));
-
-        if (galaxyResource.getDespawnDate() != null) {
-            infoLeftLabel.setText("Despawned on");
-            infoRightLabel.setText(galaxyResource.getDespawnDate().toString());
-        } else {
-            infoLeftLabel.setText("Available since");
-            infoRightLabel.setText(galaxyResource.getDate().toString());
-        }
-    }
-
-    private void bindAttribute(String attribute, int value) {
-        VBox group = new VBox();
-        group.setAlignment(Pos.CENTER);
-        group.setPadding(new Insets(5.0, 0, 0, 0));
-        group.disableProperty().set(value == -1);
-
-        Label nameLabel = new Label(Attributes.getAbbreviation(attribute));
-        nameLabel.setContentDisplay(ContentDisplay.CENTER);
-        group.getChildren().add(nameLabel);
-
-        Label valueLabel = new Label(value == -1 ? "--" : String.valueOf(value));
-        valueLabel.setContentDisplay(ContentDisplay.CENTER);
-        group.getChildren().add(valueLabel);
-
-        attributesGroup.getChildren().add(group);
-    }
-
-    public GalaxyResource getGalaxyResource() {
-        return galaxyResource.get();
-    }
-
-    public void retrieveStats() {
-        GalaxyResource galaxyResource = Launcher.getApp().retrieveGalaxyResource(nameField.getText());
-        if (galaxyResource == null) {
-            infoLeftLabel.setText("Couldn't find resource");
-            infoRightLabel.textProperty().unbind();
-            infoRightLabel.setText(nameField.getText());
-            nameField.setText(null);
-            return;
-        }
-
-        this.galaxyResource.set(galaxyResource);
-    }
+    this.galaxyResource.set(galaxyResource);
+  }
 }

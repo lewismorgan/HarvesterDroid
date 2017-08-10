@@ -24,48 +24,48 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- * Created by Waverunner on 3/31/2017
+ * Created by Waverunner on 3/31/2017.
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name = "resource")
 public class InventoryResource {
-    @XmlAttribute
-    private String name;
-    @XmlAttribute
-    private String tracker;
-    @XmlAttribute
-    private String galaxy;
+  @XmlAttribute
+  private String name;
+  @XmlAttribute
+  private String tracker;
+  @XmlAttribute
+  private String galaxy;
 
-    public InventoryResource() {
-    }
+  public InventoryResource() {
+  }
 
-    public InventoryResource(String name, String tracker, String galaxy) {
-        this.name = name;
-        this.tracker = tracker;
-        this.galaxy = galaxy;
-    }
+  public InventoryResource(String name, String tracker, String galaxy) {
+    this.name = name;
+    this.tracker = tracker;
+    this.galaxy = galaxy;
+  }
 
-    public String getName() {
-        return name;
-    }
+  public String getName() {
+    return name;
+  }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+  public void setName(String name) {
+    this.name = name;
+  }
 
-    public String getTracker() {
-        return tracker;
-    }
+  public String getTracker() {
+    return tracker;
+  }
 
-    public void setTracker(String tracker) {
-        this.tracker = tracker;
-    }
+  public void setTracker(String tracker) {
+    this.tracker = tracker;
+  }
 
-    public String getGalaxy() {
-        return galaxy;
-    }
+  public String getGalaxy() {
+    return galaxy;
+  }
 
-    public void setGalaxy(String galaxy) {
-        this.galaxy = galaxy;
-    }
+  public void setGalaxy(String galaxy) {
+    this.galaxy = galaxy;
+  }
 }

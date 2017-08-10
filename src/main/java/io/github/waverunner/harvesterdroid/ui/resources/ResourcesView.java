@@ -18,11 +18,16 @@
 
 package io.github.waverunner.harvesterdroid.ui.resources;
 
-import io.github.waverunner.harvesterdroid.ui.items.GalaxyResourceItemView;
-import io.github.waverunner.harvesterdroid.ui.items.GalaxyResourceItemViewModel;
 import de.saxsys.mvvmfx.FxmlView;
 import de.saxsys.mvvmfx.InjectViewModel;
 import de.saxsys.mvvmfx.utils.viewlist.CachedViewModelCellFactory;
+
+import io.github.waverunner.harvesterdroid.ui.items.GalaxyResourceItemView;
+import io.github.waverunner.harvesterdroid.ui.items.GalaxyResourceItemViewModel;
+
+import java.net.URL;
+import java.util.ResourceBundle;
+
 import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -31,45 +36,44 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.input.MouseButton;
 
-import java.net.URL;
-import java.util.ResourceBundle;
-
 /**
- * Created by Waverunner on 4/3/2017
+ * Created by Waverunner on 4/3/2017.
  */
 public class ResourcesView implements FxmlView<ResourcesViewModel>, Initializable {
 
-    @FXML
-    private CheckBox onlyAvailableCheckbox;
-    @FXML
-    private ListView<GalaxyResourceItemViewModel> listView;
+  @FXML
+  private CheckBox onlyAvailableCheckbox;
+  @FXML
+  private ListView<GalaxyResourceItemViewModel> listView;
 
-    @InjectViewModel
-    private ResourcesViewModel viewModel;
+  @InjectViewModel
+  private ResourcesViewModel viewModel;
 
-    public void initialize(URL location, ResourceBundle resources) {
+  public void initialize(URL location, ResourceBundle resources) {
 
-        listView.setCellFactory(CachedViewModelCellFactory.createForFxmlView(GalaxyResourceItemView.class));
-        listView.itemsProperty().bind(viewModel.resourcesProperty());
-        listView.addEventHandler(javafx.scene.input.MouseEvent.MOUSE_CLICKED, event -> {
-            if (event.getButton() == MouseButton.PRIMARY) {
-                if (event.getClickCount() >= 2) {
-                    viewModel.getFavoriteCommand().execute();
-                }
-            }
-        });
+    listView.setCellFactory(CachedViewModelCellFactory.createForFxmlView(GalaxyResourceItemView.class));
+    listView.itemsProperty().bind(viewModel.resourcesProperty());
+    listView.addEventHandler(javafx.scene.input.MouseEvent.MOUSE_CLICKED, event -> {
+      if (event.getButton() == MouseButton.PRIMARY) {
+        if (event.getClickCount() >= 2) {
+          viewModel.getFavoriteCommand().execute();
+        }
+      }
+    });
 
-        Label placeholder = new Label();
-        placeholder.textProperty().bind(viewModel.statusTextProperty());
-        listView.setPlaceholder(placeholder);
+    Label placeholder = new Label();
+    placeholder.textProperty().bind(viewModel.statusTextProperty());
+    listView.setPlaceholder(placeholder);
 
-        viewModel.selectedProperty().bind(listView.getSelectionModel().selectedItemProperty());
+    viewModel.selectedProperty().bind(listView.getSelectionModel().selectedItemProperty());
 
-        viewModel.showOnlyAvailableResourcesProperty().bind(onlyAvailableCheckbox.selectedProperty());
-        onlyAvailableCheckbox.disableProperty().bind(Bindings.when(Bindings.isEmpty(listView.getItems())).then(Bindings.isEmpty(viewModel.getGalaxyResources()))
-                .otherwise(false));
+    viewModel.showOnlyAvailableResourcesProperty().bind(onlyAvailableCheckbox.selectedProperty());
+    onlyAvailableCheckbox.disableProperty().bind(Bindings.when(Bindings.isEmpty(listView.getItems()))
+        .then(Bindings.isEmpty(viewModel.getGalaxyResources()))
+        .otherwise(false));
 
-        listView.disableProperty().bind(Bindings.when(Bindings.isEmpty(listView.getItems())).then(viewModel.galaxyResourcesProperty().emptyProperty())
-                .otherwise(false));
-    }
+    listView.disableProperty().bind(Bindings.when(Bindings.isEmpty(listView.getItems()))
+        .then(viewModel.galaxyResourcesProperty().emptyProperty())
+        .otherwise(false));
+  }
 }

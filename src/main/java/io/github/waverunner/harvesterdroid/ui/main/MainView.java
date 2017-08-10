@@ -18,9 +18,15 @@
 
 package io.github.waverunner.harvesterdroid.ui.main;
 
-import io.github.waverunner.harvesterdroid.DroidProperties;
 import de.saxsys.mvvmfx.FxmlView;
 import de.saxsys.mvvmfx.InjectViewModel;
+
+import io.github.waverunner.harvesterdroid.DroidProperties;
+
+import java.io.File;
+import java.net.URL;
+import java.util.ResourceBundle;
+
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -28,68 +34,67 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.MenuBar;
 import javafx.stage.FileChooser;
 import javafx.stage.WindowEvent;
+
 import org.controlsfx.control.StatusBar;
 
-import java.io.File;
-import java.net.URL;
-import java.util.ResourceBundle;
-
 /**
- * Created by Waverunner on 4/3/2017
+ * Created by Waverunner on 4/3/2017.
  */
 public class MainView implements FxmlView<MainViewModel>, Initializable {
 
-    @FXML
-    private StatusBar statusBar;
-    @FXML
-    private MenuBar menuBar;
+  @FXML
+  private StatusBar statusBar;
+  @FXML
+  private MenuBar menuBar;
 
-    @InjectViewModel
-    private MainViewModel viewModel;
+  @InjectViewModel
+  private MainViewModel viewModel;
 
-    public void initialize(URL location, ResourceBundle resources) {
-        statusBar.textProperty().bind(viewModel.statusTextProperty());
+  public void initialize(URL location, ResourceBundle resources) {
+    statusBar.textProperty().bind(viewModel.statusTextProperty());
 
-        viewModel.subscribe("StatusUpdate", (s, objects) -> Platform.runLater(() -> statusBar.setProgress(-1)));
+    viewModel.subscribe("StatusUpdate", (s, objects) -> Platform.runLater(() -> statusBar.setProgress(-1)));
 
-        viewModel.subscribe("StatusUpdate.Finished", (s, objects) -> Platform.runLater(() -> statusBar.setProgress(0)));
+    viewModel.subscribe("StatusUpdate.Finished", (s, objects) -> Platform.runLater(() -> statusBar.setProgress(0)));
+  }
+
+  public void save(ActionEvent actionEvent) {
+    viewModel.getSaveCommand().execute();
+  }
+
+  public void preferences(ActionEvent actionEvent) {
+    viewModel.getPreferencesCommand().execute();
+  }
+
+  public void close(ActionEvent actionEvent) {
+    menuBar.getScene().getWindow().fireEvent(new WindowEvent(menuBar.getScene().getWindow(), WindowEvent.WINDOW_CLOSE_REQUEST));
+  }
+
+  public void about(ActionEvent actionEvent) {
+    viewModel.getAboutCommand().execute();
+  }
+
+  public void importResources(ActionEvent actionEvent) {
+    viewModel.getImportResourcesCommand().execute();
+  }
+
+  public void importSchematics(ActionEvent actionEvent) {
+    FileChooser fileChooser = new FileChooser();
+    fileChooser.setTitle("Import Schematics");
+    String lastDir = DroidProperties.getString(DroidProperties.LAST_DIRECTORY);
+    if (!lastDir.isEmpty()) {
+      if (new File(lastDir).exists()) {
+        fileChooser.setInitialDirectory(new File(lastDir));
+      }
     }
+    fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Schematics", "*.xml"));
 
-    public void save(ActionEvent actionEvent) {
-        viewModel.getSaveCommand().execute();
+    File result = fileChooser.showOpenDialog(menuBar.getScene().getWindow());
+    if (result != null) {
+      if (result.getParent() != null) {
+        DroidProperties.set(DroidProperties.LAST_DIRECTORY, result.getParent());
+      }
+      viewModel.importSchematics(result);
     }
-
-    public void preferences(ActionEvent actionEvent) {
-        viewModel.getPreferencesCommand().execute();
-    }
-
-    public void close(ActionEvent actionEvent) {
-        menuBar.getScene().getWindow().fireEvent(new WindowEvent(menuBar.getScene().getWindow(), WindowEvent.WINDOW_CLOSE_REQUEST));
-    }
-
-    public void about(ActionEvent actionEvent) {
-        viewModel.getAboutCommand().execute();
-    }
-
-    public void importResources(ActionEvent actionEvent) {
-        viewModel.getImportResourcesCommand().execute();
-    }
-
-    public void importSchematics(ActionEvent actionEvent) {
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Import Schematics");
-        String lastDir = DroidProperties.getString(DroidProperties.LAST_DIRECTORY);
-        if (!lastDir.isEmpty()) {
-            if (new File(lastDir).exists())
-                fileChooser.setInitialDirectory(new File(lastDir));
-        }
-        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Schematics", "*.xml"));
-
-        File result = fileChooser.showOpenDialog(menuBar.getScene().getWindow());
-        if (result != null) {
-            if (result.getParent() != null)
-                DroidProperties.set(DroidProperties.LAST_DIRECTORY, result.getParent());
-            viewModel.importSchematics(result);
-        }
-    }
+  }
 }

@@ -18,8 +18,12 @@
 
 package io.github.waverunner.harvesterdroid.ui.items;
 
-import io.github.waverunner.harvesterdroid.data.resources.GalaxyResource;
 import de.saxsys.mvvmfx.ViewModel;
+
+import io.github.waverunner.harvesterdroid.data.resources.GalaxyResource;
+
+import java.io.InputStream;
+
 import javafx.beans.property.ReadOnlyMapProperty;
 import javafx.beans.property.ReadOnlyMapWrapper;
 import javafx.beans.property.ReadOnlyObjectProperty;
@@ -30,103 +34,103 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableMap;
 import javafx.scene.image.Image;
 
-import java.io.InputStream;
-
 /**
- * Created by Waverunner on 4/3/2017
+ * Created by Waverunner on 4/3/2017.
  */
 public class GalaxyResourceItemViewModel implements ViewModel {
-    private ReadOnlyStringWrapper name = new ReadOnlyStringWrapper();
-    private ReadOnlyStringWrapper type = new ReadOnlyStringWrapper();
-    private ReadOnlyStringWrapper planets = new ReadOnlyStringWrapper();
-    private ReadOnlyStringWrapper planetsTooltip = new ReadOnlyStringWrapper();
-    private ReadOnlyObjectWrapper<Image> image = new ReadOnlyObjectWrapper<>();
-    private ReadOnlyMapWrapper<String, Integer> attributes = new ReadOnlyMapWrapper<>();
-    private GalaxyResource galaxyResource;
+  private ReadOnlyStringWrapper name = new ReadOnlyStringWrapper();
+  private ReadOnlyStringWrapper type = new ReadOnlyStringWrapper();
+  private ReadOnlyStringWrapper planets = new ReadOnlyStringWrapper();
+  private ReadOnlyStringWrapper planetsTooltip = new ReadOnlyStringWrapper();
+  private ReadOnlyObjectWrapper<Image> image = new ReadOnlyObjectWrapper<>();
+  private ReadOnlyMapWrapper<String, Integer> attributes = new ReadOnlyMapWrapper<>();
+  private GalaxyResource galaxyResource;
 
-    public GalaxyResourceItemViewModel(GalaxyResource galaxyResource) {
-        this.galaxyResource = galaxyResource;
-        name.set(galaxyResource.getName());
-        type.set(galaxyResource.getResourceType().getName());
-        if (galaxyResource.getAttributes() == null)
-            System.err.println("Null attributes for " + galaxyResource.getName());
-        attributes.set(FXCollections.observableMap(galaxyResource.getAttributes()));
-        image.set(createImage(galaxyResource.getResourceType().getId()));
-        if (galaxyResource.getDespawnDate() == null) {
-            planets.set("  Spawns on " + galaxyResource.getPlanets().size() + (galaxyResource.getPlanets().size() == 1 ? " planet" : " planets"));
-            StringBuilder planetStrings = new StringBuilder();
-            for (String s : galaxyResource.getPlanets()) {
-                planetStrings.append("\n").append(s);
-            }
-
-            planetsTooltip.set("Available on:" + planetStrings.toString());
-        }
+  public GalaxyResourceItemViewModel(GalaxyResource galaxyResource) {
+    this.galaxyResource = galaxyResource;
+    name.set(galaxyResource.getName());
+    type.set(galaxyResource.getResourceType().getName());
+    if (galaxyResource.getAttributes() == null) {
+      System.err.println("Null attributes for " + galaxyResource.getName());
     }
+    attributes.set(FXCollections.observableMap(galaxyResource.getAttributes()));
+    image.set(createImage(galaxyResource.getResourceType().getId()));
+    if (galaxyResource.getDespawnDate() == null) {
+      planets.set("  Spawns on " + galaxyResource.getPlanets().size() + (galaxyResource.getPlanets().size() == 1 ? " planet" : " planets"));
+      StringBuilder planetStrings = new StringBuilder();
+      for (String s : galaxyResource.getPlanets()) {
+        planetStrings.append("\n").append(s);
+      }
 
-    private Image createImage(String container) {
-        if (container == null)
-            return null;
-        InputStream is = getClass().getResourceAsStream("/images/resources/" + container + ".png");
-        if (is == null) {
-            container = container.split("_")[0];
-            is = getClass().getResourceAsStream("/images/resources/" + container + ".png");
-            if (is == null) {
-                System.out.println("Could not find image /images/resources/" + container + ".png");
-                return null;
-            }
-        }
-        return new Image(is);
+      planetsTooltip.set("Available on:" + planetStrings.toString());
     }
+  }
 
-    public Image getImage() {
-        return image.get();
+  private Image createImage(String container) {
+    if (container == null) {
+      return null;
     }
+    InputStream is = getClass().getResourceAsStream("/images/resources/" + container + ".png");
+    if (is == null) {
+      container = container.split("_")[0];
+      is = getClass().getResourceAsStream("/images/resources/" + container + ".png");
+      if (is == null) {
+        System.out.println("Could not find image /images/resources/" + container + ".png");
+        return null;
+      }
+    }
+    return new Image(is);
+  }
 
-    public ReadOnlyObjectProperty<Image> imageProperty() {
-        return image;
-    }
+  public Image getImage() {
+    return image.get();
+  }
 
-    public String getName() {
-        return name.get();
-    }
+  public ReadOnlyObjectProperty<Image> imageProperty() {
+    return image;
+  }
 
-    public ReadOnlyStringProperty nameProperty() {
-        return name;
-    }
+  public String getName() {
+    return name.get();
+  }
 
-    public String getType() {
-        return type.get();
-    }
+  public ReadOnlyStringProperty nameProperty() {
+    return name;
+  }
 
-    public ReadOnlyStringProperty typeProperty() {
-        return type;
-    }
+  public String getType() {
+    return type.get();
+  }
 
-    public ObservableMap<String, Integer> getAttributes() {
-        return attributes.get();
-    }
+  public ReadOnlyStringProperty typeProperty() {
+    return type;
+  }
 
-    public ReadOnlyMapProperty<String, Integer> attributesProperty() {
-        return attributes;
-    }
+  public ObservableMap<String, Integer> getAttributes() {
+    return attributes.get();
+  }
 
-    public String getPlanets() {
-        return planets.get();
-    }
+  public ReadOnlyMapProperty<String, Integer> attributesProperty() {
+    return attributes;
+  }
 
-    public ReadOnlyStringProperty planetsProperty() {
-        return planets.getReadOnlyProperty();
-    }
+  public String getPlanets() {
+    return planets.get();
+  }
 
-    public String getPlanetsTooltip() {
-        return planetsTooltip.get();
-    }
+  public ReadOnlyStringProperty planetsProperty() {
+    return planets.getReadOnlyProperty();
+  }
 
-    public ReadOnlyStringProperty planetsTooltipProperty() {
-        return planetsTooltip.getReadOnlyProperty();
-    }
+  public String getPlanetsTooltip() {
+    return planetsTooltip.get();
+  }
 
-    public GalaxyResource getGalaxyResource() {
-        return galaxyResource;
-    }
+  public ReadOnlyStringProperty planetsTooltipProperty() {
+    return planetsTooltip.getReadOnlyProperty();
+  }
+
+  public GalaxyResource getGalaxyResource() {
+    return galaxyResource;
+  }
 }

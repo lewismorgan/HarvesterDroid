@@ -20,6 +20,13 @@ package io.github.waverunner.harvesterdroid.data.resources;
 
 import io.github.waverunner.harvesterdroid.app.Attributes;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.xml.bind.annotation.XmlAccessType;
@@ -28,124 +35,116 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 @XmlRootElement(name = "galaxy_resource")
 @XmlAccessorType(XmlAccessType.FIELD)
 @Entity
 public class GalaxyResource implements Serializable {
-    @Id
-    @XmlAttribute(name = "name")
-    private String name;
-    @XmlAttribute(name = "spawn_date")
-    private Date date;
-    @XmlAttribute(name = "container")
-    private String container;
-    @XmlAttribute(name = "despawn_date")
-    private Date despawnDate;
-    @XmlElementWrapper(name = "planets")
-    @XmlElement(name = "planet")
-    private List<String> planets;
-    @XmlElementWrapper(name = "attributes")
-    private Map<String, Integer> attributes;
+  @Id
+  @XmlAttribute(name = "name")
+  private String name;
+  @XmlAttribute(name = "spawn_date")
+  private Date date;
+  @XmlAttribute(name = "container")
+  private String container;
+  @XmlAttribute(name = "despawn_date")
+  private Date despawnDate;
+  @XmlElementWrapper(name = "planets")
+  @XmlElement(name = "planet")
+  private List<String> planets;
+  @XmlElementWrapper(name = "attributes")
+  private Map<String, Integer> attributes;
 
-    @XmlElement(name = "resource_type")
-    private ResourceType resourceType;
+  @XmlElement(name = "resource_type")
+  private ResourceType resourceType;
 
-    private transient String resourceTypeString;
+  private transient String resourceTypeString;
 
-    public GalaxyResource() {
-        planets = new ArrayList<>();
-        attributes = new HashMap<>(Attributes.size());
-        Attributes.forEach((primary, secondary) -> attributes.put(primary, -1));
+  public GalaxyResource() {
+    planets = new ArrayList<>();
+    attributes = new HashMap<>(Attributes.size());
+    Attributes.forEach((primary, secondary) -> attributes.put(primary, -1));
+  }
+
+  public String getName() {
+    return name;
+  }
+
+  public void setName(String name) {
+    this.name = name;
+  }
+
+  public Date getDate() {
+    return date;
+  }
+
+  public void setDate(Date date) {
+    this.date = date;
+  }
+
+  public ResourceType getResourceType() {
+    return resourceType;
+  }
+
+  public void setResourceType(ResourceType resourceType) {
+    this.resourceType = resourceType;
+  }
+
+  public String getContainer() {
+    return container;
+  }
+
+  public void setContainer(String container) {
+    this.container = container;
+  }
+
+  public Date getDespawnDate() {
+    return despawnDate;
+  }
+
+  public void setDespawnDate(Date despawnDate) {
+    this.despawnDate = despawnDate;
+  }
+
+  public List<String> getPlanets() {
+    return planets;
+  }
+
+  public void setPlanets(List<String> planets) {
+    this.planets = planets;
+  }
+
+  public Map<String, Integer> getAttributes() {
+    return attributes;
+  }
+
+  public void setAttributes(Map<String, Integer> attributes) {
+    this.attributes = attributes;
+  }
+
+  public String getResourceTypeString() {
+    if (resourceTypeString == null && resourceType != null) {
+      return resourceType.getId();
     }
+    return resourceTypeString;
+  }
 
-    public String getName() {
-        return name;
-    }
+  public void setResourceTypeString(String resourceTypeString) {
+    this.resourceTypeString = resourceTypeString;
+  }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Date getDate() {
-        return date;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
-    }
-
-    public ResourceType getResourceType() {
-        return resourceType;
-    }
-
-    public void setResourceType(ResourceType resourceType) {
-        this.resourceType = resourceType;
-    }
-
-    public String getContainer() {
-        return container;
-    }
-
-    public void setContainer(String container) {
-        this.container = container;
-    }
-
-    public Date getDespawnDate() {
-        return despawnDate;
-    }
-
-    public void setDespawnDate(Date despawnDate) {
-        this.despawnDate = despawnDate;
-    }
-
-    public List<String> getPlanets() {
-        return planets;
-    }
-
-    public void setPlanets(List<String> planets) {
-        this.planets = planets;
-    }
-
-    public Map<String, Integer> getAttributes() {
-        return attributes;
-    }
-
-    public void setAttributes(Map<String, Integer> attributes) {
-        this.attributes = attributes;
-    }
-
-    public String getResourceTypeString() {
-        if (resourceTypeString == null && resourceType != null)
-            return resourceType.getId();
-        return resourceTypeString;
-    }
-
-    public void setResourceTypeString(String resourceTypeString) {
-        this.resourceTypeString = resourceTypeString;
-    }
-
-    public void setAttribute(String attribute, int value) {
-        attributes.put(attribute, value);
-    }
+  public void setAttribute(String attribute, int value) {
+    attributes.put(attribute, value);
+  }
 
 
-    @Override
-    public String toString() {
-        return "GalaxyResource{" +
-                "name='" + name + '\'' +
-                ", resourceType='" + resourceType + '\'' +
-                ", container='" + container + '\'' +
-                '}';
-    }
+  @Override
+  public String toString() {
+    return "GalaxyResource{" + "name='" + name + '\'' + ", resourceType='" + resourceType + '\''
+        + ", container='" + container + '\'' + '}';
+  }
 
-    public int getAttribute(String name) {
-        return attributes.get(name);
-    }
+  public int getAttribute(String name) {
+    return attributes.get(name);
+  }
 }

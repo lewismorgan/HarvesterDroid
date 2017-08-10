@@ -18,88 +18,89 @@
 
 package io.github.waverunner.harvesterdroid.data.schematics;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
-import javax.xml.bind.annotation.XmlRootElement;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlRootElement;
+
 @XmlRootElement(name = "schematic")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Schematic {
-    private final transient String id;
+  private final transient String id;
 
-    @XmlAttribute
-    private String group;
-    @XmlAttribute
-    private String name;
+  @XmlAttribute
+  private String group;
+  @XmlAttribute
+  private String name;
 
-    @XmlElementWrapper(name = "resources")
-    @XmlElement(name = "resource")
-    private List<String> resources;
+  @XmlElementWrapper(name = "resources")
+  @XmlElement(name = "resource")
+  private List<String> resources;
 
-    @XmlElementWrapper(name = "modifiers")
-    @XmlElement(name = "modifier")
-    private Map<String, Integer> modifiers;
+  @XmlElementWrapper(name = "modifiers")
+  @XmlElement(name = "modifier")
+  private Map<String, Integer> modifiers;
 
-    public Schematic() {
-        this.id = UUID.randomUUID().toString();
-        this.group = "";
-        this.name = "";
-        this.resources = new ArrayList<>();
-        this.modifiers = new HashMap<>();
-    }
+  public Schematic() {
+    this.id = UUID.randomUUID().toString();
+    this.group = "";
+    this.name = "";
+    this.resources = new ArrayList<>();
+    this.modifiers = new HashMap<>();
+  }
 
-    public String getGroup() {
-        return group;
-    }
+  public String getGroup() {
+    return group;
+  }
 
-    public void setGroup(String group) {
-        this.group = group;
-    }
+  public void setGroup(String group) {
+    this.group = group;
+  }
 
-    public String getName() {
-        return name;
-    }
+  public String getName() {
+    return name;
+  }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+  public void setName(String name) {
+    this.name = name;
+  }
 
-    public List<String> getResources() {
-        return resources;
-    }
+  public List<String> getResources() {
+    return resources;
+  }
 
-    public void setResources(List<String> resources) {
-        this.resources = resources;
-    }
+  public void setResources(List<String> resources) {
+    this.resources = resources;
+  }
 
-    public String getId() {
-        return id;
-    }
+  public String getId() {
+    return id;
+  }
 
-    public Map<String, Integer> getModifiers() {
-        return modifiers;
-    }
+  public Map<String, Integer> getModifiers() {
+    return modifiers;
+  }
 
-    public void setModifiers(Map<String, Integer> modifiers) {
-        this.modifiers = modifiers;
-    }
+  public void setModifiers(Map<String, Integer> modifiers) {
+    this.modifiers = modifiers;
+  }
 
-    @Override
-    public String toString() {
-        return "Schematic{" +
-                "id='" + id + '\'' +
-                ", group='" + group + '\'' +
-                ", name='" + name + '\'' +
-                ", resources=" + resources +
-                ", modifiers=" + modifiers +
-                '}';
-    }
+  @Override
+  public String toString() {
+    return "Schematic{"
+        + "id='" + id + '\''
+        + ", group='" + group + '\''
+        + ", name='" + name + '\''
+        + ", resources=" + resources
+        + ", modifiers=" + modifiers
+        + '}';
+  }
 }

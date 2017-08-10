@@ -19,63 +19,69 @@
 package io.github.waverunner.harvesterdroid.xml.galaxyharvester;
 
 import io.github.waverunner.harvesterdroid.xml.BaseXml;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.xml.sax.SAXException;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.xml.sax.SAXException;
+
 /**
- * Created by Waverunner on 4/3/2017
+ * Created by Waverunner on 4/3/2017.
  */
 public class HarvesterResourceTypeGroupXml extends BaseXml {
-    private Map<String, List<String>> typeGroupMap = new HashMap<>();
+  private Map<String, List<String>> typeGroupMap = new HashMap<>();
 
-    public HarvesterResourceTypeGroupXml(DocumentBuilder documentBuilder) {
-        super(documentBuilder);
+  public HarvesterResourceTypeGroupXml(DocumentBuilder documentBuilder) {
+    super(documentBuilder);
+  }
+
+  @Override
+  protected void read(Element root) throws IOException, ParserConfigurationException, SAXException {
+    // <list_data>
+    List<String> ids = new ArrayList<>();
+    List<String> group = new ArrayList<>();
+
+    processElement(root, node -> {
+      switch (node.getNodeName()) {
+        case "resource_type_group_values":
+          processElement(node, id -> ids.add(id.getTextContent()));
+          break;
+        case "resource_type_group_names":
+          processElement(node, name -> group.add(name.getTextContent()));
+          break;
+        default:
+          break;
+      }
+    });
+
+    if (ids.size() != group.size()) {
+      return;
     }
 
-    @Override
-    protected void read(Element root) throws IOException, ParserConfigurationException, SAXException {
-        // <list_data>
-        List<String> ids = new ArrayList<>();
-        List<String> group = new ArrayList<>();
+    for (int i = 0; i < ids.size(); i++) {
+      if (!typeGroupMap.containsKey(group.get(i))) {
+        typeGroupMap.put(group.get(i), new ArrayList<>());
+      }
 
-        processElement(root, node -> {
-            switch (node.getNodeName()) {
-                case "resource_type_group_values":
-                    processElement(node, id -> ids.add(id.getTextContent()));
-                    break;
-                case "resource_type_group_names":
-                    processElement(node, name -> group.add(name.getTextContent()));
-                    break;
-            }
-        });
-
-        if (ids.size() != group.size())
-            return;
-
-        for (int i = 0; i < ids.size(); i++) {
-            if (!typeGroupMap.containsKey(group.get(i)))
-                typeGroupMap.put(group.get(i), new ArrayList<>());
-
-            typeGroupMap.get(group.get(i)).add(ids.get(i));
-        }
-        // </list_data>
+      typeGroupMap.get(group.get(i)).add(ids.get(i));
     }
+    // </list_data>
+  }
 
-    @Override
-    protected void write(Document document) {
-        throw new UnsupportedOperationException();
-    }
+  @Override
+  protected void write(Document document) {
+    throw new UnsupportedOperationException();
+  }
 
-    public Map<String, List<String>> getTypeGroupMap() {
-        return typeGroupMap;
-    }
+  public Map<String, List<String>> getTypeGroupMap() {
+    return typeGroupMap;
+  }
 }

@@ -22,39 +22,39 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 /**
- * Created by Waverunner on 4/3/2017
+ * Created by Waverunner on 4/3/2017.
  */
 class HarvesterDroidTest {
-    @BeforeEach
-    void setUp() {
-    }
+  @BeforeEach
+  void setUp() {
+  }
 
-    @Test
-    void getBestResourcesList() {
-    }
+  @Test
+  void getBestResourcesList() {
+  }
 
-    @Test
-    void collectBestResourceForSchematic() {
-    }
+  @Test
+  void collectBestResourceForSchematic() {
+  }
 
-    @Test
-    void findGalaxyResourcesById() {
-    }
+  @Test
+  void findGalaxyResourcesById() {
+  }
 
-    @Test
-    void getGalaxyResource() {
-    }
+  @Test
+  void getGalaxyResource() {
+  }
 
-    @Test
-    void retrieveGalaxyResource() {
-    }
+  @Test
+  void retrieveGalaxyResource() {
+  }
 
-    @Test
-    void loadSchematics() {
-    }
+  @Test
+  void loadSchematics() {
+  }
 
-    @Test
-    void loadInventory() {
-    }
+  @Test
+  void loadInventory() {
+  }
 
 }

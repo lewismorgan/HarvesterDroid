@@ -7,6 +7,7 @@
  */
 
 // Apply the java plugin to add support for Java
+apply plugin: 'checkstyle'
 apply plugin: 'java'
 apply plugin: 'javafx-gradle-plugin'
 
@@ -22,6 +23,10 @@ buildscript {
 repositories {
     jcenter()
 }
+
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
 
 dependencies {
     compile project(':Preloader')
@@ -52,4 +57,9 @@ jfx {
             // dont bundle JRE (not recommended, but increases build-size/-speed)
             runtime: null
     ]
+}
+
+checkstyle {
+    configFile = new File(rootDir, "checkstyle.xml")
+    toolVersion ="8.1"
 }
