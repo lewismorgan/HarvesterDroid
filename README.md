@@ -1,5 +1,6 @@
-![header image](Preloader/src/main/resources/images/HarvesterDroid_Header.png)
+![header image](loader/src/main/resources/images/HarvesterDroid_Header.png)
 =====================================================================
+[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](http://paypal.me/HiImLewis/5)
 
 HarvesterDroid is intended to be a simple resource tracking and management tool for Star Wars Galaxies. The core goal of HarvesterDroid is to obtain the latest resources and compare them across your stashed inventory resources. In the end, HarvesterDroid has been programmed from the ground up to be easily modified for tracking from multiple resource websites that provide XML exports.
 
@@ -132,4 +133,4 @@ HarvesterDroid is licensed under the GNU GPLv3 license. Meaning you can freely u
 Gradle is this projects dependency and build manager. In order to build the project, simply run './gradlew' in your command line. Built using Java 8u141.
 Checkstyle is used to check quality of code, based off of Google Java Style with a minor exception to line length (150 instead of 100).
 
-I will shamelessly plug in a PayPal.me link [here](http://paypal.me/HiImLewis/5), do with it what you will
+Like HarvesterDroid and want to buy me a cup of coffee? [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](http://paypal.me/HiImLewis/5)
