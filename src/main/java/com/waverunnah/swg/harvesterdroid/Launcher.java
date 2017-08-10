@@ -31,6 +31,8 @@ import com.waverunnah.swg.harvesterdroid.xml.app.ThemesXml;
 import de.saxsys.mvvmfx.FluentViewLoader;
 import de.saxsys.mvvmfx.easydi.MvvmfxEasyDIApplication;
 import eu.lestard.easydi.EasyDI;
+import io.github.waverunner.harvesterdroid.LauncherPreloader;
+import io.github.waverunner.harvesterdroid.PreloaderStatusNotification;
 import javafx.application.Platform;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
