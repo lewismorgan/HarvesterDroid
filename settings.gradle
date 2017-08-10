@@ -8,6 +8,7 @@
  * in the user guide at https://docs.gradle.org/4.0.2/userguide/multi_project_builds.html
  */
 
-include 'Preloader'
+include 'api'
+include 'loader'
 
 rootProject.name = 'harvesterdroid'
