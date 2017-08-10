@@ -8,13 +8,6 @@
  * in the user guide at https://docs.gradle.org/4.0.2/userguide/multi_project_builds.html
  */
 
-/*
-// To declare projects as part of a multi-project build use the 'include' method
-include 'shared'
-include 'api'
-include 'services:webservice'
-*/
-
 include 'Preloader'
 
 rootProject.name = 'harvesterdroid'

@@ -16,7 +16,6 @@ buildscript {
     }
     repositories {
         jcenter()
-
     }
 }
 
@@ -41,11 +40,11 @@ dependencies {
 
 jfx {
     // minimal requirement for jfxJar-task
-    mainClass = 'com.waverunnah.swg.harvesterdroid.Launcher'
+    mainClass = 'io.github.waverunner.harvesterdroid.Launcher'
     libFolderName = 'lib'
 
     // gradle jfxJar
-    preLoader = 'com.waverunnah.swg.harvesterdroid.LauncherPreloader' // String
+    preLoader = 'io.github.waverunner.harvesterdroid.LauncherPreloader' // String
 
     // gradle jfxNative
     vendor = 'Waverunner'
