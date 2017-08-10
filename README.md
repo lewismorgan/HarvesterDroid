@@ -18,8 +18,12 @@ Programmed with love by Waverunner <3
 
 ### Future
 
-* Finalize support for use with other tracking websites (80% done!)
-* Add tracking from SWGCraft
+* Finalize support for use with other tracking websites
+* Add basic tracking from SWGCraft
+* Refactor out specific classes to api sub-module for easy implementation of other websites
+* Use JSON for many of the settings instead of XML for faster processing
+* Use of resource data from multiple tracking websites for a single galaxy with precedence
+    * Export of a resource stats in an acceptable format for that site for import
 
 # Getting Started
 Setting up HarvesterDroid is simple! By default, HarvesterDroid will load SWGLegends as the default galaxy. You can easily change this in the preferences, along with the save settings and the theme.
@@ -121,6 +125,11 @@ Credits to the following, wouldn't be possible for HarvesterDroid to exist
 * LucasArts for the beauty that is Star Wars
 * controls(fx), flexmark, mvvmfx
 
-HarvesterDroid is licensed under the GNU GPLv3 license. Meaning you can freely use this program, I just ask that you provide credit and make your work open source.
+### Contributing
+
+HarvesterDroid is licensed under the GNU GPLv3 license. Meaning you can freely use this program according to the terms of the license. I also ask that you provide credit and make your work open source if it's based on this code.
+
+Gradle is this projects dependency and build manager. In order to build the project, simply run './gradlew' in your command line. Built using Java 8u141.
+Checkstyle is used to check quality of code, based off of Google Java Style with a minor exception to line length (150 instead of 100).
 
 I will shamelessly plug in a PayPal.me link [here](http://paypal.me/HiImLewis/5), do with it what you will

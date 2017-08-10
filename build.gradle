@@ -1,24 +1,47 @@
-apply plugin: 'checkstyle'
-apply plugin: 'java'
+// Build for all/sub-projects
+allprojects {
+    apply plugin: 'java'
+    apply plugin: 'checkstyle'
+
+    version = '1.0.1'
+
+    repositories {
+        jcenter()
+    }
+
+    checkstyle {
+        configFile = new File(rootDir, "checkstyle.xml")
+        toolVersion ="8.1"
+    }
+}
+
+subprojects {
+    group = 'io.github.waverunner.harvesterdroid'
+
+    jar {
+        appendix = 'haversterdroid'
+    }
+}
+
+// Applies to main application only
+
+group = 'io.github.waverunner'
+description = 'Manage your resources across a number of Star Wars Galaxies resource trackers'
+
 apply plugin: 'javafx-gradle-plugin'
 
 buildscript {
     dependencies {
         classpath 'de.dynamicfiles.projects.gradle.plugins:javafx-gradle-plugin:8.8.2'
     }
+
     repositories {
         jcenter()
     }
 }
 
-repositories {
-    jcenter()
-}
-
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
-
 dependencies {
+    compile project(':api')
     compile project(':loader')
     compile 'de.saxsys:mvvmfx:1.6.0'
     compile 'de.saxsys:mvvmfx-easydi:1.6.0'
@@ -35,7 +58,7 @@ dependencies {
 
 jfx {
     // minimal requirement for jfxJar-task
-    jfxMainAppJarName = 'harvesterdroid-app.jar'
+    jfxMainAppJarName = 'harvesterdroid.jar'
     mainClass = 'io.github.waverunner.harvesterdroid.Launcher'
     libFolderName = 'lib'
 
@@ -45,12 +68,8 @@ jfx {
     // gradle jfxNative
     vendor = 'Waverunner'
     bundleArguments = [
-            // dont bundle JRE (not recommended, but increases build-size/-speed)
             runtime: null
     ]
 }
 
-checkstyle {
-    configFile = new File(rootDir, "checkstyle.xml")
-    toolVersion ="8.1"
-}
+build.finalizedBy('jfxJar')
