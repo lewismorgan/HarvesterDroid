@@ -23,6 +23,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+// TODO Refactor how attributes are managed, ultimately you should be able to add/remove attribute types
+@Deprecated
 public class Attributes {
   private static Map<String, String> primary = new HashMap<String, String>() {
     {
