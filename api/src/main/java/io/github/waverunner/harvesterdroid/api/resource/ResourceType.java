@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package io.github.waverunner.harvesterdroid.data.resources;
+package io.github.waverunner.harvesterdroid.api.resource;
 
 import java.util.HashMap;
 import java.util.Map;

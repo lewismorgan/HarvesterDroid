@@ -1,0 +1,16 @@
+{
+  "themes": [
+    {
+      "name": "Java",
+      "path": "/css/modena.css"
+    },
+    {
+      "name": "Imperial",
+      "path": "/css/imperial.css"
+    },
+    {
+      "name": "Flat Droid",
+      "path": "/css/flat_droid.css"
+    }
+  ]
+}

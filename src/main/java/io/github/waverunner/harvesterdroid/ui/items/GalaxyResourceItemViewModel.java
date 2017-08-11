@@ -20,7 +20,7 @@ package io.github.waverunner.harvesterdroid.ui.items;
 
 import de.saxsys.mvvmfx.ViewModel;
 
-import io.github.waverunner.harvesterdroid.data.resources.GalaxyResource;
+import io.github.waverunner.harvesterdroid.api.resource.GalaxyResource;
 
 import java.io.InputStream;
 

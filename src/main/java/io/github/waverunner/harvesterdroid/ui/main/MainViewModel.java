@@ -30,15 +30,15 @@ import de.saxsys.mvvmfx.utils.commands.DelegateCommand;
 
 import io.github.waverunner.harvesterdroid.DroidProperties;
 import io.github.waverunner.harvesterdroid.app.HarvesterDroid;
-import io.github.waverunner.harvesterdroid.data.resources.GalaxyResource;
+import io.github.waverunner.harvesterdroid.api.resource.GalaxyResource;
 import io.github.waverunner.harvesterdroid.ui.dialog.about.AboutDialog;
 import io.github.waverunner.harvesterdroid.ui.dialog.preferences.PreferencesDialog;
 import io.github.waverunner.harvesterdroid.ui.dialog.resource.ImportResourcesDialog;
 import io.github.waverunner.harvesterdroid.ui.scopes.GalaxyScope;
 import io.github.waverunner.harvesterdroid.ui.scopes.ResourceScope;
 import io.github.waverunner.harvesterdroid.ui.scopes.SchematicScope;
-import io.github.waverunner.harvesterdroid.xml.XmlFactory;
-import io.github.waverunner.harvesterdroid.xml.app.SchematicsXml;
+import io.github.waverunner.harvesterdroid.api.xml.XmlFactory;
+import io.github.waverunner.harvesterdroid.xml.SchematicsXml;
 
 import java.io.File;
 import java.io.FileInputStream;

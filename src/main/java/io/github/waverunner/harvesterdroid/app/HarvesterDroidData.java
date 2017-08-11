@@ -18,7 +18,7 @@
 
 package io.github.waverunner.harvesterdroid.app;
 
-import io.github.waverunner.harvesterdroid.data.resources.ResourceType;
+import io.github.waverunner.harvesterdroid.api.resource.ResourceType;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;

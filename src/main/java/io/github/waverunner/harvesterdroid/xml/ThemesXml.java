@@ -16,32 +16,47 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package io.github.waverunner.harvesterdroid.xml.app;
-
-import io.github.waverunner.harvesterdroid.data.schematics.Schematic;
+package io.github.waverunner.harvesterdroid.xml;
 
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- * Created by Waverunner on 3/31/2017.
+ * Created by Waverunner on 4/6/2017.
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlRootElement(name = "schematics")
-public class SchematicsXml {
-  @XmlElement(name = "schematic")
-  private List<Schematic> schematics;
+@XmlRootElement(name = "themes")
+public class ThemesXml {
+  @XmlElement(name = "theme")
+  private List<Theme> themes;
 
-  public List<Schematic> getSchematics() {
-    return schematics;
+  public List<Theme> getThemes() {
+    return themes;
   }
 
-  public void setSchematics(List<Schematic> schematics) {
-    this.schematics = schematics;
+  public void setThemes(List<Theme> themes) {
+    this.themes = themes;
   }
 
+  @XmlAccessorType(XmlAccessType.FIELD)
+  @XmlRootElement(name = "theme")
+  public static class Theme {
+    @XmlAttribute(name = "name")
+    public String name;
+    @XmlAttribute(name = "path")
+    public String path;
+
+    public Theme() {
+    }
+
+    public Theme(String name, String path) {
+      this.name = name;
+      this.path = path;
+    }
+  }
 }

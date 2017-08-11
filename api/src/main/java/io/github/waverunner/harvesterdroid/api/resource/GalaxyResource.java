@@ -16,9 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package io.github.waverunner.harvesterdroid.data.resources;
-
-import io.github.waverunner.harvesterdroid.app.Attributes;
+package io.github.waverunner.harvesterdroid.api.resource;
 
 import java.io.Serializable;
 import java.util.ArrayList;

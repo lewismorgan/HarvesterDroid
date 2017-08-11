@@ -16,11 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package io.github.waverunner.harvesterdroid.xml.app;
+package io.github.waverunner.harvesterdroid.trackers.galaxyharvester.xml;
 
-import io.github.waverunner.harvesterdroid.data.resources.InventoryResource;
+import io.github.waverunner.harvesterdroid.api.resource.GalaxyResource;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -28,17 +27,20 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+/**
+ * Created by Waverunner on 4/4/2017.
+ */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlRootElement(name = "inventory")
-public class InventoryXml {
-  @XmlElement(name = "resource")
-  private List<InventoryResource> inventory = new ArrayList<>();
+@XmlRootElement(name = "galaxy_resources")
+public class GalaxyResourcesXml {
+  @XmlElement(name = "galaxy_resource")
+  private List<GalaxyResource> galaxyResources;
 
-  public List<InventoryResource> getInventory() {
-    return inventory;
+  public List<GalaxyResource> getGalaxyResources() {
+    return galaxyResources;
   }
 
-  public void setInventory(List<InventoryResource> inventory) {
-    this.inventory = inventory;
+  public void setGalaxyResources(List<GalaxyResource> galaxyResources) {
+    this.galaxyResources = galaxyResources;
   }
 }

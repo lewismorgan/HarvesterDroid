@@ -33,12 +33,12 @@ import eu.lestard.easydi.EasyDI;
 import io.github.waverunner.harvesterdroid.app.HarvesterDroid;
 import io.github.waverunner.harvesterdroid.app.Watcher;
 import io.github.waverunner.harvesterdroid.database.DatabaseManager;
-import io.github.waverunner.harvesterdroid.downloaders.Downloader;
-import io.github.waverunner.harvesterdroid.downloaders.GalaxyHarvesterDownloader;
+import io.github.waverunner.harvesterdroid.api.Downloader;
+import io.github.waverunner.harvesterdroid.trackers.galaxyharvester.GalaxyHarvesterDownloader;
 import io.github.waverunner.harvesterdroid.ui.dialog.ExceptionDialog;
 import io.github.waverunner.harvesterdroid.ui.main.MainView;
-import io.github.waverunner.harvesterdroid.xml.XmlFactory;
-import io.github.waverunner.harvesterdroid.xml.app.ThemesXml;
+import io.github.waverunner.harvesterdroid.api.xml.XmlFactory;
+import io.github.waverunner.harvesterdroid.xml.ThemesXml;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -102,8 +102,6 @@ public class Launcher extends MvvmfxEasyDIApplication {
 
     DEBUG = DroidProperties.getBoolean(DroidProperties.DEBUG);
 
-    // TODO Decide what downloader to use based on preferences
-
     // TODO "Blank Slate" state where no tracker is loaded, will help abstract away GalaxyHarvester dependencies
 
     if (!new File(ROOT_DIR).exists()) {
@@ -125,6 +123,7 @@ public class Launcher extends MvvmfxEasyDIApplication {
       app.loadSchematics(new FileInputStream(new File(XML_SCHEMATICS)));
     }
     if (new File(XML_INVENTORY).exists()) {
+      // TODO Loading inventory relies on "getGalaxyResource", however it wont work if nothing is loaded
       app.loadInventory(new FileInputStream(new File(XML_INVENTORY)));
     }
     updateLoadingProgress("Punch it Chewie!", -1);

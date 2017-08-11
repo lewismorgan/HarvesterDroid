@@ -16,12 +16,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package io.github.waverunner.harvesterdroid.xml.galaxyharvester;
+package io.github.waverunner.harvesterdroid.trackers.galaxyharvester;
 
-import io.github.waverunner.harvesterdroid.app.Attributes;
-import io.github.waverunner.harvesterdroid.data.resources.GalaxyResource;
-import io.github.waverunner.harvesterdroid.ui.dialog.ExceptionDialog;
-import io.github.waverunner.harvesterdroid.xml.app.ResourceXml;
+import io.github.waverunner.harvesterdroid.api.resource.Attributes;
+import io.github.waverunner.harvesterdroid.api.resource.GalaxyResource;
+import io.github.waverunner.harvesterdroid.trackers.galaxyharvester.xml.ResourceXml;
 
 import java.io.IOException;
 import java.text.DateFormat;
@@ -107,7 +106,7 @@ public class HarvesterResourceXml extends ResourceXml {
       int value = Integer.parseInt(text);
       galaxyResource.setAttribute(Attributes.getFullName(node.getNodeName()), value);
     } catch (NumberFormatException e) {
-      ExceptionDialog.display(e);
+      throw new RuntimeException("Failed to parse the attribute");
     }
   }
 

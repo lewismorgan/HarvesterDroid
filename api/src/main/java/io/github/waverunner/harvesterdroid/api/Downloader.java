@@ -16,10 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package io.github.waverunner.harvesterdroid.downloaders;
+package io.github.waverunner.harvesterdroid.api;
 
-import io.github.waverunner.harvesterdroid.data.resources.GalaxyResource;
-import io.github.waverunner.harvesterdroid.data.resources.ResourceType;
+import io.github.waverunner.harvesterdroid.api.resource.GalaxyResource;
+import io.github.waverunner.harvesterdroid.api.resource.ResourceType;
 
 import java.io.File;
 import java.io.FileInputStream;

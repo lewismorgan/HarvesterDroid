@@ -16,9 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package io.github.waverunner.harvesterdroid.xml.galaxyharvester;
+package io.github.waverunner.harvesterdroid.trackers.galaxyharvester;
 
-import io.github.waverunner.harvesterdroid.xml.BaseXml;
+import io.github.waverunner.harvesterdroid.api.xml.BaseXml;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -34,44 +34,48 @@ import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 
 /**
- * Created by Waverunner on 4/3/2017.
+ * Created by Waverunner on 4/1/17.
  */
-public class HarvesterResourceTypeGroupXml extends BaseXml {
-  private Map<String, List<String>> typeGroupMap = new HashMap<>();
+public class HarvesterGalaxyListXml extends BaseXml {
+  private Map<String, String> galaxyList = new HashMap<>();
 
-  public HarvesterResourceTypeGroupXml(DocumentBuilder documentBuilder) {
+  public HarvesterGalaxyListXml(DocumentBuilder documentBuilder) {
     super(documentBuilder);
   }
 
   @Override
   protected void read(Element root) throws IOException, ParserConfigurationException, SAXException {
     // <list_data>
-    List<String> ids = new ArrayList<>();
-    List<String> group = new ArrayList<>();
+    List<String> galaxyIds = new ArrayList<>();
+    List<String> galaxyNames = new ArrayList<>();
+    List<String> galaxyActive = new ArrayList<>();
 
     processElement(root, node -> {
       switch (node.getNodeName()) {
-        case "resource_type_group_values":
-          processElement(node, id -> ids.add(id.getTextContent()));
+        case "galaxy_values":
+          processElement(node, galaxyValue -> galaxyIds.add(galaxyValue.getTextContent()));
           break;
-        case "resource_type_group_names":
-          processElement(node, name -> group.add(name.getTextContent()));
+        case "galaxy_names":
+          processElement(node, galaxyName -> galaxyNames.add(galaxyName.getTextContent()));
+
+          break;
+        case "galaxy_prop1":
+          processElement(node, galaxyProp -> galaxyActive.add(galaxyProp.getTextContent()));
           break;
         default:
           break;
       }
     });
 
-    if (ids.size() != group.size()) {
+    if (galaxyIds.size() != galaxyNames.size() || galaxyIds.size() != galaxyActive.size()) {
       return;
     }
 
-    for (int i = 0; i < ids.size(); i++) {
-      if (!typeGroupMap.containsKey(group.get(i))) {
-        typeGroupMap.put(group.get(i), new ArrayList<>());
+    for (int i = 0; i < galaxyIds.size(); i++) {
+      if (!galaxyActive.get(i).equals("Active")) {
+        continue;
       }
-
-      typeGroupMap.get(group.get(i)).add(ids.get(i));
+      galaxyList.put(galaxyIds.get(i), galaxyNames.get(i));
     }
     // </list_data>
   }
@@ -81,7 +85,7 @@ public class HarvesterResourceTypeGroupXml extends BaseXml {
     throw new UnsupportedOperationException();
   }
 
-  public Map<String, List<String>> getTypeGroupMap() {
-    return typeGroupMap;
+  public Map<String, String> getGalaxyList() {
+    return galaxyList;
   }
 }

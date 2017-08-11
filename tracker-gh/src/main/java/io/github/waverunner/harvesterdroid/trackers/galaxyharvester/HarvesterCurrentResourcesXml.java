@@ -16,10 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package io.github.waverunner.harvesterdroid.xml.galaxyharvester;
+package io.github.waverunner.harvesterdroid.trackers.galaxyharvester;
 
-import io.github.waverunner.harvesterdroid.data.resources.GalaxyResource;
-import io.github.waverunner.harvesterdroid.xml.app.CurrentResourcesXml;
+import io.github.waverunner.harvesterdroid.api.resource.GalaxyResource;
+import io.github.waverunner.harvesterdroid.trackers.galaxyharvester.xml.CurrentResourcesXml;
 
 import java.io.IOException;
 import java.text.DateFormat;

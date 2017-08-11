@@ -16,9 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package io.github.waverunner.harvesterdroid.xml.galaxyharvester;
+package io.github.waverunner.harvesterdroid.trackers.galaxyharvester;
 
-import io.github.waverunner.harvesterdroid.xml.BaseXml;
+import io.github.waverunner.harvesterdroid.api.resource.ResourceType;
+import io.github.waverunner.harvesterdroid.api.xml.BaseXml;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -34,49 +35,52 @@ import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 
 /**
- * Created by Waverunner on 4/1/17.
+ * Created by Waverunner on 4/3/2017.
  */
-public class HarvesterGalaxyListXml extends BaseXml {
-  private Map<String, String> galaxyList = new HashMap<>();
+public class HarvesterResourceGroupXml extends BaseXml {
+  private Map<String, ResourceType> resourceTypeMap = new HashMap<>();
 
-  public HarvesterGalaxyListXml(DocumentBuilder documentBuilder) {
+  public HarvesterResourceGroupXml(DocumentBuilder documentBuilder) {
     super(documentBuilder);
   }
 
+  @SuppressWarnings("Duplicates")
   @Override
   protected void read(Element root) throws IOException, ParserConfigurationException, SAXException {
     // <list_data>
-    List<String> galaxyIds = new ArrayList<>();
-    List<String> galaxyNames = new ArrayList<>();
-    List<String> galaxyActive = new ArrayList<>();
+    List<String> ids = new ArrayList<>();
+    List<String> names = new ArrayList<>();
+    List<String> caps = new ArrayList<>();
 
     processElement(root, node -> {
       switch (node.getNodeName()) {
-        case "galaxy_values":
-          processElement(node, galaxyValue -> galaxyIds.add(galaxyValue.getTextContent()));
+        case "resource_group_values":
+          processElement(node, id -> ids.add(id.getTextContent()));
           break;
-        case "galaxy_names":
-          processElement(node, galaxyName -> galaxyNames.add(galaxyName.getTextContent()));
+        case "resource_group_names":
+          processElement(node, name -> names.add(name.getTextContent()));
 
           break;
-        case "galaxy_prop1":
-          processElement(node, galaxyProp -> galaxyActive.add(galaxyProp.getTextContent()));
+        case "resource_group_prop1":
+          processElement(node, cap -> caps.add(cap.getTextContent()));
           break;
         default:
           break;
       }
     });
 
-    if (galaxyIds.size() != galaxyNames.size() || galaxyIds.size() != galaxyActive.size()) {
+    if (ids.size() != names.size() || ids.size() != caps.size()) {
       return;
     }
 
-    for (int i = 0; i < galaxyIds.size(); i++) {
-      if (!galaxyActive.get(i).equals("Active")) {
-        continue;
-      }
-      galaxyList.put(galaxyIds.get(i), galaxyNames.get(i));
+    for (int i = 0; i < ids.size(); i++) {
+      ResourceType resourceType = new ResourceType();
+      resourceType.setId(ids.get(i));
+      resourceType.setName(names.get(i));
+
+      resourceTypeMap.put(ids.get(i), resourceType);
     }
+
     // </list_data>
   }
 
@@ -85,7 +89,7 @@ public class HarvesterGalaxyListXml extends BaseXml {
     throw new UnsupportedOperationException();
   }
 
-  public Map<String, String> getGalaxyList() {
-    return galaxyList;
+  public Map<String, ResourceType> getResourceTypeMap() {
+    return resourceTypeMap;
   }
 }

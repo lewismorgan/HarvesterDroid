@@ -20,8 +20,8 @@ package io.github.waverunner.harvesterdroid.database;
 
 import io.github.waverunner.harvesterdroid.app.HarvesterDroid;
 import io.github.waverunner.harvesterdroid.app.HarvesterDroidData;
-import io.github.waverunner.harvesterdroid.data.resources.GalaxyResource;
-import io.github.waverunner.harvesterdroid.downloaders.GalaxyHarvesterDownloader;
+import io.github.waverunner.harvesterdroid.api.resource.GalaxyResource;
+import io.github.waverunner.harvesterdroid.trackers.galaxyharvester.GalaxyHarvesterDownloader;
 
 import java.util.List;
 

@@ -18,14 +18,14 @@
 
 package io.github.waverunner.harvesterdroid.app;
 
-import io.github.waverunner.harvesterdroid.data.resources.GalaxyResource;
+import io.github.waverunner.harvesterdroid.api.resource.GalaxyResource;
 import io.github.waverunner.harvesterdroid.data.resources.InventoryResource;
 import io.github.waverunner.harvesterdroid.data.schematics.Schematic;
 import io.github.waverunner.harvesterdroid.database.DatabaseManager;
-import io.github.waverunner.harvesterdroid.downloaders.Downloader;
-import io.github.waverunner.harvesterdroid.xml.XmlFactory;
-import io.github.waverunner.harvesterdroid.xml.app.InventoryXml;
-import io.github.waverunner.harvesterdroid.xml.app.SchematicsXml;
+import io.github.waverunner.harvesterdroid.api.Downloader;
+import io.github.waverunner.harvesterdroid.api.xml.XmlFactory;
+import io.github.waverunner.harvesterdroid.xml.InventoryXml;
+import io.github.waverunner.harvesterdroid.xml.SchematicsXml;
 
 import java.io.File;
 import java.io.IOException;
@@ -203,11 +203,16 @@ public class HarvesterDroid {
   }
 
   public GalaxyResource getGalaxyResource(String name) {
+    if (downloader == null)
+      return null;
     Optional<GalaxyResource> optional = resources.stream().filter(galaxyResource -> galaxyResource.getName().equals(name)).findFirst();
     return optional.orElse(null);
   }
 
   public GalaxyResource getGalaxyResource(InventoryResource inventoryResource) {
+    if (downloader == null)
+      return null;
+
     if (!inventoryResource.getTracker().equals(getTracker()) && !inventoryResource.getGalaxy().equals(downloader.getGalaxy())) {
       return null;
     }
@@ -286,12 +291,14 @@ public class HarvesterDroid {
   }
 
   public void saveSchematics(OutputStream outputStream) {
+    // TODO Save schematics as JSON
     SchematicsXml schematicsXml = new SchematicsXml();
     schematicsXml.setSchematics(schematics);
     XmlFactory.write(schematicsXml, outputStream);
   }
 
   public void saveInventory(OutputStream outputStream) {
+    // TODO Save inventory as JSON
     InventoryXml inventoryXml = new InventoryXml();
     inventoryXml.setInventory(inventory);
     XmlFactory.write(inventoryXml, outputStream);
@@ -336,8 +343,9 @@ public class HarvesterDroid {
   }
 
   public void loadInventory(InputStream inputStream) {
+    // TODO Inventory resources should be able to be loaded regardless if a tracker is loaded or not
     InventoryXml inventoryXml = XmlFactory.read(InventoryXml.class, inputStream);
-    if (inventoryXml != null && inventoryXml.getInventory() != null) {
+    if (downloader != null && inventoryXml != null && inventoryXml.getInventory() != null) {
       inventory = inventoryXml.getInventory();
       inventory.forEach(this::getGalaxyResource);
     }

@@ -19,8 +19,8 @@
 package io.github.waverunner.harvesterdroid.ui.dialog.resource;
 
 import io.github.waverunner.harvesterdroid.Launcher;
-import io.github.waverunner.harvesterdroid.app.Attributes;
-import io.github.waverunner.harvesterdroid.data.resources.GalaxyResource;
+import io.github.waverunner.harvesterdroid.api.resource.Attributes;
+import io.github.waverunner.harvesterdroid.api.resource.GalaxyResource;
 
 import java.net.URL;
 import java.util.ResourceBundle;

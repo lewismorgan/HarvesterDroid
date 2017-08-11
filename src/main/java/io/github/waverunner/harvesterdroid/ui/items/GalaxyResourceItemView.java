@@ -21,9 +21,9 @@ package io.github.waverunner.harvesterdroid.ui.items;
 import de.saxsys.mvvmfx.FxmlView;
 import de.saxsys.mvvmfx.InjectViewModel;
 
-import io.github.waverunner.harvesterdroid.app.Attributes;
-import io.github.waverunner.harvesterdroid.data.resources.GalaxyResource;
-import io.github.waverunner.harvesterdroid.data.resources.ResourceType;
+import io.github.waverunner.harvesterdroid.api.resource.Attributes;
+import io.github.waverunner.harvesterdroid.api.resource.GalaxyResource;
+import io.github.waverunner.harvesterdroid.api.resource.ResourceType;
 
 import java.net.URL;
 import java.util.ResourceBundle;

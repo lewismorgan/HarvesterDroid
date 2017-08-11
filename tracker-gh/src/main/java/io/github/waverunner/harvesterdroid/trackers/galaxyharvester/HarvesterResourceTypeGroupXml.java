@@ -16,10 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package io.github.waverunner.harvesterdroid.xml.galaxyharvester;
+package io.github.waverunner.harvesterdroid.trackers.galaxyharvester;
 
-import io.github.waverunner.harvesterdroid.data.resources.ResourceType;
-import io.github.waverunner.harvesterdroid.xml.BaseXml;
+import io.github.waverunner.harvesterdroid.api.xml.BaseXml;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -37,47 +36,42 @@ import org.xml.sax.SAXException;
 /**
  * Created by Waverunner on 4/3/2017.
  */
-public final class HarvesterResourceTypeXml extends BaseXml {
-  private Map<String, ResourceType> resourceTypeMap = new HashMap<>();
+public class HarvesterResourceTypeGroupXml extends BaseXml {
+  private Map<String, List<String>> typeGroupMap = new HashMap<>();
 
-  public HarvesterResourceTypeXml(DocumentBuilder documentBuilder) {
+  public HarvesterResourceTypeGroupXml(DocumentBuilder documentBuilder) {
     super(documentBuilder);
   }
 
-  @SuppressWarnings("Duplicates")
   @Override
   protected void read(Element root) throws IOException, ParserConfigurationException, SAXException {
     // <list_data>
     List<String> ids = new ArrayList<>();
-    List<String> names = new ArrayList<>();
-    List<String> caps = new ArrayList<>();
+    List<String> group = new ArrayList<>();
 
     processElement(root, node -> {
       switch (node.getNodeName()) {
-        case "resource_type_values":
+        case "resource_type_group_values":
           processElement(node, id -> ids.add(id.getTextContent()));
           break;
-        case "resource_type_names":
-          processElement(node, name -> names.add(name.getTextContent()));
-
+        case "resource_type_group_names":
+          processElement(node, name -> group.add(name.getTextContent()));
           break;
-        case "resource_type_prop1":
-          processElement(node, cap -> caps.add(cap.getTextContent()));
+        default:
           break;
-        default: break;
       }
     });
 
-    if (ids.size() != names.size() || ids.size() != caps.size()) {
+    if (ids.size() != group.size()) {
       return;
     }
 
     for (int i = 0; i < ids.size(); i++) {
-      ResourceType resourceType = new ResourceType();
-      resourceType.setId(ids.get(i));
-      resourceType.setName(names.get(i));
+      if (!typeGroupMap.containsKey(group.get(i))) {
+        typeGroupMap.put(group.get(i), new ArrayList<>());
+      }
 
-      resourceTypeMap.put(ids.get(i), resourceType);
+      typeGroupMap.get(group.get(i)).add(ids.get(i));
     }
     // </list_data>
   }
@@ -87,7 +81,7 @@ public final class HarvesterResourceTypeXml extends BaseXml {
     throw new UnsupportedOperationException();
   }
 
-  public Map<String, ResourceType> getResourceTypeMap() {
-    return resourceTypeMap;
+  public Map<String, List<String>> getTypeGroupMap() {
+    return typeGroupMap;
   }
 }

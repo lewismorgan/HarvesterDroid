@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package io.github.waverunner.harvesterdroid.xml;
+package io.github.waverunner.harvesterdroid.api.xml;
 
 import java.io.File;
 import java.io.IOException;

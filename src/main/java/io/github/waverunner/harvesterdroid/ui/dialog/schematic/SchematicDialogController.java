@@ -19,7 +19,7 @@
 package io.github.waverunner.harvesterdroid.ui.dialog.schematic;
 
 import io.github.waverunner.harvesterdroid.Launcher;
-import io.github.waverunner.harvesterdroid.app.Attributes;
+import io.github.waverunner.harvesterdroid.api.resource.Attributes;
 import io.github.waverunner.harvesterdroid.data.schematics.Schematic;
 import io.github.waverunner.harvesterdroid.ui.IntegerTextField;
 import io.github.waverunner.harvesterdroid.ui.dialog.AddResourceTypeDialog;

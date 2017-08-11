@@ -16,10 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package io.github.waverunner.harvesterdroid.xml.galaxyharvester;
+package io.github.waverunner.harvesterdroid.trackers.galaxyharvester;
 
-import io.github.waverunner.harvesterdroid.data.resources.ResourceType;
-import io.github.waverunner.harvesterdroid.xml.BaseXml;
+import io.github.waverunner.harvesterdroid.api.resource.ResourceType;
+import io.github.waverunner.harvesterdroid.api.xml.BaseXml;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -37,10 +37,10 @@ import org.xml.sax.SAXException;
 /**
  * Created by Waverunner on 4/3/2017.
  */
-public class HarvesterResourceGroupXml extends BaseXml {
+public final class HarvesterResourceTypeXml extends BaseXml {
   private Map<String, ResourceType> resourceTypeMap = new HashMap<>();
 
-  public HarvesterResourceGroupXml(DocumentBuilder documentBuilder) {
+  public HarvesterResourceTypeXml(DocumentBuilder documentBuilder) {
     super(documentBuilder);
   }
 
@@ -54,18 +54,17 @@ public class HarvesterResourceGroupXml extends BaseXml {
 
     processElement(root, node -> {
       switch (node.getNodeName()) {
-        case "resource_group_values":
+        case "resource_type_values":
           processElement(node, id -> ids.add(id.getTextContent()));
           break;
-        case "resource_group_names":
+        case "resource_type_names":
           processElement(node, name -> names.add(name.getTextContent()));
 
           break;
-        case "resource_group_prop1":
+        case "resource_type_prop1":
           processElement(node, cap -> caps.add(cap.getTextContent()));
           break;
-        default:
-          break;
+        default: break;
       }
     });
 
@@ -80,7 +79,6 @@ public class HarvesterResourceGroupXml extends BaseXml {
 
       resourceTypeMap.put(ids.get(i), resourceType);
     }
-
     // </list_data>
   }
 

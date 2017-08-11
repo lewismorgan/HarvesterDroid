@@ -18,7 +18,7 @@
 
 package io.github.waverunner.harvesterdroid.ui.dialog.resource;
 
-import io.github.waverunner.harvesterdroid.data.resources.GalaxyResource;
+import io.github.waverunner.harvesterdroid.api.resource.GalaxyResource;
 import io.github.waverunner.harvesterdroid.ui.dialog.BaseDialog;
 
 import javafx.scene.control.ButtonBar;

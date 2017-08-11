@@ -16,32 +16,32 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package io.github.waverunner.harvesterdroid.xml.app;
+package io.github.waverunner.harvesterdroid.xml;
 
-import io.github.waverunner.harvesterdroid.data.resources.GalaxyResource;
-import io.github.waverunner.harvesterdroid.xml.BaseXml;
+import io.github.waverunner.harvesterdroid.data.schematics.Schematic;
 
-import javax.xml.parsers.DocumentBuilder;
+import java.util.List;
 
-import org.w3c.dom.Document;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 
-public abstract class ResourceXml extends BaseXml {
-  private GalaxyResource galaxyResource;
+/**
+ * Created by Waverunner on 3/31/2017.
+ */
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlRootElement(name = "schematics")
+public class SchematicsXml {
+  @XmlElement(name = "schematic")
+  private List<Schematic> schematics;
 
-  public ResourceXml(DocumentBuilder documentBuilder) {
-    super(documentBuilder);
+  public List<Schematic> getSchematics() {
+    return schematics;
   }
 
-  public GalaxyResource getGalaxyResource() {
-    return galaxyResource;
+  public void setSchematics(List<Schematic> schematics) {
+    this.schematics = schematics;
   }
 
-  protected void setGalaxyResource(GalaxyResource galaxyResource) {
-    this.galaxyResource = galaxyResource;
-  }
-
-  @Override
-  protected final void write(Document document) {
-    throw new UnsupportedOperationException();
-  }
 }

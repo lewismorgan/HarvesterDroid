@@ -43,6 +43,8 @@ buildscript {
 dependencies {
     compile project(':api')
     compile project(':loader')
+    // TODO Move compiled tracker to trackers/galaxy-harvester.jar
+    compile project(':tracker-gh')
     compile 'de.saxsys:mvvmfx:1.6.0'
     compile 'de.saxsys:mvvmfx-easydi:1.6.0'
     compile 'org.controlsfx:controlsfx:8.40.13'
