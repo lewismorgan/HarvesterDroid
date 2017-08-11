@@ -18,7 +18,7 @@
 
 package io.github.waverunner.harvesterdroid.trackers.galaxyharvester;
 
-import io.github.waverunner.harvesterdroid.api.resource.GalaxyResource;
+import io.github.waverunner.harvesterdroid.api.GalaxyResource;
 import io.github.waverunner.harvesterdroid.trackers.galaxyharvester.xml.CurrentResourcesXml;
 
 import java.io.IOException;
@@ -66,7 +66,7 @@ public final class HarvesterCurrentResourcesXml extends CurrentResourcesXml {
           galaxyResource.setName(child.getTextContent());
           break;
         case "enter_date":
-          galaxyResource.setDate(formatDate(child.getTextContent()));
+          galaxyResource.setSpawnDate(formatDate(child.getTextContent()));
           break;
         case "resource_type":
           galaxyResource.setResourceTypeString(((Element) child).getAttribute("id"));

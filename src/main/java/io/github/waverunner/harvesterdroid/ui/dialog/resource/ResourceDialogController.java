@@ -19,8 +19,8 @@
 package io.github.waverunner.harvesterdroid.ui.dialog.resource;
 
 import io.github.waverunner.harvesterdroid.Launcher;
+import io.github.waverunner.harvesterdroid.api.GalaxyResource;
 import io.github.waverunner.harvesterdroid.api.resource.Attributes;
-import io.github.waverunner.harvesterdroid.api.resource.GalaxyResource;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -72,7 +72,7 @@ public class ResourceDialogController implements Initializable {
       infoRightLabel.setText(galaxyResource.getDespawnDate().toString());
     } else {
       infoLeftLabel.setText("Available since");
-      infoRightLabel.setText(galaxyResource.getDate().toString());
+      infoRightLabel.setText(galaxyResource.getSpawnDate().toString());
     }
   }
 

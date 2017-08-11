@@ -18,7 +18,7 @@
 
 package io.github.waverunner.harvesterdroid.api;
 
-import io.github.waverunner.harvesterdroid.api.resource.GalaxyResource;
+import io.github.waverunner.harvesterdroid.api.GalaxyResource;
 import io.github.waverunner.harvesterdroid.api.resource.ResourceType;
 
 import java.io.File;
