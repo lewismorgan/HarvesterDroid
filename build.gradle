@@ -50,9 +50,7 @@ dependencies {
     compile 'org.controlsfx:controlsfx:8.40.13'
     compile 'javax.persistence:persistence-api:1.0.2'
     compile 'com.vladsch.flexmark:flexmark:0.22.22'
-
-    // Non-Managed dependecies
-    compile files('lib/objectdb.jar')
+    compile 'org.mongodb:mongodb-driver:3.5.0'
 
     // Use JUnit test framework
     testCompile 'org.junit.jupiter:junit-jupiter-engine:5.0.0-RC2'

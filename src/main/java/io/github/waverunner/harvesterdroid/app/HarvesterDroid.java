@@ -21,7 +21,6 @@ package io.github.waverunner.harvesterdroid.app;
 import io.github.waverunner.harvesterdroid.api.resource.GalaxyResource;
 import io.github.waverunner.harvesterdroid.data.resources.InventoryResource;
 import io.github.waverunner.harvesterdroid.data.schematics.Schematic;
-import io.github.waverunner.harvesterdroid.database.DatabaseManager;
 import io.github.waverunner.harvesterdroid.api.Downloader;
 import io.github.waverunner.harvesterdroid.api.xml.XmlFactory;
 import io.github.waverunner.harvesterdroid.xml.InventoryXml;
@@ -48,7 +47,6 @@ public class HarvesterDroid {
   private static final int DOWNLOAD_HOURS = 2;
 
   private final HarvesterDroidData data;
-  private final DatabaseManager databaseManager;
 
   private Downloader downloader;
 
@@ -67,9 +65,8 @@ public class HarvesterDroid {
   private String activeGalaxy;
   private String activeTheme;
 
-  public HarvesterDroid(Downloader downloader, DatabaseManager databaseManager) {
+  public HarvesterDroid(Downloader downloader) {
     this.downloader = downloader;
-    this.databaseManager = databaseManager;
     this.currentResourceTimestamp = 0;
     this.data = new HarvesterDroidData();
     this.inventory = new ArrayList<>(0);
@@ -165,6 +162,7 @@ public class HarvesterDroid {
   }
 
   public void updateResources() {
+    // TODO Refactor
     try {
       if (downloader.getGalaxy().equals(activeGalaxy) && !needsUpdate(downloader.getCurrentResourcesTimestamp())) {
         if (downloader.getCurrentResourcesTimestamp().toString().equals(getCurrentResourceTimestamp())) {
@@ -305,33 +303,15 @@ public class HarvesterDroid {
   }
 
   public void saveResources() {
-    EntityManager entityManager = databaseManager.createDatabase(getSavedResourcesPath());
-
-    entityManager.getTransaction().begin();
-    try {
-      entityManager.createQuery("DELETE from GalaxyResource").executeUpdate();
-      entityManager.createQuery("DELETE from ResourceType").executeUpdate();
-    } catch (PersistenceException exc) {
-      // db never existed so no need to clear
-    }
-    entityManager.getTransaction().commit();
-
-    entityManager.getTransaction().begin();
-    resources.forEach(entityManager::persist);
-    entityManager.getTransaction().commit();
-
-    databaseManager.closeDatabases();
+    // TODO Refactor for Mongodb
   }
 
   public void shutdown() {
-    databaseManager.closeDatabases();
+    // TODO Call methods that need to be executed on shutdown
   }
 
   public void loadResources(String database) {
-    EntityManager entityManager = databaseManager.loadDatabase(database);
-    resources = DatabaseManager.getList(entityManager, GalaxyResource.class);
-
-    databaseManager.closeDatabase(database);
+    // TODO Refactor for Mongodb
   }
 
 
@@ -347,7 +327,6 @@ public class HarvesterDroid {
     InventoryXml inventoryXml = XmlFactory.read(InventoryXml.class, inputStream);
     if (downloader != null && inventoryXml != null && inventoryXml.getInventory() != null) {
       inventory = inventoryXml.getInventory();
-      inventory.forEach(this::getGalaxyResource);
     }
   }
 

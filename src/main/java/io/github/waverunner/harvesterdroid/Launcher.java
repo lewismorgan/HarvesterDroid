@@ -32,7 +32,6 @@ import eu.lestard.easydi.EasyDI;
 
 import io.github.waverunner.harvesterdroid.app.HarvesterDroid;
 import io.github.waverunner.harvesterdroid.app.Watcher;
-import io.github.waverunner.harvesterdroid.database.DatabaseManager;
 import io.github.waverunner.harvesterdroid.api.Downloader;
 import io.github.waverunner.harvesterdroid.trackers.galaxyharvester.GalaxyHarvesterDownloader;
 import io.github.waverunner.harvesterdroid.ui.dialog.ExceptionDialog;
@@ -131,7 +130,8 @@ public class Launcher extends MvvmfxEasyDIApplication {
 
   @Override
   protected void initEasyDi(EasyDI context) throws Exception {
-    app = new HarvesterDroid(null, new DatabaseManager());
+    // Allow injection of HarvesterDroid
+    app = new HarvesterDroid(null);
     context.bindInstance(HarvesterDroid.class, app);
   }
 
