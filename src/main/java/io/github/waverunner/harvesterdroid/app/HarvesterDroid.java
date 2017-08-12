@@ -177,12 +177,18 @@ public class HarvesterDroid {
 
     List<GalaxyResource> downloaded = new ArrayList<>(downloader.getCurrentResources());
 
-    List<GalaxyResource> filtered = downloaded.stream()
+    List<String> filtered = downloaded.stream()
         .filter(dlResource -> resources.stream().anyMatch(resource -> resource.getName().equals(dlResource.getName())))
-        .collect(Collectors.toList());
+        .map(GalaxyResource::getName).collect(Collectors.toList());
 
-    resources.removeAll(filtered);
+    resources.removeIf(resource -> filtered.contains(resource.getName()));
+    logger.debug("Removed {} resources from resources as they're still active. Resources size "
+        + "is now {} resources", filtered.size(), resources.size());
+
     resources.addAll(downloaded);
+
+    logger.debug("Finished downloading {} resources to listing of resources (now {} resources)",
+        downloaded.size(), resources.size());
   }
 
   public GalaxyResource getGalaxyResource(String name) {
@@ -304,7 +310,7 @@ public class HarvesterDroid {
     }
 
     byteArrayInputStream.close();
-    logger.debug("Loaded {} resources from data input stream");
+    logger.debug("Loaded {} resources from data input stream", resources.size());
   }
 
   public void loadSchematics(InputStream inputStream) throws IOException {
