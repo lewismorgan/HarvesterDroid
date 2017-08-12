@@ -1,59 +1,26 @@
-/*
- * HarvesterDroid - A Resource Tracker for Star Wars Galaxies
- * Copyright (C) 2017  Waverunner
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
+package io.github.waverunner.harvesterdroid.api;
 
-package io.github.waverunner.harvesterdroid.api.resource;
+import io.github.waverunner.harvesterdroid.api.resource.Attributes;
+import io.github.waverunner.harvesterdroid.api.resource.ResourceType;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
-import javax.xml.bind.annotation.XmlRootElement;
-
-@XmlRootElement(name = "galaxy_resource")
-@XmlAccessorType(XmlAccessType.FIELD)
-@Entity
-public class GalaxyResource implements Serializable {
-  @Id
-  @XmlAttribute(name = "name")
+/**
+ * Created by Waverunner on 8/11/17.
+ */
+public class GalaxyResource {
   private String name;
-  @XmlAttribute(name = "spawn_date")
-  private Date date;
-  @XmlAttribute(name = "container")
   private String container;
-  @XmlAttribute(name = "despawn_date")
+
+  private Date spawnDate;
   private Date despawnDate;
-  @XmlElementWrapper(name = "planets")
-  @XmlElement(name = "planet")
   private List<String> planets;
-  @XmlElementWrapper(name = "attributes")
   private Map<String, Integer> attributes;
 
-  @XmlElement(name = "resource_type")
   private ResourceType resourceType;
 
   private transient String resourceTypeString;
@@ -72,12 +39,12 @@ public class GalaxyResource implements Serializable {
     this.name = name;
   }
 
-  public Date getDate() {
-    return date;
+  public Date getSpawnDate() {
+    return spawnDate;
   }
 
-  public void setDate(Date date) {
-    this.date = date;
+  public void setSpawnDate(Date spawnDate) {
+    this.spawnDate = spawnDate;
   }
 
   public ResourceType getResourceType() {
@@ -131,18 +98,17 @@ public class GalaxyResource implements Serializable {
     this.resourceTypeString = resourceTypeString;
   }
 
+  public int getAttribute(String name) {
+    return attributes.get(name);
+  }
+
   public void setAttribute(String attribute, int value) {
     attributes.put(attribute, value);
   }
-
 
   @Override
   public String toString() {
     return "GalaxyResource{" + "name='" + name + '\'' + ", resourceType='" + resourceType + '\''
         + ", container='" + container + '\'' + '}';
-  }
-
-  public int getAttribute(String name) {
-    return attributes.get(name);
   }
 }

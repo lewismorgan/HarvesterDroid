@@ -18,35 +18,23 @@
 
 package io.github.waverunner.harvesterdroid.data.schematics;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
-import javax.xml.bind.annotation.XmlRootElement;
-
-@XmlRootElement(name = "schematic")
-@XmlAccessorType(XmlAccessType.FIELD)
 public class Schematic {
+  @JsonIgnore
   private final transient String id;
 
-  @XmlAttribute
   private String group;
-  @XmlAttribute
   private String name;
 
-  @XmlElementWrapper(name = "resources")
-  @XmlElement(name = "resource")
   private List<String> resources;
 
-  @XmlElementWrapper(name = "modifiers")
-  @XmlElement(name = "modifier")
   private Map<String, Integer> modifiers;
 
   public Schematic() {

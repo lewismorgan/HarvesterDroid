@@ -18,7 +18,6 @@
 
 package io.github.waverunner.harvesterdroid.api;
 
-import io.github.waverunner.harvesterdroid.api.resource.GalaxyResource;
 import io.github.waverunner.harvesterdroid.api.resource.ResourceType;
 
 import java.io.File;
@@ -30,6 +29,7 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
@@ -192,7 +192,7 @@ public abstract class Downloader {
   }
 
   public final String getResourcesPath() {
-    return getRootDownloadsPath() + "resources_" + getGalaxy() + ".odb";
+    return getRootDownloadsPath() + "resources_" + getGalaxy() + ".bson";
   }
 
   public final String getGalaxy() {

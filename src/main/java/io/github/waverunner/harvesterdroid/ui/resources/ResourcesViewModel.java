@@ -25,7 +25,7 @@ import de.saxsys.mvvmfx.utils.commands.Command;
 import de.saxsys.mvvmfx.utils.commands.DelegateCommand;
 
 import io.github.waverunner.harvesterdroid.app.HarvesterDroid;
-import io.github.waverunner.harvesterdroid.api.resource.GalaxyResource;
+import io.github.waverunner.harvesterdroid.api.GalaxyResource;
 import io.github.waverunner.harvesterdroid.data.schematics.Schematic;
 import io.github.waverunner.harvesterdroid.ui.dialog.resource.NewSpawnsDialog;
 import io.github.waverunner.harvesterdroid.ui.items.GalaxyResourceItemViewModel;
@@ -98,7 +98,7 @@ public class ResourcesViewModel implements ViewModel {
       Date lastUpdate = new Date(harvesterDroid.getLastUpdateTimestamp());
 
       galaxyResources.forEach(item -> {
-        if (item.getGalaxyResource().getDate().after(lastUpdate)) {
+        if (item.getGalaxyResource().getSpawnDate().after(lastUpdate)) {
           newSpawns.add(item);
         }
       });

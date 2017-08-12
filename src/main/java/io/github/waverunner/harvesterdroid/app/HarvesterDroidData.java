@@ -25,6 +25,7 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -37,8 +38,8 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public class HarvesterDroidData {
   public static final String ROOT_DIR = System.getProperty("user.home") + "/.harvesterdroid";
-  public static final String XML_SCHEMATICS = ROOT_DIR + "/schematics.xml";
-  public static final String XML_INVENTORY = ROOT_DIR + "/inventory.xml";
+  public static final String JSON_SCHEMATICS = ROOT_DIR + "/schematics.json";
+  public static final String XML_INVENTORY = ROOT_DIR + "/inventory.json";
   public static final String XML_THEMES = ROOT_DIR + "/themes.xml";
 
   private Map<String, List<String>> resourceGroups;
