@@ -36,6 +36,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * Abstract class used by HarvesterDroid in the downloading of required data to function.
  *
@@ -44,6 +47,8 @@ import java.util.Map;
  * sub-classes to know how the data is stored and convert them to the resources map.
  */
 public abstract class Downloader {
+  private static final Logger logger = LoggerFactory.getLogger(Downloader.class);
+
   private final String root;
   private final String baseUrl;
   private final String identifier;
@@ -148,7 +153,7 @@ public abstract class Downloader {
   private void populateResourceFromType(GalaxyResource galaxyResource) {
     ResourceType type = resourceTypeMap.get(galaxyResource.getResourceTypeString());
     if (type == null) {
-      System.out.println("No resource type " + galaxyResource.getResourceTypeString());
+      logger.warn("No resource type exists called {} ", galaxyResource.getResourceTypeString());
       return;
     }
     galaxyResource.setResourceType(type);

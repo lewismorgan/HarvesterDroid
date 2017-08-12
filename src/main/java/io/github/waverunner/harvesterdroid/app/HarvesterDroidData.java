@@ -33,10 +33,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 /**
  * Created by Waverunner on 3/23/2017.
  */
 public class HarvesterDroidData {
+  private static final Logger logger = LogManager.getLogger(HarvesterDroidData.class);
+
   public static final String ROOT_DIR = System.getProperty("user.home") + "/.harvesterdroid";
   public static final String JSON_SCHEMATICS = ROOT_DIR + "/schematics.json";
   public static final String XML_INVENTORY = ROOT_DIR + "/inventory.json";
@@ -230,7 +235,7 @@ public class HarvesterDroidData {
             break;
           default:
             if (!key.isEmpty()) {
-              System.out.println("Unknown key " + key);
+              logger.warn("Unknown key {}", key);
             }
             break;
         }

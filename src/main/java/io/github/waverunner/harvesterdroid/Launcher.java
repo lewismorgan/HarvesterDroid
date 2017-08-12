@@ -60,20 +60,48 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.core.LoggerContext;
+import org.apache.logging.log4j.core.config.Configuration;
+import org.apache.logging.log4j.core.config.LoggerConfig;
+
 public class Launcher extends MvvmfxEasyDIApplication {
+  private static final Logger logger = LogManager.getLogger(Launcher.class);
+
   private static boolean DEBUG = false;
 
   private static Stage stage;
   private static HarvesterDroid app;
 
   public static void main(String[] args) {
+    try {
+      if (!new File(ROOT_DIR).exists()) {
+        new File(ROOT_DIR).mkdir();
+      }
+      if (Files.exists(Paths.get(ROOT_DIR + "/harvesterdroid.properties"))) {
+        DroidProperties.load(new FileInputStream(Paths.get(ROOT_DIR + "/harvesterdroid.properties").toFile()));
+      } else {
+        DroidProperties.load(Launcher.class.getResourceAsStream("/harvesterdroid.properties"));
+      }
+    } catch (Exception e) {
+      logger.error("Failed to load properties", e);
+    }
+
+    DEBUG = DroidProperties.getBoolean(DroidProperties.DEBUG);
+    if (DEBUG) {
+      setupDebugLogging();
+      logger.debug("Debug Mode has been enabled");
+    }
+
     Thread.setDefaultUncaughtExceptionHandler((t, e) -> {
       if (Platform.isFxApplicationThread() && !DEBUG) {
         ExceptionDialog exceptionDialog = new ExceptionDialog(e);
         exceptionDialog.show();
+        logger.error("Uncaught Exception", t);
       } else {
-        // TODO Logging to a file
-        e.printStackTrace();
+        logger.error("Uncaught Exception encountered off UI thread", t);
       }
     });
     LauncherImpl.launchApplication(Launcher.class, LauncherPreloader.class, args);
@@ -95,20 +123,7 @@ public class Launcher extends MvvmfxEasyDIApplication {
   public void initMvvmfx() throws Exception {
     updateLoadingProgress("Setting up bare essentials...", -1);
 
-    if (Files.exists(Paths.get(ROOT_DIR + "/harvesterdroid.properties"))) {
-      DroidProperties.load(new FileInputStream(Paths.get(ROOT_DIR + "/harvesterdroid.properties").toFile()));
-    } else {
-      DroidProperties.load(getClass().getResourceAsStream("/harvesterdroid.properties"));
-    }
-
-    DEBUG = DroidProperties.getBoolean(DroidProperties.DEBUG);
-
     // TODO "Blank Slate" state where no tracker is loaded, will help abstract away GalaxyHarvester dependencies
-
-    if (!new File(ROOT_DIR).exists()) {
-      new File(ROOT_DIR).mkdir();
-    }
-
     // TODO Use separate threads for each loading task
 
     Downloader downloader = new GalaxyHarvesterDownloader(ROOT_DIR, DroidProperties.getString(DroidProperties.GALAXY));
@@ -244,5 +259,15 @@ public class Launcher extends MvvmfxEasyDIApplication {
 
   private void updateLoadingProgress(String status, double value) {
     notifyPreloader(new PreloaderStatusNotification(status, value));
+    logger.debug("Load status: {}", status);
+  }
+
+  private static void setupDebugLogging() {
+    // Debug messages should only be outputted when it's in debug mode
+    final LoggerContext ctx = (LoggerContext) LogManager.getContext(false);
+    final Configuration config = ctx.getConfiguration();
+
+    LoggerConfig loggerConfig = config.getLoggerConfig("io.github.waverunner");
+    loggerConfig.addAppender(config.getAppender("file-debug"), Level.DEBUG, config.getFilter());
   }
 }

@@ -2,6 +2,8 @@
 allprojects {
     apply plugin: 'java'
     apply plugin: 'checkstyle'
+    apply plugin: 'idea'
+
 
     version = '1.0.1'
 
@@ -10,6 +12,7 @@ allprojects {
     }
 
     dependencies {
+        compile 'org.slf4j:slf4j-api:1.7.25'
         // Use JUnit test framework
         testCompile 'junit:junit:4.12'
     }
@@ -17,6 +20,12 @@ allprojects {
     checkstyle {
         configFile = new File(rootDir, "checkstyle.xml")
         toolVersion ="8.1"
+    }
+
+    idea {
+        module {
+            downloadJavadoc = true
+        }
     }
 }
 
@@ -34,7 +43,6 @@ group = 'io.github.waverunner'
 description = 'Manage your resources across a number of Star Wars Galaxies resource trackers'
 
 apply plugin: 'javafx-gradle-plugin'
-apply plugin: 'idea'
 
 buildscript {
     dependencies {
@@ -57,6 +65,9 @@ dependencies {
     compile 'javax.persistence:persistence-api:1.0.2'
     compile 'com.vladsch.flexmark:flexmark:0.22.22'
     compile 'org.mongodb:mongodb-driver:3.5.0'
+    compile 'org.apache.logging.log4j:log4j-api:2.8.2'
+    compile 'org.apache.logging.log4j:log4j-core:2.8.2'
+    compile 'org.apache.logging.log4j:log4j-slf4j-impl:2.8.2'
 }
 
 jfx {
@@ -75,9 +86,3 @@ jfx {
     ]
 }
 build.finalizedBy('jfxJar')
-
-idea {
-    module {
-        downloadJavadoc = true
-    }
-}
