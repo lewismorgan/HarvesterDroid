@@ -72,7 +72,6 @@ public abstract class BaseXml {
     transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
     DOMSource source = new DOMSource(saveDoc);
     StreamResult result = new StreamResult(file);
-    //StreamResult result =  new StreamResult(System.out);
 
     transformer.transform(source, result);
   }
