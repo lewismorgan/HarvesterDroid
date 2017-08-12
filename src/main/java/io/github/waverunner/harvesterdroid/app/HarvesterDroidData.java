@@ -44,7 +44,7 @@ public class HarvesterDroidData {
 
   public static final String ROOT_DIR = System.getProperty("user.home") + "/.harvesterdroid";
   public static final String JSON_SCHEMATICS = ROOT_DIR + "/schematics.json";
-  public static final String XML_INVENTORY = ROOT_DIR + "/inventory.json";
+  public static final String JSON_INVENTORY = ROOT_DIR + "/inventory.json";
   public static final String XML_THEMES = ROOT_DIR + "/themes.xml";
 
   private Map<String, List<String>> resourceGroups;

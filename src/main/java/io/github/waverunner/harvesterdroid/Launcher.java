@@ -18,9 +18,9 @@
 
 package io.github.waverunner.harvesterdroid;
 
+import static io.github.waverunner.harvesterdroid.app.HarvesterDroidData.JSON_INVENTORY;
 import static io.github.waverunner.harvesterdroid.app.HarvesterDroidData.JSON_SCHEMATICS;
 import static io.github.waverunner.harvesterdroid.app.HarvesterDroidData.ROOT_DIR;
-import static io.github.waverunner.harvesterdroid.app.HarvesterDroidData.XML_INVENTORY;
 import static io.github.waverunner.harvesterdroid.app.HarvesterDroidData.XML_THEMES;
 
 import com.sun.javafx.application.LauncherImpl;
@@ -139,8 +139,8 @@ public class Launcher extends MvvmfxEasyDIApplication {
         logger.error("Failed to load saved schematics", e);
       }
     }
-    if (Files.exists(Paths.get(XML_INVENTORY))) {
-      try (FileInputStream fileInputStream = new FileInputStream(XML_INVENTORY)) {
+    if (Files.exists(Paths.get(JSON_INVENTORY))) {
+      try (FileInputStream fileInputStream = new FileInputStream(JSON_INVENTORY)) {
         app.loadInventory(fileInputStream);
       } catch (IOException e) {
         logger.error("Failed to load saved inventory", e);
@@ -242,7 +242,7 @@ public class Launcher extends MvvmfxEasyDIApplication {
   }
 
   private static void save() {
-    try (FileOutputStream fileOutputStream = new FileOutputStream(XML_INVENTORY)) {
+    try (FileOutputStream fileOutputStream = new FileOutputStream(JSON_INVENTORY)) {
       app.saveInventory(fileOutputStream);
     } catch (IOException e) {
       logger.error("Failed saving inventory", e);
