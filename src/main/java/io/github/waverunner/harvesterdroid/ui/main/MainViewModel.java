@@ -29,21 +29,22 @@ import de.saxsys.mvvmfx.utils.commands.Command;
 import de.saxsys.mvvmfx.utils.commands.DelegateCommand;
 
 import io.github.waverunner.harvesterdroid.DroidProperties;
-import io.github.waverunner.harvesterdroid.app.HarvesterDroid;
 import io.github.waverunner.harvesterdroid.api.GalaxyResource;
+import io.github.waverunner.harvesterdroid.api.xml.XmlFactory;
+import io.github.waverunner.harvesterdroid.app.HarvesterDroid;
 import io.github.waverunner.harvesterdroid.ui.dialog.about.AboutDialog;
 import io.github.waverunner.harvesterdroid.ui.dialog.preferences.PreferencesDialog;
 import io.github.waverunner.harvesterdroid.ui.dialog.resource.ImportResourcesDialog;
 import io.github.waverunner.harvesterdroid.ui.scopes.GalaxyScope;
 import io.github.waverunner.harvesterdroid.ui.scopes.ResourceScope;
 import io.github.waverunner.harvesterdroid.ui.scopes.SchematicScope;
-import io.github.waverunner.harvesterdroid.api.xml.XmlFactory;
 import io.github.waverunner.harvesterdroid.xml.SchematicsXml;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -124,7 +125,11 @@ public class MainViewModel implements ViewModel {
         harvesterDroid.saveSchematics(new FileOutputStream(new File(XML_SCHEMATICS)));
         harvesterDroid.saveInventory(new FileOutputStream(new File(XML_INVENTORY)));
         publish("StatusUpdate", "Saving Resources");
-        harvesterDroid.saveResources();
+        try {
+          harvesterDroid.saveResources(new FileOutputStream(harvesterDroid.getSavedResourcesPath()));
+        } catch (Exception e) {
+          e.printStackTrace();
+        }
         publish("StatusUpdate.Finished");
       }
     });
@@ -144,7 +149,7 @@ public class MainViewModel implements ViewModel {
         resourceNames.ifPresent(strings -> {
           GalaxyResource[] toImport = new GalaxyResource[strings.size()];
           for (int i = 0; i < strings.size(); i++) {
-            toImport[i] = harvesterDroid.retrieveGalaxyResource(strings.get(i));
+            toImport[i] = harvesterDroid.findGalaxyResource(strings.get(i));
           }
 
           List<GalaxyResource> imported = new ArrayList<>();

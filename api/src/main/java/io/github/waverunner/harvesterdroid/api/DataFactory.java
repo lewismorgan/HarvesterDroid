@@ -1,6 +1,7 @@
 package io.github.waverunner.harvesterdroid.api;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import de.undercouch.bson4jackson.BsonFactory;
@@ -16,8 +17,7 @@ import java.io.OutputStream;
  * Created by Waverunner on 8/11/17.
  */
 public class DataFactory {
-
-  private final BsonFactory streamingFactory = new BsonFactory();
+  private static final BsonFactory streamingFactory = new BsonFactory();
 
   public DataFactory() {
     streamingFactory.enable(BsonGenerator.Feature.ENABLE_STREAMING);
@@ -29,22 +29,25 @@ public class DataFactory {
    * @param object to be serialized
    * @throws IOException when an exception occurs writing to the output stream
    */
-  public void save(OutputStream outputStream, Object object) throws IOException {
+  public static void save(OutputStream outputStream, Object object) throws IOException {
     ByteArrayOutputStream baos = serialize(object);
     baos.writeTo(outputStream);
   }
 
-  public <T> T openCollection(byte[] data, TypeReference<T> typeReference) throws IOException {
+  public static <T> T openCollection(byte[] data, TypeReference<T> typeReference) throws IOException {
     return openCollection(new ByteArrayInputStream(data), typeReference);
   }
 
-  public <T> T openCollection(ByteArrayInputStream inputStream, TypeReference<T> typeReference) throws IOException {
+  public static <T> T openCollection(ByteArrayInputStream inputStream, TypeReference<T> typeReference) throws IOException {
     ObjectMapper mapper = getObjectMapper();
-
-    return mapper.readValue(inputStream, typeReference);
+    try {
+      return mapper.readValue(inputStream, typeReference);
+    } catch (JsonMappingException e) {
+      return null;
+    }
   }
 
-  private ByteArrayOutputStream serialize(Object data) throws IOException {
+  private static ByteArrayOutputStream serialize(Object data) throws IOException {
     ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
     ObjectMapper mapper = getObjectMapper();
@@ -53,7 +56,7 @@ public class DataFactory {
     return baos;
   }
 
-  public ObjectMapper getObjectMapper() {
+  public static ObjectMapper getObjectMapper() {
     return new ObjectMapper(streamingFactory);
   }
 

@@ -23,6 +23,7 @@ import io.github.waverunner.harvesterdroid.api.GalaxyResource;
 import io.github.waverunner.harvesterdroid.api.resource.Attributes;
 
 import java.net.URL;
+
 import java.util.ResourceBundle;
 
 import javafx.beans.property.ObjectProperty;
@@ -98,7 +99,7 @@ public class ResourceDialogController implements Initializable {
   }
 
   public void retrieveStats() {
-    GalaxyResource galaxyResource = Launcher.getApp().retrieveGalaxyResource(nameField.getText());
+    GalaxyResource galaxyResource = Launcher.getApp().findGalaxyResource(nameField.getText());
     if (galaxyResource == null) {
       infoLeftLabel.setText("Couldn't find resource");
       infoRightLabel.textProperty().unbind();

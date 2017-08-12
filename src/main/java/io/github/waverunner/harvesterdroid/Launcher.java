@@ -30,21 +30,23 @@ import de.saxsys.mvvmfx.easydi.MvvmfxEasyDIApplication;
 
 import eu.lestard.easydi.EasyDI;
 
+import io.github.waverunner.harvesterdroid.api.Downloader;
+import io.github.waverunner.harvesterdroid.api.xml.XmlFactory;
 import io.github.waverunner.harvesterdroid.app.HarvesterDroid;
 import io.github.waverunner.harvesterdroid.app.Watcher;
-import io.github.waverunner.harvesterdroid.api.Downloader;
 import io.github.waverunner.harvesterdroid.trackers.galaxyharvester.GalaxyHarvesterDownloader;
 import io.github.waverunner.harvesterdroid.ui.dialog.ExceptionDialog;
 import io.github.waverunner.harvesterdroid.ui.main.MainView;
-import io.github.waverunner.harvesterdroid.api.xml.XmlFactory;
 import io.github.waverunner.harvesterdroid.xml.ThemesXml;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -107,22 +109,23 @@ public class Launcher extends MvvmfxEasyDIApplication {
       new File(ROOT_DIR).mkdir();
     }
 
+    // TODO Use separate threads for each loading task
+
     Downloader downloader = new GalaxyHarvesterDownloader(ROOT_DIR, DroidProperties.getString(DroidProperties.GALAXY));
     app.setDownloader(downloader);
     app.setLastUpdateTimestamp(Long.valueOf(DroidProperties.getString(DroidProperties.LAST_UPDATE)));
-    if (new File(app.getSavedResourcesPath() + ".mv.db").exists()) {
+    updateLoadingProgress("Finding the latest resources...", -1);
+    app.refreshResources(false);
+    if (Files.exists(Paths.get(app.getSavedResourcesPath()))) {
       updateLoadingProgress("Retrieving saved resources...", -1);
-      app.loadResources(app.getSavedResourcesPath());
+      app.loadResources(Files.readAllBytes(Paths.get(app.getSavedResourcesPath())));
     }
 
-    updateLoadingProgress("Finding the latest resources...", -1);
-    app.updateResources();
     updateLoadingProgress("Loading saved user data...", -1);
-    if (new File(XML_SCHEMATICS).exists()) {
+    if (Files.exists(Paths.get(XML_SCHEMATICS))) {
       app.loadSchematics(new FileInputStream(new File(XML_SCHEMATICS)));
     }
-    if (new File(XML_INVENTORY).exists()) {
-      // TODO Loading inventory relies on "getGalaxyResource", however it wont work if nothing is loaded
+    if (Files.exists(Paths.get(XML_INVENTORY))) {
       app.loadInventory(new FileInputStream(new File(XML_INVENTORY)));
     }
     updateLoadingProgress("Punch it Chewie!", -1);
@@ -204,7 +207,6 @@ public class Launcher extends MvvmfxEasyDIApplication {
   public void stopMvvmfx() throws Exception {
     Watcher.shutdown();
     saveProperties();
-    app.shutdown();
   }
 
   private void showSaveConfirmation() {
@@ -224,9 +226,8 @@ public class Launcher extends MvvmfxEasyDIApplication {
     try {
       app.saveInventory(new FileOutputStream(new File(XML_INVENTORY)));
       app.saveSchematics(new FileOutputStream(new File(XML_SCHEMATICS)));
-      app.saveResources();
-      DroidProperties.set(DroidProperties.LAST_UPDATE, app.getCurrentResourceTimestamp());
-    } catch (FileNotFoundException e) {
+      app.saveResources(new FileOutputStream(new File(app.getSavedResourcesPath())));
+    } catch (IOException e) {
       e.printStackTrace();
     }
     saveProperties();

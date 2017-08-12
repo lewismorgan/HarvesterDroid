@@ -20,7 +20,7 @@ package io.github.waverunner.harvesterdroid.xml;
 
 import io.github.waverunner.harvesterdroid.data.schematics.Schematic;
 
-import java.util.List;
+import java.util.Set;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -34,13 +34,13 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement(name = "schematics")
 public class SchematicsXml {
   @XmlElement(name = "schematic")
-  private List<Schematic> schematics;
+  private Set<Schematic> schematics;
 
-  public List<Schematic> getSchematics() {
+  public Set<Schematic> getSchematics() {
     return schematics;
   }
 
-  public void setSchematics(List<Schematic> schematics) {
+  public void setSchematics(Set<Schematic> schematics) {
     this.schematics = schematics;
   }
 

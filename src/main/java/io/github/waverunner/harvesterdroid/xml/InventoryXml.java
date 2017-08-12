@@ -20,8 +20,8 @@ package io.github.waverunner.harvesterdroid.xml;
 
 import io.github.waverunner.harvesterdroid.data.resources.InventoryResource;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -32,13 +32,13 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement(name = "inventory")
 public class InventoryXml {
   @XmlElement(name = "resource")
-  private List<InventoryResource> inventory = new ArrayList<>();
+  private Set<InventoryResource> inventory = new HashSet<>();
 
-  public List<InventoryResource> getInventory() {
+  public Set<InventoryResource> getInventory() {
     return inventory;
   }
 
-  public void setInventory(List<InventoryResource> inventory) {
+  public void setInventory(Set<InventoryResource> inventory) {
     this.inventory = inventory;
   }
 }
