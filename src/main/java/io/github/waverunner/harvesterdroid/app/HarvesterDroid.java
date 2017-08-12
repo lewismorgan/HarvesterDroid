@@ -25,10 +25,8 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import io.github.waverunner.harvesterdroid.api.DataFactory;
 import io.github.waverunner.harvesterdroid.api.Downloader;
 import io.github.waverunner.harvesterdroid.api.GalaxyResource;
-import io.github.waverunner.harvesterdroid.api.xml.XmlFactory;
 import io.github.waverunner.harvesterdroid.data.resources.InventoryResource;
 import io.github.waverunner.harvesterdroid.data.schematics.Schematic;
-import io.github.waverunner.harvesterdroid.xml.InventoryXml;
 
 import java.io.ByteArrayInputStream;
 import java.io.FileOutputStream;
@@ -274,10 +272,14 @@ public class HarvesterDroid {
   }
 
   public void saveInventory(OutputStream outputStream) {
-    // TODO Save inventory as JSON
-    InventoryXml inventoryXml = new InventoryXml();
-    inventoryXml.setInventory(inventory);
-    XmlFactory.write(inventoryXml, outputStream);
+    ObjectMapper objectMapper = DataFactory.createJsonObjectMapper();
+    objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
+
+    try {
+      objectMapper.writeValue(outputStream, inventory);
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
   }
 
   public void saveResources(OutputStream outputStream) throws IOException {
@@ -298,10 +300,10 @@ public class HarvesterDroid {
     byteArrayInputStream.close();
   }
 
-  @SuppressWarnings("unchecked")
   public void loadSchematics(InputStream inputStream) throws IOException {
     ObjectMapper objectMapper = DataFactory.createJsonObjectMapper();
-    Set<Schematic> saved = objectMapper.readValue(inputStream, new TypeReference<Set<Schematic>>() {});
+    List<Schematic> saved = objectMapper.readValue(inputStream, new TypeReference<List<Schematic>>() {
+    });
 
     schematics.clear();
     schematics.addAll(saved);
@@ -310,11 +312,13 @@ public class HarvesterDroid {
   }
 
   public void loadInventory(InputStream inputStream) throws IOException {
-    InventoryXml inventoryXml = XmlFactory.read(InventoryXml.class, inputStream);
-    if (downloader != null && inventoryXml != null && inventoryXml.getInventory() != null) {
-      inventory.clear();
-      inventory.addAll(inventoryXml.getInventory());
-    }
+    ObjectMapper objectMapper = DataFactory.createJsonObjectMapper();
+    Set<InventoryResource> saved = objectMapper.readValue(inputStream, new TypeReference<Set<InventoryResource>>() {
+    });
+
+    inventory.clear();
+    inventory.addAll(saved);
+
     inputStream.close();
   }
 
