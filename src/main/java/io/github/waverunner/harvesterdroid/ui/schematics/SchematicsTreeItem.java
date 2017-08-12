@@ -43,4 +43,12 @@ public class SchematicsTreeItem {
   public boolean isGroup() {
     return group;
   }
+
+  @Override
+  public String toString() {
+    return "SchematicsTreeItem{"
+        + "name='" + name + '\''
+        + ", identifier='" + identifier + '\''
+        + ", group=" + group + '}';
+  }
 }

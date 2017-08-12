@@ -76,6 +76,26 @@ public class Launcher extends MvvmfxEasyDIApplication {
   private static HarvesterDroid app;
 
   public static void main(String[] args) {
+    logger.info("Launching HarvesterDroid...");
+    LauncherImpl.launchApplication(Launcher.class, LauncherPreloader.class, args);
+  }
+
+  public static Map<String, String> getResourceTypes() {
+    return app.getResourceTypes();
+  }
+
+  public static HarvesterDroid getApp() {
+    return app;
+  }
+
+  public static Image getAppIcon() {
+    return new Image(Launcher.class.getResourceAsStream("/images/icon.png"));
+  }
+
+  @Override
+  public void initMvvmfx() throws Exception {
+    updateLoadingProgress("Setting up bare essentials...", -1);
+
     try {
       if (!new File(ROOT_DIR).exists()) {
         new File(ROOT_DIR).mkdir();
@@ -101,27 +121,9 @@ public class Launcher extends MvvmfxEasyDIApplication {
         exceptionDialog.show();
         logger.error("Uncaught Exception", t);
       } else {
-        logger.error("Uncaught Exception encountered off UI thread", t);
+        logger.error("Uncaught Exception encountered on UI thread", t);
       }
     });
-    LauncherImpl.launchApplication(Launcher.class, LauncherPreloader.class, args);
-  }
-
-  public static Map<String, String> getResourceTypes() {
-    return app.getResourceTypes();
-  }
-
-  public static HarvesterDroid getApp() {
-    return app;
-  }
-
-  public static Image getAppIcon() {
-    return new Image(Launcher.class.getResourceAsStream("/images/icon.png"));
-  }
-
-  @Override
-  public void initMvvmfx() throws Exception {
-    updateLoadingProgress("Setting up bare essentials...", -1);
 
     // TODO "Blank Slate" state where no tracker is loaded, will help abstract away GalaxyHarvester dependencies
     // TODO Use separate threads for each loading task
