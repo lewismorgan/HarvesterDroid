@@ -1,18 +1,15 @@
 package io.github.waverunner.harvesterdroid.api;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 
 import org.junit.Before;
@@ -33,7 +30,7 @@ public class DataFactoryTest {
   public void save() throws Exception {
     Collection<GalaxyResource> resources = createResources(1);
 
-    dataFactory.save(new FileOutputStream("data"), resources);
+    DataFactory.save(new FileOutputStream("data"), resources);
 
     assertTrue(Files.exists(Paths.get("data")));
 
@@ -46,9 +43,9 @@ public class DataFactoryTest {
 
     Collection<GalaxyResource> galaxyResources = createResources(size);
     ByteArrayOutputStream baos = new ByteArrayOutputStream();
-    dataFactory.save(baos, galaxyResources);
+    DataFactory.save(baos, galaxyResources);
 
-    Collection<GalaxyResource> loaded = dataFactory.openCollection(baos.toByteArray(),
+    Collection<GalaxyResource> loaded = DataFactory.openBinaryCollection(baos.toByteArray(),
         new TypeReference<Collection<GalaxyResource>>() {});
 
     assertTrue(String.format("Loaded %d resources, expected 10", loaded.size()), loaded.size() == 10);

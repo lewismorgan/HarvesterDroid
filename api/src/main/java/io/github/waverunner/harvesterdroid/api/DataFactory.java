@@ -1,8 +1,11 @@
 package io.github.waverunner.harvesterdroid.api;
 
+import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 
 import de.undercouch.bson4jackson.BsonFactory;
 import de.undercouch.bson4jackson.BsonGenerator;
@@ -17,10 +20,11 @@ import java.io.OutputStream;
  * Created by Waverunner on 8/11/17.
  */
 public class DataFactory {
-  private static final BsonFactory streamingFactory = new BsonFactory();
+  private static final BsonFactory bsonFactory = new BsonFactory();
+  private static final JsonFactory jsonFactory = new JsonFactory();
 
   public DataFactory() {
-    streamingFactory.enable(BsonGenerator.Feature.ENABLE_STREAMING);
+    bsonFactory.enable(BsonGenerator.Feature.ENABLE_STREAMING);
   }
 
   /**
@@ -34,12 +38,12 @@ public class DataFactory {
     baos.writeTo(outputStream);
   }
 
-  public static <T> T openCollection(byte[] data, TypeReference<T> typeReference) throws IOException {
-    return openCollection(new ByteArrayInputStream(data), typeReference);
+  public static <T> T openBinaryCollection(byte[] data, TypeReference<T> typeReference) throws IOException {
+    return openBinaryCollection(new ByteArrayInputStream(data), typeReference);
   }
 
-  public static <T> T openCollection(ByteArrayInputStream inputStream, TypeReference<T> typeReference) throws IOException {
-    ObjectMapper mapper = getObjectMapper();
+  public static <T> T openBinaryCollection(ByteArrayInputStream inputStream, TypeReference<T> typeReference) throws IOException {
+    ObjectMapper mapper = createBsonObjectMapper();
     try {
       return mapper.readValue(inputStream, typeReference);
     } catch (JsonMappingException e) {
@@ -50,14 +54,21 @@ public class DataFactory {
   private static ByteArrayOutputStream serialize(Object data) throws IOException {
     ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
-    ObjectMapper mapper = getObjectMapper();
+    ObjectMapper mapper = createBsonObjectMapper();
     mapper.writeValue(baos, data);
 
     return baos;
   }
 
-  public static ObjectMapper getObjectMapper() {
-    return new ObjectMapper(streamingFactory);
+  public static ObjectMapper createBsonObjectMapper() {
+    return new ObjectMapper(bsonFactory);
+  }
+
+  public static ObjectMapper createJsonObjectMapper() {
+    ObjectMapper objectMapper = new ObjectMapper(jsonFactory);
+    objectMapper.enable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+    objectMapper.enable(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT);
+    return objectMapper;
   }
 
 }

@@ -18,9 +18,9 @@
 
 package io.github.waverunner.harvesterdroid;
 
+import static io.github.waverunner.harvesterdroid.app.HarvesterDroidData.JSON_SCHEMATICS;
 import static io.github.waverunner.harvesterdroid.app.HarvesterDroidData.ROOT_DIR;
 import static io.github.waverunner.harvesterdroid.app.HarvesterDroidData.XML_INVENTORY;
-import static io.github.waverunner.harvesterdroid.app.HarvesterDroidData.XML_SCHEMATICS;
 import static io.github.waverunner.harvesterdroid.app.HarvesterDroidData.XML_THEMES;
 
 import com.sun.javafx.application.LauncherImpl;
@@ -114,16 +114,11 @@ public class Launcher extends MvvmfxEasyDIApplication {
     Downloader downloader = new GalaxyHarvesterDownloader(ROOT_DIR, DroidProperties.getString(DroidProperties.GALAXY));
     app.setDownloader(downloader);
     app.setLastUpdateTimestamp(Long.valueOf(DroidProperties.getString(DroidProperties.LAST_UPDATE)));
-    updateLoadingProgress("Finding the latest resources...", -1);
-    app.refreshResources(false);
-    if (Files.exists(Paths.get(app.getSavedResourcesPath()))) {
-      updateLoadingProgress("Retrieving saved resources...", -1);
-      app.loadResources(Files.readAllBytes(Paths.get(app.getSavedResourcesPath())));
-    }
-
+    updateLoadingProgress("Retrieving resource data...", -1);
+    app.refreshResources(true);
     updateLoadingProgress("Loading saved user data...", -1);
-    if (Files.exists(Paths.get(XML_SCHEMATICS))) {
-      app.loadSchematics(new FileInputStream(new File(XML_SCHEMATICS)));
+    if (Files.exists(Paths.get(JSON_SCHEMATICS))) {
+      app.loadSchematics(new FileInputStream(new File(JSON_SCHEMATICS)));
     }
     if (Files.exists(Paths.get(XML_INVENTORY))) {
       app.loadInventory(new FileInputStream(new File(XML_INVENTORY)));
@@ -207,6 +202,7 @@ public class Launcher extends MvvmfxEasyDIApplication {
   public void stopMvvmfx() throws Exception {
     Watcher.shutdown();
     saveProperties();
+    app.saveResources(new FileOutputStream(app.getSavedResourcesPath()));
   }
 
   private void showSaveConfirmation() {
@@ -225,7 +221,7 @@ public class Launcher extends MvvmfxEasyDIApplication {
   private void save() {
     try {
       app.saveInventory(new FileOutputStream(new File(XML_INVENTORY)));
-      app.saveSchematics(new FileOutputStream(new File(XML_SCHEMATICS)));
+      app.saveSchematics(new FileOutputStream(new File(JSON_SCHEMATICS)));
       app.saveResources(new FileOutputStream(new File(app.getSavedResourcesPath())));
     } catch (IOException e) {
       e.printStackTrace();

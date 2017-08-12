@@ -19,6 +19,8 @@
 package io.github.waverunner.harvesterdroid.app;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 
 import io.github.waverunner.harvesterdroid.api.DataFactory;
 import io.github.waverunner.harvesterdroid.api.Downloader;
@@ -27,7 +29,6 @@ import io.github.waverunner.harvesterdroid.api.xml.XmlFactory;
 import io.github.waverunner.harvesterdroid.data.resources.InventoryResource;
 import io.github.waverunner.harvesterdroid.data.schematics.Schematic;
 import io.github.waverunner.harvesterdroid.xml.InventoryXml;
-import io.github.waverunner.harvesterdroid.xml.SchematicsXml;
 
 import java.io.ByteArrayInputStream;
 import java.io.FileOutputStream;
@@ -54,7 +55,7 @@ public class HarvesterDroid {
 
   private final Set<InventoryResource> inventory;
   private final Set<GalaxyResource> resources;
-  private final Set<Schematic> schematics;
+  private final List<Schematic> schematics;
 
   private Map<String, String> galaxies;
   private Map<String, String> themes;
@@ -69,7 +70,7 @@ public class HarvesterDroid {
     this.data = new HarvesterDroidData();
     this.inventory = Collections.synchronizedSet(new HashSet<>(0));
     this.resources = Collections.synchronizedSet(new HashSet<>(0));
-    this.schematics = Collections.synchronizedSet(new HashSet<>(0));
+    this.schematics = new ArrayList<>(0);
     this.galaxies = new HashMap<>(0);
     this.themes = new HashMap<>();
   }
@@ -149,7 +150,6 @@ public class HarvesterDroid {
   }
 
   public void refreshResources(boolean loadLocal) {
-    resources.clear();
     try {
       if (downloader != null) {
         galaxies = downloader.downloadGalaxyList();
@@ -171,21 +171,14 @@ public class HarvesterDroid {
   private void downloadNewResources() throws IOException {
     downloader.downloadCurrentResources();
 
-    for (GalaxyResource currentResource : downloader.getCurrentResources()) {
-      // Overwrite any duplicated resource data that's pulled from the downloader for new info
-      GalaxyResource duplicate = null;
-      for (GalaxyResource resource : resources) {
-        if (resource.getName().equals(currentResource.getName())) {
-          duplicate = resource;
-          break;
-        }
-      }
-      if (duplicate != null) {
-        resources.remove(duplicate);
-      }
-    }
+    List<GalaxyResource> downloaded = new ArrayList<>(downloader.getCurrentResources());
 
-    resources.addAll(downloader.getCurrentResources());
+    List<GalaxyResource> filtered = downloaded.stream()
+        .filter(dlResource -> resources.stream().anyMatch(resource -> resource.getName().equals(dlResource.getName())))
+        .collect(Collectors.toList());
+
+    resources.removeAll(filtered);
+    resources.addAll(downloaded);
   }
 
   public GalaxyResource getGalaxyResource(String name) {
@@ -270,10 +263,14 @@ public class HarvesterDroid {
   }
 
   public void saveSchematics(OutputStream outputStream) {
-    // TODO Save schematics as JSON
-    SchematicsXml schematicsXml = new SchematicsXml();
-    schematicsXml.setSchematics(schematics);
-    XmlFactory.write(schematicsXml, outputStream);
+    ObjectMapper objectMapper = DataFactory.createJsonObjectMapper();
+    objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
+
+    try {
+      objectMapper.writeValue(outputStream, schematics);
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
   }
 
   public void saveInventory(OutputStream outputStream) {
@@ -289,18 +286,26 @@ public class HarvesterDroid {
   }
 
   public void loadResources(byte[] data) throws IOException {
-    HashSet<GalaxyResource> saved = DataFactory.openCollection(new ByteArrayInputStream(data),
+    ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(data);
+    HashSet<GalaxyResource> saved = DataFactory.openBinaryCollection(byteArrayInputStream,
         new TypeReference<HashSet<GalaxyResource>>() {});
 
-    resources.addAll(saved);
+    if (saved != null) {
+      resources.clear();
+      resources.addAll(saved);
+    }
+
+    byteArrayInputStream.close();
   }
 
+  @SuppressWarnings("unchecked")
   public void loadSchematics(InputStream inputStream) throws IOException {
-    SchematicsXml schematicsXml = XmlFactory.read(SchematicsXml.class, inputStream);
-    if (schematicsXml != null && schematicsXml.getSchematics() != null) {
-      schematics.clear();
-      schematics.addAll(schematicsXml.getSchematics());
-    }
+    ObjectMapper objectMapper = DataFactory.createJsonObjectMapper();
+    Set<Schematic> saved = objectMapper.readValue(inputStream, new TypeReference<Set<Schematic>>() {});
+
+    schematics.clear();
+    schematics.addAll(saved);
+
     inputStream.close();
   }
 
@@ -321,7 +326,7 @@ public class HarvesterDroid {
     return resources;
   }
 
-  public Set<Schematic> getSchematics() {
+  public List<Schematic> getSchematics() {
     return schematics;
   }
 
