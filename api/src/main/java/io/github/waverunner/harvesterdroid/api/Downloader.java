@@ -74,8 +74,8 @@ public abstract class Downloader {
 
     File currentResources = new File(getRootDownloadsPath() + "current_resources" + getGalaxy() + ".dl");
     if (currentResources.exists()) {
-      try {
-        parseCurrentResources(new FileInputStream(currentResources));
+      try (FileInputStream fileInputStream = new FileInputStream(currentResources)) {
+        parseCurrentResources(fileInputStream);
       } catch (IOException e) {
         e.printStackTrace();
       }
@@ -92,23 +92,18 @@ public abstract class Downloader {
 
   protected abstract InputStream getGalaxyResourceStream(String resource) throws IOException;
 
-  protected abstract InputStream getGalaxyListStream() throws IOException;
+  protected abstract InputStream createGalaxyListStream() throws IOException;
 
   public abstract Date getCurrentResourcesTimestamp();
 
   public final Map<String, String> downloadGalaxyList() {
-    InputStream in;
-
     File file = new File(getRootDownloadsPath() + "servers.dl");
     if (!file.exists() && !file.mkdirs()) {
       return null;
     }
 
-    try {
-      in = getGalaxyListStream();
-
-      Files.copy(in, Paths.get(file.toURI()), StandardCopyOption.REPLACE_EXISTING);
-
+    try (InputStream inputStream = createGalaxyListStream()) {
+      Files.copy(inputStream, Paths.get(file.toURI()), StandardCopyOption.REPLACE_EXISTING);
       return parseGalaxyList(new FileInputStream(file));
     } catch (IOException e) {
       e.printStackTrace();
@@ -121,30 +116,26 @@ public abstract class Downloader {
                                                 Map<String, List<String>> resourceGroups) throws IOException;
 
   public final DownloadResult downloadCurrentResources() throws IOException {
-    InputStream in = null;
 
     File file = new File(getRootDownloadsPath() + "current_resources_" + getGalaxy() + ".dl");
     if (!file.exists() && !file.mkdirs()) {
       return DownloadResult.FAILED;
     }
 
-    try {
-      in = getCurrentResourcesStream();
-
+    try (InputStream in = getCurrentResourcesStream()) {
       Files.copy(in, Paths.get(file.toURI()), StandardCopyOption.REPLACE_EXISTING);
     } catch (ConnectException e) {
       return DownloadResult.FAILED;
-    } finally {
-      if (in != null) {
-        in.close();
-      }
     }
 
     if (!file.exists()) {
       return DownloadResult.FAILED;
     }
 
-    parseCurrentResources(new FileInputStream(file));
+    try (FileInputStream fileInputStream = new FileInputStream(file)) {
+      parseCurrentResources(fileInputStream);
+    }
+
     currentResources.values().forEach(this::populateResourceFromType);
 
     return DownloadResult.SUCCESS;

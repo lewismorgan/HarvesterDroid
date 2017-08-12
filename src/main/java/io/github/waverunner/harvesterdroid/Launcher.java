@@ -128,15 +128,23 @@ public class Launcher extends MvvmfxEasyDIApplication {
 
     Downloader downloader = new GalaxyHarvesterDownloader(ROOT_DIR, DroidProperties.getString(DroidProperties.GALAXY));
     app.setDownloader(downloader);
-    app.setLastUpdateTimestamp(Long.valueOf(DroidProperties.getString(DroidProperties.LAST_UPDATE)));
+    app.setLastUpdateTimestamp(Long.parseLong(DroidProperties.getString(DroidProperties.LAST_UPDATE)));
     updateLoadingProgress("Retrieving resource data...", -1);
     app.refreshResources(true);
     updateLoadingProgress("Loading saved user data...", -1);
     if (Files.exists(Paths.get(JSON_SCHEMATICS))) {
-      app.loadSchematics(new FileInputStream(new File(JSON_SCHEMATICS)));
+      try (FileInputStream fileInputStream = new FileInputStream(JSON_SCHEMATICS)) {
+        app.loadSchematics(fileInputStream);
+      } catch (IOException e) {
+        logger.error("Failed to load saved schematics", e);
+      }
     }
     if (Files.exists(Paths.get(XML_INVENTORY))) {
-      app.loadInventory(new FileInputStream(new File(XML_INVENTORY)));
+      try (FileInputStream fileInputStream = new FileInputStream(XML_INVENTORY)) {
+        app.loadInventory(fileInputStream);
+      } catch (IOException e) {
+        logger.error("Failed to load saved inventory", e);
+      }
     }
     updateLoadingProgress("Punch it Chewie!", -1);
   }
@@ -217,7 +225,7 @@ public class Launcher extends MvvmfxEasyDIApplication {
   public void stopMvvmfx() throws Exception {
     Watcher.shutdown();
     saveProperties();
-    app.saveResources(new FileOutputStream(app.getSavedResourcesPath()));
+    saveResources();
   }
 
   private void showSaveConfirmation() {
@@ -233,18 +241,31 @@ public class Launcher extends MvvmfxEasyDIApplication {
     }
   }
 
-  private void save() {
-    try {
-      app.saveInventory(new FileOutputStream(new File(XML_INVENTORY)));
-      app.saveSchematics(new FileOutputStream(new File(JSON_SCHEMATICS)));
-      app.saveResources(new FileOutputStream(new File(app.getSavedResourcesPath())));
+  private static void save() {
+    try (FileOutputStream fileOutputStream = new FileOutputStream(XML_INVENTORY)) {
+      app.saveInventory(fileOutputStream);
     } catch (IOException e) {
-      e.printStackTrace();
+      logger.error("Failed saving inventory", e);
+    }
+    try (FileOutputStream fileOutputStream = new FileOutputStream(new File(JSON_SCHEMATICS))) {
+      app.saveSchematics(fileOutputStream);
+    } catch (IOException e) {
+      logger.error("Failed saving schematics", e);
     }
     saveProperties();
+    saveResources();
+    logger.debug("Saved HarvesterDroid's state");
   }
 
-  private void saveProperties() {
+  private static void saveResources() {
+    try (FileOutputStream fileOutputStream = new FileOutputStream(new File(app.getSavedResourcesPath()))) {
+      app.saveResources(fileOutputStream);
+    } catch (IOException e) {
+      logger.error("Failed saving resources");
+    }
+  }
+
+  private static void saveProperties() {
     DroidProperties.set(DroidProperties.HEIGHT, stage.getHeight());
     DroidProperties.set(DroidProperties.WIDTH, stage.getWidth());
     DroidProperties.set(DroidProperties.FULLSCREEN, stage.isFullScreen());

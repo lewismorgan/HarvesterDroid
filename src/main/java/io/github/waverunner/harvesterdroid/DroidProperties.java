@@ -22,29 +22,31 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+
 import java.util.Properties;
 
 /**
  * Created by Waverunner on 3/31/2017.
  */
 public class DroidProperties {
-  public static String TRACKER = "tracker";
-  public static String GALAXY = "activegalaxy";
-  public static String DOWNLOAD_BUFFER = "download.buffer";
-  public static String THEME = "theme";
-  public static String WIDTH = "width";
-  public static String HEIGHT = "height";
-  public static String FULLSCREEN = "fullscreen";
-  public static String SAVE_NAG = "save.nag";
-  public static String AUTOSAVE = "autosave";
-  public static String LAST_DIRECTORY = "last.directory";
-  public static String LAST_UPDATE = "last.update";
-  public static String DEBUG = "debug";
+  public static final String TRACKER = "tracker";
+  public static final String GALAXY = "activegalaxy";
+  public static final String DOWNLOAD_BUFFER = "download.buffer";
+  public static final String THEME = "theme";
+  public static final String WIDTH = "width";
+  public static final String HEIGHT = "height";
+  public static final String FULLSCREEN = "fullscreen";
+  public static final String SAVE_NAG = "save.nag";
+  public static final String AUTOSAVE = "autosave";
+  public static final String LAST_DIRECTORY = "last.directory";
+  public static final String LAST_UPDATE = "last.update";
+  public static final String DEBUG = "debug";
   private static Properties properties;
 
   public static void save(OutputStream outputStream) {
     try {
       properties.store(new OutputStreamWriter(outputStream), "User Preferences for HarvesterDroid");
+      outputStream.close();
     } catch (IOException e) {
       e.printStackTrace();
     }
@@ -53,6 +55,7 @@ public class DroidProperties {
   public static void load(InputStream inputStream) throws IOException {
     properties = new Properties(createDefaultProperties());
     properties.load(inputStream);
+    inputStream.close();
   }
 
   public static void set(String property, Object value) {
@@ -74,8 +77,8 @@ public class DroidProperties {
 
   private static Properties createDefaultProperties() {
     Properties defaults = new Properties();
-    try {
-      defaults.load(DroidProperties.class.getResourceAsStream("/harvesterdroid.properties"));
+    try (InputStream inputStream = DroidProperties.class.getResourceAsStream("/harvesterdroid.properties")) {
+      defaults.load(inputStream);
     } catch (IOException e) {
       throw new RuntimeException(e);
     }

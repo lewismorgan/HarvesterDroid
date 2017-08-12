@@ -64,12 +64,16 @@ import javafx.collections.FXCollections;
 
 import javax.inject.Singleton;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 /**
  * Created by Waverunner on 4/3/2017.
  */
 @Singleton
 @ScopeProvider(scopes = {SchematicScope.class, GalaxyScope.class, ResourceScope.class})
 public class MainViewModel implements ViewModel {
+  private static final Logger logger = LogManager.getLogger(MainViewModel.class);
 
   private final HarvesterDroid harvesterDroid;
 
@@ -126,16 +130,21 @@ public class MainViewModel implements ViewModel {
     saveCommand = new DelegateCommand(() -> new Action() {
       @Override
       protected void action() throws Exception {
-
-        harvesterDroid.saveSchematics(new FileOutputStream(new File(JSON_SCHEMATICS)));
-        harvesterDroid.saveInventory(new FileOutputStream(new File(XML_INVENTORY)));
-        publish("StatusUpdate", "Saving Resources");
-        try {
-          harvesterDroid.saveResources(new FileOutputStream(harvesterDroid.getSavedResourcesPath()));
-        } catch (Exception e) {
-          e.printStackTrace();
+        try (FileOutputStream fileOutputStream = new FileOutputStream(XML_INVENTORY)) {
+          harvesterDroid.saveInventory(fileOutputStream);
+        } catch (IOException e) {
+          logger.error("Failed saving inventory", e);
         }
-        publish("StatusUpdate.Finished");
+        try (FileOutputStream fileOutputStream = new FileOutputStream(new File(JSON_SCHEMATICS))) {
+          harvesterDroid.saveSchematics(fileOutputStream);
+        } catch (IOException e) {
+          logger.error("Failed saving schematics", e);
+        }
+        try (FileOutputStream fileOutputStream = new FileOutputStream(new File(harvesterDroid.getSavedResourcesPath()))) {
+          harvesterDroid.saveResources(fileOutputStream);
+        } catch (IOException e) {
+          logger.error("Failed saving resources");
+        }
       }
     });
 

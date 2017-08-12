@@ -101,7 +101,7 @@ public final class GalaxyHarvesterDownloader extends Downloader {
   }
 
   @Override
-  protected InputStream getGalaxyListStream() throws IOException {
+  protected InputStream createGalaxyListStream() throws IOException {
     return getListTypeStream("galaxy");
   }
 

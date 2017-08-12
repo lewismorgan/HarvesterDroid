@@ -46,7 +46,12 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 public class HarvesterDroid {
+  private static final Logger logger = LogManager.getLogger(HarvesterDroid.class);
+
   private final HarvesterDroidData data;
 
   private Downloader downloader;
@@ -160,6 +165,7 @@ public class HarvesterDroid {
         downloadNewResources();
 
         resources.forEach(galaxyResource -> data.populateMinMax(galaxyResource.getResourceType()));
+        logger.debug("Refreshed resources. There are {} resources now loaded", resources.size());
       }
     } catch (IOException e) {
       e.printStackTrace();
@@ -223,10 +229,10 @@ public class HarvesterDroid {
       return false;
     }
 
-    try {
-      saveResources(new FileOutputStream(getSavedResourcesPath()));
+    try (FileOutputStream fileOutputStream = new FileOutputStream(getSavedResourcesPath())) {
+      saveResources(fileOutputStream);
     } catch (IOException e) {
-      e.printStackTrace();
+      logger.error("Failed to save resources when switching galaxies", e);
     }
 
     activeGalaxy = galaxy;
@@ -298,6 +304,7 @@ public class HarvesterDroid {
     }
 
     byteArrayInputStream.close();
+    logger.debug("Loaded {} resources from data input stream");
   }
 
   public void loadSchematics(InputStream inputStream) throws IOException {
