@@ -64,6 +64,7 @@ public class HarvesterDroid {
   private Map<String, String> themes;
 
   private long lastUpdateTimestamp;
+  private long updateTimestamp;
 
   private String activeGalaxy;
   private String activeTheme;
@@ -395,5 +396,9 @@ public class HarvesterDroid {
 
   public void setLastUpdateTimestamp(long lastUpdateTimestamp) {
     this.lastUpdateTimestamp = lastUpdateTimestamp;
+  }
+
+  public long getCurrentUpdateTimestamp() {
+    return downloader.getCurrentResourcesTimestamp().getTime();
   }
 }

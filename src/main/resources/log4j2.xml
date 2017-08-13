@@ -14,7 +14,7 @@
         </File>
         <Console name="STDOUT" target="SYSTEM_OUT">
             <PatternLayout>
-                <pattern>[%level{WARN=Warning, DEBUG=Debug, ERROR=Error, TRACE=Trace, INFO=Info}] %C: %m%n</pattern>
+                <pattern>[%level{WARN=Warning, DEBUG=Debug, ERROR=Error, TRACE=Trace, INFO=Info}] %C{-4}: %m%n</pattern>
             </PatternLayout>
         </Console>
     </Appenders>

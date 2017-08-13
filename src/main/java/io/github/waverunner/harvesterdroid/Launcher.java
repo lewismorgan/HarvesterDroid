@@ -18,9 +18,9 @@
 
 package io.github.waverunner.harvesterdroid;
 
+import static io.github.waverunner.harvesterdroid.app.HarvesterDroidData.JSON_INVENTORY;
 import static io.github.waverunner.harvesterdroid.app.HarvesterDroidData.JSON_SCHEMATICS;
 import static io.github.waverunner.harvesterdroid.app.HarvesterDroidData.ROOT_DIR;
-import static io.github.waverunner.harvesterdroid.app.HarvesterDroidData.XML_INVENTORY;
 import static io.github.waverunner.harvesterdroid.app.HarvesterDroidData.XML_THEMES;
 
 import com.sun.javafx.application.LauncherImpl;
@@ -76,6 +76,26 @@ public class Launcher extends MvvmfxEasyDIApplication {
   private static HarvesterDroid app;
 
   public static void main(String[] args) {
+    logger.info("Launching HarvesterDroid...");
+    LauncherImpl.launchApplication(Launcher.class, LauncherPreloader.class, args);
+  }
+
+  public static Map<String, String> getResourceTypes() {
+    return app.getResourceTypes();
+  }
+
+  public static HarvesterDroid getApp() {
+    return app;
+  }
+
+  public static Image getAppIcon() {
+    return new Image(Launcher.class.getResourceAsStream("/images/icon.png"));
+  }
+
+  @Override
+  public void initMvvmfx() throws Exception {
+    updateLoadingProgress("Setting up bare essentials...", -1);
+
     try {
       if (!new File(ROOT_DIR).exists()) {
         new File(ROOT_DIR).mkdir();
@@ -101,27 +121,9 @@ public class Launcher extends MvvmfxEasyDIApplication {
         exceptionDialog.show();
         logger.error("Uncaught Exception", t);
       } else {
-        logger.error("Uncaught Exception encountered off UI thread", t);
+        logger.error("Uncaught Exception encountered on UI thread", t);
       }
     });
-    LauncherImpl.launchApplication(Launcher.class, LauncherPreloader.class, args);
-  }
-
-  public static Map<String, String> getResourceTypes() {
-    return app.getResourceTypes();
-  }
-
-  public static HarvesterDroid getApp() {
-    return app;
-  }
-
-  public static Image getAppIcon() {
-    return new Image(Launcher.class.getResourceAsStream("/images/icon.png"));
-  }
-
-  @Override
-  public void initMvvmfx() throws Exception {
-    updateLoadingProgress("Setting up bare essentials...", -1);
 
     // TODO "Blank Slate" state where no tracker is loaded, will help abstract away GalaxyHarvester dependencies
     // TODO Use separate threads for each loading task
@@ -139,8 +141,8 @@ public class Launcher extends MvvmfxEasyDIApplication {
         logger.error("Failed to load saved schematics", e);
       }
     }
-    if (Files.exists(Paths.get(XML_INVENTORY))) {
-      try (FileInputStream fileInputStream = new FileInputStream(XML_INVENTORY)) {
+    if (Files.exists(Paths.get(JSON_INVENTORY))) {
+      try (FileInputStream fileInputStream = new FileInputStream(JSON_INVENTORY)) {
         app.loadInventory(fileInputStream);
       } catch (IOException e) {
         logger.error("Failed to load saved inventory", e);
@@ -242,7 +244,7 @@ public class Launcher extends MvvmfxEasyDIApplication {
   }
 
   private static void save() {
-    try (FileOutputStream fileOutputStream = new FileOutputStream(XML_INVENTORY)) {
+    try (FileOutputStream fileOutputStream = new FileOutputStream(JSON_INVENTORY)) {
       app.saveInventory(fileOutputStream);
     } catch (IOException e) {
       logger.error("Failed saving inventory", e);
@@ -269,6 +271,7 @@ public class Launcher extends MvvmfxEasyDIApplication {
     DroidProperties.set(DroidProperties.HEIGHT, stage.getHeight());
     DroidProperties.set(DroidProperties.WIDTH, stage.getWidth());
     DroidProperties.set(DroidProperties.FULLSCREEN, stage.isFullScreen());
+    DroidProperties.set(DroidProperties.LAST_UPDATE, app.getCurrentUpdateTimestamp());
 
     try {
       DroidProperties.save(new FileOutputStream(System.getProperty("user.home")

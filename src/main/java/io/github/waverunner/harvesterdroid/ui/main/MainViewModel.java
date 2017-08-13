@@ -18,8 +18,8 @@
 
 package io.github.waverunner.harvesterdroid.ui.main;
 
+import static io.github.waverunner.harvesterdroid.app.HarvesterDroidData.JSON_INVENTORY;
 import static io.github.waverunner.harvesterdroid.app.HarvesterDroidData.JSON_SCHEMATICS;
-import static io.github.waverunner.harvesterdroid.app.HarvesterDroidData.XML_INVENTORY;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -130,7 +130,7 @@ public class MainViewModel implements ViewModel {
     saveCommand = new DelegateCommand(() -> new Action() {
       @Override
       protected void action() throws Exception {
-        try (FileOutputStream fileOutputStream = new FileOutputStream(XML_INVENTORY)) {
+        try (FileOutputStream fileOutputStream = new FileOutputStream(JSON_INVENTORY)) {
           harvesterDroid.saveInventory(fileOutputStream);
         } catch (IOException e) {
           logger.error("Failed saving inventory", e);

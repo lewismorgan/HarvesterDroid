@@ -24,8 +24,8 @@ import de.saxsys.mvvmfx.utils.commands.Action;
 import de.saxsys.mvvmfx.utils.commands.Command;
 import de.saxsys.mvvmfx.utils.commands.DelegateCommand;
 
-import io.github.waverunner.harvesterdroid.app.HarvesterDroid;
 import io.github.waverunner.harvesterdroid.api.GalaxyResource;
+import io.github.waverunner.harvesterdroid.app.HarvesterDroid;
 import io.github.waverunner.harvesterdroid.data.resources.InventoryResource;
 import io.github.waverunner.harvesterdroid.ui.dialog.resource.ResourceDialog;
 import io.github.waverunner.harvesterdroid.ui.items.GalaxyResourceItemViewModel;
