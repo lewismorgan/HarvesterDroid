@@ -24,8 +24,8 @@ import de.saxsys.mvvmfx.utils.commands.Action;
 import de.saxsys.mvvmfx.utils.commands.Command;
 import de.saxsys.mvvmfx.utils.commands.DelegateCommand;
 
-import io.github.waverunner.harvesterdroid.app.HarvesterDroid;
 import io.github.waverunner.harvesterdroid.api.GalaxyResource;
+import io.github.waverunner.harvesterdroid.app.HarvesterDroid;
 import io.github.waverunner.harvesterdroid.data.schematics.Schematic;
 import io.github.waverunner.harvesterdroid.ui.dialog.resource.NewSpawnsDialog;
 import io.github.waverunner.harvesterdroid.ui.items.GalaxyResourceItemViewModel;
@@ -51,10 +51,15 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 /**
  * Created by Waverunner on 4/3/2017.
  */
 public class ResourcesViewModel implements ViewModel {
+  private static final Logger logger = LogManager.getLogger(ResourcesViewModel.class);
+
   private final HarvesterDroid harvesterDroid;
   private ListProperty<GalaxyResourceItemViewModel> galaxyResources = new SimpleListProperty<>();
   private ObjectProperty<FilteredList<GalaxyResourceItemViewModel>> resources = new SimpleObjectProperty<>();
@@ -93,9 +98,10 @@ public class ResourcesViewModel implements ViewModel {
             .otherwise(Bindings.when(Bindings.isEmpty(resources.get())).then("No resources available for this schematic")
                 .otherwise(""))));
 
-    if (harvesterDroid.getLastUpdateTimestamp() != 0) {
+    if (harvesterDroid.getLastUpdateTimestamp() > 0 && harvesterDroid.getCurrentUpdateTimestamp() > harvesterDroid.getLastUpdateTimestamp()) {
       List<GalaxyResourceItemViewModel> newSpawns = new ArrayList<>();
       Date lastUpdate = new Date(harvesterDroid.getLastUpdateTimestamp());
+      logger.debug("Last updated {}, new date is {}", lastUpdate, new Date(harvesterDroid.getCurrentUpdateTimestamp()));
 
       galaxyResources.forEach(item -> {
         if (item.getGalaxyResource().getSpawnDate().after(lastUpdate)) {
@@ -108,6 +114,7 @@ public class ResourcesViewModel implements ViewModel {
         newSpawnsDialog.setNewSpawns(newSpawns);
         newSpawnsDialog.showAndWait();
       }
+      logger.debug("{} new resources have spawned", newSpawns.size());
     }
   }
 

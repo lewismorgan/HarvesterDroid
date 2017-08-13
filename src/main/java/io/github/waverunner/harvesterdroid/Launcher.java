@@ -271,6 +271,7 @@ public class Launcher extends MvvmfxEasyDIApplication {
     DroidProperties.set(DroidProperties.HEIGHT, stage.getHeight());
     DroidProperties.set(DroidProperties.WIDTH, stage.getWidth());
     DroidProperties.set(DroidProperties.FULLSCREEN, stage.isFullScreen());
+    DroidProperties.set(DroidProperties.LAST_UPDATE, app.getCurrentUpdateTimestamp());
 
     try {
       DroidProperties.save(new FileOutputStream(System.getProperty("user.home")
