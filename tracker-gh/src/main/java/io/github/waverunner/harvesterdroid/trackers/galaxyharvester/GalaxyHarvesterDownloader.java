@@ -19,7 +19,7 @@
 package io.github.waverunner.harvesterdroid.trackers.galaxyharvester;
 
 import io.github.waverunner.harvesterdroid.api.Downloader;
-import io.github.waverunner.harvesterdroid.api.resource.GalaxyResource;
+import io.github.waverunner.harvesterdroid.api.GalaxyResource;
 import io.github.waverunner.harvesterdroid.api.resource.ResourceType;
 
 import java.io.IOException;
@@ -101,7 +101,7 @@ public final class GalaxyHarvesterDownloader extends Downloader {
   }
 
   @Override
-  protected InputStream getGalaxyListStream() throws IOException {
+  protected InputStream createGalaxyListStream() throws IOException {
     return getListTypeStream("galaxy");
   }
 

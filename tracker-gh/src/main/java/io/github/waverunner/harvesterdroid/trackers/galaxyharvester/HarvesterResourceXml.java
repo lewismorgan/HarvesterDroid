@@ -18,8 +18,8 @@
 
 package io.github.waverunner.harvesterdroid.trackers.galaxyharvester;
 
+import io.github.waverunner.harvesterdroid.api.GalaxyResource;
 import io.github.waverunner.harvesterdroid.api.resource.Attributes;
-import io.github.waverunner.harvesterdroid.api.resource.GalaxyResource;
 import io.github.waverunner.harvesterdroid.trackers.galaxyharvester.xml.ResourceXml;
 
 import java.io.IOException;
@@ -65,7 +65,7 @@ public class HarvesterResourceXml extends ResourceXml {
           galaxyResource.setContainer(node.getTextContent());
           break;
         case "entered":
-          galaxyResource.setDate(formatDate(node.getTextContent()));
+          galaxyResource.setSpawnDate(formatDate(node.getTextContent()));
           break;
         case "planet":
           galaxyResource.getPlanets().add(node.getTextContent());

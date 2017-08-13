@@ -25,6 +25,7 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -32,13 +33,18 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 /**
  * Created by Waverunner on 3/23/2017.
  */
 public class HarvesterDroidData {
+  private static final Logger logger = LogManager.getLogger(HarvesterDroidData.class);
+
   public static final String ROOT_DIR = System.getProperty("user.home") + "/.harvesterdroid";
-  public static final String XML_SCHEMATICS = ROOT_DIR + "/schematics.xml";
-  public static final String XML_INVENTORY = ROOT_DIR + "/inventory.xml";
+  public static final String JSON_SCHEMATICS = ROOT_DIR + "/schematics.json";
+  public static final String JSON_INVENTORY = ROOT_DIR + "/inventory.json";
   public static final String XML_THEMES = ROOT_DIR + "/themes.xml";
 
   private Map<String, List<String>> resourceGroups;
@@ -56,6 +62,7 @@ public class HarvesterDroidData {
   }
 
   private void loadResourceGroups() {
+    // TODO Refactor resource group handling, this should be handled by the tracker with HD just have a general knowledge
     readCsv("/data/resource_groups.txt", line -> {
       if (resourceGroups.containsKey(line[1])) {
         resourceGroups.get(line[1]).add(line[0]);
@@ -228,7 +235,7 @@ public class HarvesterDroidData {
             break;
           default:
             if (!key.isEmpty()) {
-              System.out.println("Unknown key " + key);
+              logger.warn("Unknown key {}", key);
             }
             break;
         }

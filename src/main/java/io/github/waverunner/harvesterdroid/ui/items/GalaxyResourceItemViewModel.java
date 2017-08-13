@@ -20,7 +20,7 @@ package io.github.waverunner.harvesterdroid.ui.items;
 
 import de.saxsys.mvvmfx.ViewModel;
 
-import io.github.waverunner.harvesterdroid.api.resource.GalaxyResource;
+import io.github.waverunner.harvesterdroid.api.GalaxyResource;
 
 import java.io.InputStream;
 
@@ -34,10 +34,15 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableMap;
 import javafx.scene.image.Image;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 /**
  * Created by Waverunner on 4/3/2017.
  */
 public class GalaxyResourceItemViewModel implements ViewModel {
+  private static final Logger logger = LogManager.getLogger(GalaxyResourceItemViewModel.class);
+
   private ReadOnlyStringWrapper name = new ReadOnlyStringWrapper();
   private ReadOnlyStringWrapper type = new ReadOnlyStringWrapper();
   private ReadOnlyStringWrapper planets = new ReadOnlyStringWrapper();
@@ -51,7 +56,7 @@ public class GalaxyResourceItemViewModel implements ViewModel {
     name.set(galaxyResource.getName());
     type.set(galaxyResource.getResourceType().getName());
     if (galaxyResource.getAttributes() == null) {
-      System.err.println("Null attributes for " + galaxyResource.getName());
+      logger.warn("Null attributes for {}", galaxyResource.getName());
     }
     attributes.set(FXCollections.observableMap(galaxyResource.getAttributes()));
     image.set(createImage(galaxyResource.getResourceType().getId()));
@@ -75,7 +80,7 @@ public class GalaxyResourceItemViewModel implements ViewModel {
       container = container.split("_")[0];
       is = getClass().getResourceAsStream("/images/resources/" + container + ".png");
       if (is == null) {
-        System.out.println("Could not find image /images/resources/" + container + ".png");
+        logger.warn("Could not find image /images/resources/" + container + ".png");
         return null;
       }
     }

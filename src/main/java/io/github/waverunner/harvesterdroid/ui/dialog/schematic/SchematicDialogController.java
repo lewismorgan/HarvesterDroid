@@ -25,6 +25,7 @@ import io.github.waverunner.harvesterdroid.ui.IntegerTextField;
 import io.github.waverunner.harvesterdroid.ui.dialog.AddResourceTypeDialog;
 
 import java.net.URL;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -347,7 +348,7 @@ public class SchematicDialogController extends VBox implements Initializable {
     }
   }
 
-  class PercentEditingCell extends TableCell<Modifier, Integer> {
+  static class PercentEditingCell extends TableCell<Modifier, Integer> {
     private IntegerTextField textField;
 
     @Override

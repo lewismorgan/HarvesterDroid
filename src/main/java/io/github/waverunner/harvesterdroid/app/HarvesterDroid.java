@@ -18,62 +18,62 @@
 
 package io.github.waverunner.harvesterdroid.app;
 
-import io.github.waverunner.harvesterdroid.api.resource.GalaxyResource;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+
+import io.github.waverunner.harvesterdroid.api.DataFactory;
+import io.github.waverunner.harvesterdroid.api.Downloader;
+import io.github.waverunner.harvesterdroid.api.GalaxyResource;
 import io.github.waverunner.harvesterdroid.data.resources.InventoryResource;
 import io.github.waverunner.harvesterdroid.data.schematics.Schematic;
-import io.github.waverunner.harvesterdroid.database.DatabaseManager;
-import io.github.waverunner.harvesterdroid.api.Downloader;
-import io.github.waverunner.harvesterdroid.api.xml.XmlFactory;
-import io.github.waverunner.harvesterdroid.xml.InventoryXml;
-import io.github.waverunner.harvesterdroid.xml.SchematicsXml;
 
-import java.io.File;
+import java.io.ByteArrayInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class HarvesterDroid {
-  private static final int DOWNLOAD_HOURS = 2;
+  private static final Logger logger = LogManager.getLogger(HarvesterDroid.class);
 
   private final HarvesterDroidData data;
-  private final DatabaseManager databaseManager;
 
   private Downloader downloader;
 
-  private List<InventoryResource> inventory;
-
-  private List<GalaxyResource> resources;
-  private List<Schematic> schematics;
+  private final Set<InventoryResource> inventory;
+  private final Set<GalaxyResource> resources;
+  private final List<Schematic> schematics;
 
   private Map<String, String> galaxies;
-
   private Map<String, String> themes;
 
   private long lastUpdateTimestamp;
+  private long updateTimestamp;
 
-  private long currentResourceTimestamp;
   private String activeGalaxy;
   private String activeTheme;
 
-  public HarvesterDroid(Downloader downloader, DatabaseManager databaseManager) {
+  public HarvesterDroid(Downloader downloader) {
     this.downloader = downloader;
-    this.databaseManager = databaseManager;
-    this.currentResourceTimestamp = 0;
     this.data = new HarvesterDroidData();
-    this.inventory = new ArrayList<>(0);
-    this.resources = new ArrayList<>(0);
+    this.inventory = Collections.synchronizedSet(new HashSet<>(0));
+    this.resources = Collections.synchronizedSet(new HashSet<>(0));
     this.schematics = new ArrayList<>(0);
     this.galaxies = new HashMap<>(0);
     this.themes = new HashMap<>();
@@ -90,7 +90,7 @@ public class HarvesterDroid {
               .collect(Collectors.toList());
         }
 
-        GalaxyResource bestResource = collectBestResourceForSchematic(schematic, matchedResources);
+        GalaxyResource bestResource = getBestResource(schematic, matchedResources);
         if (bestResource != null && !bestResources.contains(bestResource)) {
           bestResources.add(bestResource);
         }
@@ -99,13 +99,13 @@ public class HarvesterDroid {
     return bestResources;
   }
 
-  public GalaxyResource collectBestResourceForSchematic(Schematic schematic, List<GalaxyResource> galaxyResources) {
+  public GalaxyResource getBestResource(Schematic schematic, List<GalaxyResource> galaxyResources) {
     GalaxyResource ret = null;
     float weightedAvg = -1;
     Map<String, Integer> modifiers = schematic.getModifiers();
 
     for (GalaxyResource galaxyResource : galaxyResources) {
-      float galaxyResourceAvg = getResourceWeightedAverage(modifiers, galaxyResource);
+      float galaxyResourceAvg = calculateResourceWeightedAverage(modifiers, galaxyResource);
       if (ret == null || weightedAvg == -1) {
         ret = galaxyResource;
         weightedAvg = galaxyResourceAvg;
@@ -118,7 +118,7 @@ public class HarvesterDroid {
     return ret;
   }
 
-  public float getResourceWeightedAverage(Map<String, Integer> modifiers, GalaxyResource resource) {
+  private float calculateResourceWeightedAverage(Map<String, Integer> modifiers, GalaxyResource resource) {
     float average = 0;
 
     for (Map.Entry<String, Integer> modifier : modifiers.entrySet()) {
@@ -153,79 +153,60 @@ public class HarvesterDroid {
     }
   }
 
-  private boolean needsUpdate(Date timestamp) {
-    if (timestamp == null) {
-      return true;
-    }
-
-    LocalDateTime now = LocalDateTime.now();
-    LocalDateTime from = LocalDateTime.ofInstant(timestamp.toInstant(), ZoneId.systemDefault());
-    LocalDateTime plusHours = from.plusHours(DOWNLOAD_HOURS);
-    return now.isAfter(plusHours);
-  }
-
-  public void updateResources() {
+  public void refreshResources(boolean loadLocal) {
     try {
-      if (downloader.getGalaxy().equals(activeGalaxy) && !needsUpdate(downloader.getCurrentResourcesTimestamp())) {
-        if (downloader.getCurrentResourcesTimestamp().toString().equals(getCurrentResourceTimestamp())) {
-          currentResourceTimestamp = downloader.getCurrentResourcesTimestamp().getTime();
-        }
-      } else {
+      if (downloader != null) {
         galaxies = downloader.downloadGalaxyList();
+        activeGalaxy = downloader.getGalaxy();
 
-        downloader.downloadCurrentResources();
-
-        for (GalaxyResource currentResource : downloader.getCurrentResources()) {
-          // Remove any current loaded resources that are saved because they're probably is updated information
-          GalaxyResource duplicate = null;
-          for (GalaxyResource resource : resources) {
-            if (resource.getName().equals(currentResource.getName())) {
-              duplicate = resource;
-              break;
-            }
-          }
-          if (duplicate != null) {
-            resources.remove(duplicate);
-          }
+        if (loadLocal && Files.exists(Paths.get(downloader.getResourcesPath()))) {
+          loadResources(Files.readAllBytes(Paths.get(downloader.getResourcesPath())));
         }
 
-        resources.addAll(downloader.getCurrentResources());
+        downloadNewResources();
 
         resources.forEach(galaxyResource -> data.populateMinMax(galaxyResource.getResourceType()));
-        inventory.forEach(this::getGalaxyResource);
-
-        currentResourceTimestamp = downloader.getCurrentResourcesTimestamp().getTime();
-        activeGalaxy = downloader.getGalaxy();
+        logger.debug("Refreshed resources. There are {} resources now loaded", resources.size());
       }
     } catch (IOException e) {
       e.printStackTrace();
     }
   }
 
+  private void downloadNewResources() throws IOException {
+    downloader.downloadCurrentResources();
+
+    List<GalaxyResource> downloaded = new ArrayList<>(downloader.getCurrentResources());
+
+    List<String> filtered = downloaded.stream()
+        .filter(dlResource -> resources.stream().anyMatch(resource -> resource.getName().equals(dlResource.getName())))
+        .map(GalaxyResource::getName).collect(Collectors.toList());
+
+    resources.removeIf(resource -> filtered.contains(resource.getName()));
+    logger.debug("Removed {} resources from resources as they're still active. Resources size "
+        + "is now {} resources", filtered.size(), resources.size());
+
+    resources.addAll(downloaded);
+
+    logger.debug("Finished downloading {} resources to listing of resources (now {} resources)",
+        downloaded.size(), resources.size());
+  }
+
   public GalaxyResource getGalaxyResource(String name) {
-    if (downloader == null)
-      return null;
     Optional<GalaxyResource> optional = resources.stream().filter(galaxyResource -> galaxyResource.getName().equals(name)).findFirst();
     return optional.orElse(null);
   }
 
   public GalaxyResource getGalaxyResource(InventoryResource inventoryResource) {
-    if (downloader == null)
-      return null;
-
-    if (!inventoryResource.getTracker().equals(getTracker()) && !inventoryResource.getGalaxy().equals(downloader.getGalaxy())) {
-      return null;
-    }
-
     GalaxyResource galaxyResource = getGalaxyResource(inventoryResource.getName());
     if (galaxyResource == null) {
-      galaxyResource = retrieveGalaxyResource(inventoryResource.getName());
+      galaxyResource = findGalaxyResource(inventoryResource.getName());
     }
 
     return galaxyResource;
   }
 
-  public GalaxyResource retrieveGalaxyResource(String resource) {
+  public GalaxyResource findGalaxyResource(String resource) {
     GalaxyResource existing = getGalaxyResource(resource);
     if (existing != null) {
       return existing;
@@ -255,14 +236,16 @@ public class HarvesterDroid {
       return false;
     }
 
-    saveResources();
+    try (FileOutputStream fileOutputStream = new FileOutputStream(getSavedResourcesPath())) {
+      saveResources(fileOutputStream);
+    } catch (IOException e) {
+      logger.error("Failed to save resources when switching galaxies", e);
+    }
+
     activeGalaxy = galaxy;
     downloader.setGalaxy(galaxy);
-    resources.clear();
-    if (new File(getSavedResourcesPath()).exists()) {
-      loadResources(getSavedResourcesPath());
-    }
-    updateResources();
+
+    refreshResources(true);
     return true;
   }
 
@@ -291,84 +274,78 @@ public class HarvesterDroid {
   }
 
   public void saveSchematics(OutputStream outputStream) {
-    // TODO Save schematics as JSON
-    SchematicsXml schematicsXml = new SchematicsXml();
-    schematicsXml.setSchematics(schematics);
-    XmlFactory.write(schematicsXml, outputStream);
+    ObjectMapper objectMapper = DataFactory.createJsonObjectMapper();
+    objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
+
+    try {
+      objectMapper.writeValue(outputStream, schematics);
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
   }
 
   public void saveInventory(OutputStream outputStream) {
-    // TODO Save inventory as JSON
-    InventoryXml inventoryXml = new InventoryXml();
-    inventoryXml.setInventory(inventory);
-    XmlFactory.write(inventoryXml, outputStream);
-  }
+    ObjectMapper objectMapper = DataFactory.createJsonObjectMapper();
+    objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
 
-  public void saveResources() {
-    EntityManager entityManager = databaseManager.createDatabase(getSavedResourcesPath());
-
-    entityManager.getTransaction().begin();
     try {
-      entityManager.createQuery("DELETE from GalaxyResource").executeUpdate();
-      entityManager.createQuery("DELETE from ResourceType").executeUpdate();
-    } catch (PersistenceException exc) {
-      // db never existed so no need to clear
-    }
-    entityManager.getTransaction().commit();
-
-    entityManager.getTransaction().begin();
-    resources.forEach(entityManager::persist);
-    entityManager.getTransaction().commit();
-
-    databaseManager.closeDatabases();
-  }
-
-  public void shutdown() {
-    databaseManager.closeDatabases();
-  }
-
-  public void loadResources(String database) {
-    EntityManager entityManager = databaseManager.loadDatabase(database);
-    resources = DatabaseManager.getList(entityManager, GalaxyResource.class);
-
-    databaseManager.closeDatabase(database);
-  }
-
-
-  public void loadSchematics(InputStream inputStream) {
-    SchematicsXml schematicsXml = XmlFactory.read(SchematicsXml.class, inputStream);
-    if (schematicsXml != null && schematicsXml.getSchematics() != null) {
-      schematics = schematicsXml.getSchematics();
+      objectMapper.writeValue(outputStream, inventory);
+    } catch (IOException e) {
+      e.printStackTrace();
     }
   }
 
-  public void loadInventory(InputStream inputStream) {
-    // TODO Inventory resources should be able to be loaded regardless if a tracker is loaded or not
-    InventoryXml inventoryXml = XmlFactory.read(InventoryXml.class, inputStream);
-    if (downloader != null && inventoryXml != null && inventoryXml.getInventory() != null) {
-      inventory = inventoryXml.getInventory();
-      inventory.forEach(this::getGalaxyResource);
-    }
+  public void saveResources(OutputStream outputStream) throws IOException {
+    DataFactory.save(outputStream, resources);
+    outputStream.close();
   }
 
-  public List<InventoryResource> getInventory() {
+  public void loadResources(byte[] data) throws IOException {
+    ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(data);
+    HashSet<GalaxyResource> saved = DataFactory.openBinaryCollection(byteArrayInputStream,
+        new TypeReference<HashSet<GalaxyResource>>() {});
+
+    if (saved != null) {
+      resources.clear();
+      resources.addAll(saved);
+    }
+
+    byteArrayInputStream.close();
+    logger.debug("Loaded {} resources from data input stream", resources.size());
+  }
+
+  public void loadSchematics(InputStream inputStream) throws IOException {
+    ObjectMapper objectMapper = DataFactory.createJsonObjectMapper();
+    List<Schematic> saved = objectMapper.readValue(inputStream, new TypeReference<List<Schematic>>() {
+    });
+
+    schematics.clear();
+    schematics.addAll(saved);
+
+    inputStream.close();
+  }
+
+  public void loadInventory(InputStream inputStream) throws IOException {
+    ObjectMapper objectMapper = DataFactory.createJsonObjectMapper();
+    Set<InventoryResource> saved = objectMapper.readValue(inputStream, new TypeReference<Set<InventoryResource>>() {
+    });
+
+    inventory.clear();
+    inventory.addAll(saved);
+
+    inputStream.close();
+  }
+
+  public Set<InventoryResource> getInventory() {
     return inventory;
   }
 
-  public List<GalaxyResource> getResources() {
+  public Set<GalaxyResource> getResources() {
     return resources;
   }
 
   public List<Schematic> getSchematics() {
     return schematics;
-  }
-
-  public void setSchematics(List<Schematic> schematics) {
-    this.schematics = schematics;
-  }
-
-  public long getCurrentResourceTimestamp() {
-    return currentResourceTimestamp;
   }
 
   public Map<String, String> getGalaxies() {
@@ -419,5 +396,9 @@ public class HarvesterDroid {
 
   public void setLastUpdateTimestamp(long lastUpdateTimestamp) {
     this.lastUpdateTimestamp = lastUpdateTimestamp;
+  }
+
+  public long getCurrentUpdateTimestamp() {
+    return downloader.getCurrentResourcesTimestamp().getTime();
   }
 }

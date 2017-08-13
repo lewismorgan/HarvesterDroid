@@ -24,6 +24,7 @@ import de.saxsys.mvvmfx.InjectViewModel;
 import io.github.waverunner.harvesterdroid.data.schematics.Schematic;
 
 import java.net.URL;
+
 import java.util.ResourceBundle;
 
 import javafx.beans.binding.Bindings;
@@ -34,10 +35,14 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 /**
  * Created by Waverunner on 4/3/2017.
  */
 public class SchematicsView implements FxmlView<SchematicsViewModel>, Initializable {
+  private static final Logger logger = LogManager.getLogger(SchematicsView.class);
 
   @FXML
   private Button editSchematicButton;
@@ -166,39 +171,45 @@ public class SchematicsView implements FxmlView<SchematicsViewModel>, Initializa
     }
 
     TreeItem<SchematicsTreeItem> groupTree = getSubGroupTree(schematicsTreeView.getRoot(), groups, 0);
-
     if (groupTree == null) {
-      // Group has never been created, so make it
+      logger.debug("Creating group hierarchy {} ", schematic.getGroup());
       TreeItem<SchematicsTreeItem> rootGroup = createGroupTreeItem(groups, 0);
       TreeItem<SchematicsTreeItem> subGroup = null;
+
       if (groups.length > 1) {
         subGroup = getSubGroupTree(rootGroup, groups, 1);
       }
 
       if (subGroup != null) {
         subGroup.getChildren().add(createSchematicsTreeItem(schematic));
+        logger.debug("Created schematic {} on sub group {}", schematic.getName(), subGroup.getValue().getName());
       } else {
         rootGroup.getChildren().add(createSchematicsTreeItem(schematic));
+        logger.debug("Created schematic {} on root group {}", schematic.getName(), rootGroup.getValue().getName());
       }
 
       schematicsTreeView.getRoot().getChildren().add(rootGroup);
     } else {
       // Base of the group has been created, make the remaining non-existent groups
       TreeItem<SchematicsTreeItem> existingGroup = getParentGroupTreeItem(schematicsTreeView.getRoot(), groups, 0);
+
       if (existingGroup == groupTree) {
         // Don't need to do anything, all the groups are made, just add the schematic
         existingGroup.getChildren().add(createSchematicsTreeItem(schematic));
       } else {
-
         int index = getParentGroupIndex(schematicsTreeView.getRoot(), groups, 0);
 
         TreeItem<SchematicsTreeItem> rootGroup = createGroupTreeItem(groups, index);
-        TreeItem<SchematicsTreeItem> subGroup = getSubGroupTree(rootGroup, groups, index);
+        // Already at the first index, traverse deeper to get the sub group tree
+        TreeItem<SchematicsTreeItem> subGroup = getSubGroupTree(rootGroup, groups, index + 1);
 
         if (subGroup != null) {
           subGroup.getChildren().add(createSchematicsTreeItem(schematic));
+          logger.debug("Created sub group {} and added schematic {}", subGroup.getValue(), schematic.getName());
         } else {
+          // This shouldn't happen, but if it does...
           rootGroup.getChildren().add(createSchematicsTreeItem(schematic));
+          logger.warn("Null subgroup, adding {} to rootgroup {} ", schematic.getName(), rootGroup.getValue());
         }
 
         // Ensure groups remain at the top

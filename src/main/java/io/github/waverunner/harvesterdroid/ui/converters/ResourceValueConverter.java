@@ -33,7 +33,7 @@ public class ResourceValueConverter extends StringConverter<Number> {
       return -1;
     }
 
-    int value = Integer.valueOf(string);
+    int value = Integer.parseInt(string);
     if (value > 1000 || value <= 0) {
       return -1;
     }

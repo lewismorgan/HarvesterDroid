@@ -18,8 +18,11 @@
 
 package io.github.waverunner.harvesterdroid.ui.main;
 
-import static io.github.waverunner.harvesterdroid.app.HarvesterDroidData.XML_INVENTORY;
-import static io.github.waverunner.harvesterdroid.app.HarvesterDroidData.XML_SCHEMATICS;
+import static io.github.waverunner.harvesterdroid.app.HarvesterDroidData.JSON_INVENTORY;
+import static io.github.waverunner.harvesterdroid.app.HarvesterDroidData.JSON_SCHEMATICS;
+
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import de.saxsys.mvvmfx.InjectScope;
 import de.saxsys.mvvmfx.ScopeProvider;
@@ -29,25 +32,28 @@ import de.saxsys.mvvmfx.utils.commands.Command;
 import de.saxsys.mvvmfx.utils.commands.DelegateCommand;
 
 import io.github.waverunner.harvesterdroid.DroidProperties;
+import io.github.waverunner.harvesterdroid.api.DataFactory;
+import io.github.waverunner.harvesterdroid.api.GalaxyResource;
 import io.github.waverunner.harvesterdroid.app.HarvesterDroid;
-import io.github.waverunner.harvesterdroid.api.resource.GalaxyResource;
+import io.github.waverunner.harvesterdroid.data.schematics.Schematic;
 import io.github.waverunner.harvesterdroid.ui.dialog.about.AboutDialog;
 import io.github.waverunner.harvesterdroid.ui.dialog.preferences.PreferencesDialog;
 import io.github.waverunner.harvesterdroid.ui.dialog.resource.ImportResourcesDialog;
 import io.github.waverunner.harvesterdroid.ui.scopes.GalaxyScope;
 import io.github.waverunner.harvesterdroid.ui.scopes.ResourceScope;
 import io.github.waverunner.harvesterdroid.ui.scopes.SchematicScope;
-import io.github.waverunner.harvesterdroid.api.xml.XmlFactory;
-import io.github.waverunner.harvesterdroid.xml.SchematicsXml;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Properties;
+import java.util.Set;
 
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.ReadOnlyStringProperty;
@@ -58,12 +64,16 @@ import javafx.collections.FXCollections;
 
 import javax.inject.Singleton;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 /**
  * Created by Waverunner on 4/3/2017.
  */
 @Singleton
 @ScopeProvider(scopes = {SchematicScope.class, GalaxyScope.class, ResourceScope.class})
 public class MainViewModel implements ViewModel {
+  private static final Logger logger = LogManager.getLogger(MainViewModel.class);
 
   private final HarvesterDroid harvesterDroid;
 
@@ -120,12 +130,21 @@ public class MainViewModel implements ViewModel {
     saveCommand = new DelegateCommand(() -> new Action() {
       @Override
       protected void action() throws Exception {
-
-        harvesterDroid.saveSchematics(new FileOutputStream(new File(XML_SCHEMATICS)));
-        harvesterDroid.saveInventory(new FileOutputStream(new File(XML_INVENTORY)));
-        publish("StatusUpdate", "Saving Resources");
-        harvesterDroid.saveResources();
-        publish("StatusUpdate.Finished");
+        try (FileOutputStream fileOutputStream = new FileOutputStream(JSON_INVENTORY)) {
+          harvesterDroid.saveInventory(fileOutputStream);
+        } catch (IOException e) {
+          logger.error("Failed saving inventory", e);
+        }
+        try (FileOutputStream fileOutputStream = new FileOutputStream(new File(JSON_SCHEMATICS))) {
+          harvesterDroid.saveSchematics(fileOutputStream);
+        } catch (IOException e) {
+          logger.error("Failed saving schematics", e);
+        }
+        try (FileOutputStream fileOutputStream = new FileOutputStream(new File(harvesterDroid.getSavedResourcesPath()))) {
+          harvesterDroid.saveResources(fileOutputStream);
+        } catch (IOException e) {
+          logger.error("Failed saving resources");
+        }
       }
     });
 
@@ -144,7 +163,7 @@ public class MainViewModel implements ViewModel {
         resourceNames.ifPresent(strings -> {
           GalaxyResource[] toImport = new GalaxyResource[strings.size()];
           for (int i = 0; i < strings.size(); i++) {
-            toImport[i] = harvesterDroid.retrieveGalaxyResource(strings.get(i));
+            toImport[i] = harvesterDroid.findGalaxyResource(strings.get(i));
           }
 
           List<GalaxyResource> imported = new ArrayList<>();
@@ -165,16 +184,20 @@ public class MainViewModel implements ViewModel {
     updateResourceStatus(resources);
   }
 
+  @SuppressWarnings("unchecked")
   public void importSchematics(File... schematicsFiles) {
     for (File file : schematicsFiles) {
       try {
 
-        SchematicsXml schematicsXml = XmlFactory.read(SchematicsXml.class, new FileInputStream(file));
-        if (schematicsXml != null && schematicsXml.getSchematics() != null) {
-          schematicScope.publish(SchematicScope.IMPORT, schematicsXml.getSchematics().toArray());
-        }
+        ObjectMapper objectMapper = DataFactory.createJsonObjectMapper();
+        Set<Schematic> saved = objectMapper.readValue(new FileInputStream(file),
+            new TypeReference<Set<Schematic>>() {}); // Prevent type erasing
+
+        schematicScope.publish(SchematicScope.IMPORT, saved.toArray());
       } catch (FileNotFoundException e) {
         throw new RuntimeException(e);
+      } catch (IOException e) {
+        e.printStackTrace();
       }
     }
   }

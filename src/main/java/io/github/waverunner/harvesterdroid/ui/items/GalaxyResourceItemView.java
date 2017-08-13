@@ -21,11 +21,12 @@ package io.github.waverunner.harvesterdroid.ui.items;
 import de.saxsys.mvvmfx.FxmlView;
 import de.saxsys.mvvmfx.InjectViewModel;
 
+import io.github.waverunner.harvesterdroid.api.GalaxyResource;
 import io.github.waverunner.harvesterdroid.api.resource.Attributes;
-import io.github.waverunner.harvesterdroid.api.resource.GalaxyResource;
 import io.github.waverunner.harvesterdroid.api.resource.ResourceType;
 
 import java.net.URL;
+
 import java.util.ResourceBundle;
 
 import javafx.collections.MapChangeListener;
@@ -41,10 +42,15 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 /**
  * Created by Waverunner on 4/3/2017.
  */
 public class GalaxyResourceItemView implements FxmlView<GalaxyResourceItemViewModel>, Initializable {
+  private static final Logger logger = LogManager.getLogger(GalaxyResourceItemView.class);
+
   @FXML
   ImageView resourceImage;
   @FXML
@@ -79,7 +85,7 @@ public class GalaxyResourceItemView implements FxmlView<GalaxyResourceItemViewMo
     resourceStatsBox.getChildren().clear();
     Attributes.forEach((primary, secondary) -> {
       if (viewModel.getAttributes() == null) {
-        System.out.println("Null attributes for " + viewModel.getGalaxyResource());
+        logger.warn("Null attributes for GalaxyResource {} in ViewModel", viewModel.getGalaxyResource());
       }
       int value = viewModel.getAttributes().get(primary);
       Label percentage = createPercentageLabel(primary, viewModel.getGalaxyResource());
