@@ -6,8 +6,6 @@ module io.github.waverunner.harvesterdroid.api {
   requires java.xml.bind;
   requires slf4j.api;
   requires bson4jackson;
-  requires jackson.core;
-  requires jackson.databind;
   exports io.github.waverunner.harvesterdroid.api.resource;
   exports io.github.waverunner.harvesterdroid.api.xml;
   exports io.github.waverunner.harvesterdroid.api.tracker;

@@ -25,8 +25,8 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import io.github.waverunner.harvesterdroid.api.tracker.DataFactory;
 import io.github.waverunner.harvesterdroid.api.tracker.Downloader;
 import io.github.waverunner.harvesterdroid.api.resource.GalaxyResource;
-import io.github.waverunner.harvesterdroid.data.resources.InventoryResource;
-import io.github.waverunner.harvesterdroid.data.schematics.Schematic;
+import io.github.waverunner.harvesterdroid.app.data.resources.InventoryResource;
+import io.github.waverunner.harvesterdroid.app.data.schematics.Schematic;
 
 import java.io.ByteArrayInputStream;
 import java.io.FileOutputStream;

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<!--
+  ~ HarvesterDroid - A Resource Tracker for Star Wars Galaxies
+  ~ Copyright (C) 2017  Waverunner
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+
+<HBox spacing="2.0" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.github.waverunner.harvesterdroid.app.ui.items.GalaxyResourceItemView">
+    <children>
+    <ImageView fx:id="resourceImage" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS">
+        <Image url="@/images/resources/gemstone.png" />
+    </ImageView>
+    <VBox HBox.hgrow="ALWAYS">
+        <Label fx:id="resourceName" text="resource_name">
+            <font>
+                <Font name="System Bold" size="14.0" />
+            </font>
+            <padding>
+               <Insets top="5.0" />
+            </padding>
+        </Label>
+        <Label fx:id="resourceType" text="resource_type" />
+         <Label fx:id="resourcePlanets" text="resource_planets">
+            <padding>
+               <Insets top="1.0" />
+            </padding>
+         </Label>
+    </VBox>
+    <HBox fx:id="resourceStatsBox" alignment="TOP_RIGHT" nodeOrientation="LEFT_TO_RIGHT" spacing="8.0" HBox.hgrow="SOMETIMES">
+        <padding>
+            <Insets left="5.0" />
+        </padding>
+    </HBox>
+    </children>
+</HBox>
