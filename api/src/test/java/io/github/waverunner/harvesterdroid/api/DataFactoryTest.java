@@ -18,11 +18,23 @@ import org.junit.jupiter.api.Test;
  * Created by lewis on 8/11/17
  */
 class DataFactoryTest {
+
   private static DataFactory dataFactory;
 
   @BeforeAll
   static void setup() {
     dataFactory = new DataFactory();
+  }
+
+  private static Collection<GalaxyResource> createResources(int amount) {
+    Collection<GalaxyResource> resources = new ArrayList<>();
+
+    for (int i = 0; i < amount; i++) {
+      GalaxyResource resource = new GalaxyResource();
+      resource.setName("Resource" + i);
+      resources.add(resource);
+    }
+    return resources;
   }
 
   @Test
@@ -45,19 +57,10 @@ class DataFactoryTest {
     DataFactory.save(baos, galaxyResources);
 
     Collection<GalaxyResource> loaded = DataFactory.openBinaryCollection(baos.toByteArray(),
-        new TypeReference<Collection<GalaxyResource>>() {});
+        new TypeReference<Collection<GalaxyResource>>() {
+        });
 
-    assertTrue(loaded.size() == 10, String.format("Loaded %d resources, expected 10", loaded.size()));
-  }
-
-  private static Collection<GalaxyResource> createResources(int amount) {
-    Collection<GalaxyResource> resources = new ArrayList<>();
-
-    for (int i = 0; i < amount; i++) {
-      GalaxyResource resource = new GalaxyResource();
-      resource.setName("Resource" + i);
-      resources.add(resource);
-    }
-    return resources;
+    assertTrue(loaded.size() == 10,
+        String.format("Loaded %d resources, expected 10", loaded.size()));
   }
 }

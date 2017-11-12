@@ -18,20 +18,17 @@
 
 package io.github.waverunner.harvesterdroid.trackers.galaxyharvester;
 
-import io.github.waverunner.harvesterdroid.api.resource.GalaxyResource;
 import io.github.waverunner.harvesterdroid.api.resource.Attributes;
+import io.github.waverunner.harvesterdroid.api.resource.GalaxyResource;
 import io.github.waverunner.harvesterdroid.trackers.galaxyharvester.xml.ResourceXml;
-
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.concurrent.atomic.AtomicBoolean;
-
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.ParserConfigurationException;
-
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.xml.sax.SAXException;

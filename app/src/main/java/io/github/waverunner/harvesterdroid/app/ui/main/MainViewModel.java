@@ -23,17 +23,15 @@ import static io.github.waverunner.harvesterdroid.app.HarvesterDroidData.JSON_SC
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import de.saxsys.mvvmfx.InjectScope;
 import de.saxsys.mvvmfx.ScopeProvider;
 import de.saxsys.mvvmfx.ViewModel;
 import de.saxsys.mvvmfx.utils.commands.Action;
 import de.saxsys.mvvmfx.utils.commands.Command;
 import de.saxsys.mvvmfx.utils.commands.DelegateCommand;
-
-import io.github.waverunner.harvesterdroid.app.DroidProperties;
-import io.github.waverunner.harvesterdroid.api.tracker.DataFactory;
 import io.github.waverunner.harvesterdroid.api.resource.GalaxyResource;
+import io.github.waverunner.harvesterdroid.api.tracker.DataFactory;
+import io.github.waverunner.harvesterdroid.app.DroidProperties;
 import io.github.waverunner.harvesterdroid.app.HarvesterDroid;
 import io.github.waverunner.harvesterdroid.app.data.schematics.Schematic;
 import io.github.waverunner.harvesterdroid.app.ui.dialog.about.AboutDialog;
@@ -42,28 +40,23 @@ import io.github.waverunner.harvesterdroid.app.ui.dialog.resource.ImportResource
 import io.github.waverunner.harvesterdroid.app.ui.scopes.GalaxyScope;
 import io.github.waverunner.harvesterdroid.app.ui.scopes.ResourceScope;
 import io.github.waverunner.harvesterdroid.app.ui.scopes.SchematicScope;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Properties;
 import java.util.Set;
-
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.ReadOnlyStringProperty;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
-
 import javax.inject.Singleton;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -73,6 +66,7 @@ import org.apache.logging.log4j.Logger;
 @Singleton
 @ScopeProvider(scopes = {SchematicScope.class, GalaxyScope.class, ResourceScope.class})
 public class MainViewModel implements ViewModel {
+
   private static final Logger logger = LogManager.getLogger(MainViewModel.class);
 
   private final HarvesterDroid harvesterDroid;
@@ -101,11 +95,14 @@ public class MainViewModel implements ViewModel {
   public void initialize() {
     createCommands();
 
-    galaxyScope.subscribe(GalaxyScope.CHANGED, (s, objects) -> updateStatusText(harvesterDroid.getActiveGalaxy(),
-        harvesterDroid.getResources().size()));
-    resourceScope.subscribe(ResourceScope.UPDATED_LIST, (s, objects) -> updateResourceStatus(harvesterDroid.getResources().size()));
+    galaxyScope.subscribe(GalaxyScope.CHANGED,
+        (s, objects) -> updateStatusText(harvesterDroid.getActiveGalaxy(),
+            harvesterDroid.getResources().size()));
+    resourceScope.subscribe(ResourceScope.UPDATED_LIST,
+        (s, objects) -> updateResourceStatus(harvesterDroid.getResources().size()));
 
-    statusText.bind(Bindings.concat("Galaxy: ", galaxyString, "  |  ", "Loaded Resources: ", resourcesString));
+    statusText.bind(
+        Bindings.concat("Galaxy: ", galaxyString, "  |  ", "Loaded Resources: ", resourcesString));
     updateStatusText(harvesterDroid.getActiveGalaxy(), harvesterDroid.getResources().size());
   }
 
@@ -140,7 +137,8 @@ public class MainViewModel implements ViewModel {
         } catch (IOException e) {
           logger.error("Failed saving schematics", e);
         }
-        try (FileOutputStream fileOutputStream = new FileOutputStream(new File(harvesterDroid.getSavedResourcesPath()))) {
+        try (FileOutputStream fileOutputStream = new FileOutputStream(
+            new File(harvesterDroid.getSavedResourcesPath()))) {
           harvesterDroid.saveResources(fileOutputStream);
         } catch (IOException e) {
           logger.error("Failed saving resources");
@@ -191,7 +189,8 @@ public class MainViewModel implements ViewModel {
 
         ObjectMapper objectMapper = DataFactory.createJsonObjectMapper();
         Set<Schematic> saved = objectMapper.readValue(new FileInputStream(file),
-            new TypeReference<Set<Schematic>>() {}); // Prevent type erasing
+            new TypeReference<Set<Schematic>>() {
+            }); // Prevent type erasing
 
         schematicScope.publish(SchematicScope.IMPORT, saved.toArray());
       } catch (FileNotFoundException e) {

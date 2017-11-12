@@ -21,12 +21,10 @@ package io.github.waverunner.harvesterdroid.app.ui.dialog.preferences;
 import io.github.waverunner.harvesterdroid.app.DroidProperties;
 import io.github.waverunner.harvesterdroid.app.Launcher;
 import io.github.waverunner.harvesterdroid.app.ui.dialog.BaseDialog;
-
 import java.net.URL;
 import java.util.Map;
 import java.util.Properties;
 import java.util.ResourceBundle;
-
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.MapProperty;
 import javafx.beans.property.ObjectProperty;
@@ -47,6 +45,7 @@ import javafx.scene.control.TextField;
  * Created by Waverunner on 3/29/2017.
  */
 public class PreferencesDialog extends BaseDialog<Properties> implements Initializable {
+
   //region FXML
   @FXML
   private ChoiceBox<String> trackerComboBox;
@@ -82,7 +81,8 @@ public class PreferencesDialog extends BaseDialog<Properties> implements Initial
       newValue.forEach((key, value) -> galaxyChoiceBox.getItems().add(value));
       galaxyChoiceBox.getSelectionModel().select(0);
     }));
-    themeComboBox.setItems(FXCollections.observableArrayList(Launcher.getApp().getThemes().keySet()));
+    themeComboBox
+        .setItems(FXCollections.observableArrayList(Launcher.getApp().getThemes().keySet()));
     if (themeComboBox.getItems().size() <= 1) {
       themeComboBox.setDisable(true);
     }
@@ -101,33 +101,37 @@ public class PreferencesDialog extends BaseDialog<Properties> implements Initial
     properties.addListener((observable, oldValue, newValue) -> {
       selectGalaxy(newValue.getProperty(DroidProperties.GALAXY));
       downloadBufferTextField.setText(newValue.getProperty(DroidProperties.DOWNLOAD_BUFFER));
-      autosaveCheckBox.selectedProperty().set(Boolean.parseBoolean(newValue.getProperty(DroidProperties.AUTOSAVE)));
-      saveNagCheckBox.selectedProperty().set(Boolean.parseBoolean(newValue.getProperty(DroidProperties.SAVE_NAG)));
+      autosaveCheckBox.selectedProperty()
+          .set(Boolean.parseBoolean(newValue.getProperty(DroidProperties.AUTOSAVE)));
+      saveNagCheckBox.selectedProperty()
+          .set(Boolean.parseBoolean(newValue.getProperty(DroidProperties.SAVE_NAG)));
       themeComboBox.getSelectionModel().select(newValue.getProperty(DroidProperties.THEME));
     });
 
-    galaxyChoiceBox.getSelectionModel().selectedItemProperty().addListener(((observable, oldValue, newValue) -> {
-      if (properties.get() == null) {
-        return;
-      }
-      String key = getGalaxyKey(newValue);
-      if (key != null) {
-        properties.get().setProperty(DroidProperties.GALAXY, key);
-      }
-    }));
+    galaxyChoiceBox.getSelectionModel().selectedItemProperty()
+        .addListener(((observable, oldValue, newValue) -> {
+          if (properties.get() == null) {
+            return;
+          }
+          String key = getGalaxyKey(newValue);
+          if (key != null) {
+            properties.get().setProperty(DroidProperties.GALAXY, key);
+          }
+        }));
     downloadBufferTextField.textProperty().addListener((observable, oldValue, newValue) ->
         properties.get().setProperty(DroidProperties.DOWNLOAD_BUFFER, String.valueOf(newValue)));
     autosaveCheckBox.selectedProperty().addListener((observable, oldValue, newValue) ->
         properties.get().setProperty(DroidProperties.AUTOSAVE, String.valueOf(newValue)));
     saveNagCheckBox.selectedProperty().addListener((observable, oldValue, newValue) ->
         properties.get().setProperty(DroidProperties.SAVE_NAG, String.valueOf(newValue)));
-    themeComboBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) ->
-        properties.get().setProperty(DroidProperties.THEME, newValue));
+    themeComboBox.getSelectionModel().selectedItemProperty()
+        .addListener((observable, oldValue, newValue) ->
+            properties.get().setProperty(DroidProperties.THEME, newValue));
   }
 
   @Override
   protected ButtonType[] getButtonTypes() {
-    return new ButtonType[] {
+    return new ButtonType[]{
         ButtonType.APPLY,
         ButtonType.CLOSE
     };

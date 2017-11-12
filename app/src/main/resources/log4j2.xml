@@ -1,37 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Configuration>
-    <Appenders>
-        <File name="file" fileName="harvesterdroid.log" append="false" createOnDemand="true">
-            <PatternLayout>
-                <pattern>[%level{WARN=Warning, DEBUG=Debug, ERROR=Error, TRACE=Trace, INFO=Info}] %d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %C - %msg%n
-                </pattern>
-            </PatternLayout>
-        </File>
-        <File name="file-debug" fileName="debug.log" append="false" createOnDemand="true">
-            <PatternLayout>
-                <pattern>[%level{DEBUG=Debug}] %d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %C - %msg%n</pattern>
-            </PatternLayout>
-        </File>
-        <Console name="STDOUT" target="SYSTEM_OUT">
-            <PatternLayout>
-                <pattern>[%level{WARN=Warning, DEBUG=Debug, ERROR=Error, TRACE=Trace, INFO=Info}] %C{-4}: %m%n</pattern>
-            </PatternLayout>
-        </Console>
-    </Appenders>
-    <Loggers>
-        <Root level="error">
-            <!-- All errors and warnings should be printed to the console !-->
-            <appender-ref ref="STDOUT"/>
-        </Root>
-        <Root level="warn">
-            <appender-ref ref="STDOUT"/>
-        </Root>
-        <Logger name="io.github.waverunner" level="all" additivity="false">
-            <appender-ref ref="STDOUT" level="all"/>
-            <appender-ref ref="file" level="info"/>
-            <!-- Already appended to the logger automatically if DEBUG property is set !-->
-            <!--<appender-ref ref="STDOUT" level="debug"/>-->
-            <!--<appender-ref ref="file-log" level="debug"/>-->
-        </Logger>
-    </Loggers>
+  <Appenders>
+    <File append="false" createOnDemand="true" fileName="harvesterdroid.log" name="file">
+      <PatternLayout>
+        <pattern>[%level{WARN=Warning, DEBUG=Debug, ERROR=Error, TRACE=Trace, INFO=Info}]
+          %d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %C - %msg%n
+        </pattern>
+      </PatternLayout>
+    </File>
+    <File append="false" createOnDemand="true" fileName="debug.log" name="file-debug">
+      <PatternLayout>
+        <pattern>[%level{DEBUG=Debug}] %d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %C - %msg%n</pattern>
+      </PatternLayout>
+    </File>
+    <Console name="STDOUT" target="SYSTEM_OUT">
+      <PatternLayout>
+        <pattern>[%level{WARN=Warning, DEBUG=Debug, ERROR=Error, TRACE=Trace, INFO=Info}] %C{-4}:
+          %m%n
+        </pattern>
+      </PatternLayout>
+    </Console>
+  </Appenders>
+  <Loggers>
+    <Root level="error">
+      <!-- All errors and warnings should be printed to the console !-->
+      <appender-ref ref="STDOUT"/>
+    </Root>
+    <Root level="warn">
+      <appender-ref ref="STDOUT"/>
+    </Root>
+    <Logger additivity="false" level="all" name="io.github.waverunner">
+      <appender-ref level="all" ref="STDOUT"/>
+      <appender-ref level="info" ref="file"/>
+      <!-- Already appended to the logger automatically if DEBUG property is set !-->
+      <!--<appender-ref ref="STDOUT" level="debug"/>-->
+      <!--<appender-ref ref="file-log" level="debug"/>-->
+    </Logger>
+  </Loggers>
 </Configuration>

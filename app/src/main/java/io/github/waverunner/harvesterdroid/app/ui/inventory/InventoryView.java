@@ -21,13 +21,10 @@ package io.github.waverunner.harvesterdroid.app.ui.inventory;
 import de.saxsys.mvvmfx.FxmlView;
 import de.saxsys.mvvmfx.InjectViewModel;
 import de.saxsys.mvvmfx.utils.viewlist.CachedViewModelCellFactory;
-
 import io.github.waverunner.harvesterdroid.app.ui.items.GalaxyResourceItemView;
 import io.github.waverunner.harvesterdroid.app.ui.items.GalaxyResourceItemViewModel;
-
 import java.net.URL;
 import java.util.ResourceBundle;
-
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -37,6 +34,7 @@ import javafx.scene.control.ListView;
  * Created by Waverunner on 4/3/2017.
  */
 public class InventoryView implements FxmlView<InventoryViewModel>, Initializable {
+
   @FXML
   private Button removeButton;
   @FXML
@@ -51,7 +49,8 @@ public class InventoryView implements FxmlView<InventoryViewModel>, Initializabl
   public void initialize(URL location, ResourceBundle resources) {
     listView.disableProperty().bind(viewModel.inventoryProperty().emptyProperty());
     listView.itemsProperty().bind(viewModel.inventoryProperty());
-    listView.setCellFactory(CachedViewModelCellFactory.createForFxmlView(GalaxyResourceItemView.class));
+    listView
+        .setCellFactory(CachedViewModelCellFactory.createForFxmlView(GalaxyResourceItemView.class));
     viewModel.selectedProperty().bind(listView.getSelectionModel().selectedItemProperty());
     removeButton.disableProperty().bind(viewModel.getRemoveCommand().executableProperty().not());
   }

@@ -24,6 +24,7 @@ import de.saxsys.mvvmfx.Scope;
  * Created by Waverunner on 4/3/2017.
  */
 public class ResourceScope implements Scope {
+
   public static final String FAVORITE = "ResourceScope.Favorite";
   public static final String IMPORT_ADDED = "ResourceScope.Imported";
   public static final String IMPORT_REMOVED = "ResourceScope.Removed";

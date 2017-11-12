@@ -21,6 +21,7 @@ package io.github.waverunner.harvesterdroid.launcher;
 import javafx.application.Preloader;
 
 public class PreloaderStatusNotification extends Preloader.ProgressNotification {
+
   private String status;
 
   public PreloaderStatusNotification(String status, double value) {

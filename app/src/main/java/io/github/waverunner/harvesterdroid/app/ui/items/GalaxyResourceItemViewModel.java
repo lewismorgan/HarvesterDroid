@@ -19,11 +19,8 @@
 package io.github.waverunner.harvesterdroid.app.ui.items;
 
 import de.saxsys.mvvmfx.ViewModel;
-
 import io.github.waverunner.harvesterdroid.api.resource.GalaxyResource;
-
 import java.io.InputStream;
-
 import javafx.beans.property.ReadOnlyMapProperty;
 import javafx.beans.property.ReadOnlyMapWrapper;
 import javafx.beans.property.ReadOnlyObjectProperty;
@@ -33,7 +30,6 @@ import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableMap;
 import javafx.scene.image.Image;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -41,6 +37,7 @@ import org.apache.logging.log4j.Logger;
  * Created by Waverunner on 4/3/2017.
  */
 public class GalaxyResourceItemViewModel implements ViewModel {
+
   private static final Logger logger = LogManager.getLogger(GalaxyResourceItemViewModel.class);
 
   private ReadOnlyStringWrapper name = new ReadOnlyStringWrapper();
@@ -61,7 +58,8 @@ public class GalaxyResourceItemViewModel implements ViewModel {
     attributes.set(FXCollections.observableMap(galaxyResource.getAttributes()));
     image.set(createImage(galaxyResource.getResourceType().getId()));
     if (galaxyResource.getDespawnDate() == null) {
-      planets.set("  Spawns on " + galaxyResource.getPlanets().size() + (galaxyResource.getPlanets().size() == 1 ? " planet" : " planets"));
+      planets.set("  Spawns on " + galaxyResource.getPlanets().size() + (
+          galaxyResource.getPlanets().size() == 1 ? " planet" : " planets"));
       StringBuilder planetStrings = new StringBuilder();
       for (String s : galaxyResource.getPlanets()) {
         planetStrings.append("\n").append(s);

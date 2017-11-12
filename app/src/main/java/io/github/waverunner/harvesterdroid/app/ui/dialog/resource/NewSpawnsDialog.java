@@ -19,15 +19,12 @@
 package io.github.waverunner.harvesterdroid.app.ui.dialog.resource;
 
 import de.saxsys.mvvmfx.utils.viewlist.CachedViewModelCellFactory;
-
 import io.github.waverunner.harvesterdroid.app.ui.dialog.BaseDialog;
 import io.github.waverunner.harvesterdroid.app.ui.items.GalaxyResourceItemView;
 import io.github.waverunner.harvesterdroid.app.ui.items.GalaxyResourceItemViewModel;
-
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
-
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -48,12 +45,13 @@ public class NewSpawnsDialog extends BaseDialog implements Initializable {
 
   @Override
   public void initialize(URL location, ResourceBundle resources) {
-    resourcesListView.setCellFactory(CachedViewModelCellFactory.createForFxmlView(GalaxyResourceItemView.class));
+    resourcesListView
+        .setCellFactory(CachedViewModelCellFactory.createForFxmlView(GalaxyResourceItemView.class));
   }
 
   @Override
   protected ButtonType[] getButtonTypes() {
-    return new ButtonType[] {
+    return new ButtonType[]{
         ButtonType.CLOSE
     };
   }

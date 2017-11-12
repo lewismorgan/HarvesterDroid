@@ -19,7 +19,6 @@
 package io.github.waverunner.harvesterdroid.app.ui.dialog.about;
 
 import io.github.waverunner.harvesterdroid.app.ui.dialog.BaseDialog;
-
 import javafx.scene.control.ButtonType;
 
 public class AboutDialog extends BaseDialog {
@@ -30,7 +29,7 @@ public class AboutDialog extends BaseDialog {
 
   @Override
   protected ButtonType[] getButtonTypes() {
-    return new ButtonType[] {
+    return new ButtonType[]{
         ButtonType.CLOSE
     };
   }

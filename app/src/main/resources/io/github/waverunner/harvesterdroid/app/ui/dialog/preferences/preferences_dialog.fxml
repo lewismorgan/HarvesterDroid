@@ -1,15 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.CheckBox?>
-<?import javafx.scene.control.ChoiceBox?>
-<?import javafx.scene.control.ComboBox?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.Separator?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
-
 <!--
   ~ HarvesterDroid - A Resource Tracker for Star Wars Galaxies
   ~ Copyright (C) 2017  Waverunner
@@ -28,39 +18,54 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" spacing="5.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
-   <children>
-      <HBox alignment="CENTER" spacing="5.0" VBox.vgrow="ALWAYS">
-         <children>
-            <Label alignment="CENTER" text="Tracker" HBox.hgrow="ALWAYS" />
-            <ChoiceBox fx:id="trackerComboBox" prefWidth="150.0" />
-            <Label text="Galaxy" />
-            <ChoiceBox fx:id="galaxyChoiceBox" />
-            <Label text="Download Buffer (hrs)" />
-            <TextField disable="true" fx:id="downloadBufferTextField" prefWidth="35.0" />
-         </children>
-         <padding>
-            <Insets bottom="5.0" />
-         </padding>
-      </HBox>
-      <Separator prefWidth="200.0" />
-      <HBox alignment="CENTER" spacing="5.0" VBox.vgrow="ALWAYS">
-         <children>
-            <Label text="Theme (Requires Restart)" />
-            <ComboBox fx:id="themeComboBox" prefWidth="150.0" />
-         </children>
-      </HBox>
-      <HBox alignment="CENTER" spacing="25.0" VBox.vgrow="ALWAYS">
-         <children>
-            <CheckBox fx:id="autosaveCheckBox" alignment="TOP_LEFT" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" text="AutoSave" />
-            <CheckBox fx:id="saveNagCheckBox" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" text="Save Confirmation on Close" />
-         </children>
-         <padding>
-            <Insets bottom="5.0" />
-         </padding>
-      </HBox>
-   </children>
-   <padding>
-      <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-   </padding>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<VBox xmlns:fx="http://javafx.com/fxml/1" alignment="CENTER" maxHeight="-Infinity"
+  maxWidth="-Infinity"
+  minHeight="-Infinity" minWidth="-Infinity" spacing="5.0"
+  xmlns="http://javafx.com/javafx/8.0.111">
+  <children>
+    <HBox VBox.vgrow="ALWAYS" alignment="CENTER" spacing="5.0">
+      <children>
+        <Label HBox.hgrow="ALWAYS" alignment="CENTER" text="Tracker"/>
+        <ChoiceBox prefWidth="150.0" fx:id="trackerComboBox"/>
+        <Label text="Galaxy"/>
+        <ChoiceBox fx:id="galaxyChoiceBox"/>
+        <Label text="Download Buffer (hrs)"/>
+        <TextField disable="true" prefWidth="35.0" fx:id="downloadBufferTextField"/>
+      </children>
+      <padding>
+        <Insets bottom="5.0"/>
+      </padding>
+    </HBox>
+    <Separator prefWidth="200.0"/>
+    <HBox VBox.vgrow="ALWAYS" alignment="CENTER" spacing="5.0">
+      <children>
+        <Label text="Theme (Requires Restart)"/>
+        <ComboBox prefWidth="150.0" fx:id="themeComboBox"/>
+      </children>
+    </HBox>
+    <HBox VBox.vgrow="ALWAYS" alignment="CENTER" spacing="25.0">
+      <children>
+        <CheckBox alignment="TOP_LEFT" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT"
+          text="AutoSave" fx:id="autosaveCheckBox"/>
+        <CheckBox mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT"
+          text="Save Confirmation on Close"
+          fx:id="saveNagCheckBox"/>
+      </children>
+      <padding>
+        <Insets bottom="5.0"/>
+      </padding>
+    </HBox>
+  </children>
+  <padding>
+    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+  </padding>
 </VBox>

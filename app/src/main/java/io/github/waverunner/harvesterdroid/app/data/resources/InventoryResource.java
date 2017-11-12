@@ -25,13 +25,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * Created by Waverunner on 3/31/2017.
  */
 public class InventoryResource {
+
   private String name;
   private String tracker;
   private String galaxy;
 
   @JsonCreator
-  public InventoryResource(@JsonProperty("name") String name, @JsonProperty("tracker") String tracker,
-                           @JsonProperty("galaxy") String galaxy) {
+  public InventoryResource(@JsonProperty("name") String name,
+      @JsonProperty("tracker") String tracker,
+      @JsonProperty("galaxy") String galaxy) {
     this.name = name;
     this.tracker = tracker;
     this.galaxy = galaxy;

@@ -21,6 +21,7 @@ package io.github.waverunner.harvesterdroid.app.ui.converters;
 import javafx.util.StringConverter;
 
 public class ResourceValueConverter extends StringConverter<Number> {
+
   @Override
   public String toString(Number object) {
     int value = object.intValue();

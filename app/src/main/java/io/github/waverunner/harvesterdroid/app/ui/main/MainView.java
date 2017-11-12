@@ -20,13 +20,10 @@ package io.github.waverunner.harvesterdroid.app.ui.main;
 
 import de.saxsys.mvvmfx.FxmlView;
 import de.saxsys.mvvmfx.InjectViewModel;
-
 import io.github.waverunner.harvesterdroid.app.DroidProperties;
-
 import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
-
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -34,7 +31,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.MenuBar;
 import javafx.stage.FileChooser;
 import javafx.stage.WindowEvent;
-
 import org.controlsfx.control.StatusBar;
 
 /**
@@ -53,9 +49,11 @@ public class MainView implements FxmlView<MainViewModel>, Initializable {
   public void initialize(URL location, ResourceBundle resources) {
     statusBar.textProperty().bind(viewModel.statusTextProperty());
 
-    viewModel.subscribe("StatusUpdate", (s, objects) -> Platform.runLater(() -> statusBar.setProgress(-1)));
+    viewModel.subscribe("StatusUpdate",
+        (s, objects) -> Platform.runLater(() -> statusBar.setProgress(-1)));
 
-    viewModel.subscribe("StatusUpdate.Finished", (s, objects) -> Platform.runLater(() -> statusBar.setProgress(0)));
+    viewModel.subscribe("StatusUpdate.Finished",
+        (s, objects) -> Platform.runLater(() -> statusBar.setProgress(0)));
   }
 
   public void save(ActionEvent actionEvent) {
@@ -67,7 +65,8 @@ public class MainView implements FxmlView<MainViewModel>, Initializable {
   }
 
   public void close(ActionEvent actionEvent) {
-    menuBar.getScene().getWindow().fireEvent(new WindowEvent(menuBar.getScene().getWindow(), WindowEvent.WINDOW_CLOSE_REQUEST));
+    menuBar.getScene().getWindow().fireEvent(
+        new WindowEvent(menuBar.getScene().getWindow(), WindowEvent.WINDOW_CLOSE_REQUEST));
   }
 
   public void about(ActionEvent actionEvent) {

@@ -19,9 +19,7 @@
 package io.github.waverunner.harvesterdroid.trackers.galaxyharvester.xml;
 
 import io.github.waverunner.harvesterdroid.api.resource.GalaxyResource;
-
 import java.util.List;
-
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -33,6 +31,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name = "galaxy_resources")
 public class GalaxyResourcesXml {
+
   @XmlElement(name = "galaxy_resource")
   private List<GalaxyResource> galaxyResources;
 

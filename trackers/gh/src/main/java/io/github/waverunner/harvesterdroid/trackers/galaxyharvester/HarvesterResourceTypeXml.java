@@ -20,16 +20,13 @@ package io.github.waverunner.harvesterdroid.trackers.galaxyharvester;
 
 import io.github.waverunner.harvesterdroid.api.resource.ResourceType;
 import io.github.waverunner.harvesterdroid.api.xml.BaseXml;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.ParserConfigurationException;
-
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
@@ -38,6 +35,7 @@ import org.xml.sax.SAXException;
  * Created by Waverunner on 4/3/2017.
  */
 public final class HarvesterResourceTypeXml extends BaseXml {
+
   private Map<String, ResourceType> resourceTypeMap = new HashMap<>();
 
   public HarvesterResourceTypeXml(DocumentBuilder documentBuilder) {
@@ -64,7 +62,8 @@ public final class HarvesterResourceTypeXml extends BaseXml {
         case "resource_type_prop1":
           processElement(node, cap -> caps.add(cap.getTextContent()));
           break;
-        default: break;
+        default:
+          break;
       }
     });
 

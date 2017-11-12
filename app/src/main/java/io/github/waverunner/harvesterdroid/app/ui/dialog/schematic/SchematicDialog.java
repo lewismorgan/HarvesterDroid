@@ -20,12 +20,12 @@ package io.github.waverunner.harvesterdroid.app.ui.dialog.schematic;
 
 import io.github.waverunner.harvesterdroid.app.data.schematics.Schematic;
 import io.github.waverunner.harvesterdroid.app.ui.dialog.BaseDialog;
-
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
 
 public class SchematicDialog extends BaseDialog<Schematic> {
+
   private static ButtonType SAVE = new ButtonType("Save", ButtonBar.ButtonData.APPLY);
   private static SchematicDialogController controller;
 
@@ -42,7 +42,7 @@ public class SchematicDialog extends BaseDialog<Schematic> {
 
   @Override
   protected ButtonType[] getButtonTypes() {
-    return new ButtonType[] {
+    return new ButtonType[]{
         SAVE,
         ButtonType.CANCEL
     };

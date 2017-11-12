@@ -19,7 +19,6 @@
 package io.github.waverunner.harvesterdroid.app.xml;
 
 import java.util.List;
-
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
@@ -32,6 +31,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name = "themes")
 public class ThemesXml {
+
   @XmlElement(name = "theme")
   private List<Theme> themes;
 
@@ -46,6 +46,7 @@ public class ThemesXml {
   @XmlAccessorType(XmlAccessType.FIELD)
   @XmlRootElement(name = "theme")
   public static class Theme {
+
     @XmlAttribute(name = "name")
     public String name;
     @XmlAttribute(name = "path")

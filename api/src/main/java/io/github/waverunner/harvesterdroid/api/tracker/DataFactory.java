@@ -6,10 +6,8 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-
 import de.undercouch.bson4jackson.BsonFactory;
 import de.undercouch.bson4jackson.BsonGenerator;
-
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -20,6 +18,7 @@ import java.io.OutputStream;
  * Created by Waverunner on 8/11/17.
  */
 public class DataFactory {
+
   private static final BsonFactory bsonFactory = new BsonFactory();
   private static final JsonFactory jsonFactory = new JsonFactory();
 
@@ -29,6 +28,7 @@ public class DataFactory {
 
   /**
    * Saves an object to the provided output stream as Binary JSON.
+   *
    * @param outputStream to save the BSON data to
    * @param object to be serialized
    * @throws IOException when an exception occurs writing to the output stream
@@ -38,11 +38,13 @@ public class DataFactory {
     baos.writeTo(outputStream);
   }
 
-  public static <T> T openBinaryCollection(byte[] data, TypeReference<T> typeReference) throws IOException {
+  public static <T> T openBinaryCollection(byte[] data, TypeReference<T> typeReference)
+      throws IOException {
     return openBinaryCollection(new ByteArrayInputStream(data), typeReference);
   }
 
-  public static <T> T openBinaryCollection(ByteArrayInputStream inputStream, TypeReference<T> typeReference) throws IOException {
+  public static <T> T openBinaryCollection(ByteArrayInputStream inputStream,
+      TypeReference<T> typeReference) throws IOException {
     ObjectMapper mapper = createBsonObjectMapper();
     try {
       return mapper.readValue(inputStream, typeReference);

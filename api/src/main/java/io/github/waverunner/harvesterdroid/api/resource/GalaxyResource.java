@@ -1,8 +1,5 @@
 package io.github.waverunner.harvesterdroid.api.resource;
 
-import io.github.waverunner.harvesterdroid.api.resource.Attributes;
-import io.github.waverunner.harvesterdroid.api.resource.ResourceType;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -13,6 +10,7 @@ import java.util.Map;
  * Created by Waverunner on 8/11/17.
  */
 public class GalaxyResource {
+
   private String name;
   private String container;
 

@@ -18,14 +18,11 @@
 
 package io.github.waverunner.harvesterdroid.app.ui.dialog.resource;
 
-import io.github.waverunner.harvesterdroid.app.Launcher;
-import io.github.waverunner.harvesterdroid.api.resource.GalaxyResource;
 import io.github.waverunner.harvesterdroid.api.resource.Attributes;
-
+import io.github.waverunner.harvesterdroid.api.resource.GalaxyResource;
+import io.github.waverunner.harvesterdroid.app.Launcher;
 import java.net.URL;
-
 import java.util.ResourceBundle;
-
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.fxml.FXML;
@@ -39,6 +36,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 public class ResourceDialogController implements Initializable {
+
   @FXML
   TextField resourceTypeField;
   @FXML
@@ -66,7 +64,8 @@ public class ResourceDialogController implements Initializable {
   private void populateFromGalaxyResource(GalaxyResource galaxyResource) {
     attributesGroup.getChildren().clear();
     resourceTypeField.setText(galaxyResource.getResourceType().getName());
-    Attributes.forEach((primary, secondary) -> bindAttribute(primary, galaxyResource.getAttributes().get(primary)));
+    Attributes.forEach((primary, secondary) -> bindAttribute(primary,
+        galaxyResource.getAttributes().get(primary)));
 
     if (galaxyResource.getDespawnDate() != null) {
       infoLeftLabel.setText("Despawned on");

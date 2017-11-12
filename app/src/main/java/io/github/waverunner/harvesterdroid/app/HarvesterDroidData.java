@@ -19,20 +19,17 @@
 package io.github.waverunner.harvesterdroid.app;
 
 import io.github.waverunner.harvesterdroid.api.resource.ResourceType;
-
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -40,13 +37,12 @@ import org.apache.logging.log4j.Logger;
  * Created by Waverunner on 3/23/2017.
  */
 public class HarvesterDroidData {
-  private static final Logger logger = LogManager.getLogger(HarvesterDroidData.class);
 
   public static final String ROOT_DIR = System.getProperty("user.home") + "/.harvesterdroid";
   public static final String JSON_SCHEMATICS = ROOT_DIR + "/schematics.json";
   public static final String JSON_INVENTORY = ROOT_DIR + "/inventory.json";
   public static final String XML_THEMES = ROOT_DIR + "/themes.xml";
-
+  private static final Logger logger = LogManager.getLogger(HarvesterDroidData.class);
   private Map<String, List<String>> resourceGroups;
   private Map<String, ResourceType> resourceTypeMap;
 
@@ -159,8 +155,9 @@ public class HarvesterDroidData {
   private void formatResourceTreeTable() {
     // Helper method for formating resources table from iff
     List<String> updatedLines = new ArrayList<>();
-    updatedLines.add("Id\tName\tRecycled\tCr min\tCr max\tCd min\tCd max\tDr min\tDr max\tFl min\tFl max\tHr min\t"
-        + "Hr max\tMa min\tMa max\tPe min\tPe max\tOq min\tOq max\tSr min\tSr max\tUt min\tUt max\tEr min\tEr max\tContainer\n");
+    updatedLines.add(
+        "Id\tName\tRecycled\tCr min\tCr max\tCd min\tCd max\tDr min\tDr max\tFl min\tFl max\tHr min\t"
+            + "Hr max\tMa min\tMa max\tPe min\tPe max\tOq min\tOq max\tSr min\tSr max\tUt min\tUt max\tEr min\tEr max\tContainer\n");
     AtomicInteger lineNum = new AtomicInteger(0);
     readCsv("resource_tree.txt", line -> {
       if (lineNum.getAndIncrement() < 2) {
@@ -266,7 +263,8 @@ public class HarvesterDroidData {
     });
 
     try {
-      BufferedWriter writer = new BufferedWriter(new FileWriter("resources/data/resource_tree.txt"));
+      BufferedWriter writer = new BufferedWriter(
+          new FileWriter("resources/data/resource_tree.txt"));
       for (String updatedLine : updatedLines) {
         writer.write(updatedLine);
       }
@@ -295,6 +293,7 @@ public class HarvesterDroidData {
   }
 
   private interface CsvParser {
+
     void parse(String[] line);
   }
 }

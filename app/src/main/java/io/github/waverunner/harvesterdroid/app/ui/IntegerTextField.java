@@ -20,13 +20,13 @@ package io.github.waverunner.harvesterdroid.app.ui;
 
 import java.text.NumberFormat;
 import java.text.ParseException;
-
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 
 public final class IntegerTextField extends TextField {
+
   private final IntegerProperty value;
   private final float minValue;
   private final float maxValue;
@@ -44,7 +44,8 @@ public final class IntegerTextField extends TextField {
     }
     if (!((minValue <= initialValue) && (initialValue <= maxValue))) {
       throw new IllegalArgumentException(
-          "IntegerTextField initialValue " + initialValue + " not between " + minValue + " and " + maxValue
+          "IntegerTextField initialValue " + initialValue + " not between " + minValue + " and "
+              + maxValue
       );
     }
 
@@ -72,7 +73,8 @@ public final class IntegerTextField extends TextField {
           return;
         }
 
-        if (!(newValue.intValue() == 0f && (textProperty().get() == null || "".equals(textProperty().get())))) {
+        if (!(newValue.intValue() == 0f && (textProperty().get() == null || ""
+            .equals(textProperty().get())))) {
           integerTextField.setText(newValue.toString());
         }
       }

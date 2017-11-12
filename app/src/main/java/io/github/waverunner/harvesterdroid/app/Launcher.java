@@ -59,6 +59,7 @@ import org.apache.logging.log4j.core.config.Configuration;
 import org.apache.logging.log4j.core.config.LoggerConfig;
 
 public class Launcher extends MvvmfxEasyDIApplication {
+
   private static final Logger logger = LogManager.getLogger(Launcher.class);
 
   private static boolean DEBUG = false;
@@ -84,6 +85,54 @@ public class Launcher extends MvvmfxEasyDIApplication {
     return new Image(Launcher.class.getResourceAsStream("/images/icon.png"));
   }
 
+  private static void save() {
+    try (FileOutputStream fileOutputStream = new FileOutputStream(JSON_INVENTORY)) {
+      app.saveInventory(fileOutputStream);
+    } catch (IOException e) {
+      logger.error("Failed saving inventory", e);
+    }
+    try (FileOutputStream fileOutputStream = new FileOutputStream(new File(JSON_SCHEMATICS))) {
+      app.saveSchematics(fileOutputStream);
+    } catch (IOException e) {
+      logger.error("Failed saving schematics", e);
+    }
+    saveProperties();
+    saveResources();
+    logger.debug("Saved HarvesterDroid's state");
+  }
+
+  private static void saveResources() {
+    try (FileOutputStream fileOutputStream = new FileOutputStream(
+        new File(app.getSavedResourcesPath()))) {
+      app.saveResources(fileOutputStream);
+    } catch (IOException e) {
+      logger.error("Failed saving resources");
+    }
+  }
+
+  private static void saveProperties() {
+    DroidProperties.set(DroidProperties.HEIGHT, stage.getHeight());
+    DroidProperties.set(DroidProperties.WIDTH, stage.getWidth());
+    DroidProperties.set(DroidProperties.FULLSCREEN, stage.isFullScreen());
+    DroidProperties.set(DroidProperties.LAST_UPDATE, app.getCurrentUpdateTimestamp());
+
+    try {
+      DroidProperties.save(new FileOutputStream(System.getProperty("user.home")
+          + "/.harvesterdroid/harvesterdroid.properties"));
+    } catch (FileNotFoundException e) {
+      e.printStackTrace();
+    }
+  }
+
+  private static void setupDebugLogging() {
+    // Debug messages should only be outputted when it's in debug mode
+    final LoggerContext ctx = (LoggerContext) LogManager.getContext(false);
+    final Configuration config = ctx.getConfiguration();
+
+    LoggerConfig loggerConfig = config.getLoggerConfig("io.github.waverunner");
+    loggerConfig.addAppender(config.getAppender("file-debug"), Level.DEBUG, config.getFilter());
+  }
+
   @Override
   public void initMvvmfx() throws Exception {
     updateLoadingProgress("Setting up bare essentials...", -1);
@@ -93,7 +142,8 @@ public class Launcher extends MvvmfxEasyDIApplication {
         new File(ROOT_DIR).mkdir();
       }
       if (Files.exists(Paths.get(ROOT_DIR + "/harvesterdroid.properties"))) {
-        DroidProperties.load(new FileInputStream(Paths.get(ROOT_DIR + "/harvesterdroid.properties").toFile()));
+        DroidProperties
+            .load(new FileInputStream(Paths.get(ROOT_DIR + "/harvesterdroid.properties").toFile()));
       } else {
         DroidProperties.load(Launcher.class.getResourceAsStream("/harvesterdroid.properties"));
       }
@@ -120,9 +170,11 @@ public class Launcher extends MvvmfxEasyDIApplication {
     // TODO "Blank Slate" state where no tracker is loaded, will help abstract away GalaxyHarvester dependencies
     // TODO Use separate threads for each loading task
 
-    Downloader downloader = new GalaxyHarvesterDownloader(ROOT_DIR, DroidProperties.getString(DroidProperties.GALAXY));
+    Downloader downloader = new GalaxyHarvesterDownloader(ROOT_DIR,
+        DroidProperties.getString(DroidProperties.GALAXY));
     app.setDownloader(downloader);
-    app.setLastUpdateTimestamp(Long.parseLong(DroidProperties.getString(DroidProperties.LAST_UPDATE)));
+    app.setLastUpdateTimestamp(
+        Long.parseLong(DroidProperties.getString(DroidProperties.LAST_UPDATE)));
     updateLoadingProgress("Retrieving resource data...", -1);
     app.refreshResources(true);
     updateLoadingProgress("Loading saved user data...", -1);
@@ -179,7 +231,8 @@ public class Launcher extends MvvmfxEasyDIApplication {
   private void setupStylesheets(Scene scene) {
     Map<String, String> stylesheets = new HashMap<>();
 
-    ThemesXml themesXml = XmlFactory.read(ThemesXml.class, getClass().getResourceAsStream("/themes.xml"));
+    ThemesXml themesXml = XmlFactory
+        .read(ThemesXml.class, getClass().getResourceAsStream("/themes.xml"));
     if (themesXml == null) {
       return;
     }
@@ -191,7 +244,8 @@ public class Launcher extends MvvmfxEasyDIApplication {
       try {
         themesXml = XmlFactory.read(ThemesXml.class, new FileInputStream(customThemes));
         if (themesXml != null && themesXml.getThemes() != null) {
-          themesXml.getThemes().forEach(theme -> stylesheets.put(theme.name, "file:///" + ROOT_DIR + "/" + theme.path));
+          themesXml.getThemes().forEach(
+              theme -> stylesheets.put(theme.name, "file:///" + ROOT_DIR + "/" + theme.path));
         }
       } catch (FileNotFoundException e) {
         throw new RuntimeException("Could not load custom themes xml!");
@@ -235,55 +289,8 @@ public class Launcher extends MvvmfxEasyDIApplication {
     }
   }
 
-  private static void save() {
-    try (FileOutputStream fileOutputStream = new FileOutputStream(JSON_INVENTORY)) {
-      app.saveInventory(fileOutputStream);
-    } catch (IOException e) {
-      logger.error("Failed saving inventory", e);
-    }
-    try (FileOutputStream fileOutputStream = new FileOutputStream(new File(JSON_SCHEMATICS))) {
-      app.saveSchematics(fileOutputStream);
-    } catch (IOException e) {
-      logger.error("Failed saving schematics", e);
-    }
-    saveProperties();
-    saveResources();
-    logger.debug("Saved HarvesterDroid's state");
-  }
-
-  private static void saveResources() {
-    try (FileOutputStream fileOutputStream = new FileOutputStream(new File(app.getSavedResourcesPath()))) {
-      app.saveResources(fileOutputStream);
-    } catch (IOException e) {
-      logger.error("Failed saving resources");
-    }
-  }
-
-  private static void saveProperties() {
-    DroidProperties.set(DroidProperties.HEIGHT, stage.getHeight());
-    DroidProperties.set(DroidProperties.WIDTH, stage.getWidth());
-    DroidProperties.set(DroidProperties.FULLSCREEN, stage.isFullScreen());
-    DroidProperties.set(DroidProperties.LAST_UPDATE, app.getCurrentUpdateTimestamp());
-
-    try {
-      DroidProperties.save(new FileOutputStream(System.getProperty("user.home")
-          + "/.harvesterdroid/harvesterdroid.properties"));
-    } catch (FileNotFoundException e) {
-      e.printStackTrace();
-    }
-  }
-
   private void updateLoadingProgress(String status, double value) {
     notifyPreloader(new PreloaderStatusNotification(status, value));
     logger.debug("Load status: {}", status);
-  }
-
-  private static void setupDebugLogging() {
-    // Debug messages should only be outputted when it's in debug mode
-    final LoggerContext ctx = (LoggerContext) LogManager.getContext(false);
-    final Configuration config = ctx.getConfiguration();
-
-    LoggerConfig loggerConfig = config.getLoggerConfig("io.github.waverunner");
-    loggerConfig.addAppender(config.getAppender("file-debug"), Level.DEBUG, config.getFilter());
   }
 }

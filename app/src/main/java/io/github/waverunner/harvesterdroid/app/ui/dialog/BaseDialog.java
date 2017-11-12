@@ -19,7 +19,6 @@
 package io.github.waverunner.harvesterdroid.app.ui.dialog;
 
 import java.io.IOException;
-
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.ButtonType;
@@ -33,6 +32,7 @@ import javafx.stage.Stage;
  * <p>Created by Waverunner on 3/29/2017.
  */
 public abstract class BaseDialog<R> extends Dialog<R> {
+
   public BaseDialog(String title) {
     super();
     setTitle(title);
@@ -43,19 +43,24 @@ public abstract class BaseDialog<R> extends Dialog<R> {
     try {
       Parent root;
       if (isController()) {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource(getClass().getSimpleName().toLowerCase().replace("dialog", "_dialog.fxml")));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(
+            getClass().getSimpleName().toLowerCase().replace("dialog", "_dialog.fxml")));
         loader.setController(this);
         root = loader.load();
       } else {
-        root = FXMLLoader.load(getClass().getResource(getClass().getSimpleName().toLowerCase().replace("dialog", "_dialog.fxml")));
+        root = FXMLLoader.load(getClass().getResource(
+            getClass().getSimpleName().toLowerCase().replace("dialog", "_dialog.fxml")));
       }
 
-      ((Stage) getDialogPane().getScene().getWindow()).getIcons().add(new Image(getClass().getResourceAsStream("/images/icon.png")));
+      ((Stage) getDialogPane().getScene().getWindow()).getIcons()
+          .add(new Image(getClass().getResourceAsStream("/images/icon.png")));
       if (root != null) {
         getDialogPane().setContent(root);
       }
-      getDialogPane().heightProperty().addListener((observable, oldValue, newValue) -> getDialogPane().getScene().getWindow().sizeToScene());
-      getDialogPane().widthProperty().addListener((observable, oldValue, newValue) -> getDialogPane().getScene().getWindow().sizeToScene());
+      getDialogPane().heightProperty().addListener(
+          (observable, oldValue, newValue) -> getDialogPane().getScene().getWindow().sizeToScene());
+      getDialogPane().widthProperty().addListener(
+          (observable, oldValue, newValue) -> getDialogPane().getScene().getWindow().sizeToScene());
 
       getDialogPane().getButtonTypes().addAll(getButtonTypes());
 

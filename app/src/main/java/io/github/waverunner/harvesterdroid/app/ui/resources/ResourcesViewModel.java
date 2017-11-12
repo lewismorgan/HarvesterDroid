@@ -23,7 +23,6 @@ import de.saxsys.mvvmfx.ViewModel;
 import de.saxsys.mvvmfx.utils.commands.Action;
 import de.saxsys.mvvmfx.utils.commands.Command;
 import de.saxsys.mvvmfx.utils.commands.DelegateCommand;
-
 import io.github.waverunner.harvesterdroid.api.resource.GalaxyResource;
 import io.github.waverunner.harvesterdroid.app.HarvesterDroid;
 import io.github.waverunner.harvesterdroid.app.data.schematics.Schematic;
@@ -32,12 +31,10 @@ import io.github.waverunner.harvesterdroid.app.ui.items.GalaxyResourceItemViewMo
 import io.github.waverunner.harvesterdroid.app.ui.scopes.GalaxyScope;
 import io.github.waverunner.harvesterdroid.app.ui.scopes.ResourceScope;
 import io.github.waverunner.harvesterdroid.app.ui.scopes.SchematicScope;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
-
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ListProperty;
@@ -50,7 +47,6 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -58,6 +54,7 @@ import org.apache.logging.log4j.Logger;
  * Created by Waverunner on 4/3/2017.
  */
 public class ResourcesViewModel implements ViewModel {
+
   private static final Logger logger = LogManager.getLogger(ResourcesViewModel.class);
 
   private final HarvesterDroid harvesterDroid;
@@ -93,15 +90,20 @@ public class ResourcesViewModel implements ViewModel {
     galaxyResources.set(FXCollections.observableArrayList(harvesterDroid.getResources()
         .stream().map(GalaxyResourceItemViewModel::new).collect(Collectors.toList())));
 
-    statusText.bind(Bindings.when(galaxyResources.emptyProperty()).then("No resources available for this galaxy, try adding one to your inventory")
-        .otherwise(Bindings.when(schematicSelected.not()).then("Select a schematic to view the best available resources")
-            .otherwise(Bindings.when(Bindings.isEmpty(resources.get())).then("No resources available for this schematic")
+    statusText.bind(Bindings.when(galaxyResources.emptyProperty())
+        .then("No resources available for this galaxy, try adding one to your inventory")
+        .otherwise(Bindings.when(schematicSelected.not())
+            .then("Select a schematic to view the best available resources")
+            .otherwise(Bindings.when(Bindings.isEmpty(resources.get()))
+                .then("No resources available for this schematic")
                 .otherwise(""))));
 
-    if (harvesterDroid.getLastUpdateTimestamp() > 0 && harvesterDroid.getCurrentUpdateTimestamp() > harvesterDroid.getLastUpdateTimestamp()) {
+    if (harvesterDroid.getLastUpdateTimestamp() > 0
+        && harvesterDroid.getCurrentUpdateTimestamp() > harvesterDroid.getLastUpdateTimestamp()) {
       List<GalaxyResourceItemViewModel> newSpawns = new ArrayList<>();
       Date lastUpdate = new Date(harvesterDroid.getLastUpdateTimestamp());
-      logger.debug("Last updated {}, new date is {}", lastUpdate, new Date(harvesterDroid.getCurrentUpdateTimestamp()));
+      logger.debug("Last updated {}, new date is {}", lastUpdate,
+          new Date(harvesterDroid.getCurrentUpdateTimestamp()));
 
       galaxyResources.forEach(item -> {
         if (item.getGalaxyResource().getSpawnDate().after(lastUpdate)) {
@@ -131,7 +133,8 @@ public class ResourcesViewModel implements ViewModel {
   }
 
   private void subscribeScopes() {
-    schematicScope.subscribe(SchematicScope.ACTIVE, (s, objects) -> onSchematicSelected((Schematic) objects[0]));
+    schematicScope.subscribe(SchematicScope.ACTIVE,
+        (s, objects) -> onSchematicSelected((Schematic) objects[0]));
 
     galaxyScope.subscribe(GalaxyScope.CHANGED, (s, objects) -> {
       galaxyResources.set(FXCollections.observableArrayList(harvesterDroid.getResources()
@@ -164,7 +167,8 @@ public class ResourcesViewModel implements ViewModel {
       return;
     }
 
-    List<GalaxyResource> bestResources = harvesterDroid.getBestResourcesList(newValue, showOnlyAvailableResources.get());
+    List<GalaxyResource> bestResources = harvesterDroid
+        .getBestResourcesList(newValue, showOnlyAvailableResources.get());
     resources.get().setPredicate(param -> bestResources.contains(param.getGalaxyResource()));
     schematicSelected.set(true);
   }

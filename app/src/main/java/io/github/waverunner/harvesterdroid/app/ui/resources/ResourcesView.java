@@ -21,13 +21,10 @@ package io.github.waverunner.harvesterdroid.app.ui.resources;
 import de.saxsys.mvvmfx.FxmlView;
 import de.saxsys.mvvmfx.InjectViewModel;
 import de.saxsys.mvvmfx.utils.viewlist.CachedViewModelCellFactory;
-
 import io.github.waverunner.harvesterdroid.app.ui.items.GalaxyResourceItemView;
 import io.github.waverunner.harvesterdroid.app.ui.items.GalaxyResourceItemViewModel;
-
 import java.net.URL;
 import java.util.ResourceBundle;
-
 import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -51,7 +48,8 @@ public class ResourcesView implements FxmlView<ResourcesViewModel>, Initializabl
 
   public void initialize(URL location, ResourceBundle resources) {
 
-    listView.setCellFactory(CachedViewModelCellFactory.createForFxmlView(GalaxyResourceItemView.class));
+    listView
+        .setCellFactory(CachedViewModelCellFactory.createForFxmlView(GalaxyResourceItemView.class));
     listView.itemsProperty().bind(viewModel.resourcesProperty());
     listView.addEventHandler(javafx.scene.input.MouseEvent.MOUSE_CLICKED, event -> {
       if (event.getButton() == MouseButton.PRIMARY) {
@@ -68,9 +66,10 @@ public class ResourcesView implements FxmlView<ResourcesViewModel>, Initializabl
     viewModel.selectedProperty().bind(listView.getSelectionModel().selectedItemProperty());
 
     viewModel.showOnlyAvailableResourcesProperty().bind(onlyAvailableCheckbox.selectedProperty());
-    onlyAvailableCheckbox.disableProperty().bind(Bindings.when(Bindings.isEmpty(listView.getItems()))
-        .then(Bindings.isEmpty(viewModel.getGalaxyResources()))
-        .otherwise(false));
+    onlyAvailableCheckbox.disableProperty()
+        .bind(Bindings.when(Bindings.isEmpty(listView.getItems()))
+            .then(Bindings.isEmpty(viewModel.getGalaxyResources()))
+            .otherwise(false));
 
     listView.disableProperty().bind(Bindings.when(Bindings.isEmpty(listView.getItems()))
         .then(viewModel.galaxyResourcesProperty().emptyProperty())

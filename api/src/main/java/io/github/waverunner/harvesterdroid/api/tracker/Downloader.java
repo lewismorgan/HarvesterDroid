@@ -20,7 +20,6 @@ package io.github.waverunner.harvesterdroid.api.tracker;
 
 import io.github.waverunner.harvesterdroid.api.resource.GalaxyResource;
 import io.github.waverunner.harvesterdroid.api.resource.ResourceType;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -30,24 +29,24 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
  * Abstract class used by HarvesterDroid in the downloading of required data to function.
  *
- * <p>This base class should have no knowledge of "how" the data is stored, only that it can be downloaded
- * from some location and turned into something usable for HarvesterDroid. The responsibility lies on
- * sub-classes to know how the data is stored and convert them to the resources map.
+ * <p>This base class should have no knowledge of "how" the data is stored, only that it can be
+ * downloaded from some location and turned into something usable for HarvesterDroid. The
+ * responsibility lies on sub-classes to know how the data is stored and convert them to the
+ * resources map.
  */
 public abstract class Downloader {
+
   private static final Logger logger = LoggerFactory.getLogger(Downloader.class);
 
   private final String root;
@@ -73,7 +72,8 @@ public abstract class Downloader {
       e.printStackTrace();
     }
 
-    File currentResources = new File(getRootDownloadsPath() + "current_resources" + getGalaxy() + ".dl");
+    File currentResources = new File(
+        getRootDownloadsPath() + "current_resources" + getGalaxy() + ".dl");
     if (currentResources.exists()) {
       try (FileInputStream fileInputStream = new FileInputStream(currentResources)) {
         parseCurrentResources(fileInputStream);
@@ -83,7 +83,8 @@ public abstract class Downloader {
     }
   }
 
-  protected abstract void parseCurrentResources(InputStream currentResourcesStream) throws IOException;
+  protected abstract void parseCurrentResources(InputStream currentResourcesStream)
+      throws IOException;
 
   protected abstract Map<String, String> parseGalaxyList(InputStream galaxyListStream);
 
@@ -114,7 +115,7 @@ public abstract class Downloader {
   }
 
   protected abstract void downloadResourceTypes(Map<String, ResourceType> resourceTypeMap,
-                                                Map<String, List<String>> resourceGroups) throws IOException;
+      Map<String, List<String>> resourceGroups) throws IOException;
 
   public final DownloadResult downloadCurrentResources() throws IOException {
 
@@ -163,7 +164,8 @@ public abstract class Downloader {
     }
   }
 
-  protected final void populateCurrentResourcesMap(Map<String, GalaxyResource> parsedCurrentResources) {
+  protected final void populateCurrentResourcesMap(
+      Map<String, GalaxyResource> parsedCurrentResources) {
     currentResources.clear();
     currentResources.putAll(parsedCurrentResources);
   }

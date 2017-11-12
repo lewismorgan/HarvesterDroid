@@ -30,6 +30,7 @@ import javafx.scene.web.WebView;
  * Created by Waverunner on 3/27/2017.
  */
 public class AboutDialogController extends VBox implements Initializable {
+
   @FXML
   private WebView webView;
 

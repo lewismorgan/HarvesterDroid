@@ -21,13 +21,11 @@ package io.github.waverunner.harvesterdroid.app;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-
+import io.github.waverunner.harvesterdroid.api.resource.GalaxyResource;
 import io.github.waverunner.harvesterdroid.api.tracker.DataFactory;
 import io.github.waverunner.harvesterdroid.api.tracker.Downloader;
-import io.github.waverunner.harvesterdroid.api.resource.GalaxyResource;
 import io.github.waverunner.harvesterdroid.app.data.resources.InventoryResource;
 import io.github.waverunner.harvesterdroid.app.data.schematics.Schematic;
-
 import java.io.ByteArrayInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -35,7 +33,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -45,21 +42,18 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class HarvesterDroid {
+
   private static final Logger logger = LogManager.getLogger(HarvesterDroid.class);
 
   private final HarvesterDroidData data;
-
-  private Downloader downloader;
-
   private final Set<InventoryResource> inventory;
   private final Set<GalaxyResource> resources;
   private final List<Schematic> schematics;
-
+  private Downloader downloader;
   private Map<String, String> galaxies;
   private Map<String, String> themes;
 
@@ -86,7 +80,8 @@ public class HarvesterDroid {
       if (matchedResources != null) {
         if (onlyAvailable) {
           matchedResources = matchedResources.stream()
-              .filter(resource -> resource.getDespawnDate() == null || inventoryContainsResource(resource))
+              .filter(resource -> resource.getDespawnDate() == null || inventoryContainsResource(
+                  resource))
               .collect(Collectors.toList());
         }
 
@@ -118,7 +113,8 @@ public class HarvesterDroid {
     return ret;
   }
 
-  private float calculateResourceWeightedAverage(Map<String, Integer> modifiers, GalaxyResource resource) {
+  private float calculateResourceWeightedAverage(Map<String, Integer> modifiers,
+      GalaxyResource resource) {
     float average = 0;
 
     for (Map.Entry<String, Integer> modifier : modifiers.entrySet()) {
@@ -148,7 +144,8 @@ public class HarvesterDroid {
       return master;
     } else {
       return resources.stream().filter(galaxyResource ->
-          galaxyResource.getResourceType().getId().equals(id) || galaxyResource.getResourceType().getId().startsWith(id)
+          galaxyResource.getResourceType().getId().equals(id) || galaxyResource.getResourceType()
+              .getId().startsWith(id)
       ).collect(Collectors.toList());
     }
   }
@@ -179,7 +176,8 @@ public class HarvesterDroid {
     List<GalaxyResource> downloaded = new ArrayList<>(downloader.getCurrentResources());
 
     List<String> filtered = downloaded.stream()
-        .filter(dlResource -> resources.stream().anyMatch(resource -> resource.getName().equals(dlResource.getName())))
+        .filter(dlResource -> resources.stream()
+            .anyMatch(resource -> resource.getName().equals(dlResource.getName())))
         .map(GalaxyResource::getName).collect(Collectors.toList());
 
     resources.removeIf(resource -> filtered.contains(resource.getName()));
@@ -193,7 +191,8 @@ public class HarvesterDroid {
   }
 
   public GalaxyResource getGalaxyResource(String name) {
-    Optional<GalaxyResource> optional = resources.stream().filter(galaxyResource -> galaxyResource.getName().equals(name)).findFirst();
+    Optional<GalaxyResource> optional = resources.stream()
+        .filter(galaxyResource -> galaxyResource.getName().equals(name)).findFirst();
     return optional.orElse(null);
   }
 
@@ -251,12 +250,14 @@ public class HarvesterDroid {
 
   public boolean addInventoryResource(GalaxyResource galaxyResource) {
     for (InventoryResource inventoryResource : inventory) {
-      if (inventoryResource.getGalaxy().equals(downloader.getGalaxy()) && inventoryResource.getName().equals(galaxyResource.getName())) {
+      if (inventoryResource.getGalaxy().equals(downloader.getGalaxy()) && inventoryResource
+          .getName().equals(galaxyResource.getName())) {
         return false;
       }
     }
 
-    return inventory.add(new InventoryResource(galaxyResource.getName(), getTracker(), downloader.getGalaxy()));
+    return inventory
+        .add(new InventoryResource(galaxyResource.getName(), getTracker(), downloader.getGalaxy()));
   }
 
   public void removeInventoryResource(GalaxyResource galaxyResource) {
@@ -303,7 +304,8 @@ public class HarvesterDroid {
   public void loadResources(byte[] data) throws IOException {
     ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(data);
     HashSet<GalaxyResource> saved = DataFactory.openBinaryCollection(byteArrayInputStream,
-        new TypeReference<HashSet<GalaxyResource>>() {});
+        new TypeReference<HashSet<GalaxyResource>>() {
+        });
 
     if (saved != null) {
       resources.clear();
@@ -316,8 +318,9 @@ public class HarvesterDroid {
 
   public void loadSchematics(InputStream inputStream) throws IOException {
     ObjectMapper objectMapper = DataFactory.createJsonObjectMapper();
-    List<Schematic> saved = objectMapper.readValue(inputStream, new TypeReference<List<Schematic>>() {
-    });
+    List<Schematic> saved = objectMapper
+        .readValue(inputStream, new TypeReference<List<Schematic>>() {
+        });
 
     schematics.clear();
     schematics.addAll(saved);
@@ -327,8 +330,9 @@ public class HarvesterDroid {
 
   public void loadInventory(InputStream inputStream) throws IOException {
     ObjectMapper objectMapper = DataFactory.createJsonObjectMapper();
-    Set<InventoryResource> saved = objectMapper.readValue(inputStream, new TypeReference<Set<InventoryResource>>() {
-    });
+    Set<InventoryResource> saved = objectMapper
+        .readValue(inputStream, new TypeReference<Set<InventoryResource>>() {
+        });
 
     inventory.clear();
     inventory.addAll(saved);

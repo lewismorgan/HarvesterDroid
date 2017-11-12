@@ -37,6 +37,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 public class LauncherPreloader extends Preloader {
+
   private ProgressBar bar;
   private Label statusLabel;
   private Stage stage;
@@ -47,7 +48,8 @@ public class LauncherPreloader extends Preloader {
     container.setAlignment(Pos.CENTER);
     container.setBackground(new Background(new BackgroundFill(Color.WHITE, null, null)));
 
-    ImageView header = new ImageView(new Image(getClass().getResourceAsStream("/images/HarvesterDroid_Header.png")));
+    ImageView header = new ImageView(
+        new Image(getClass().getResourceAsStream("/images/HarvesterDroid_Header.png")));
     header.setFitHeight(100);
     header.setFitWidth(350);
 

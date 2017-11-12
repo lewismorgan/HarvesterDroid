@@ -19,12 +19,10 @@
 package io.github.waverunner.harvesterdroid.app.ui.dialog;
 
 import io.github.waverunner.harvesterdroid.app.Launcher;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.transformation.FilteredList;
@@ -37,13 +35,13 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-
 import org.controlsfx.control.CheckListView;
 
 /**
  * Created by Waverunner on 3/20/2017.
  */
 public class AddResourceTypeDialog extends Dialog<List<String>> {
+
   private FilteredList<String> filteredList;
   private CheckListView<String> listView;
 
@@ -82,14 +80,15 @@ public class AddResourceTypeDialog extends Dialog<List<String>> {
     ((Stage) getDialogPane().getScene().getWindow()).getIcons().add(Launcher.getAppIcon());
 
     getDialogPane().setContent(createView());
-    getDialogPane().heightProperty().addListener((observable, oldValue, newValue) -> getDialogPane().getScene().getWindow().sizeToScene());
-    getDialogPane().widthProperty().addListener((observable, oldValue, newValue) -> getDialogPane().getScene().getWindow().sizeToScene());
+    getDialogPane().heightProperty().addListener(
+        (observable, oldValue, newValue) -> getDialogPane().getScene().getWindow().sizeToScene());
+    getDialogPane().widthProperty().addListener(
+        (observable, oldValue, newValue) -> getDialogPane().getScene().getWindow().sizeToScene());
   }
 
   private Parent createView() {
     VBox root = new VBox();
     root.setSpacing(5);
-
 
     listView = new CheckListView<>();
     listView.setMaxSize(Region.USE_COMPUTED_SIZE, Region.USE_COMPUTED_SIZE);

@@ -18,23 +18,19 @@
 
 package io.github.waverunner.harvesterdroid.trackers.galaxyharvester;
 
-import io.github.waverunner.harvesterdroid.api.tracker.Downloader;
 import io.github.waverunner.harvesterdroid.api.resource.GalaxyResource;
 import io.github.waverunner.harvesterdroid.api.resource.ResourceType;
-
+import io.github.waverunner.harvesterdroid.api.tracker.Downloader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-
 import org.xml.sax.SAXException;
 
 public final class GalaxyHarvesterDownloader extends Downloader {
@@ -68,7 +64,8 @@ public final class GalaxyHarvesterDownloader extends Downloader {
     }
 
     try {
-      HarvesterGalaxyListXml galaxyListXml = new HarvesterGalaxyListXml(xmlFactory.newDocumentBuilder());
+      HarvesterGalaxyListXml galaxyListXml = new HarvesterGalaxyListXml(
+          xmlFactory.newDocumentBuilder());
       galaxyListXml.load(galaxyListStream);
 
       return galaxyListXml.getGalaxyList();
@@ -97,7 +94,8 @@ public final class GalaxyHarvesterDownloader extends Downloader {
 
   @Override
   protected InputStream getGalaxyResourceStream(String resource) throws IOException {
-    return getInputStreamFromUrl("getResourceByName.py?name=" + resource + "&galaxy=" + getGalaxy());
+    return getInputStreamFromUrl(
+        "getResourceByName.py?name=" + resource + "&galaxy=" + getGalaxy());
   }
 
   @Override
@@ -125,18 +123,21 @@ public final class GalaxyHarvesterDownloader extends Downloader {
   }
 
   @Override
-  protected void downloadResourceTypes(Map<String, ResourceType> resourceTypeMap, Map<String, List<String>> resourceGroups) throws IOException {
+  protected void downloadResourceTypes(Map<String, ResourceType> resourceTypeMap,
+      Map<String, List<String>> resourceGroups) throws IOException {
     try {
       if (xmlFactory == null) {
         xmlFactory = DocumentBuilderFactory.newInstance();
       }
-      HarvesterResourceTypeXml resourceTypeXml = new HarvesterResourceTypeXml(xmlFactory.newDocumentBuilder());
-      HarvesterResourceGroupXml resourceGroupXml = new HarvesterResourceGroupXml(xmlFactory.newDocumentBuilder());
-      HarvesterResourceTypeGroupXml resourceTypeGroupXml = new HarvesterResourceTypeGroupXml(xmlFactory.newDocumentBuilder());
+      HarvesterResourceTypeXml resourceTypeXml = new HarvesterResourceTypeXml(
+          xmlFactory.newDocumentBuilder());
+      HarvesterResourceGroupXml resourceGroupXml = new HarvesterResourceGroupXml(
+          xmlFactory.newDocumentBuilder());
+      HarvesterResourceTypeGroupXml resourceTypeGroupXml = new HarvesterResourceTypeGroupXml(
+          xmlFactory.newDocumentBuilder());
       resourceTypeXml.load(getListTypeStream("resource_type"));
       resourceGroupXml.load(getListTypeStream("resource_group"));
       resourceTypeGroupXml.load(getListTypeStream("resource_type_group"));
-
 
       resourceTypeMap.putAll(resourceGroupXml.getResourceTypeMap());
       resourceTypeMap.putAll(resourceTypeXml.getResourceTypeMap());

@@ -20,20 +20,18 @@ package io.github.waverunner.harvesterdroid.trackers.galaxyharvester.xml;
 
 import io.github.waverunner.harvesterdroid.api.resource.GalaxyResource;
 import io.github.waverunner.harvesterdroid.api.xml.BaseXml;
-
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.ParserConfigurationException;
-
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 
 
 public abstract class CurrentResourcesXml extends BaseXml {
+
   private String timestamp;
   private Map<String, GalaxyResource> galaxyResources = new HashMap<>();
 

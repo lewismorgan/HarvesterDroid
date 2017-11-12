@@ -20,13 +20,9 @@ package io.github.waverunner.harvesterdroid.app.ui.schematics;
 
 import de.saxsys.mvvmfx.FxmlView;
 import de.saxsys.mvvmfx.InjectViewModel;
-
 import io.github.waverunner.harvesterdroid.app.data.schematics.Schematic;
-
 import java.net.URL;
-
 import java.util.ResourceBundle;
-
 import javafx.beans.binding.Bindings;
 import javafx.collections.ListChangeListener;
 import javafx.fxml.FXML;
@@ -34,7 +30,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -42,6 +37,7 @@ import org.apache.logging.log4j.Logger;
  * Created by Waverunner on 4/3/2017.
  */
 public class SchematicsView implements FxmlView<SchematicsViewModel>, Initializable {
+
   private static final Logger logger = LogManager.getLogger(SchematicsView.class);
 
   @FXML
@@ -58,11 +54,14 @@ public class SchematicsView implements FxmlView<SchematicsViewModel>, Initializa
     createListeners();
 
     schematicsTreeView.setRoot(createSchematicsTreeItem("root"));
-    schematicsTreeView.disableProperty().bind(Bindings.isEmpty(schematicsTreeView.getRoot().getChildren()));
+    schematicsTreeView.disableProperty()
+        .bind(Bindings.isEmpty(schematicsTreeView.getRoot().getChildren()));
     schematicsTreeView.setCellFactory(param -> new SchematicsTreeCellFactory());
 
-    removeSchematicButton.disableProperty().bind(viewModel.getRemoveCommand().executableProperty().not());
-    editSchematicButton.disableProperty().bind(viewModel.getEditCommand().executableProperty().not());
+    removeSchematicButton.disableProperty()
+        .bind(viewModel.getRemoveCommand().executableProperty().not());
+    editSchematicButton.disableProperty()
+        .bind(viewModel.getEditCommand().executableProperty().not());
 
     viewModel.subscribe("SchematicUpdated", (s, objects) -> {
       updateTreeView();
@@ -88,15 +87,17 @@ public class SchematicsView implements FxmlView<SchematicsViewModel>, Initializa
       }
     });
 
-    viewModel.selectedProperty().addListener(((observable, oldValue, newValue) -> onSchematicSelected(newValue)));
+    viewModel.selectedProperty()
+        .addListener(((observable, oldValue, newValue) -> onSchematicSelected(newValue)));
 
-    schematicsTreeView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-      if (newValue != null && !newValue.getValue().getIdentifier().isEmpty()) {
-        onSchematicTreeItemSelected(newValue);
-      } else {
-        onSchematicTreeItemSelected(null);
-      }
-    });
+    schematicsTreeView.getSelectionModel().selectedItemProperty()
+        .addListener((observable, oldValue, newValue) -> {
+          if (newValue != null && !newValue.getValue().getIdentifier().isEmpty()) {
+            onSchematicTreeItemSelected(newValue);
+          } else {
+            onSchematicTreeItemSelected(null);
+          }
+        });
   }
 
   public void removeSelectedSchematic() {
@@ -116,7 +117,8 @@ public class SchematicsView implements FxmlView<SchematicsViewModel>, Initializa
       return;
     }
 
-    TreeItem<SchematicsTreeItem> toSelect = getSchematicsTreeItem(schematicsTreeView.getRoot(), schematic.getId());
+    TreeItem<SchematicsTreeItem> toSelect = getSchematicsTreeItem(schematicsTreeView.getRoot(),
+        schematic.getId());
     if (schematicsTreeView.getSelectionModel().getSelectedItem() != toSelect) {
       schematicsTreeView.getSelectionModel().select(toSelect);
     }
@@ -148,13 +150,15 @@ public class SchematicsView implements FxmlView<SchematicsViewModel>, Initializa
     }
   }
 
-  private TreeItem<SchematicsTreeItem> getSchematicsTreeItem(TreeItem<SchematicsTreeItem> root, String identifier) {
+  private TreeItem<SchematicsTreeItem> getSchematicsTreeItem(TreeItem<SchematicsTreeItem> root,
+      String identifier) {
     for (TreeItem<SchematicsTreeItem> treeItem : root.getChildren()) {
       if (treeItem.getValue().getIdentifier().equals(identifier)) {
         return treeItem;
       }
       if (!treeItem.isLeaf()) {
-        TreeItem<SchematicsTreeItem> schematicsTreeItem = getSchematicsTreeItem(treeItem, identifier);
+        TreeItem<SchematicsTreeItem> schematicsTreeItem = getSchematicsTreeItem(treeItem,
+            identifier);
         if (schematicsTreeItem != null) {
           return schematicsTreeItem;
         }
@@ -170,7 +174,8 @@ public class SchematicsView implements FxmlView<SchematicsViewModel>, Initializa
       return;
     }
 
-    TreeItem<SchematicsTreeItem> groupTree = getSubGroupTree(schematicsTreeView.getRoot(), groups, 0);
+    TreeItem<SchematicsTreeItem> groupTree = getSubGroupTree(schematicsTreeView.getRoot(), groups,
+        0);
     if (groupTree == null) {
       logger.debug("Creating group hierarchy {} ", schematic.getGroup());
       TreeItem<SchematicsTreeItem> rootGroup = createGroupTreeItem(groups, 0);
@@ -182,16 +187,19 @@ public class SchematicsView implements FxmlView<SchematicsViewModel>, Initializa
 
       if (subGroup != null) {
         subGroup.getChildren().add(createSchematicsTreeItem(schematic));
-        logger.debug("Created schematic {} on sub group {}", schematic.getName(), subGroup.getValue().getName());
+        logger.debug("Created schematic {} on sub group {}", schematic.getName(),
+            subGroup.getValue().getName());
       } else {
         rootGroup.getChildren().add(createSchematicsTreeItem(schematic));
-        logger.debug("Created schematic {} on root group {}", schematic.getName(), rootGroup.getValue().getName());
+        logger.debug("Created schematic {} on root group {}", schematic.getName(),
+            rootGroup.getValue().getName());
       }
 
       schematicsTreeView.getRoot().getChildren().add(rootGroup);
     } else {
       // Base of the group has been created, make the remaining non-existent groups
-      TreeItem<SchematicsTreeItem> existingGroup = getParentGroupTreeItem(schematicsTreeView.getRoot(), groups, 0);
+      TreeItem<SchematicsTreeItem> existingGroup = getParentGroupTreeItem(
+          schematicsTreeView.getRoot(), groups, 0);
 
       if (existingGroup == groupTree) {
         // Don't need to do anything, all the groups are made, just add the schematic
@@ -205,11 +213,13 @@ public class SchematicsView implements FxmlView<SchematicsViewModel>, Initializa
 
         if (subGroup != null) {
           subGroup.getChildren().add(createSchematicsTreeItem(schematic));
-          logger.debug("Created sub group {} and added schematic {}", subGroup.getValue(), schematic.getName());
+          logger.debug("Created sub group {} and added schematic {}", subGroup.getValue(),
+              schematic.getName());
         } else {
           // This shouldn't happen, but if it does...
           rootGroup.getChildren().add(createSchematicsTreeItem(schematic));
-          logger.warn("Null subgroup, adding {} to rootgroup {} ", schematic.getName(), rootGroup.getValue());
+          logger.warn("Null subgroup, adding {} to rootgroup {} ", schematic.getName(),
+              rootGroup.getValue());
         }
 
         // Ensure groups remain at the top
@@ -245,7 +255,8 @@ public class SchematicsView implements FxmlView<SchematicsViewModel>, Initializa
     return index;
   }
 
-  private TreeItem<SchematicsTreeItem> getParentGroupTreeItem(TreeItem<SchematicsTreeItem> start, String[] group, int index) {
+  private TreeItem<SchematicsTreeItem> getParentGroupTreeItem(TreeItem<SchematicsTreeItem> start,
+      String[] group, int index) {
     if (index >= group.length) {
       return start;
     }
@@ -288,8 +299,10 @@ public class SchematicsView implements FxmlView<SchematicsViewModel>, Initializa
   private void removeTreeItem(Schematic schematic) {
     String[] group = schematic.getGroup().split(":");
 
-    TreeItem<SchematicsTreeItem> groupRoot = getSubGroupTree(schematicsTreeView.getRoot(), group, 0);
-    if (groupRoot == null && group.length == 0 || (group.length == 1 && (group[0] == null || group[0].isEmpty()))) {
+    TreeItem<SchematicsTreeItem> groupRoot = getSubGroupTree(schematicsTreeView.getRoot(), group,
+        0);
+    if (groupRoot == null && group.length == 0 || (group.length == 1 && (group[0] == null
+        || group[0].isEmpty()))) {
       groupRoot = schematicsTreeView.getRoot();
     }
     if (groupRoot == null) {
@@ -312,7 +325,8 @@ public class SchematicsView implements FxmlView<SchematicsViewModel>, Initializa
     }
   }
 
-  private void removeEmptyTreeItems(TreeItem<SchematicsTreeItem> root, TreeItem<SchematicsTreeItem> target) {
+  private void removeEmptyTreeItems(TreeItem<SchematicsTreeItem> root,
+      TreeItem<SchematicsTreeItem> target) {
     TreeItem<SchematicsTreeItem> toRemove = getSingleParent(root, target);
     if (root == toRemove) {
       root.getChildren().remove(target);
@@ -328,15 +342,18 @@ public class SchematicsView implements FxmlView<SchematicsViewModel>, Initializa
     }
   }
 
-  private TreeItem<SchematicsTreeItem> getSingleParent(TreeItem<SchematicsTreeItem> root, TreeItem<SchematicsTreeItem> start) {
-    if (root == start || root.getChildren().size() > 1 || start.getChildren().size() > 1 || start.getParent().getChildren().size() > 1) {
+  private TreeItem<SchematicsTreeItem> getSingleParent(TreeItem<SchematicsTreeItem> root,
+      TreeItem<SchematicsTreeItem> start) {
+    if (root == start || root.getChildren().size() > 1 || start.getChildren().size() > 1
+        || start.getParent().getChildren().size() > 1) {
       return start;
     }
 
     return getSingleParent(root, start.getParent());
   }
 
-  private TreeItem<SchematicsTreeItem> getSubGroupTree(TreeItem<SchematicsTreeItem> start, String[] groups, int index) {
+  private TreeItem<SchematicsTreeItem> getSubGroupTree(TreeItem<SchematicsTreeItem> start,
+      String[] groups, int index) {
     for (TreeItem<SchematicsTreeItem> treeItem : start.getChildren()) {
       if (treeItem.getValue().getName().equals(groups[index])) {
         if (treeItem.getValue().isGroup()) {

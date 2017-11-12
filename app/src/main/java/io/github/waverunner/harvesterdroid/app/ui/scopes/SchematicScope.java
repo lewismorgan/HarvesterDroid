@@ -19,9 +19,7 @@
 package io.github.waverunner.harvesterdroid.app.ui.scopes;
 
 import de.saxsys.mvvmfx.Scope;
-
 import io.github.waverunner.harvesterdroid.app.data.schematics.Schematic;
-
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 
@@ -29,6 +27,7 @@ import javafx.beans.property.SimpleObjectProperty;
  * Created by Waverunner on 4/3/2017.
  */
 public class SchematicScope implements Scope {
+
   public static final String UPDATE = "SchematicScope.Update";
   public static final String ACTIVE = "SchematicScope.Active";
   public static final String REFRESH = "SchematicScope.Refresh";

@@ -19,10 +19,8 @@
 package io.github.waverunner.harvesterdroid.app.ui.dialog.resource;
 
 import io.github.waverunner.harvesterdroid.app.ui.dialog.BaseDialog;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import javafx.fxml.FXML;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextArea;
@@ -31,6 +29,7 @@ import javafx.scene.control.TextArea;
  * Created by Waverunner on 4/7/17.
  */
 public class ImportResourcesDialog extends BaseDialog<List<String>> {
+
   private static ButtonType importButtonType = new ButtonType("Import");
 
   @FXML
@@ -70,7 +69,7 @@ public class ImportResourcesDialog extends BaseDialog<List<String>> {
 
   @Override
   protected ButtonType[] getButtonTypes() {
-    return new ButtonType[] {
+    return new ButtonType[]{
         importButtonType,
         ButtonType.CLOSE
     };

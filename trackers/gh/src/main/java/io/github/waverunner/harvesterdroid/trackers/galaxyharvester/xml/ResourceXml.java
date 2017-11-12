@@ -20,12 +20,11 @@ package io.github.waverunner.harvesterdroid.trackers.galaxyharvester.xml;
 
 import io.github.waverunner.harvesterdroid.api.resource.GalaxyResource;
 import io.github.waverunner.harvesterdroid.api.xml.BaseXml;
-
 import javax.xml.parsers.DocumentBuilder;
-
 import org.w3c.dom.Document;
 
 public abstract class ResourceXml extends BaseXml {
+
   private GalaxyResource galaxyResource;
 
   public ResourceXml(DocumentBuilder documentBuilder) {

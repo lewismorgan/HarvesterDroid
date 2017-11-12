@@ -20,16 +20,13 @@ package io.github.waverunner.harvesterdroid.trackers.galaxyharvester;
 
 import io.github.waverunner.harvesterdroid.api.resource.GalaxyResource;
 import io.github.waverunner.harvesterdroid.trackers.galaxyharvester.xml.CurrentResourcesXml;
-
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.ParserConfigurationException;
-
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
@@ -111,7 +108,8 @@ public final class HarvesterCurrentResourcesXml extends CurrentResourcesXml {
     processElement(node, child -> {
       switch (child.getNodeName()) {
         case "ER":
-          galaxyResource.setAttribute("entangle_resistance", Integer.valueOf(child.getTextContent()));
+          galaxyResource
+              .setAttribute("entangle_resistance", Integer.valueOf(child.getTextContent()));
           break;
         case "CR":
           galaxyResource.setAttribute("cold_resistance", Integer.valueOf(child.getTextContent()));

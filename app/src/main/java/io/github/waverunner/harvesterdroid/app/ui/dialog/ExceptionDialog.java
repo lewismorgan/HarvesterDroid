@@ -20,7 +20,6 @@ package io.github.waverunner.harvesterdroid.app.ui.dialog;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
-
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
@@ -29,6 +28,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 
 public class ExceptionDialog extends Alert {
+
   public ExceptionDialog(Throwable throwable) {
     super(AlertType.ERROR);
 

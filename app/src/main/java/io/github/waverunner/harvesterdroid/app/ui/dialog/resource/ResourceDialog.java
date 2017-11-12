@@ -20,7 +20,6 @@ package io.github.waverunner.harvesterdroid.app.ui.dialog.resource;
 
 import io.github.waverunner.harvesterdroid.api.resource.GalaxyResource;
 import io.github.waverunner.harvesterdroid.app.ui.dialog.BaseDialog;
-
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
 
@@ -35,7 +34,7 @@ public class ResourceDialog extends BaseDialog<GalaxyResource> {
 
   @Override
   protected ButtonType[] getButtonTypes() {
-    return new ButtonType[] {
+    return new ButtonType[]{
         ADD,
         ButtonType.CANCEL
     };
