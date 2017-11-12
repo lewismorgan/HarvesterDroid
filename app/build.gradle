@@ -1,3 +1,8 @@
+plugins {
+    id 'java-library'
+    id 'com.zyxist.chainsaw'
+}
+
 javaModule.name = 'io.github.waverunner.harvesterdroid.app'
 
 dependencies {
