@@ -1,7 +1,13 @@
-apply plugin: 'java'
+plugins {
+    id 'java-library'
+}
+
+apply plugin: 'com.zyxist.chainsaw'
+
+javaModule.name = 'io.github.waverunner.harvesterdroid.api'
 
 dependencies {
-    compile 'javax.persistence:persistence-api:1.0.2'
-    compile 'de.undercouch:bson4jackson:2.7.0'
-    compile 'com.fasterxml.jackson.core:jackson-core:2.7.9'
+    implementation 'javax.persistence:persistence-api:1.0.2'
+    implementation 'de.undercouch:bson4jackson:2.7.0'
+    implementation 'com.fasterxml.jackson.core:jackson-core:2.7.9'
 }

@@ -1,0 +1,41 @@
+plugins {
+    id 'java-library'
+}
+
+apply plugin: 'com.zyxist.chainsaw'
+
+javaModule.name = 'io.github.waverunner.harvesterdroid.app'
+
+dependencies {
+    implementation project(':api')
+    implementation project(':loader')
+
+    implementation 'de.saxsys:mvvmfx:1.6.0'
+    implementation 'de.saxsys:mvvmfx-easydi:1.6.0'
+    implementation 'org.controlsfx:controlsfx:8.40.13'
+    implementation 'javax.persistence:persistence-api:1.0.2'
+    implementation 'com.vladsch.flexmark:flexmark:0.22.22'
+    implementation 'org.mongodb:mongodb-driver:3.5.0'
+    implementation 'org.apache.logging.log4j:log4j-api:2.8.2'
+    implementation 'org.apache.logging.log4j:log4j-core:2.8.2'
+    implementation 'org.apache.logging.log4j:log4j-slf4j-impl:2.8.2'
+}
+
+/*
+jfx {
+    // minimal requirement for jfxJar-task
+    jfxMainAppJarName = 'harvesterdroid.jar'
+    mainClass = 'io.github.waverunner.harvesterdroid.Launcher'
+    libFolderName = 'lib'
+
+    // gradle jfxJar
+    preLoader = 'io.github.waverunner.harvesterdroid.LauncherPreloader' // String
+
+    // gradle jfxNative
+    vendor = 'Waverunner'
+    bundleArguments = [
+            runtime: null
+    ]
+}
+build.finalizedBy('jfxJar')
+*/

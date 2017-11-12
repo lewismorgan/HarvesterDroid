@@ -9,7 +9,8 @@
  */
 
 include 'api'
+include 'trackers:gh'
 include 'loader'
-include 'tracker-gh'
+include 'app'
 
 rootProject.name = 'harvesterdroid'

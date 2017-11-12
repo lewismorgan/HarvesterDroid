@@ -4,9 +4,6 @@
 
 /.idea/
 /out/
-/api/out
-/loader/out
-/tracker-gh/out
 
 ## File-based project format:
 *.iws
