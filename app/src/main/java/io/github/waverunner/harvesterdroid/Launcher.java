@@ -30,7 +30,7 @@ import de.saxsys.mvvmfx.easydi.MvvmfxEasyDIApplication;
 
 import eu.lestard.easydi.EasyDI;
 
-import io.github.waverunner.harvesterdroid.api.Downloader;
+import io.github.waverunner.harvesterdroid.api.tracker.Downloader;
 import io.github.waverunner.harvesterdroid.api.xml.XmlFactory;
 import io.github.waverunner.harvesterdroid.app.HarvesterDroid;
 import io.github.waverunner.harvesterdroid.app.Watcher;

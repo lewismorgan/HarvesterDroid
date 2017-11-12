@@ -1,13 +1,11 @@
-plugins {
-    id 'java-library'
-}
-
-apply plugin: 'com.zyxist.chainsaw'
-
 javaModule.name = 'io.github.waverunner.harvesterdroid.api'
 
 dependencies {
-    implementation 'javax.persistence:persistence-api:1.0.2'
+    //implementation // https://mvnrepository.com/artifact/org.eclipse.persistence/javax.persistence
+    implementation 'org.eclipse.persistence:javax.persistence:2.2.0'
     implementation 'de.undercouch:bson4jackson:2.7.0'
     implementation 'com.fasterxml.jackson.core:jackson-core:2.7.9'
+
+    testCompile 'org.junit.jupiter:junit-jupiter-api:5.0.1'
+    testRuntime 'org.junit.jupiter:junit-jupiter-engine:5.0.1'
 }

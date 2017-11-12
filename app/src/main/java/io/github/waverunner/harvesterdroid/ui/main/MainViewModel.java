@@ -32,8 +32,8 @@ import de.saxsys.mvvmfx.utils.commands.Command;
 import de.saxsys.mvvmfx.utils.commands.DelegateCommand;
 
 import io.github.waverunner.harvesterdroid.DroidProperties;
-import io.github.waverunner.harvesterdroid.api.DataFactory;
-import io.github.waverunner.harvesterdroid.api.GalaxyResource;
+import io.github.waverunner.harvesterdroid.api.tracker.DataFactory;
+import io.github.waverunner.harvesterdroid.api.resource.GalaxyResource;
 import io.github.waverunner.harvesterdroid.app.HarvesterDroid;
 import io.github.waverunner.harvesterdroid.data.schematics.Schematic;
 import io.github.waverunner.harvesterdroid.ui.dialog.about.AboutDialog;

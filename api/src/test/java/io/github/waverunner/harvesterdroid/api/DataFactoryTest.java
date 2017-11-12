@@ -1,33 +1,32 @@
 package io.github.waverunner.harvesterdroid.api;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-
+import io.github.waverunner.harvesterdroid.api.resource.GalaxyResource;
+import io.github.waverunner.harvesterdroid.api.tracker.DataFactory;
 import java.io.ByteArrayOutputStream;
 import java.io.FileOutputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-
 import java.util.ArrayList;
 import java.util.Collection;
-
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 /**
  * Created by lewis on 8/11/17
  */
-public class DataFactoryTest {
-  private DataFactory dataFactory;
+class DataFactoryTest {
+  private static DataFactory dataFactory;
 
-  @Before
-  public void setup() {
+  @BeforeAll
+  static void setup() {
     dataFactory = new DataFactory();
   }
 
   @Test
-  public void save() throws Exception {
+  void save() throws Exception {
     Collection<GalaxyResource> resources = createResources(1);
 
     DataFactory.save(new FileOutputStream("data"), resources);
@@ -38,7 +37,7 @@ public class DataFactoryTest {
   }
 
   @Test
-  public void open() throws Exception {
+  void open() throws Exception {
     int size = 10;
 
     Collection<GalaxyResource> galaxyResources = createResources(size);
@@ -48,10 +47,10 @@ public class DataFactoryTest {
     Collection<GalaxyResource> loaded = DataFactory.openBinaryCollection(baos.toByteArray(),
         new TypeReference<Collection<GalaxyResource>>() {});
 
-    assertTrue(String.format("Loaded %d resources, expected 10", loaded.size()), loaded.size() == 10);
+    assertTrue(loaded.size() == 10, String.format("Loaded %d resources, expected 10", loaded.size()));
   }
 
-  private Collection<GalaxyResource> createResources(int amount) {
+  private static Collection<GalaxyResource> createResources(int amount) {
     Collection<GalaxyResource> resources = new ArrayList<>();
 
     for (int i = 0; i < amount; i++) {

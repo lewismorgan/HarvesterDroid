@@ -1,4 +1,4 @@
-package io.github.waverunner.harvesterdroid.api;
+package io.github.waverunner.harvesterdroid.api.resource;
 
 import io.github.waverunner.harvesterdroid.api.resource.Attributes;
 import io.github.waverunner.harvesterdroid.api.resource.ResourceType;

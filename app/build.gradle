@@ -1,14 +1,10 @@
-plugins {
-    id 'java-library'
-}
-
-apply plugin: 'com.zyxist.chainsaw'
-
 javaModule.name = 'io.github.waverunner.harvesterdroid.app'
 
 dependencies {
     implementation project(':api')
     implementation project(':loader')
+    implementation project(':trackers:gh')
+//    implementation project(':trackers')
 
     implementation 'de.saxsys:mvvmfx:1.6.0'
     implementation 'de.saxsys:mvvmfx-easydi:1.6.0'

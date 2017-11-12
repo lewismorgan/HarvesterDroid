@@ -18,7 +18,7 @@
 
 package io.github.waverunner.harvesterdroid.trackers.galaxyharvester;
 
-import io.github.waverunner.harvesterdroid.api.GalaxyResource;
+import io.github.waverunner.harvesterdroid.api.resource.GalaxyResource;
 import io.github.waverunner.harvesterdroid.trackers.galaxyharvester.xml.CurrentResourcesXml;
 
 import java.io.IOException;

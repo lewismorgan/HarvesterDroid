@@ -1,7 +1,1 @@
-plugins {
-    id 'java-library'
-}
-
-apply plugin: 'com.zyxist.chainsaw'
-
 javaModule.name = 'io.github.waverunner.harvesterdroid.loader'

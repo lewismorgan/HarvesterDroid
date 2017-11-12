@@ -22,9 +22,9 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
-import io.github.waverunner.harvesterdroid.api.DataFactory;
-import io.github.waverunner.harvesterdroid.api.Downloader;
-import io.github.waverunner.harvesterdroid.api.GalaxyResource;
+import io.github.waverunner.harvesterdroid.api.tracker.DataFactory;
+import io.github.waverunner.harvesterdroid.api.tracker.Downloader;
+import io.github.waverunner.harvesterdroid.api.resource.GalaxyResource;
 import io.github.waverunner.harvesterdroid.data.resources.InventoryResource;
 import io.github.waverunner.harvesterdroid.data.schematics.Schematic;
 
