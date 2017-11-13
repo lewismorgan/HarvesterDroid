@@ -21,6 +21,8 @@ package io.github.waverunner.harvesterdroid.app;
 import io.github.waverunner.harvesterdroid.api.resource.ResourceType;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -59,7 +61,7 @@ public class HarvesterDroidData {
 
   private void loadResourceGroups() {
     // TODO Refactor resource group handling, this should be handled by the tracker with HD just have a general knowledge
-    readCsv("/data/resource_groups.txt", line -> {
+    readCsv("./tmp_resources/data/resource_groups.txt", line -> {
       if (resourceGroups.containsKey(line[1])) {
         resourceGroups.get(line[1]).add(line[0]);
       } else {
@@ -78,7 +80,7 @@ public class HarvesterDroidData {
   }
 
   private void loadResourceTypes() {
-    readCsv("/data/resource_tree.txt", line -> {
+    readCsv("./tmp_resources/data/resource_tree.txt", line -> {
       ResourceType type = new ResourceType();
       type.setId(line[0]);
       type.setName(line[1]);
@@ -114,7 +116,7 @@ public class HarvesterDroidData {
 
   private void readCsv(String file, CsvParser parser) {
     BufferedReader br = null;
-    String line = "";
+    String line;
     String cvsSplitBy = "\t";
 
     try {
@@ -159,7 +161,7 @@ public class HarvesterDroidData {
         "Id\tName\tRecycled\tCr min\tCr max\tCd min\tCd max\tDr min\tDr max\tFl min\tFl max\tHr min\t"
             + "Hr max\tMa min\tMa max\tPe min\tPe max\tOq min\tOq max\tSr min\tSr max\tUt min\tUt max\tEr min\tEr max\tContainer\n");
     AtomicInteger lineNum = new AtomicInteger(0);
-    readCsv("resource_tree.txt", line -> {
+    readCsv("/data/resource_tree.txt", line -> {
       if (lineNum.getAndIncrement() < 2) {
         return;
       }

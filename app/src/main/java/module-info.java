@@ -9,7 +9,7 @@ module io.github.waverunner.harvesterdroid.app {
   requires log4j.api;
   requires mvvmfx;
   requires easy.di;
-  requires io.github.waverunner.harvesterdroid.trackers.gh;
+  requires io.github.waverunner.harvesterdroid.trackers.galaxyharvester;
   requires javafx.controls;
   requires log4j.core;
   requires com.fasterxml.jackson.core;
@@ -17,6 +17,8 @@ module io.github.waverunner.harvesterdroid.app {
   requires javafx.fxml;
   requires javafx.web;
   requires com.fasterxml.jackson.annotation;
-  requires java.xml.bind;
   requires controlsfx;
+  requires java.xml.bind;
+  exports io.github.waverunner.harvesterdroid.app
+      to javafx.graphics, javafx.fxml;
 }

@@ -56,14 +56,12 @@ import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
-import javax.inject.Singleton;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 /**
  * Created by Waverunner on 4/3/2017.
  */
-@Singleton
 @ScopeProvider(scopes = {SchematicScope.class, GalaxyScope.class, ResourceScope.class})
 public class MainViewModel implements ViewModel {
 

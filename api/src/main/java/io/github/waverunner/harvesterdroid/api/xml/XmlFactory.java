@@ -38,6 +38,7 @@ import javax.xml.stream.XMLStreamReader;
  * <p>Created by Waverunner on 3/31/2017.
  */
 @SuppressWarnings("unchecked")
+@Deprecated
 public class XmlFactory {
 
   public static <T> List<T> loadList(Class<T> classToRead, Reader reader) {

@@ -23,21 +23,25 @@ dependencies {
     implementation 'com.fasterxml.jackson.core:jackson-annotations:2.9.2'
 }
 
+jar {
+    manifest {
+        attributes 'Main-Class': 'io.github.waverunner.harvesterdroid.app.Launcher'
+    }
+}
+
 /*
+apply plugin: 'javafx-gradle-plugin'
 jfx {
     // minimal requirement for jfxJar-task
     jfxMainAppJarName = 'harvesterdroid.jar'
-    mainClass = 'io.github.waverunner.harvesterdroid.Launcher'
+    mainClass = 'io.github.waverunner.harvesterdroid.app.Launcher'
     libFolderName = 'lib'
 
     // gradle jfxJar
-    preLoader = 'io.github.waverunner.harvesterdroid.LauncherPreloader' // String
+    preLoader = 'io.github.waverunner.harvesterdroid.launcher.LauncherPreloader' // String
 
     // gradle jfxNative
     vendor = 'Waverunner'
-    bundleArguments = [
-            runtime: null
-    ]
 }
 build.finalizedBy('jfxJar')
 */
