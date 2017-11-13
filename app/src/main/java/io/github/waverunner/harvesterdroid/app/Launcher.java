@@ -161,9 +161,9 @@ public class Launcher extends MvvmfxEasyDIApplication {
       if (Platform.isFxApplicationThread() && !DEBUG) {
         ExceptionDialog exceptionDialog = new ExceptionDialog(e);
         exceptionDialog.show();
-        logger.error("Uncaught Exception", t);
+        logger.error("Uncaught Exception", e);
       } else {
-        logger.error("Uncaught Exception encountered on UI thread", t);
+        logger.error("Uncaught Exception encountered on UI thread", e);
       }
     });
 

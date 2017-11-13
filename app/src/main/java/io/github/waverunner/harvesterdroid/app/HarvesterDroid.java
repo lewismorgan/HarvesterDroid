@@ -58,7 +58,6 @@ public class HarvesterDroid {
   private Map<String, String> themes;
 
   private long lastUpdateTimestamp;
-  private long updateTimestamp;
 
   private String activeGalaxy;
   private String activeTheme;
