@@ -5,6 +5,12 @@ plugins {
 
 javaModule.name = 'io.github.waverunner.harvesterdroid.app'
 
+// TODO Update to not require artifact building from IDEA for testing
+//  IntelliJ doesn't work properly with Java 9 gradle projects that use resources. The contents of resources
+//      are not copied into the jar and thus cannot be accessed even when on the module path, presenting a problem
+//      running a configuration setup for the IDE...
+//      https://youtrack.jetbrains.com/issue/IDEA-182052
+
 dependencies {
     implementation project(':api')
     implementation project(':loader')
@@ -12,8 +18,8 @@ dependencies {
 
     implementation 'de.saxsys:mvvmfx:1.7.0'
     implementation 'de.saxsys:mvvmfx-easydi:1.7.0'
-    implementation 'org.controlsfx:controlsfx:8.40.13'
-    implementation 'javax.persistence:persistence-api:1.0.2'
+    implementation 'org.controlsfx:controlsfx:9.0.0'
+    implementation 'org.eclipse.persistence:javax.persistence:2.2.0'
 
 //    implementation 'com.vladsch.flexmark:flexmark-core:0.28.6'
 //    implementation 'com.vladsch.flexmark:flexmark-html-parser:0.28.6'
@@ -28,6 +34,8 @@ jar {
         attributes 'Main-Class': 'io.github.waverunner.harvesterdroid.app.Launcher'
     }
 }
+
+// TODO Update with the new JavaFX Gradle plugin, currently WIP, possibly use the new jlink instead?
 
 /*
 apply plugin: 'javafx-gradle-plugin'

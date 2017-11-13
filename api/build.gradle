@@ -7,14 +7,13 @@ javaModule.name = 'io.github.waverunner.harvesterdroid.api'
 
 dependencies {
     //implementation // https://mvnrepository.com/artifact/org.eclipse.persistence/javax.persistence
-    //implementation 'org.eclipse.persistence:javax.persistence:2.2.0'
+    implementation 'org.eclipse.persistence:javax.persistence:2.2.0'
 
     implementation 'de.undercouch:bson4jackson:2.7.0'
     implementation 'com.fasterxml.jackson.core:jackson-core:2.9.2'
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.9.2'
     implementation 'com.fasterxml.jackson.core:jackson-annotations:2.9.2'
     implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.9.2'
-    //implementation 'org.codehaus.woodstox:woodstox-core-asl:4.4.1'
 
     testCompile 'org.junit.jupiter:junit-jupiter-api:5.0.1'
     testRuntime 'org.junit.jupiter:junit-jupiter-engine:5.0.1'

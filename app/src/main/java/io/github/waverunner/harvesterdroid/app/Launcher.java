@@ -134,7 +134,7 @@ public class Launcher extends MvvmfxEasyDIApplication {
   }
 
   @Override
-  public void initMvvmfx() throws Exception {
+  public void initMvvmfx() {
     updateLoadingProgress("Setting up bare essentials...", -1);
 
     try {
@@ -270,7 +270,7 @@ public class Launcher extends MvvmfxEasyDIApplication {
   }
 
   @Override
-  public void stopMvvmfx() throws Exception {
+  public void stopMvvmfx() {
     Watcher.shutdown();
     saveProperties();
     saveResources();

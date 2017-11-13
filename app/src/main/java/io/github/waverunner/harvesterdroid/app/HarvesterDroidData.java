@@ -61,7 +61,7 @@ public class HarvesterDroidData {
 
   private void loadResourceGroups() {
     // TODO Refactor resource group handling, this should be handled by the tracker with HD just have a general knowledge
-    readCsv("./tmp_resources/data/resource_groups.txt", line -> {
+    readCsv("/data/resource_groups.txt", line -> {
       if (resourceGroups.containsKey(line[1])) {
         resourceGroups.get(line[1]).add(line[0]);
       } else {
@@ -80,7 +80,7 @@ public class HarvesterDroidData {
   }
 
   private void loadResourceTypes() {
-    readCsv("./tmp_resources/data/resource_tree.txt", line -> {
+    readCsv("/data/resource_tree.txt", line -> {
       ResourceType type = new ResourceType();
       type.setId(line[0]);
       type.setName(line[1]);
