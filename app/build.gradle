@@ -8,7 +8,7 @@ javaModule.name = 'io.github.waverunner.harvesterdroid.app'
 dependencies {
     implementation project(':api')
     implementation project(':loader')
-    implementation project(':trackers:gh')
+    implementation project(':trackers:galaxyharvester')
 
     implementation 'de.saxsys:mvvmfx:1.7.0'
     implementation 'de.saxsys:mvvmfx-easydi:1.7.0'

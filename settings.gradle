@@ -10,7 +10,7 @@
 
 include 'api'
 include 'trackers'
-include 'trackers:gh'
+include 'trackers:galaxyharvester'
 include 'loader'
 include 'app'
 

@@ -1,0 +1,11 @@
+plugins {
+    id 'java-library'
+}
+
+apply plugin: 'com.zyxist.chainsaw'
+
+dependencies {
+    implementation project(':api')
+}
+
+javaModule.name = 'io.github.waverunner.harvesterdroid.tracker.galaxyharvester'
