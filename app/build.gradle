@@ -16,22 +16,24 @@ dependencies {
     implementation project(':loader')
     implementation project(':trackers:galaxyharvester')
 
+    implementation 'com.google.inject:guice:4.1.0'
+    implementation 'com.fasterxml.jackson.core:jackson-core:2.9.2'
+//    implementation 'com.fasterxml.jackson.core:jackson-databind:2.9.2'
+//    implementation 'com.fasterxml.jackson.core:jackson-annotations:2.9.2'
+
     implementation 'de.saxsys:mvvmfx:1.7.0'
-    implementation 'de.saxsys:mvvmfx-easydi:1.7.0'
+    implementation 'de.saxsys:mvvmfx-guice:1.7.0'
+
     implementation 'org.controlsfx:controlsfx:9.0.0'
-    implementation 'org.eclipse.persistence:javax.persistence:2.2.0'
 
 //    implementation 'com.vladsch.flexmark:flexmark-core:0.28.6'
 //    implementation 'com.vladsch.flexmark:flexmark-html-parser:0.28.6'
 
-    implementation 'com.fasterxml.jackson.core:jackson-core:2.9.2'
-    implementation 'com.fasterxml.jackson.core:jackson-databind:2.9.2'
-    implementation 'com.fasterxml.jackson.core:jackson-annotations:2.9.2'
 }
 
 jar {
     manifest {
-        attributes 'Main-Class': 'io.github.waverunner.harvesterdroid.app.Launcher'
+        attributes 'Main-Class': 'io.github.waverunner.harvesterdroid.app.Droid'
     }
 }
 
