@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.Label?>
+<fx:root type="javafx.scene.control.ListView" xmlns="http://javafx.com/javafx"
+  xmlns:fx="http://javafx.com/fxml"
+  fx:controller="io.github.waverunner.harvesterdroid.app.views.resource.ResourceListView"
+  prefHeight="400.0" prefWidth="600.0">
+  <Label text="TODO Resource List View"/>
+  <Label text="TODO Resource List View"/>
+  <Label text="TODO Resource List View"/>
+  <Label text="TODO Resource List View"/>
+  <Label text="TODO Resource List View"/>
+  <Label text="TODO Resource List View"/>
+  <Label text="TODO Resource List View"/>
+  <Label text="TODO Resource List View"/>
+</fx:root>

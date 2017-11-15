@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import io.github.waverunner.harvesterdroid.app.views.resource.ResourceListView?>
+
+<fx:root type="javafx.scene.control.TitledPane"
+  xmlns:fx="http://javafx.com/fxml/1" alignment="TOP_LEFT" animated="false"
+  collapsible="false" nodeOrientation="LEFT_TO_RIGHT"
+  xmlns="http://javafx.com/javafx/8.0.111"
+  fx:controller="io.github.waverunner.harvesterdroid.app.views.resource.InterestingResourcesView"
+  text="Interesting Resources">
+  <VBox spacing="5.0">
+    <AnchorPane>
+      <CheckBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+        AnchorPane.rightAnchor="0.0"
+        AnchorPane.topAnchor="0.0" alignment="CENTER"
+        mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" text="Show Only Available"
+        fx:id="onlyAvailableCheckbox"/>
+    </AnchorPane>
+    <ResourceListView fx:id="resourcesListView"/>
+  </VBox>
+</fx:root>

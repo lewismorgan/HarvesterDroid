@@ -25,6 +25,7 @@ dependencies {
     implementation 'de.saxsys:mvvmfx-guice:1.7.0'
 
     implementation 'org.controlsfx:controlsfx:9.0.0'
+    implementation 'org.apache.commons:commons-lang3:3.7'
 
 //    implementation 'com.vladsch.flexmark:flexmark-core:0.28.6'
 //    implementation 'com.vladsch.flexmark:flexmark-html-parser:0.28.6'

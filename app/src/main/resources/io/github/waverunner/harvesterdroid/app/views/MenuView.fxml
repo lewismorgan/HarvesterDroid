@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.SeparatorMenuItem?>
+<MenuBar xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.github.waverunner.harvesterdroid.app.views.MenuView">
+    <Menu mnemonicParsing="false" text="File">
+        <MenuItem mnemonicParsing="false" onAction="#save" text="Save"/>
+        <MenuItem mnemonicParsing="false" onAction="#preferences" text="Preferences"/>
+        <SeparatorMenuItem mnemonicParsing="false"/>
+        <MenuItem mnemonicParsing="false" onAction="#close" text="Quit"/>
+    </Menu>
+    <Menu mnemonicParsing="false" text="Import">
+        <MenuItem mnemonicParsing="false" onAction="#importResources" text="Resources..."/>
+        <MenuItem mnemonicParsing="false" onAction="#importSchematics" text="Schematics..."/>
+    </Menu>
+    <Menu mnemonicParsing="false" text="Help">
+        <MenuItem mnemonicParsing="false" onAction="#about" text="About"/>
+    </Menu>
+</MenuBar>
