@@ -1,0 +1,30 @@
+apply plugin: 'kotlin'
+apply plugin: 'application'
+
+ext.tornadofx_version = '1.7.14'
+ext.controlsfx_version = '8.40.14'
+
+sourceCompatibility = 1.8
+
+dependencies {
+    implementation project(':common')
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jre8:$kotlin_version"
+    implementation "no.tornado:tornadofx:$tornadofx_version"
+    implementation "org.controlsfx:controlsfx:$controlsfx_version"
+    // https://github.com/edvin/tornadofx-controlsfx
+}
+
+mainClassName = 'io.github.waverunner.harvesterdroid.desktop.DroidApp'
+
+compileKotlin {
+    kotlinOptions.jvmTarget = '1.8'
+}
+
+jar {
+    manifest {
+        attributes (
+            'Class-Path': configurations.compile.collect { it.getName() }.join(' '),
+            'Main-Class': 'io.github.waverunner.harvesterdroid.desktop.DroidApp'
+        )
+    }
+}
