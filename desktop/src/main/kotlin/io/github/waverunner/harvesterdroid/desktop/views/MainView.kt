@@ -1,25 +1,42 @@
 package io.github.waverunner.harvesterdroid.desktop.views
 
-import tornadofx.View
-import tornadofx.ViewModel
-import tornadofx.action
-import tornadofx.button
-import tornadofx.label
-import tornadofx.vbox
+import tornadofx.*
 
-class MainView : View() {
-  private val viewModel: MainViewModel by inject()
-
+/**
+ * Created by lewis on 4/14/18.
+ */
+class MainView : View("Harvest Droid") {
   override val root = vbox {
-    label("Hello World")
-    button("Do Something") {
-      action {
-        viewModel.doSomething()
+    prefHeight = 800.0
+    prefWidth = 600.0
+    add(MainMenuBarView::class)
+    gridpane {
+      
+      row {
+        anchorpane {
+          gridpaneConstraints {
+            columnIndex = 0
+          }
+          add(InventoryView::class)
+        }
+      }
+
+      row {
+        gridpaneConstraints {
+          columnIndex = 1
+        }
+        add(SchematicsListingView::class)
+      }
+
+      row {
+        anchorpane {
+          useMaxWidth = true
+          gridpaneConstraints {
+            columnSpan = 2
+          }
+          add(DiscoveredResourcesView::class)
+        }
       }
     }
   }
-}
-
-class MainViewModel : ViewModel() {
-  fun doSomething() = println("Do Something")
 }
