@@ -10,33 +10,13 @@ class MainView : View("Harvest Droid") {
     prefHeight = 800.0
     prefWidth = 600.0
     add(MainMenuBarView::class)
-    gridpane {
-      
-      row {
-        anchorpane {
-          gridpaneConstraints {
-            columnIndex = 0
-          }
-          add(InventoryView::class)
-        }
-      }
-
-      row {
-        gridpaneConstraints {
-          columnIndex = 1
-        }
+    vbox {
+      isFillWidth = true
+      hbox {
+        add(InventoryView::class)
         add(SchematicsListingView::class)
       }
-
-      row {
-        anchorpane {
-          useMaxWidth = true
-          gridpaneConstraints {
-            columnSpan = 2
-          }
-          add(DiscoveredResourcesView::class)
-        }
-      }
+      add(DiscoveredResourcesView::class)
     }
   }
 }
