@@ -72,7 +72,7 @@ public class Launcher extends MvvmfxEasyDIApplication {
 
   private static boolean DEBUG = false;
 
-  private static Stage stage;
+  public static Stage stage;
   private static HarvesterDroid app;
 
   public static void main(String[] args) {

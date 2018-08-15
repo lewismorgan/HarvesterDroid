@@ -18,8 +18,8 @@
 
 package io.github.waverunner.harvesterdroid.ui.dialog;
 
+import io.github.waverunner.harvesterdroid.Launcher;
 import java.io.IOException;
-
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.ButtonType;
@@ -49,7 +49,7 @@ public abstract class BaseDialog<R> extends Dialog<R> {
       } else {
         root = FXMLLoader.load(getClass().getResource(getClass().getSimpleName().toLowerCase().replace("dialog", "_dialog.fxml")));
       }
-
+      initOwner(Launcher.stage);
       ((Stage) getDialogPane().getScene().getWindow()).getIcons().add(new Image(getClass().getResourceAsStream("/images/icon.png")));
       if (root != null) {
         getDialogPane().setContent(root);
