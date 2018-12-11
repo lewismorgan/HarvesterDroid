@@ -34,6 +34,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public final class Watcher {
+
   private static Map<String, Runnable> watchedFiles = new HashMap<>();
   private static ExecutorService threadPool = Executors.newCachedThreadPool();
   private static WatchService watchService;
@@ -74,6 +75,7 @@ public final class Watcher {
   }
 
   static class WatcherThread implements Runnable {
+
     private AtomicBoolean running = new AtomicBoolean(true);
 
     @Override

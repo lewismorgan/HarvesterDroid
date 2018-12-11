@@ -22,12 +22,10 @@ import com.vladsch.flexmark.html.HtmlRenderer;
 import com.vladsch.flexmark.parser.Parser;
 import com.vladsch.flexmark.parser.ParserEmulationProfile;
 import com.vladsch.flexmark.util.options.MutableDataSet;
-
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.ResourceBundle;
-
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.layout.VBox;
@@ -37,6 +35,7 @@ import javafx.scene.web.WebView;
  * Created by Waverunner on 3/27/2017.
  */
 public class AboutDialogController extends VBox implements Initializable {
+
   @FXML
   private WebView webView;
 

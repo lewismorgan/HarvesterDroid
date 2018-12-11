@@ -19,7 +19,6 @@
 package com.lewisjmorgan.harvesterdroid.api;
 
 import com.lewisjmorgan.harvesterdroid.api.resource.ResourceType;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -29,13 +28,11 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -47,6 +44,7 @@ import org.slf4j.LoggerFactory;
  * sub-classes to know how the data is stored and convert them to the resources map.
  */
 public abstract class Downloader {
+
   private static final Logger logger = LoggerFactory.getLogger(Downloader.class);
 
   private final String root;
@@ -113,7 +111,7 @@ public abstract class Downloader {
   }
 
   protected abstract void downloadResourceTypes(Map<String, ResourceType> resourceTypeMap,
-                                                Map<String, List<String>> resourceGroups) throws IOException;
+      Map<String, List<String>> resourceGroups) throws IOException;
 
   public final DownloadResult downloadCurrentResources() throws IOException {
 

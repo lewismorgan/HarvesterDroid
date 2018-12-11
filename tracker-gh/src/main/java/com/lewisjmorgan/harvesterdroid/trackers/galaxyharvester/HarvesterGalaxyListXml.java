@@ -19,16 +19,13 @@
 package com.lewisjmorgan.harvesterdroid.trackers.galaxyharvester;
 
 import com.lewisjmorgan.harvesterdroid.api.xml.BaseXml;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.ParserConfigurationException;
-
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
@@ -37,6 +34,7 @@ import org.xml.sax.SAXException;
  * Created by Waverunner on 4/1/17.
  */
 public class HarvesterGalaxyListXml extends BaseXml {
+
   private Map<String, String> galaxyList = new HashMap<>();
 
   public HarvesterGalaxyListXml(DocumentBuilder documentBuilder) {

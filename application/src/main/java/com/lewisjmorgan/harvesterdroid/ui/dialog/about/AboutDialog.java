@@ -19,7 +19,6 @@
 package com.lewisjmorgan.harvesterdroid.ui.dialog.about;
 
 import com.lewisjmorgan.harvesterdroid.ui.dialog.BaseDialog;
-
 import javafx.scene.control.ButtonType;
 
 public class AboutDialog extends BaseDialog {

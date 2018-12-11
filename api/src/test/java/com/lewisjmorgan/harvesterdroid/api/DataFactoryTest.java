@@ -3,15 +3,12 @@ package com.lewisjmorgan.harvesterdroid.api;
 import static org.junit.Assert.assertTrue;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-
 import java.io.ByteArrayOutputStream;
 import java.io.FileOutputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-
 import java.util.ArrayList;
 import java.util.Collection;
-
 import org.junit.Before;
 import org.junit.Test;
 
@@ -19,6 +16,7 @@ import org.junit.Test;
  * Created by lewis on 8/11/17
  */
 public class DataFactoryTest {
+
   private DataFactory dataFactory;
 
   @Before
@@ -46,7 +44,8 @@ public class DataFactoryTest {
     DataFactory.save(baos, galaxyResources);
 
     Collection<GalaxyResource> loaded = DataFactory.openBinaryCollection(baos.toByteArray(),
-        new TypeReference<Collection<GalaxyResource>>() {});
+        new TypeReference<Collection<GalaxyResource>>() {
+        });
 
     assertTrue(String.format("Loaded %d resources, expected 10", loaded.size()), loaded.size() == 10);
   }

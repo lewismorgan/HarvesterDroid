@@ -22,13 +22,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
-
 import java.util.Properties;
 
 /**
  * Created by Waverunner on 3/31/2017.
  */
 public class DroidProperties {
+
   public static final String TRACKER = "tracker";
   public static final String GALAXY = "activegalaxy";
   public static final String DOWNLOAD_BUFFER = "download.buffer";

@@ -23,17 +23,14 @@ import com.lewisjmorgan.harvesterdroid.app.HarvesterDroid;
 import com.lewisjmorgan.harvesterdroid.data.resources.InventoryResource;
 import com.lewisjmorgan.harvesterdroid.ui.dialog.resource.ResourceDialog;
 import com.lewisjmorgan.harvesterdroid.ui.items.GalaxyResourceItemViewModel;
+import com.lewisjmorgan.harvesterdroid.ui.scopes.GalaxyScope;
+import com.lewisjmorgan.harvesterdroid.ui.scopes.ResourceScope;
 import de.saxsys.mvvmfx.InjectScope;
 import de.saxsys.mvvmfx.ViewModel;
 import de.saxsys.mvvmfx.utils.commands.Action;
 import de.saxsys.mvvmfx.utils.commands.Command;
 import de.saxsys.mvvmfx.utils.commands.DelegateCommand;
-
-import com.lewisjmorgan.harvesterdroid.ui.scopes.GalaxyScope;
-import com.lewisjmorgan.harvesterdroid.ui.scopes.ResourceScope;
-
 import java.util.Optional;
-
 import javafx.beans.property.ListProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleListProperty;
@@ -46,6 +43,7 @@ import javafx.collections.ObservableList;
  * Created by Waverunner on 4/3/2017.
  */
 public class InventoryViewModel implements ViewModel {
+
   private final HarvesterDroid harvesterDroid;
   private ListProperty<GalaxyResourceItemViewModel> inventory = new SimpleListProperty<>();
   private ObjectProperty<GalaxyResourceItemViewModel> selected = new SimpleObjectProperty<>();

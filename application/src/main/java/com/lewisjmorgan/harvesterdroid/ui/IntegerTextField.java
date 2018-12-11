@@ -20,13 +20,13 @@ package com.lewisjmorgan.harvesterdroid.ui;
 
 import java.text.NumberFormat;
 import java.text.ParseException;
-
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 
 public final class IntegerTextField extends TextField {
+
   private final IntegerProperty value;
   private final float minValue;
   private final float maxValue;

@@ -20,12 +20,12 @@ package com.lewisjmorgan.harvesterdroid.ui.dialog.schematic;
 
 import com.lewisjmorgan.harvesterdroid.data.schematics.Schematic;
 import com.lewisjmorgan.harvesterdroid.ui.dialog.BaseDialog;
-
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
 
 public class SchematicDialog extends BaseDialog<Schematic> {
+
   private static ButtonType SAVE = new ButtonType("Save", ButtonBar.ButtonData.APPLY);
   private static SchematicDialogController controller;
 

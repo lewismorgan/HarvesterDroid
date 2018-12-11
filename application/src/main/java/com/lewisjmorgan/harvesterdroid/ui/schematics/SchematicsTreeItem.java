@@ -22,6 +22,7 @@ package com.lewisjmorgan.harvesterdroid.ui.schematics;
  * Created by Waverunner on 3/23/2017.
  */
 public class SchematicsTreeItem {
+
   private String name;
   private String identifier;
   private boolean group;

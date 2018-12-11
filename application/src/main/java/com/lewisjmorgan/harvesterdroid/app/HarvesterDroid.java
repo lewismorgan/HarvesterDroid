@@ -21,13 +21,11 @@ package com.lewisjmorgan.harvesterdroid.app;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-
 import com.lewisjmorgan.harvesterdroid.api.DataFactory;
 import com.lewisjmorgan.harvesterdroid.api.Downloader;
 import com.lewisjmorgan.harvesterdroid.api.GalaxyResource;
 import com.lewisjmorgan.harvesterdroid.data.resources.InventoryResource;
 import com.lewisjmorgan.harvesterdroid.data.schematics.Schematic;
-
 import java.io.ByteArrayInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -35,7 +33,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -45,21 +42,18 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class HarvesterDroid {
+
   private static final Logger logger = LogManager.getLogger(HarvesterDroid.class);
 
   private final HarvesterDroidData data;
-
-  private Downloader downloader;
-
   private final Set<InventoryResource> inventory;
   private final Set<GalaxyResource> resources;
   private final List<Schematic> schematics;
-
+  private Downloader downloader;
   private Map<String, String> galaxies;
   private Map<String, String> themes;
 
@@ -303,7 +297,8 @@ public class HarvesterDroid {
   public void loadResources(byte[] data) throws IOException {
     ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(data);
     HashSet<GalaxyResource> saved = DataFactory.openBinaryCollection(byteArrayInputStream,
-        new TypeReference<HashSet<GalaxyResource>>() {});
+        new TypeReference<HashSet<GalaxyResource>>() {
+        });
 
     if (saved != null) {
       resources.clear();

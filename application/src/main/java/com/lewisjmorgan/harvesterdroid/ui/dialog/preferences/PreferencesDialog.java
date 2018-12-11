@@ -21,12 +21,10 @@ package com.lewisjmorgan.harvesterdroid.ui.dialog.preferences;
 import com.lewisjmorgan.harvesterdroid.DroidProperties;
 import com.lewisjmorgan.harvesterdroid.Launcher;
 import com.lewisjmorgan.harvesterdroid.ui.dialog.BaseDialog;
-
 import java.net.URL;
 import java.util.Map;
 import java.util.Properties;
 import java.util.ResourceBundle;
-
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.MapProperty;
 import javafx.beans.property.ObjectProperty;
@@ -47,6 +45,7 @@ import javafx.scene.control.TextField;
  * Created by Waverunner on 3/29/2017.
  */
 public class PreferencesDialog extends BaseDialog<Properties> implements Initializable {
+
   //region FXML
   @FXML
   private ChoiceBox<String> trackerComboBox;

@@ -23,10 +23,8 @@ import com.lewisjmorgan.harvesterdroid.ui.items.GalaxyResourceItemViewModel;
 import de.saxsys.mvvmfx.FxmlView;
 import de.saxsys.mvvmfx.InjectViewModel;
 import de.saxsys.mvvmfx.utils.viewlist.CachedViewModelCellFactory;
-
 import java.net.URL;
 import java.util.ResourceBundle;
-
 import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;

@@ -18,15 +18,12 @@
 
 package com.lewisjmorgan.harvesterdroid.ui.main;
 
+import com.lewisjmorgan.harvesterdroid.DroidProperties;
 import de.saxsys.mvvmfx.FxmlView;
 import de.saxsys.mvvmfx.InjectViewModel;
-
-import com.lewisjmorgan.harvesterdroid.DroidProperties;
-
 import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
-
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -34,7 +31,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.MenuBar;
 import javafx.stage.FileChooser;
 import javafx.stage.WindowEvent;
-
 import org.controlsfx.control.StatusBar;
 
 /**

@@ -19,12 +19,10 @@
 package com.lewisjmorgan.harvesterdroid.ui.dialog;
 
 import com.lewisjmorgan.harvesterdroid.Launcher;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.transformation.FilteredList;
@@ -37,13 +35,13 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-
 import org.controlsfx.control.CheckListView;
 
 /**
  * Created by Waverunner on 3/20/2017.
  */
 public class AddResourceTypeDialog extends Dialog<List<String>> {
+
   private FilteredList<String> filteredList;
   private CheckListView<String> listView;
 
@@ -89,7 +87,6 @@ public class AddResourceTypeDialog extends Dialog<List<String>> {
   private Parent createView() {
     VBox root = new VBox();
     root.setSpacing(5);
-
 
     listView = new CheckListView<>();
     listView.setMaxSize(Region.USE_COMPUTED_SIZE, Region.USE_COMPUTED_SIZE);

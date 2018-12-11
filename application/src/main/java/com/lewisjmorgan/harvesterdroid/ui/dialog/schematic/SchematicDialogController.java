@@ -23,15 +23,12 @@ import com.lewisjmorgan.harvesterdroid.api.resource.Attributes;
 import com.lewisjmorgan.harvesterdroid.data.schematics.Schematic;
 import com.lewisjmorgan.harvesterdroid.ui.IntegerTextField;
 import com.lewisjmorgan.harvesterdroid.ui.dialog.AddResourceTypeDialog;
-
 import java.net.URL;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.ResourceBundle;
-
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ListProperty;
@@ -60,6 +57,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 
 public class SchematicDialogController extends VBox implements Initializable {
+
   @FXML
   TextField nameField;
   @FXML
@@ -315,6 +313,7 @@ public class SchematicDialogController extends VBox implements Initializable {
   }
 
   public static class Modifier {
+
     private StringProperty name = new SimpleStringProperty();
     private IntegerProperty value = new SimpleIntegerProperty();
 
@@ -349,6 +348,7 @@ public class SchematicDialogController extends VBox implements Initializable {
   }
 
   static class PercentEditingCell extends TableCell<Modifier, Integer> {
+
     private IntegerTextField textField;
 
     @Override
@@ -408,6 +408,7 @@ public class SchematicDialogController extends VBox implements Initializable {
   }
 
   class ModifierBoxEditingCell extends TableCell<Modifier, String> {
+
     private ComboBox<String> comboBox;
 
     @Override

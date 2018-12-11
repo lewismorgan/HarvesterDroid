@@ -21,20 +21,16 @@ package com.lewisjmorgan.harvesterdroid.trackers.galaxyharvester;
 import com.lewisjmorgan.harvesterdroid.api.Downloader;
 import com.lewisjmorgan.harvesterdroid.api.GalaxyResource;
 import com.lewisjmorgan.harvesterdroid.api.resource.ResourceType;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-
 import org.xml.sax.SAXException;
 
 public final class GalaxyHarvesterDownloader extends Downloader {
@@ -136,7 +132,6 @@ public final class GalaxyHarvesterDownloader extends Downloader {
       resourceTypeXml.load(getListTypeStream("resource_type"));
       resourceGroupXml.load(getListTypeStream("resource_group"));
       resourceTypeGroupXml.load(getListTypeStream("resource_type_group"));
-
 
       resourceTypeMap.putAll(resourceGroupXml.getResourceTypeMap());
       resourceTypeMap.putAll(resourceTypeXml.getResourceTypeMap());

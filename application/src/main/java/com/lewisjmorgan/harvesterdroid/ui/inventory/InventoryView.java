@@ -23,10 +23,8 @@ import com.lewisjmorgan.harvesterdroid.ui.items.GalaxyResourceItemViewModel;
 import de.saxsys.mvvmfx.FxmlView;
 import de.saxsys.mvvmfx.InjectViewModel;
 import de.saxsys.mvvmfx.utils.viewlist.CachedViewModelCellFactory;
-
 import java.net.URL;
 import java.util.ResourceBundle;
-
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -36,6 +34,7 @@ import javafx.scene.control.ListView;
  * Created by Waverunner on 4/3/2017.
  */
 public class InventoryView implements FxmlView<InventoryViewModel>, Initializable {
+
   @FXML
   private Button removeButton;
   @FXML

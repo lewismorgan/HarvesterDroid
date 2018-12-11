@@ -37,6 +37,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 public class LauncherPreloader extends Preloader {
+
   private ProgressBar bar;
   private Label statusLabel;
   private Stage stage;

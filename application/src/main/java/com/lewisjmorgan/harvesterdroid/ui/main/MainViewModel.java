@@ -23,47 +23,40 @@ import static com.lewisjmorgan.harvesterdroid.app.HarvesterDroidData.JSON_SCHEMA
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
+import com.lewisjmorgan.harvesterdroid.DroidProperties;
+import com.lewisjmorgan.harvesterdroid.api.DataFactory;
+import com.lewisjmorgan.harvesterdroid.api.GalaxyResource;
+import com.lewisjmorgan.harvesterdroid.app.HarvesterDroid;
+import com.lewisjmorgan.harvesterdroid.data.schematics.Schematic;
 import com.lewisjmorgan.harvesterdroid.ui.dialog.about.AboutDialog;
+import com.lewisjmorgan.harvesterdroid.ui.dialog.preferences.PreferencesDialog;
 import com.lewisjmorgan.harvesterdroid.ui.dialog.resource.ImportResourcesDialog;
+import com.lewisjmorgan.harvesterdroid.ui.scopes.GalaxyScope;
+import com.lewisjmorgan.harvesterdroid.ui.scopes.ResourceScope;
+import com.lewisjmorgan.harvesterdroid.ui.scopes.SchematicScope;
 import de.saxsys.mvvmfx.InjectScope;
 import de.saxsys.mvvmfx.ScopeProvider;
 import de.saxsys.mvvmfx.ViewModel;
 import de.saxsys.mvvmfx.utils.commands.Action;
 import de.saxsys.mvvmfx.utils.commands.Command;
 import de.saxsys.mvvmfx.utils.commands.DelegateCommand;
-
-import com.lewisjmorgan.harvesterdroid.DroidProperties;
-import com.lewisjmorgan.harvesterdroid.api.DataFactory;
-import com.lewisjmorgan.harvesterdroid.api.GalaxyResource;
-import com.lewisjmorgan.harvesterdroid.app.HarvesterDroid;
-import com.lewisjmorgan.harvesterdroid.data.schematics.Schematic;
-import com.lewisjmorgan.harvesterdroid.ui.dialog.preferences.PreferencesDialog;
-import com.lewisjmorgan.harvesterdroid.ui.scopes.GalaxyScope;
-import com.lewisjmorgan.harvesterdroid.ui.scopes.ResourceScope;
-import com.lewisjmorgan.harvesterdroid.ui.scopes.SchematicScope;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Properties;
 import java.util.Set;
-
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.ReadOnlyStringProperty;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
-
 import javax.inject.Singleton;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -73,6 +66,7 @@ import org.apache.logging.log4j.Logger;
 @Singleton
 @ScopeProvider(scopes = {SchematicScope.class, GalaxyScope.class, ResourceScope.class})
 public class MainViewModel implements ViewModel {
+
   private static final Logger logger = LogManager.getLogger(MainViewModel.class);
 
   private final HarvesterDroid harvesterDroid;
@@ -191,7 +185,8 @@ public class MainViewModel implements ViewModel {
 
         ObjectMapper objectMapper = DataFactory.createJsonObjectMapper();
         Set<Schematic> saved = objectMapper.readValue(new FileInputStream(file),
-            new TypeReference<Set<Schematic>>() {}); // Prevent type erasing
+            new TypeReference<Set<Schematic>>() {
+            }); // Prevent type erasing
 
         schematicScope.publish(SchematicScope.IMPORT, saved.toArray());
       } catch (FileNotFoundException e) {

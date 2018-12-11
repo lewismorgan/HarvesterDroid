@@ -18,16 +18,13 @@
 
 package com.lewisjmorgan.harvesterdroid.ui.dialog.resource;
 
-import de.saxsys.mvvmfx.utils.viewlist.CachedViewModelCellFactory;
-
 import com.lewisjmorgan.harvesterdroid.ui.dialog.BaseDialog;
 import com.lewisjmorgan.harvesterdroid.ui.items.GalaxyResourceItemView;
 import com.lewisjmorgan.harvesterdroid.ui.items.GalaxyResourceItemViewModel;
-
+import de.saxsys.mvvmfx.utils.viewlist.CachedViewModelCellFactory;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
-
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;

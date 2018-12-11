@@ -18,17 +18,13 @@
 
 package com.lewisjmorgan.harvesterdroid.ui.items;
 
-import de.saxsys.mvvmfx.FxmlView;
-import de.saxsys.mvvmfx.InjectViewModel;
-
 import com.lewisjmorgan.harvesterdroid.api.GalaxyResource;
 import com.lewisjmorgan.harvesterdroid.api.resource.Attributes;
 import com.lewisjmorgan.harvesterdroid.api.resource.ResourceType;
-
+import de.saxsys.mvvmfx.FxmlView;
+import de.saxsys.mvvmfx.InjectViewModel;
 import java.net.URL;
-
 import java.util.ResourceBundle;
-
 import javafx.collections.MapChangeListener;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -41,7 +37,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -49,6 +44,7 @@ import org.apache.logging.log4j.Logger;
  * Created by Waverunner on 4/3/2017.
  */
 public class GalaxyResourceItemView implements FxmlView<GalaxyResourceItemViewModel>, Initializable {
+
   private static final Logger logger = LogManager.getLogger(GalaxyResourceItemView.class);
 
   @FXML
@@ -130,7 +126,6 @@ public class GalaxyResourceItemView implements FxmlView<GalaxyResourceItemViewMo
 
     float value = galaxyResource.getAttribute(Attributes.getFullName(attribute));
     float result = (value - min) / (max - min);
-
 
     if (Float.isNaN(result)) {
       // At the max cap

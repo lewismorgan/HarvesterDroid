@@ -24,19 +24,19 @@
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.TitledPane?>
 <?import javafx.scene.layout.VBox?>
-
-<TitledPane animated="false" collapsible="false" nodeOrientation="LEFT_TO_RIGHT" text="Inventory" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.lewisjmorgan.harvesterdroid.ui.inventory.InventoryView">
-   <VBox spacing="5.0">
-      <ListView fx:id="listView" VBox.vgrow="ALWAYS">
-         <placeholder>
-            <Label text="There's no resources in your inventory" />
-         </placeholder>
-      </ListView>
-      <ButtonBar prefHeight="40.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
-         <buttons>
-            <Button fx:id="removeButton" disable="true" mnemonicParsing="false" onAction="#removeSelectedResource" text="Remove" />
-            <Button fx:id="addButton" layoutX="135.0" layoutY="18.0" mnemonicParsing="false" onAction="#addGalaxyResource" text="Add" />
-         </buttons>
-      </ButtonBar>
-   </VBox>
+<TitledPane xmlns:fx="http://javafx.com/fxml/1" animated="false" collapsible="false" nodeOrientation="LEFT_TO_RIGHT" text="Inventory"
+  xmlns="http://javafx.com/javafx/8.0.111" fx:controller="com.lewisjmorgan.harvesterdroid.ui.inventory.InventoryView">
+  <VBox spacing="5.0">
+    <ListView VBox.vgrow="ALWAYS" fx:id="listView">
+      <placeholder>
+        <Label text="There's no resources in your inventory"/>
+      </placeholder>
+    </ListView>
+    <ButtonBar VBox.vgrow="ALWAYS" prefHeight="40.0" prefWidth="200.0">
+      <buttons>
+        <Button disable="true" mnemonicParsing="false" onAction="#removeSelectedResource" text="Remove" fx:id="removeButton"/>
+        <Button layoutX="135.0" layoutY="18.0" mnemonicParsing="false" onAction="#addGalaxyResource" text="Add" fx:id="addButton"/>
+      </buttons>
+    </ButtonBar>
+  </VBox>
 </TitledPane>

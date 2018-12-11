@@ -20,7 +20,6 @@ package com.lewisjmorgan.harvesterdroid.ui.scopes;
 
 import com.lewisjmorgan.harvesterdroid.data.schematics.Schematic;
 import de.saxsys.mvvmfx.Scope;
-
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 
@@ -28,6 +27,7 @@ import javafx.beans.property.SimpleObjectProperty;
  * Created by Waverunner on 4/3/2017.
  */
 public class SchematicScope implements Scope {
+
   public static final String UPDATE = "SchematicScope.Update";
   public static final String ACTIVE = "SchematicScope.Active";
   public static final String REFRESH = "SchematicScope.Refresh";

@@ -20,7 +20,6 @@ package com.lewisjmorgan.harvesterdroid.ui.dialog.resource;
 
 import com.lewisjmorgan.harvesterdroid.api.GalaxyResource;
 import com.lewisjmorgan.harvesterdroid.ui.dialog.BaseDialog;
-
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
 

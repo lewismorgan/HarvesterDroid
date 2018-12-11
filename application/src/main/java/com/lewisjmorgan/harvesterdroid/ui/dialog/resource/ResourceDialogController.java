@@ -21,11 +21,8 @@ package com.lewisjmorgan.harvesterdroid.ui.dialog.resource;
 import com.lewisjmorgan.harvesterdroid.Launcher;
 import com.lewisjmorgan.harvesterdroid.api.GalaxyResource;
 import com.lewisjmorgan.harvesterdroid.api.resource.Attributes;
-
 import java.net.URL;
-
 import java.util.ResourceBundle;
-
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.fxml.FXML;
@@ -39,6 +36,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 public class ResourceDialogController implements Initializable {
+
   @FXML
   TextField resourceTypeField;
   @FXML

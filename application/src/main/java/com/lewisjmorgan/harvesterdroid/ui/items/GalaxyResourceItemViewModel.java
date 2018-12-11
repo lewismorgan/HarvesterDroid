@@ -18,12 +18,9 @@
 
 package com.lewisjmorgan.harvesterdroid.ui.items;
 
-import de.saxsys.mvvmfx.ViewModel;
-
 import com.lewisjmorgan.harvesterdroid.api.GalaxyResource;
-
+import de.saxsys.mvvmfx.ViewModel;
 import java.io.InputStream;
-
 import javafx.beans.property.ReadOnlyMapProperty;
 import javafx.beans.property.ReadOnlyMapWrapper;
 import javafx.beans.property.ReadOnlyObjectProperty;
@@ -33,7 +30,6 @@ import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableMap;
 import javafx.scene.image.Image;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -41,6 +37,7 @@ import org.apache.logging.log4j.Logger;
  * Created by Waverunner on 4/3/2017.
  */
 public class GalaxyResourceItemViewModel implements ViewModel {
+
   private static final Logger logger = LogManager.getLogger(GalaxyResourceItemViewModel.class);
 
   private ReadOnlyStringWrapper name = new ReadOnlyStringWrapper();

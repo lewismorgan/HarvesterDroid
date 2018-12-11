@@ -20,19 +20,16 @@ package com.lewisjmorgan.harvesterdroid.ui.schematics;
 
 import com.lewisjmorgan.harvesterdroid.app.HarvesterDroid;
 import com.lewisjmorgan.harvesterdroid.data.schematics.Schematic;
+import com.lewisjmorgan.harvesterdroid.ui.dialog.schematic.SchematicDialog;
+import com.lewisjmorgan.harvesterdroid.ui.scopes.GalaxyScope;
+import com.lewisjmorgan.harvesterdroid.ui.scopes.ResourceScope;
+import com.lewisjmorgan.harvesterdroid.ui.scopes.SchematicScope;
 import de.saxsys.mvvmfx.InjectScope;
 import de.saxsys.mvvmfx.ViewModel;
 import de.saxsys.mvvmfx.utils.commands.Action;
 import de.saxsys.mvvmfx.utils.commands.Command;
 import de.saxsys.mvvmfx.utils.commands.DelegateCommand;
-
-import com.lewisjmorgan.harvesterdroid.ui.dialog.schematic.SchematicDialog;
-import com.lewisjmorgan.harvesterdroid.ui.scopes.GalaxyScope;
-import com.lewisjmorgan.harvesterdroid.ui.scopes.ResourceScope;
-import com.lewisjmorgan.harvesterdroid.ui.scopes.SchematicScope;
-
 import java.util.Optional;
-
 import javafx.beans.property.ListProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleListProperty;
@@ -45,6 +42,7 @@ import javafx.collections.ObservableList;
  * Created by Waverunner on 4/3/2017.
  */
 public class SchematicsViewModel implements ViewModel {
+
   private final HarvesterDroid harvesterDroid;
   private ListProperty<Schematic> schematics = new SimpleListProperty<>();
   private ObjectProperty<Schematic> selected = new SimpleObjectProperty<>();

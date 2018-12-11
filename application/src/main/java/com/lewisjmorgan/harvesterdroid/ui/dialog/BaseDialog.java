@@ -33,6 +33,7 @@ import javafx.stage.Stage;
  * <p>Created by Waverunner on 3/29/2017.
  */
 public abstract class BaseDialog<R> extends Dialog<R> {
+
   public BaseDialog(String title) {
     super();
     setTitle(title);

@@ -23,21 +23,18 @@ import com.lewisjmorgan.harvesterdroid.app.HarvesterDroid;
 import com.lewisjmorgan.harvesterdroid.data.schematics.Schematic;
 import com.lewisjmorgan.harvesterdroid.ui.dialog.resource.NewSpawnsDialog;
 import com.lewisjmorgan.harvesterdroid.ui.items.GalaxyResourceItemViewModel;
+import com.lewisjmorgan.harvesterdroid.ui.scopes.GalaxyScope;
+import com.lewisjmorgan.harvesterdroid.ui.scopes.ResourceScope;
+import com.lewisjmorgan.harvesterdroid.ui.scopes.SchematicScope;
 import de.saxsys.mvvmfx.InjectScope;
 import de.saxsys.mvvmfx.ViewModel;
 import de.saxsys.mvvmfx.utils.commands.Action;
 import de.saxsys.mvvmfx.utils.commands.Command;
 import de.saxsys.mvvmfx.utils.commands.DelegateCommand;
-
-import com.lewisjmorgan.harvesterdroid.ui.scopes.GalaxyScope;
-import com.lewisjmorgan.harvesterdroid.ui.scopes.ResourceScope;
-import com.lewisjmorgan.harvesterdroid.ui.scopes.SchematicScope;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
-
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ListProperty;
@@ -50,7 +47,6 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -58,6 +54,7 @@ import org.apache.logging.log4j.Logger;
  * Created by Waverunner on 4/3/2017.
  */
 public class ResourcesViewModel implements ViewModel {
+
   private static final Logger logger = LogManager.getLogger(ResourcesViewModel.class);
 
   private final HarvesterDroid harvesterDroid;

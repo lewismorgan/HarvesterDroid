@@ -20,12 +20,11 @@ package com.lewisjmorgan.harvesterdroid.trackers.galaxyharvester.xml;
 
 import com.lewisjmorgan.harvesterdroid.api.GalaxyResource;
 import com.lewisjmorgan.harvesterdroid.api.xml.BaseXml;
-
 import javax.xml.parsers.DocumentBuilder;
-
 import org.w3c.dom.Document;
 
 public abstract class ResourceXml extends BaseXml {
+
   private GalaxyResource galaxyResource;
 
   public ResourceXml(DocumentBuilder documentBuilder) {
