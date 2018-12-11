@@ -27,17 +27,16 @@ dependencies {
 
 jfx {
     // minimal requirement for jfxJar-task
-    jfxMainAppJarName = 'harvesterdroid.jar'
-    mainClass = 'io.github.waverunner.harvesterdroid.Launcher'
+    jfxMainAppJarName = 'harvesterdroid-' + project.version + '.jar'
+    mainClass = 'com.lewisjmorgan.harvesterdroid.Launcher'
     libFolderName = 'lib'
 
     // gradle jfxJar
-    preLoader = 'io.github.waverunner.harvesterdroid.LauncherPreloader' // String
+    preLoader = 'com.lewisjmorgan.harvesterdroid.LauncherPreloader' // String
 
     // gradle jfxNative
-    vendor = 'Waverunner'
+    vendor = 'SWG: Harvester Droid'
     bundleArguments = [
             runtime: null
     ]
 }
-build.finalizedBy('jfxJar')

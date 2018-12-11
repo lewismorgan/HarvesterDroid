@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  ~ HarvesterDroid - A Resource Tracker for Star Wars Galaxies
+  ~ Copyright (C) 2017  Waverunner
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<VBox xmlns:fx="http://javafx.com/fxml/1" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+  spacing="5.0" xmlns="http://javafx.com/javafx/8.0.111">
+  <children>
+    <HBox VBox.vgrow="ALWAYS" alignment="CENTER" spacing="5.0">
+      <children>
+        <Label HBox.hgrow="ALWAYS" alignment="CENTER" text="Tracker"/>
+        <ChoiceBox prefWidth="150.0" fx:id="trackerComboBox"/>
+        <Label text="Galaxy"/>
+        <ChoiceBox fx:id="galaxyChoiceBox"/>
+        <Label text="Download Buffer (hrs)"/>
+        <TextField disable="true" prefWidth="35.0" fx:id="downloadBufferTextField"/>
+      </children>
+      <padding>
+        <Insets bottom="5.0"/>
+      </padding>
+    </HBox>
+    <Separator prefWidth="200.0"/>
+    <HBox VBox.vgrow="ALWAYS" alignment="CENTER" spacing="5.0">
+      <children>
+        <Label text="Theme (Requires Restart)"/>
+        <ComboBox prefWidth="150.0" fx:id="themeComboBox"/>
+      </children>
+    </HBox>
+    <HBox VBox.vgrow="ALWAYS" alignment="CENTER" spacing="25.0">
+      <children>
+        <CheckBox alignment="TOP_LEFT" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" text="AutoSave" fx:id="autosaveCheckBox"/>
+        <CheckBox mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" text="Save Confirmation on Close" fx:id="saveNagCheckBox"/>
+      </children>
+      <padding>
+        <Insets bottom="5.0"/>
+      </padding>
+    </HBox>
+  </children>
+  <padding>
+    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+  </padding>
+</VBox>

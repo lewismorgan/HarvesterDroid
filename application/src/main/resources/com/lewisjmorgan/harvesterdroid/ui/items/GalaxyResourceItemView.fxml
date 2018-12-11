@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  ~ HarvesterDroid - A Resource Tracker for Star Wars Galaxies
+  ~ Copyright (C) 2017  Waverunner
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<HBox xmlns:fx="http://javafx.com/fxml/1" spacing="2.0" xmlns="http://javafx.com/javafx/8.0.112"
+  fx:controller="com.lewisjmorgan.harvesterdroid.ui.items.GalaxyResourceItemView">
+  <children>
+    <ImageView HBox.hgrow="ALWAYS" pickOnBounds="true" preserveRatio="true" fx:id="resourceImage">
+      <Image url="@/images/resources/gemstone.png"/>
+    </ImageView>
+    <VBox HBox.hgrow="ALWAYS">
+      <Label text="resource_name" fx:id="resourceName">
+        <font>
+          <Font name="System Bold" size="14.0"/>
+        </font>
+        <padding>
+          <Insets top="5.0"/>
+        </padding>
+      </Label>
+      <Label text="resource_type" fx:id="resourceType"/>
+      <Label text="resource_planets" fx:id="resourcePlanets">
+        <padding>
+          <Insets top="1.0"/>
+        </padding>
+      </Label>
+    </VBox>
+    <HBox HBox.hgrow="SOMETIMES" alignment="TOP_RIGHT" nodeOrientation="LEFT_TO_RIGHT" spacing="8.0" fx:id="resourceStatsBox">
+      <padding>
+        <Insets left="5.0"/>
+      </padding>
+    </HBox>
+  </children>
+</HBox>

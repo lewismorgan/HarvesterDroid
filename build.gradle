@@ -4,7 +4,7 @@ subprojects {
     apply plugin: 'checkstyle'
     apply plugin: 'idea'
 
-    group = 'io.github.waverunner.harvesterdroid'
+    group = 'com.lewisjmorgan.harvesterdroid'
     version = '2.0.0'
 
     sourceCompatibility = 1.8
@@ -22,7 +22,7 @@ subprojects {
 
     checkstyle {
         configFile = new File(rootDir, "checkstyle.xml")
-        toolVersion ="8.1"
+        toolVersion = "8.1"
     }
 
     idea {
@@ -32,9 +32,10 @@ subprojects {
     }
 
     jar {
-        baseName = "harvester"
+        baseName = "harvesterdroid"
         appendix = project.name
     }
 }
 
+group = "com.lewismorgan"
 description = 'Manage your resources across a number of Star Wars Galaxies resource trackers'
