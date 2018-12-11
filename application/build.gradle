@@ -25,6 +25,12 @@ dependencies {
     compile 'org.apache.logging.log4j:log4j-slf4j-impl:2.8.2'
 }
 
+description = 'Manage your resources across a number of Star Wars Galaxies resource trackers'
+
+jar {
+    appendix = "app"
+}
+
 jfx {
     // minimal requirement for jfxJar-task
     jfxMainAppJarName = 'harvesterdroid-' + project.version + '.jar'

@@ -1,6 +1,9 @@
 dependencies {
     compile project(':api')
 }
+
+description = "Tracker for resource data from GalaxyHarvester.com"
+
 jar {
     appendix = "tracker-gh"
 }
