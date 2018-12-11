@@ -1,11 +1,14 @@
 // Build for all/sub-projects
-allprojects {
+subprojects {
     apply plugin: 'java'
     apply plugin: 'checkstyle'
     apply plugin: 'idea'
 
+    group = 'io.github.waverunner.harvesterdroid'
+    version = '2.0.0'
 
-    version = '1.0.1'
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
 
     repositories {
         jcenter()
@@ -27,62 +30,11 @@ allprojects {
             downloadJavadoc = true
         }
     }
-}
-
-subprojects {
-    group = 'io.github.waverunner.harvesterdroid'
 
     jar {
-        appendix = 'haversterdroid'
+        baseName = "harvester"
+        appendix = project.name
     }
 }
 
-// Applies to main application only
-
-group = 'io.github.waverunner'
 description = 'Manage your resources across a number of Star Wars Galaxies resource trackers'
-
-apply plugin: 'javafx-gradle-plugin'
-
-buildscript {
-    dependencies {
-        classpath 'de.dynamicfiles.projects.gradle.plugins:javafx-gradle-plugin:8.8.2'
-    }
-
-    repositories {
-        jcenter()
-    }
-}
-
-dependencies {
-    compile project(':api')
-    compile project(':loader')
-    // TODO Move compiled tracker to trackers/galaxy-harvester.jar
-    compile project(':tracker-gh')
-    compile 'de.saxsys:mvvmfx:1.6.0'
-    compile 'de.saxsys:mvvmfx-easydi:1.6.0'
-    compile 'org.controlsfx:controlsfx:8.40.13'
-    compile 'javax.persistence:persistence-api:1.0.2'
-    compile 'com.vladsch.flexmark:flexmark:0.22.22'
-    compile 'org.mongodb:mongodb-driver:3.5.0'
-    compile 'org.apache.logging.log4j:log4j-api:2.8.2'
-    compile 'org.apache.logging.log4j:log4j-core:2.8.2'
-    compile 'org.apache.logging.log4j:log4j-slf4j-impl:2.8.2'
-}
-
-jfx {
-    // minimal requirement for jfxJar-task
-    jfxMainAppJarName = 'harvesterdroid.jar'
-    mainClass = 'io.github.waverunner.harvesterdroid.Launcher'
-    libFolderName = 'lib'
-
-    // gradle jfxJar
-    preLoader = 'io.github.waverunner.harvesterdroid.LauncherPreloader' // String
-
-    // gradle jfxNative
-    vendor = 'Waverunner'
-    bundleArguments = [
-            runtime: null
-    ]
-}
-build.finalizedBy('jfxJar')

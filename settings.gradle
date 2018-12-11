@@ -11,5 +11,6 @@
 include 'api'
 include 'loader'
 include 'tracker-gh'
+include 'application'
 
 rootProject.name = 'harvesterdroid'
