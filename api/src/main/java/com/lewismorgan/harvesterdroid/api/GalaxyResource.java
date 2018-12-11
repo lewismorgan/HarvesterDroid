@@ -1,7 +1,7 @@
-package io.github.waverunner.harvesterdroid.api;
+package com.lewismorgan.harvesterdroid.api;
 
-import io.github.waverunner.harvesterdroid.api.resource.Attributes;
-import io.github.waverunner.harvesterdroid.api.resource.ResourceType;
+import com.lewismorgan.harvesterdroid.api.resource.ResourceType;
+import com.lewismorgan.harvesterdroid.api.resource.Attributes;
 
 import java.util.ArrayList;
 import java.util.Date;

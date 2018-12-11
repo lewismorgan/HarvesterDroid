@@ -18,8 +18,8 @@
 
 package io.github.waverunner.harvesterdroid.trackers.galaxyharvester.xml;
 
-import io.github.waverunner.harvesterdroid.api.GalaxyResource;
-import io.github.waverunner.harvesterdroid.api.xml.BaseXml;
+import com.lewismorgan.harvesterdroid.api.GalaxyResource;
+import com.lewismorgan.harvesterdroid.api.xml.BaseXml;
 
 import javax.xml.parsers.DocumentBuilder;
 

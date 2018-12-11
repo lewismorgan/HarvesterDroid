@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package io.github.waverunner.harvesterdroid.api.xml;
+package com.lewismorgan.harvesterdroid.api.xml;
 
 import java.io.InputStream;
 import java.io.OutputStream;

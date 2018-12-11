@@ -1,4 +1,4 @@
-package io.github.waverunner.harvesterdroid.api;
+package com.lewismorgan.harvesterdroid.api;
 
 import static org.junit.Assert.assertTrue;
 

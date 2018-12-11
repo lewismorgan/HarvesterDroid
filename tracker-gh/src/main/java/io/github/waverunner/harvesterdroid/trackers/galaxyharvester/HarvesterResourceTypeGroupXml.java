@@ -18,7 +18,7 @@
 
 package io.github.waverunner.harvesterdroid.trackers.galaxyharvester;
 
-import io.github.waverunner.harvesterdroid.api.xml.BaseXml;
+import com.lewismorgan.harvesterdroid.api.xml.BaseXml;
 
 import java.io.IOException;
 import java.util.ArrayList;
