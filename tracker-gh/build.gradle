@@ -2,5 +2,5 @@ dependencies {
     compile project(':api')
 }
 jar {
-    appendix = "ghtracker"
+    appendix = "tracker-gh"
 }
