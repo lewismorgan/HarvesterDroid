@@ -1,7 +1,6 @@
 plugins {
-  // Apply the Kotlin JVM plugin to add support for Kotlin on the JVM
   base
-  kotlin("jvm") version "1.3.11" apply false
+  kotlin("jvm") version "1.3.11"
   java
   idea
   checkstyle
@@ -12,13 +11,19 @@ allprojects {
   version = "2.0.0-SNAPSHOT"
 
   apply(plugin = "java")
+  apply(plugin = "org.jetbrains.kotlin.jvm")
 
   repositories {
     jcenter()
   }
 
-  tasks.withType<Checkstyle> {
-    configFile = File(rootDir, "checkstyle.xml")
+  // Dependencies used across all projects
+  dependencies {
+    compile(kotlin("stdlib-jdk8"))
+    compile("org.slf4j:slf4j-api:1.7.25")
+
+    // Use JUnit test framework
+    testCompile("org.jetbrains.kotlin:kotlin-test-junit")
   }
 
   java.sourceCompatibility = JavaVersion.VERSION_1_8
@@ -27,6 +32,10 @@ allprojects {
   tasks.withType<Jar> {
     baseName = "harvesterdroid"
     appendix = project.name
+  }
+
+  tasks.withType<Checkstyle> {
+    configFile = File(rootDir, "checkstyle.xml")
   }
 }
 
