@@ -6,6 +6,7 @@
 .idea/**/workspace.xml
 .idea/**/tasks.xml
 .idea/**/usage.statistics.xml
+.idea/**/kotlinc.xml
 .idea/**/dictionaries
 .idea/**/shelf
 .idea/markdown-navigator.xml
@@ -62,4 +63,3 @@ hs_err_pid*
 !gradle-wrapper.jar
 
 .DS_Store
-
