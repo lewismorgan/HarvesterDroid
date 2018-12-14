@@ -19,7 +19,7 @@
 package com.lewisjmorgan.harvesterdroid.ui.dialog.schematic;
 
 import com.lewisjmorgan.harvesterdroid.Launcher;
-import com.lewisjmorgan.harvesterdroid.api.resource.Attributes;
+import com.lewisjmorgan.harvesterdroid.resource.Attributes;
 import com.lewisjmorgan.harvesterdroid.data.schematics.Schematic;
 import com.lewisjmorgan.harvesterdroid.ui.IntegerTextField;
 import com.lewisjmorgan.harvesterdroid.ui.dialog.AddResourceTypeDialog;

@@ -18,16 +18,14 @@
 
 package com.lewisjmorgan.harvesterdroid.trackers.galaxyharvester;
 
-import com.lewisjmorgan.harvesterdroid.api.Downloader;
-import com.lewisjmorgan.harvesterdroid.api.GalaxyResource;
-import com.lewisjmorgan.harvesterdroid.api.resource.ResourceType;
+import com.lewisjmorgan.harvesterdroid.Downloader;
+import com.lewisjmorgan.harvesterdroid.GalaxyResource;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 import java.util.Map;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;

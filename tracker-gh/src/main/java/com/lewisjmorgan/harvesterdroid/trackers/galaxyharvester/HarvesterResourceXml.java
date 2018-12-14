@@ -18,8 +18,8 @@
 
 package com.lewisjmorgan.harvesterdroid.trackers.galaxyharvester;
 
-import com.lewisjmorgan.harvesterdroid.api.GalaxyResource;
-import com.lewisjmorgan.harvesterdroid.api.resource.Attributes;
+import com.lewisjmorgan.harvesterdroid.GalaxyResource;
+import com.lewisjmorgan.harvesterdroid.resource.Attributes;
 import com.lewisjmorgan.harvesterdroid.trackers.galaxyharvester.xml.ResourceXml;
 import java.io.IOException;
 import java.text.DateFormat;

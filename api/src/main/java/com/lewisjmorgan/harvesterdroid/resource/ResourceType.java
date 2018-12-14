@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.lewisjmorgan.harvesterdroid.api.resource;
+package com.lewisjmorgan.harvesterdroid.resource;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -1,4 +1,4 @@
-package com.lewisjmorgan.harvesterdroid.api;
+package com.lewisjmorgan.harvesterdroid;
 
 import static org.junit.Assert.assertTrue;
 

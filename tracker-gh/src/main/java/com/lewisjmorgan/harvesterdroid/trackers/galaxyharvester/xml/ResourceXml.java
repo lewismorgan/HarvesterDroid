@@ -18,8 +18,8 @@
 
 package com.lewisjmorgan.harvesterdroid.trackers.galaxyharvester.xml;
 
-import com.lewisjmorgan.harvesterdroid.api.GalaxyResource;
-import com.lewisjmorgan.harvesterdroid.api.xml.BaseXml;
+import com.lewisjmorgan.harvesterdroid.GalaxyResource;
+import com.lewisjmorgan.harvesterdroid.xml.BaseXml;
 import javax.xml.parsers.DocumentBuilder;
 import org.w3c.dom.Document;
 

@@ -1,6 +1,6 @@
-package com.lewisjmorgan.harvesterdroid.api
+package com.lewisjmorgan.harvesterdroid
 
-import com.lewisjmorgan.harvesterdroid.api.resource.ResourceType
+import com.lewisjmorgan.harvesterdroid.resource.ResourceType
 import org.slf4j.LoggerFactory
 import java.io.File
 import java.io.FileInputStream

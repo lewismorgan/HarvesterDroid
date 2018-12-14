@@ -18,7 +18,7 @@
 
 package com.lewisjmorgan.harvesterdroid.app;
 
-import com.lewisjmorgan.harvesterdroid.api.resource.ResourceType;
+import com.lewisjmorgan.harvesterdroid.resource.ResourceType;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileWriter;

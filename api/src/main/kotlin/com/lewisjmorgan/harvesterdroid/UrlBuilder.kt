@@ -1,4 +1,4 @@
-package com.lewisjmorgan.harvesterdroid.api
+package com.lewisjmorgan.harvesterdroid
 
 import java.net.URI
 import java.net.URL

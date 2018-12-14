@@ -23,8 +23,7 @@ import static com.lewisjmorgan.harvesterdroid.app.HarvesterDroidData.JSON_SCHEMA
 import static com.lewisjmorgan.harvesterdroid.app.HarvesterDroidData.ROOT_DIR;
 import static com.lewisjmorgan.harvesterdroid.app.HarvesterDroidData.XML_THEMES;
 
-import com.lewisjmorgan.harvesterdroid.api.Downloader;
-import com.lewisjmorgan.harvesterdroid.api.xml.XmlFactory;
+import com.lewisjmorgan.harvesterdroid.xml.XmlFactory;
 import com.lewisjmorgan.harvesterdroid.app.HarvesterDroid;
 import com.lewisjmorgan.harvesterdroid.app.Watcher;
 import com.lewisjmorgan.harvesterdroid.loader.LauncherPreloader;
