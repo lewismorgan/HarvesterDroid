@@ -31,6 +31,7 @@ import java.util.List;
 import java.util.Map;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import org.jetbrains.annotations.NotNull;
 import org.xml.sax.SAXException;
 
 public final class GalaxyHarvesterDownloader extends Downloader {
@@ -43,7 +44,7 @@ public final class GalaxyHarvesterDownloader extends Downloader {
   }
 
   @Override
-  protected void parseCurrentResources(InputStream currentResourcesStream) throws IOException {
+  protected void parseCurrentResourcesList(@NotNull InputStream currentResourcesStream) throws IOException {
     try {
       if (xmlFactory == null) {
         xmlFactory = DocumentBuilderFactory.newInstance();
@@ -88,12 +89,12 @@ public final class GalaxyHarvesterDownloader extends Downloader {
 
   @Override
   public InputStream getCurrentResourcesStream() throws IOException {
-    return getInputStreamFromUrl("exports/current" + getGalaxy() + ".xml");
+    return getInputStreamFromUrl("exports/current" + this.getGalaxyName() + ".xml");
   }
 
   @Override
   protected InputStream getGalaxyResourceStream(String resource) throws IOException {
-    return getInputStreamFromUrl("getResourceByName.py?name=" + resource + "&galaxy=" + getGalaxy());
+    return getInputStreamFromUrl("getResourceByName.py?name=" + resource + "&galaxy=" + getGalaxyName());
   }
 
   @Override
@@ -121,7 +122,7 @@ public final class GalaxyHarvesterDownloader extends Downloader {
   }
 
   @Override
-  protected void downloadResourceTypes(Map<String, ResourceType> resourceTypeMap, Map<String, List<String>> resourceGroups) throws IOException {
+  protected void downloadResourceTypes() throws IOException {
     try {
       if (xmlFactory == null) {
         xmlFactory = DocumentBuilderFactory.newInstance();
@@ -133,10 +134,10 @@ public final class GalaxyHarvesterDownloader extends Downloader {
       resourceGroupXml.load(getListTypeStream("resource_group"));
       resourceTypeGroupXml.load(getListTypeStream("resource_type_group"));
 
-      resourceTypeMap.putAll(resourceGroupXml.getResourceTypeMap());
-      resourceTypeMap.putAll(resourceTypeXml.getResourceTypeMap());
+      getResourceTypeMap().putAll(resourceGroupXml.getResourceTypeMap());
+      getResourceTypeMap().putAll(resourceTypeXml.getResourceTypeMap());
+      getResourceGroups().putAll(resourceTypeGroupXml.getTypeGroupMap());
 
-      resourceGroups.putAll(resourceTypeGroupXml.getTypeGroupMap());
     } catch (ParserConfigurationException | SAXException e) {
       e.printStackTrace();
     }

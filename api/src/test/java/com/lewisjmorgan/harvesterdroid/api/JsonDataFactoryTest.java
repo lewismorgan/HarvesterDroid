@@ -15,20 +15,20 @@ import org.junit.Test;
 /**
  * Created by lewis on 8/11/17
  */
-public class DataFactoryTest {
+public class JsonDataFactoryTest {
 
-  private DataFactory dataFactory;
+  private JsonDataFactory dataFactory;
 
   @Before
   public void setup() {
-    dataFactory = new DataFactory();
+    dataFactory = new JsonDataFactory();
   }
 
   @Test
   public void save() throws Exception {
     Collection<GalaxyResource> resources = createResources(1);
 
-    DataFactory.save(new FileOutputStream("data"), resources);
+    dataFactory.save(new FileOutputStream("data"), resources);
 
     assertTrue(Files.exists(Paths.get("data")));
 
@@ -41,9 +41,9 @@ public class DataFactoryTest {
 
     Collection<GalaxyResource> galaxyResources = createResources(size);
     ByteArrayOutputStream baos = new ByteArrayOutputStream();
-    DataFactory.save(baos, galaxyResources);
+    dataFactory.save(baos, galaxyResources);
 
-    Collection<GalaxyResource> loaded = DataFactory.openBinaryCollection(baos.toByteArray(),
+    Collection<GalaxyResource> loaded = dataFactory.openBinaryCollection(baos.toByteArray(),
         new TypeReference<Collection<GalaxyResource>>() {
         });
 

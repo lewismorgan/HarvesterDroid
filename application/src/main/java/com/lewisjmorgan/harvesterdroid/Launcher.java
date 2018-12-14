@@ -86,12 +86,12 @@ public class Launcher extends MvvmfxEasyDIApplication {
 
   private static void save() {
     try (FileOutputStream fileOutputStream = new FileOutputStream(JSON_INVENTORY)) {
-      app.saveInventory(fileOutputStream);
+      app.saveAsJson(fileOutputStream);
     } catch (IOException e) {
       logger.error("Failed saving inventory", e);
     }
     try (FileOutputStream fileOutputStream = new FileOutputStream(new File(JSON_SCHEMATICS))) {
-      app.saveSchematics(fileOutputStream);
+      app.saveAsJson(fileOutputStream);
     } catch (IOException e) {
       logger.error("Failed saving schematics", e);
     }

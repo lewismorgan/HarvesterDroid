@@ -31,7 +31,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 /**
  * Created by Waverunner on 3/23/2017.
  */
-@Deprecated
+//@Deprecated
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name = "resource_type")
 @Entity

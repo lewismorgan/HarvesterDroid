@@ -24,7 +24,7 @@ import static com.lewisjmorgan.harvesterdroid.app.HarvesterDroidData.JSON_SCHEMA
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lewisjmorgan.harvesterdroid.DroidProperties;
-import com.lewisjmorgan.harvesterdroid.api.DataFactory;
+import com.lewisjmorgan.harvesterdroid.api.JsonDataFactory;
 import com.lewisjmorgan.harvesterdroid.api.GalaxyResource;
 import com.lewisjmorgan.harvesterdroid.app.HarvesterDroid;
 import com.lewisjmorgan.harvesterdroid.data.schematics.Schematic;
@@ -125,12 +125,12 @@ public class MainViewModel implements ViewModel {
       @Override
       protected void action() throws Exception {
         try (FileOutputStream fileOutputStream = new FileOutputStream(JSON_INVENTORY)) {
-          harvesterDroid.saveInventory(fileOutputStream);
+          harvesterDroid.saveAsJson(fileOutputStream);
         } catch (IOException e) {
           logger.error("Failed saving inventory", e);
         }
         try (FileOutputStream fileOutputStream = new FileOutputStream(new File(JSON_SCHEMATICS))) {
-          harvesterDroid.saveSchematics(fileOutputStream);
+          harvesterDroid.saveAsJson(fileOutputStream);
         } catch (IOException e) {
           logger.error("Failed saving schematics", e);
         }
@@ -183,7 +183,8 @@ public class MainViewModel implements ViewModel {
     for (File file : schematicsFiles) {
       try {
 
-        ObjectMapper objectMapper = DataFactory.createJsonObjectMapper();
+        JsonDataFactory dataFactory = new JsonDataFactory();
+        ObjectMapper objectMapper = dataFactory.createJsonObjectMapper();
         Set<Schematic> saved = objectMapper.readValue(new FileInputStream(file),
             new TypeReference<Set<Schematic>>() {
             }); // Prevent type erasing
