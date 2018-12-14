@@ -20,12 +20,12 @@ package com.lewisjmorgan.harvesterdroid.trackers.galaxyharvester;
 
 import com.lewisjmorgan.harvesterdroid.Downloader;
 import com.lewisjmorgan.harvesterdroid.GalaxyResource;
+import com.lewisjmorgan.harvesterdroid.resource.ResourceType;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -37,23 +37,24 @@ public final class GalaxyHarvesterDownloader extends Downloader {
   private DocumentBuilderFactory xmlFactory = DocumentBuilderFactory.newInstance();
   private HarvesterCurrentResourcesXml currentResourcesXml;
 
-  public GalaxyHarvesterDownloader(String root, String galaxy) {
-    super(root, "galaxyharvester", "https://galaxyharvester.net/", galaxy);
+  public GalaxyHarvesterDownloader() {
+    super("https://galaxyharvester.net/", new File("galaxyharvester"));
   }
 
+  @NotNull
   @Override
-  protected void parseCurrentResourcesList(@NotNull InputStream currentResourcesStream) throws IOException {
+  protected Map<String, GalaxyResource> parseCurrentResourcesList(@NotNull InputStream currentResourcesStream) throws IOException {
     try {
       if (xmlFactory == null) {
         xmlFactory = DocumentBuilderFactory.newInstance();
       }
       currentResourcesXml = new HarvesterCurrentResourcesXml(xmlFactory.newDocumentBuilder());
       currentResourcesXml.load(currentResourcesStream);
-
-      populateCurrentResourcesMap(currentResourcesXml.getGalaxyResources());
+      return currentResourcesXml.getGalaxyResources();
     } catch (ParserConfigurationException | SAXException e) {
       e.printStackTrace();
     }
+    return new HashMap<>();
   }
 
   @Override
@@ -86,13 +87,13 @@ public final class GalaxyHarvesterDownloader extends Downloader {
   }
 
   @Override
-  public InputStream getCurrentResourcesStream() throws IOException {
-    return getInputStreamFromUrl("exports/current" + this.getGalaxyName() + ".xml");
+  public InputStream createCurrentResourcesStream(@NotNull String galaxy) throws IOException {
+    return createInputStreamFromUrl("exports/current" + galaxy + ".xml");
   }
 
   @Override
-  protected InputStream getGalaxyResourceStream(String resource) throws IOException {
-    return getInputStreamFromUrl("getResourceByName.py?name=" + resource + "&galaxy=" + getGalaxyName());
+  protected InputStream createGalaxyResourceStream(@NotNull String galaxy, @NotNull String resource) throws IOException {
+    return createInputStreamFromUrl("getResourceByName.py?name=" + resource + "&galaxy=" + galaxy);
   }
 
   @Override
@@ -101,26 +102,27 @@ public final class GalaxyHarvesterDownloader extends Downloader {
   }
 
   private InputStream getListTypeStream(String listType) throws IOException {
-    return getInputStreamFromUrl("getList.py?listType=" + listType);
+    return createInputStreamFromUrl("getList.py?listType=" + listType);
   }
+//
+//  @Override
+//  public Date getCurrentResourcesTimestamp() {
+//    if (currentResourcesXml == null || currentResourcesXml.getTimestamp() == null
+//        || currentResourcesXml.getTimestamp().isEmpty()) {
+//      return null;
+//    }
+//    DateFormat dateFormat = new SimpleDateFormat("E, dd MMMM yyyy HH:mm:ss Z");
+//    try {
+//      return dateFormat.parse(currentResourcesXml.getTimestamp());
+//    } catch (ParseException e) {
+//      e.printStackTrace();
+//    }
+//    return null;
+//  }
 
   @Override
-  public Date getCurrentResourcesTimestamp() {
-    if (currentResourcesXml == null || currentResourcesXml.getTimestamp() == null
-        || currentResourcesXml.getTimestamp().isEmpty()) {
-      return null;
-    }
-    DateFormat dateFormat = new SimpleDateFormat("E, dd MMMM yyyy HH:mm:ss Z");
-    try {
-      return dateFormat.parse(currentResourcesXml.getTimestamp());
-    } catch (ParseException e) {
-      e.printStackTrace();
-    }
-    return null;
-  }
-
-  @Override
-  protected void downloadResourceTypes() throws IOException {
+  protected void downloadResourceTrees(@NotNull HashMap<String, ResourceType> typeMap, @NotNull HashMap<String, List<String>> groupMap)
+      throws IOException {
     try {
       if (xmlFactory == null) {
         xmlFactory = DocumentBuilderFactory.newInstance();
@@ -132,9 +134,9 @@ public final class GalaxyHarvesterDownloader extends Downloader {
       resourceGroupXml.load(getListTypeStream("resource_group"));
       resourceTypeGroupXml.load(getListTypeStream("resource_type_group"));
 
-      getResourceTypeMap().putAll(resourceGroupXml.getResourceTypeMap());
-      getResourceTypeMap().putAll(resourceTypeXml.getResourceTypeMap());
-      getResourceGroups().putAll(resourceTypeGroupXml.getTypeGroupMap());
+      typeMap.putAll(resourceGroupXml.getResourceTypeMap());
+      typeMap.putAll(resourceTypeXml.getResourceTypeMap());
+      groupMap.putAll(resourceTypeGroupXml.getTypeGroupMap());
 
     } catch (ParserConfigurationException | SAXException e) {
       e.printStackTrace();
