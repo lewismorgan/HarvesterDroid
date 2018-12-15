@@ -32,114 +32,114 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.jetbrains.annotations.NotNull;
 import org.xml.sax.SAXException;
 
-public final class GalaxyHarvesterDownloader extends Downloader {
-
-  private DocumentBuilderFactory xmlFactory = DocumentBuilderFactory.newInstance();
-  private HarvesterCurrentResourcesXml currentResourcesXml;
-
-  public GalaxyHarvesterDownloader() {
-    super("https://galaxyharvester.net/", new File("galaxyharvester"));
-  }
-
-  @NotNull
-  @Override
-  protected Map<String, GalaxyResource> parseCurrentResourcesList(@NotNull InputStream currentResourcesStream) throws IOException {
-    try {
-      if (xmlFactory == null) {
-        xmlFactory = DocumentBuilderFactory.newInstance();
-      }
-      currentResourcesXml = new HarvesterCurrentResourcesXml(xmlFactory.newDocumentBuilder());
-      currentResourcesXml.load(currentResourcesStream);
-      return currentResourcesXml.getGalaxyResources();
-    } catch (ParserConfigurationException | SAXException e) {
-      e.printStackTrace();
-    }
-    return new HashMap<>();
-  }
-
-  @Override
-  protected Map<String, String> parseGalaxyList(InputStream galaxyListStream) {
-    if (xmlFactory == null) {
-      xmlFactory = DocumentBuilderFactory.newInstance();
-    }
-
-    try {
-      HarvesterGalaxyListXml galaxyListXml = new HarvesterGalaxyListXml(xmlFactory.newDocumentBuilder());
-      galaxyListXml.load(galaxyListStream);
-
-      return galaxyListXml.getGalaxyList();
-    } catch (ParserConfigurationException | SAXException | IOException e) {
-      e.printStackTrace();
-    }
-    return null;
-  }
-
-  @Override
-  protected GalaxyResource parseGalaxyResource(InputStream galaxyResourceStream) {
-    try {
-      HarvesterResourceXml resourceXml = new HarvesterResourceXml(xmlFactory.newDocumentBuilder());
-      resourceXml.load(galaxyResourceStream);
-      return resourceXml.getGalaxyResource();
-    } catch (ParserConfigurationException | SAXException | IOException e1) {
-      e1.printStackTrace();
-    }
-    return null;
-  }
-
-  @Override
-  public InputStream createCurrentResourcesStream(@NotNull String galaxy) throws IOException {
-    return createInputStreamFromUrl("exports/current" + galaxy + ".xml");
-  }
-
-  @Override
-  protected InputStream createGalaxyResourceStream(@NotNull String galaxy, @NotNull String resource) throws IOException {
-    return createInputStreamFromUrl("getResourceByName.py?name=" + resource + "&galaxy=" + galaxy);
-  }
-
-  @Override
-  protected InputStream createGalaxyListStream() throws IOException {
-    return getListTypeStream("galaxy");
-  }
-
-  private InputStream getListTypeStream(String listType) throws IOException {
-    return createInputStreamFromUrl("getList.py?listType=" + listType);
-  }
+@Deprecated
+class OldGalaxyHarvesterDownloader {
+//
+//  private DocumentBuilderFactory xmlFactory = DocumentBuilderFactory.newInstance();
+//  private HarvesterCurrentResourcesXml currentResourcesXml;
+//
+//  public GalaxyHarvesterDownloader() {
+//    super("https://galaxyharvester.net/", new File("galaxyharvester"));
+//  }
+//
+//  @NotNull
+//  @Override
+//  protected Map<String, GalaxyResource> parseCurrentResourcesList(@NotNull InputStream currentResourcesStream) throws IOException {
+//    try {
+//      if (xmlFactory == null) {
+//        xmlFactory = DocumentBuilderFactory.newInstance();
+//      }
+//      currentResourcesXml = new HarvesterCurrentResourcesXml(xmlFactory.newDocumentBuilder());
+//      currentResourcesXml.load(currentResourcesStream);
+//      return currentResourcesXml.getGalaxyResources();
+//    } catch (ParserConfigurationException | SAXException e) {
+//      e.printStackTrace();
+//    }
+//    return new HashMap<>();
+//  }
 //
 //  @Override
-//  public Date getCurrentResourcesTimestamp() {
-//    if (currentResourcesXml == null || currentResourcesXml.getTimestamp() == null
-//        || currentResourcesXml.getTimestamp().isEmpty()) {
-//      return null;
+//  protected Map<String, String> parseGalaxyList(InputStream galaxyListStream) {
+//    if (xmlFactory == null) {
+//      xmlFactory = DocumentBuilderFactory.newInstance();
 //    }
-//    DateFormat dateFormat = new SimpleDateFormat("E, dd MMMM yyyy HH:mm:ss Z");
+//
 //    try {
-//      return dateFormat.parse(currentResourcesXml.getTimestamp());
-//    } catch (ParseException e) {
+//      HarvesterGalaxyListXml galaxyListXml = new HarvesterGalaxyListXml(xmlFactory.newDocumentBuilder());
+//      galaxyListXml.load(galaxyListStream);
+//
+//      return galaxyListXml.getGalaxyList();
+//    } catch (ParserConfigurationException | SAXException | IOException e) {
 //      e.printStackTrace();
 //    }
 //    return null;
 //  }
-
-  @Override
-  protected void downloadResourceTrees(@NotNull HashMap<String, ResourceType> typeMap, @NotNull HashMap<String, List<String>> groupMap)
-      throws IOException {
-    try {
-      if (xmlFactory == null) {
-        xmlFactory = DocumentBuilderFactory.newInstance();
-      }
-      HarvesterResourceTypeXml resourceTypeXml = new HarvesterResourceTypeXml(xmlFactory.newDocumentBuilder());
-      HarvesterResourceGroupXml resourceGroupXml = new HarvesterResourceGroupXml(xmlFactory.newDocumentBuilder());
-      HarvesterResourceTypeGroupXml resourceTypeGroupXml = new HarvesterResourceTypeGroupXml(xmlFactory.newDocumentBuilder());
-      resourceTypeXml.load(getListTypeStream("resource_type"));
-      resourceGroupXml.load(getListTypeStream("resource_group"));
-      resourceTypeGroupXml.load(getListTypeStream("resource_type_group"));
-
-      typeMap.putAll(resourceGroupXml.getResourceTypeMap());
-      typeMap.putAll(resourceTypeXml.getResourceTypeMap());
-      groupMap.putAll(resourceTypeGroupXml.getTypeGroupMap());
-
-    } catch (ParserConfigurationException | SAXException e) {
-      e.printStackTrace();
-    }
-  }
+//
+//  @Override
+//  protected GalaxyResource parseGalaxyResource(InputStream galaxyResourceStream) {
+//    try {
+//      HarvesterResourceXml resourceXml = new HarvesterResourceXml(xmlFactory.newDocumentBuilder());
+//      resourceXml.load(galaxyResourceStream);
+//      return resourceXml.getGalaxyResource();
+//    } catch (ParserConfigurationException | SAXException | IOException e1) {
+//      e1.printStackTrace();
+//    }
+//    return null;
+//  }
+//
+//  @Override
+//  public InputStream createCurrentResourcesStream(@NotNull String galaxy) throws IOException {
+//    return createInputStreamFromUrl("exports/current" + galaxy + ".xml");
+//  }
+//
+//  @Override
+//  protected InputStream createGalaxyResourceStream(@NotNull String galaxy, @NotNull String resource) throws IOException {
+//    return createInputStreamFromUrl("getResourceByName.py?name=" + resource + "&galaxy=" + galaxy);
+//  }
+//
+//  @Override
+//  protected InputStream createGalaxyListStream() throws IOException {
+//    return getListTypeStream("galaxy");
+//  }
+//
+//  private InputStream getListTypeStream(String listType) throws IOException {
+//    return createInputStreamFromBaseUrl("getList.py?listType=" + listType);
+//  }
+////
+////  @Override
+////  public Date getCurrentResourcesTimestamp() {
+////    if (currentResourcesXml == null || currentResourcesXml.getTimestamp() == null
+////        || currentResourcesXml.getTimestamp().isEmpty()) {
+////      return null;
+////    }
+////    DateFormat dateFormat = new SimpleDateFormat("E, dd MMMM yyyy HH:mm:ss Z");
+////    try {
+////      return dateFormat.parse(currentResourcesXml.getTimestamp());
+////    } catch (ParseException e) {
+////      e.printStackTrace();
+////    }
+////    return null;
+////  }
+//
+//  protected void downloadResourceTrees(@NotNull HashMap<String, ResourceType> typeMap, @NotNull HashMap<String, List<String>> groupMap)
+//      throws IOException {
+//    try {
+//      if (xmlFactory == null) {
+//        xmlFactory = DocumentBuilderFactory.newInstance();
+//      }
+//      HarvesterResourceTypeXml resourceTypeXml = new HarvesterResourceTypeXml(xmlFactory.newDocumentBuilder());
+//      HarvesterResourceGroupXml resourceGroupXml = new HarvesterResourceGroupXml(xmlFactory.newDocumentBuilder());
+//      HarvesterResourceTypeGroupXml resourceTypeGroupXml = new HarvesterResourceTypeGroupXml(xmlFactory.newDocumentBuilder());
+//      resourceTypeXml.load(getListTypeStream("resource_type"));
+//      resourceGroupXml.load(getListTypeStream("resource_group"));
+//      resourceTypeGroupXml.load(getListTypeStream("resource_type_group"));
+//
+//      typeMap.putAll(resourceGroupXml.getResourceTypeMap());
+//      typeMap.putAll(resourceTypeXml.getResourceTypeMap());
+//      groupMap.putAll(resourceTypeGroupXml.getTypeGroupMap());
+//
+//    } catch (ParserConfigurationException | SAXException e) {
+//      e.printStackTrace();
+//    }
+//  }
 }

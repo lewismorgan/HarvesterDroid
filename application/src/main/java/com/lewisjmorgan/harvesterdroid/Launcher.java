@@ -23,15 +23,14 @@ import static com.lewisjmorgan.harvesterdroid.app.HarvesterDroidData.JSON_SCHEMA
 import static com.lewisjmorgan.harvesterdroid.app.HarvesterDroidData.ROOT_DIR;
 import static com.lewisjmorgan.harvesterdroid.app.HarvesterDroidData.XML_THEMES;
 
-import com.lewisjmorgan.harvesterdroid.xml.XmlFactory;
 import com.lewisjmorgan.harvesterdroid.app.HarvesterDroid;
 import com.lewisjmorgan.harvesterdroid.app.Watcher;
 import com.lewisjmorgan.harvesterdroid.loader.LauncherPreloader;
 import com.lewisjmorgan.harvesterdroid.loader.PreloaderStatusNotification;
-import com.lewisjmorgan.harvesterdroid.trackers.galaxyharvester.GalaxyHarvesterDownloader;
 import com.lewisjmorgan.harvesterdroid.ui.dialog.ExceptionDialog;
 import com.lewisjmorgan.harvesterdroid.ui.main.MainView;
 import com.lewisjmorgan.harvesterdroid.xml.ThemesXml;
+import com.lewisjmorgan.harvesterdroid.xml.XmlFactory;
 import com.sun.javafx.application.LauncherImpl;
 import de.saxsys.mvvmfx.FluentViewLoader;
 import de.saxsys.mvvmfx.easydi.MvvmfxEasyDIApplication;
@@ -168,8 +167,8 @@ public class Launcher extends MvvmfxEasyDIApplication {
     // TODO "Blank Slate" state where no tracker is loaded, will help abstract away GalaxyHarvester dependencies
     // TODO Use separate threads for each loading task
 
-    Downloader downloader = new GalaxyHarvesterDownloader(ROOT_DIR, DroidProperties.getString(DroidProperties.GALAXY));
-    app.setDownloader(downloader);
+    //Downloader downloader = new GalaxyHarvesterDownloader(ROOT_DIR, DroidProperties.getString(DroidProperties.GALAXY));
+    //app.setDownloader(downloader);
     app.setLastUpdateTimestamp(Long.parseLong(DroidProperties.getString(DroidProperties.LAST_UPDATE)));
     updateLoadingProgress("Retrieving resource data...", -1);
     app.refreshResources(true);

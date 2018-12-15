@@ -1,0 +1,5 @@
+package com.lewisjmorgan.harvesterdroid.provider.galaxyharvester
+
+import com.lewisjmorgan.harvesterdroid.AbstractDataProvider
+
+class GalaxyHarvesterDataProvider: AbstractDataProvider<GalaxyHarvesterDownloader>("GalaxyHarvester",GalaxyHarvesterDownloader())

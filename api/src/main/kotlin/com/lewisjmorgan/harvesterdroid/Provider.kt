@@ -3,39 +3,54 @@ package com.lewisjmorgan.harvesterdroid
 import com.lewisjmorgan.harvesterdroid.resource.ResourceType
 import java.util.HashMap
 
-abstract class Provider<T: Downloader>(protected val downloader: T) {
+abstract class AbstractDataProvider<T: Downloader>(val name: String, protected val downloader: T): IGalaxyProvider, IGalaxyResourceProvider {
   // These are populated through the provider
   val resourceGroups = HashMap<String, List<String>>()
-
-  // These are populated via the downloader
   val resourceTypes = HashMap<String, ResourceType>()
-  val galacticResources = HashMap<String, List<GalaxyResource>>()
-  val galaxies = HashMap<String, String>() // Key: Galaxy ID, Value: Name
 
-  fun updateGalaxies() {
-    val galaxyList = downloader.downloadGalaxyList()
-    galaxies.clear()
-    galaxies.putAll(galaxyList)
+  private val dataStore = ProviderDataStore()
+
+//  val galacticResources = HashMap<String, List<GalaxyResource>>()
+//  val galaxies = HashMap<String, String>() // Key: Galaxy ID, Value: Name
+
+  override fun provideGalaxies(): List<Galaxy> {
+    // TODO: Return an Rx list for proper data handling
+    val galaxies = dataStore.provideGalaxies()
+    return if (galaxies.isEmpty()) {
+      // Try to get the cached galaxies from the data store
+      val storedGalaxies = dataStore.provideGalaxies()
+      if (storedGalaxies.isEmpty()) {
+        val galaxyList = downloader.downloadGalaxyList()
+        dataStore.replaceGalaxiesWith(galaxyList)
+        galaxyList
+      } else {
+        storedGalaxies
+      }
+    } else {
+      galaxies
+    }
   }
 
-  /**
-   * Updates the resources
-   * @param galaxy String
-   */
-  fun downloadLatestResources(galaxy: String) {
-    val resources = downloader.downloadCurrentResources(galaxy)
-    resources.forEach {
-      populateGalaxyResourceType(it)
-    }
-
-    if(galacticResources.containsKey(galaxy)) {
-      // Remove all resources from the loaded galaxy resources for the provider that exists in current resources as there could be new data
-      val galaxyResources = galacticResources[galaxy]!!
-      val names = resources.map(GalaxyResource::name)
-      val removedDuplicates = galaxyResources.dropWhile { names.contains(it.name) }
-      galacticResources[galaxy] = removedDuplicates.plus(resources)
+  override fun provideCurrentGalaxyResources(galaxy: Galaxy): List<GalaxyResource>  {
+    // TODO: Return an Rx list for proper data handling
+    val storedResources = dataStore.provideCurrentGalaxyResources(galaxy)
+    return if (storedResources.isEmpty()) {
+      val currentResources = downloader.downloadActiveGalaxyResources(galaxy)
+      dataStore.insertResources(galaxy, currentResources)
+      currentResources
     } else {
-      galacticResources[galaxy] = resources
+      storedResources
+    }
+  }
+
+  override fun provideGalaxyResource(galaxy: Galaxy, name: String): GalaxyResource? {
+    val stored = dataStore.provideGalaxyResource(galaxy, name)
+    return if (stored == null) {
+      val downloaded = downloader.downloadGalaxyResource(galaxy, name)
+      dataStore.insertResources(galaxy, listOf(downloaded))
+      downloaded
+    } else {
+      stored
     }
   }
 
@@ -43,9 +58,8 @@ abstract class Provider<T: Downloader>(protected val downloader: T) {
     return resourceGroups.getOrDefault(group, listOf())
   }
 
-
-  private fun populateGalaxyResourceType(galaxyResource: GalaxyResource) {
-    val type = resourceTypes.getOrDefault(galaxyResource.resourceTypeString, ResourceType())
-    galaxyResource.resourceType = type
-  }
+//  private fun populateGalaxyResourceInfo(galaxyResource: GalaxyResource) {
+//    val type = resourceTypes.getOrDefault(galaxyResource.resourceTypeString, ResourceType())
+//    galaxyResource.resourceType = type
+//  }
 }

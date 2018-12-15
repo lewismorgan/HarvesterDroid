@@ -21,9 +21,10 @@ package com.lewisjmorgan.harvesterdroid.app;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import com.lewisjmorgan.harvesterdroid.JsonDataFactory;
-import com.lewisjmorgan.harvesterdroid.Downloader;
+import com.lewisjmorgan.harvesterdroid.AbstractDataProvider;
+import com.lewisjmorgan.harvesterdroid.Galaxy;
 import com.lewisjmorgan.harvesterdroid.GalaxyResource;
+import com.lewisjmorgan.harvesterdroid.JsonDataFactory;
 import com.lewisjmorgan.harvesterdroid.data.resources.InventoryResource;
 import com.lewisjmorgan.harvesterdroid.data.schematics.Schematic;
 import java.io.ByteArrayInputStream;
@@ -31,8 +32,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -54,7 +53,7 @@ public class HarvesterDroid {
   private final Set<GalaxyResource> resources;
   private final List<Schematic> schematics;
   private final JsonDataFactory dataFactory = new JsonDataFactory();
-  private Downloader downloader;
+  private AbstractDataProvider provider;
   private Map<String, String> galaxies;
   private Map<String, String> themes;
 
@@ -64,8 +63,8 @@ public class HarvesterDroid {
   private String activeGalaxy;
   private String activeTheme;
 
-  public HarvesterDroid(Downloader downloader) {
-    this.downloader = downloader;
+  public HarvesterDroid(AbstractDataProvider provider) {
+    this.provider = provider;
     this.data = new HarvesterDroidData();
     this.inventory = Collections.synchronizedSet(new HashSet<>(0));
     this.resources = Collections.synchronizedSet(new HashSet<>(0));
@@ -130,8 +129,8 @@ public class HarvesterDroid {
   }
 
   public List<GalaxyResource> findGalaxyResourcesById(String id) {
-    List<String> resourceGroups = downloader.getResourceGroups(id);
-    if (resourceGroups != null) {
+    List<String> resourceGroups = provider.getResourceGroups(id);
+    if (!resourceGroups.isEmpty()) {
       // ID that was entered is a group of resources
       List<GalaxyResource> master = new ArrayList<>();
       for (String group : resourceGroups) {
@@ -149,42 +148,43 @@ public class HarvesterDroid {
   }
 
   public void refreshResources(boolean loadLocal) {
-    try {
-      if (downloader != null) {
-        galaxies = downloader.downloadGalaxyList();
-        activeGalaxy = downloader.getGalaxyName();
-
-        if (loadLocal && Files.exists(Paths.get(downloader.getResourcesPath()))) {
-          loadResources(Files.readAllBytes(Paths.get(downloader.getResourcesPath())));
-        }
-
-        downloadNewResources();
-
-        resources.forEach(galaxyResource -> data.populateMinMax(galaxyResource.getResourceType()));
-        logger.debug("Refreshed resources. There are {} resources now loaded", resources.size());
-      }
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
+    // TODO Refactor
+//    try {
+//      if (downloader != null) {
+//        galaxies = downloader.downloadGalaxyList();
+//        activeGalaxy = downloader.getGalaxyName();
+//
+//        if (loadLocal && Files.exists(Paths.get(downloader.getResourcesPath()))) {
+//          loadResources(Files.readAllBytes(Paths.get(downloader.getResourcesPath())));
+//        }
+//
+//        downloadNewResources();
+//
+//        resources.forEach(galaxyResource -> data.populateMinMax(galaxyResource.getResourceType()));
+//        logger.debug("Refreshed resources. There are {} resources now loaded", resources.size());
+//      }
+//    } catch (IOException e) {
+//      e.printStackTrace();
+//    }
   }
 
   private void downloadNewResources() throws IOException {
-    downloader.downloadCurrentResources();
-
-    List<GalaxyResource> downloaded = new ArrayList<>(downloader.getCurrentResources());
-
-    List<String> filtered = downloaded.stream()
-        .filter(dlResource -> resources.stream().anyMatch(resource -> resource.getName().equals(dlResource.getName())))
-        .map(GalaxyResource::getName).collect(Collectors.toList());
-
-    resources.removeIf(resource -> filtered.contains(resource.getName()));
-    logger.debug("Removed {} resources from resources as they're still active. Resources size "
-        + "is now {} resources", filtered.size(), resources.size());
-
-    resources.addAll(downloaded);
-
-    logger.debug("Finished downloading {} resources to listing of resources (now {} resources)",
-        downloaded.size(), resources.size());
+//    downloader.downloadCurrentResources();
+//
+//    List<GalaxyResource> downloaded = new ArrayList<>(downloader.getCurrentResources());
+//
+//    List<String> filtered = downloaded.stream()
+//        .filter(dlResource -> resources.stream().anyMatch(resource -> resource.getName().equals(dlResource.getName())))
+//        .map(GalaxyResource::getName).collect(Collectors.toList());
+//
+//    resources.removeIf(resource -> filtered.contains(resource.getName()));
+//    logger.debug("Removed {} resources from resources as they're still active. Resources size "
+//        + "is now {} resources", filtered.size(), resources.size());
+//
+//    resources.addAll(downloaded);
+//
+//    logger.debug("Finished downloading {} resources to listing of resources (now {} resources)",
+//        downloaded.size(), resources.size());
   }
 
   public GalaxyResource getGalaxyResource(String name) {
@@ -206,8 +206,8 @@ public class HarvesterDroid {
     if (existing != null) {
       return existing;
     }
-
-    GalaxyResource galaxyResource = downloader.downloadGalaxyResource(resource);
+    // TODO: Refactor
+    GalaxyResource galaxyResource = provider.provideGalaxyResource(new Galaxy("48", "SWG Legends"), resource);
     if (galaxyResource == null) {
       return null;
     }
@@ -227,6 +227,7 @@ public class HarvesterDroid {
   }
 
   public boolean switchToGalaxy(String galaxy) {
+    // TODO Refactor
     if (this.activeGalaxy.equals(galaxy)) {
       return false;
     }
@@ -238,7 +239,6 @@ public class HarvesterDroid {
     }
 
     activeGalaxy = galaxy;
-    downloader.setGalaxyName(galaxy);
 
     refreshResources(true);
     return true;
@@ -246,12 +246,12 @@ public class HarvesterDroid {
 
   public boolean addInventoryResource(GalaxyResource galaxyResource) {
     for (InventoryResource inventoryResource : inventory) {
-      if (inventoryResource.getGalaxy().equals(downloader.getGalaxyName()) && inventoryResource.getName().equals(galaxyResource.getName())) {
+      if (/*inventoryResource.getGalaxy().equals(provider.getGalaxyName()) && */inventoryResource.getName().equals(galaxyResource.getName())) {
         return false;
       }
     }
 
-    return inventory.add(new InventoryResource(galaxyResource.getName(), getTracker(), downloader.getGalaxyName()));
+    return inventory.add(new InventoryResource(galaxyResource.getName(), getTracker(), "SWG Legends"));
   }
 
   public void removeInventoryResource(GalaxyResource galaxyResource) {
@@ -339,20 +339,16 @@ public class HarvesterDroid {
 
   public Map<String, String> getResourceTypes() {
     Map<String, String> types = new HashMap<>();
-    downloader.getResourceTypeMap().forEach((key, value) -> types.put(key, value.getName()));
+//    downloader.getResourceTypeMap().forEach((key, value) -> types.put(key, value.getName()));
     return types;
   }
 
   public String getSavedResourcesPath() {
-    return downloader.getResourcesPath();
-  }
-
-  public void setDownloader(Downloader downloader) {
-    this.downloader = downloader;
+    return "";
   }
 
   public String getTracker() {
-    return downloader.getIdentifier();
+    return provider.getName();
   }
 
   public String getActiveGalaxy() {
@@ -384,6 +380,6 @@ public class HarvesterDroid {
   }
 
   public long getCurrentUpdateTimestamp() {
-    return downloader.getCurrentResourcesTimestamp().getTime();
+    return 0L;
   }
 }

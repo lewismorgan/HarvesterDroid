@@ -5,19 +5,21 @@ import com.lewisjmorgan.harvesterdroid.resource.ResourceType
 import java.util.*
 
 class GalaxyResource {
-  public var name: String = ""
-  public var container: String = ""
+  var name: String = ""
+  var container: String = ""
 
-  public var spawnDate: Date = Date()
-  public var despawnDate: Date = Date()
+  var spawnDate: Date = Date()
+  var despawnDate: Date = Date()
 
-  public val planets = ArrayList<String>()
-  public val attributes = HashMap<String, Int>(Attributes.size())
+  val planets = ArrayList<String>()
+  val attributes = HashMap<String, Int>(Attributes.size())
 
-  public var resourceType: ResourceType = ResourceType()
+  var resourceType: ResourceType = ResourceType()
 
   @Transient
-  public var resourceTypeString: String = ""
+  var resourceTypeString: String = ""
+
+  val isActive = despawnDate != Date()
 
   init {
     // Initialize all attribute values with -1
