@@ -20,6 +20,9 @@ dependencies {
   compile("org.apache.logging.log4j:log4j-api:2.8.2")
   compile("org.apache.logging.log4j:log4j-core:2.8.2")
   compile("org.apache.logging.log4j:log4j-slf4j-impl:2.8.2")
+
+  // Use JUnit test framework
+  testCompile("org.jetbrains.kotlin:kotlin-test-junit")
 }
 
 application {

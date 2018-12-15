@@ -21,9 +21,6 @@ allprojects {
   dependencies {
     compile(kotlin("stdlib-jdk8"))
     compile("org.slf4j:slf4j-api:1.7.25")
-
-    // Use JUnit test framework
-    testCompile("org.jetbrains.kotlin:kotlin-test-junit")
   }
 
   java.sourceCompatibility = JavaVersion.VERSION_1_8

@@ -14,17 +14,17 @@ abstract class Downloader(baseUrl: String) {
 
   private val baseUri: URI = URL(baseUrl).toURI()
 
-  abstract fun parseActiveGalaxyResourcesStream(activeResourcesStream: InputStream): List<GalaxyResource>
+  protected abstract fun parseActiveGalaxyResourcesStream(activeResourcesStream: InputStream): List<GalaxyResource>
 
-  abstract fun parseGalaxyList(galaxyListStream: InputStream): List<Galaxy>
+  protected abstract fun  parseGalaxyList(galaxyListStream: InputStream): List<Galaxy>
 
-  abstract fun parseGalaxyResource(galaxyResourceStream: InputStream): GalaxyResource
+  protected abstract fun parseGalaxyResource(galaxyResourceStream: InputStream): GalaxyResource
 
-  abstract fun createActiveGalaxyResourcesStream(galaxy: Galaxy): InputStream
+  protected abstract fun createActiveGalaxyResourcesStream(galaxy: Galaxy): InputStream
 
-  abstract fun createGalaxyListResourceStream(): InputStream
+  protected abstract fun createGalaxyListResourceStream(): InputStream
 
-  abstract fun createGalaxyResourceStream(galaxy: Galaxy, resource: String): InputStream
+  protected abstract fun createGalaxyResourceStream(galaxy: Galaxy, resource: String): InputStream
 
   fun downloadActiveGalaxyResources(galaxy: Galaxy): List<GalaxyResource> {
     return parseActiveGalaxyResourcesStream(createActiveGalaxyResourcesStream(galaxy))
@@ -39,7 +39,9 @@ abstract class Downloader(baseUrl: String) {
   }
 
   @Throws(IOException::class)
-  fun createInputStreamFromBaseUrl(resolve: String): InputStream {
-    return baseUri.resolve(resolve).toURL().openStream()
+  protected fun createInputStreamFromBaseUrl(resolve: String): InputStream {
+    return baseUri.resolve(resolve)
+      .toURL()
+      .openStream()
   }
 }

@@ -34,93 +34,80 @@ import org.xml.sax.SAXException;
 
 @Deprecated
 class OldGalaxyHarvesterDownloader {
-//
-//  private DocumentBuilderFactory xmlFactory = DocumentBuilderFactory.newInstance();
-//  private HarvesterCurrentResourcesXml currentResourcesXml;
-//
+
+  private DocumentBuilderFactory xmlFactory = DocumentBuilderFactory.newInstance();
+  private HarvesterCurrentResourcesXml currentResourcesXml;
+
 //  public GalaxyHarvesterDownloader() {
 //    super("https://galaxyharvester.net/", new File("galaxyharvester"));
 //  }
-//
-//  @NotNull
-//  @Override
-//  protected Map<String, GalaxyResource> parseCurrentResourcesList(@NotNull InputStream currentResourcesStream) throws IOException {
-//    try {
-//      if (xmlFactory == null) {
-//        xmlFactory = DocumentBuilderFactory.newInstance();
-//      }
-//      currentResourcesXml = new HarvesterCurrentResourcesXml(xmlFactory.newDocumentBuilder());
-//      currentResourcesXml.load(currentResourcesStream);
-//      return currentResourcesXml.getGalaxyResources();
-//    } catch (ParserConfigurationException | SAXException e) {
-//      e.printStackTrace();
-//    }
-//    return new HashMap<>();
-//  }
-//
-//  @Override
-//  protected Map<String, String> parseGalaxyList(InputStream galaxyListStream) {
-//    if (xmlFactory == null) {
-//      xmlFactory = DocumentBuilderFactory.newInstance();
-//    }
-//
-//    try {
-//      HarvesterGalaxyListXml galaxyListXml = new HarvesterGalaxyListXml(xmlFactory.newDocumentBuilder());
-//      galaxyListXml.load(galaxyListStream);
-//
-//      return galaxyListXml.getGalaxyList();
-//    } catch (ParserConfigurationException | SAXException | IOException e) {
-//      e.printStackTrace();
-//    }
-//    return null;
-//  }
-//
-//  @Override
-//  protected GalaxyResource parseGalaxyResource(InputStream galaxyResourceStream) {
-//    try {
-//      HarvesterResourceXml resourceXml = new HarvesterResourceXml(xmlFactory.newDocumentBuilder());
-//      resourceXml.load(galaxyResourceStream);
-//      return resourceXml.getGalaxyResource();
-//    } catch (ParserConfigurationException | SAXException | IOException e1) {
-//      e1.printStackTrace();
-//    }
-//    return null;
-//  }
-//
-//  @Override
+
+  @NotNull
+  protected Map<String, GalaxyResource> parseCurrentResourcesList(@NotNull InputStream currentResourcesStream) throws IOException {
+    try {
+      if (xmlFactory == null) {
+        xmlFactory = DocumentBuilderFactory.newInstance();
+      }
+      currentResourcesXml = new HarvesterCurrentResourcesXml(xmlFactory.newDocumentBuilder());
+      currentResourcesXml.load(currentResourcesStream);
+      return currentResourcesXml.getGalaxyResources();
+    } catch (ParserConfigurationException | SAXException e) {
+      e.printStackTrace();
+    }
+    return new HashMap<>();
+  }
+
+  protected Map<String, String> parseGalaxyList(InputStream galaxyListStream) {
+    if (xmlFactory == null) {
+      xmlFactory = DocumentBuilderFactory.newInstance();
+    }
+
+    try {
+      HarvesterGalaxyListXml galaxyListXml = new HarvesterGalaxyListXml(xmlFactory.newDocumentBuilder());
+      galaxyListXml.load(galaxyListStream);
+
+      return galaxyListXml.getGalaxyList();
+    } catch (ParserConfigurationException | SAXException | IOException e) {
+      e.printStackTrace();
+    }
+    return null;
+  }
+
+  protected GalaxyResource parseGalaxyResource(InputStream galaxyResourceStream) {
+    try {
+      HarvesterResourceXml resourceXml = new HarvesterResourceXml(xmlFactory.newDocumentBuilder());
+      resourceXml.load(galaxyResourceStream);
+      return resourceXml.getGalaxyResource();
+    } catch (ParserConfigurationException | SAXException | IOException e1) {
+      e1.printStackTrace();
+    }
+    return null;
+  }
+
 //  public InputStream createCurrentResourcesStream(@NotNull String galaxy) throws IOException {
 //    return createInputStreamFromUrl("exports/current" + galaxy + ".xml");
 //  }
 //
-//  @Override
 //  protected InputStream createGalaxyResourceStream(@NotNull String galaxy, @NotNull String resource) throws IOException {
 //    return createInputStreamFromUrl("getResourceByName.py?name=" + resource + "&galaxy=" + galaxy);
 //  }
 //
+//
 //  @Override
-//  protected InputStream createGalaxyListStream() throws IOException {
-//    return getListTypeStream("galaxy");
+//  public Date getCurrentResourcesTimestamp() {
+//    if (currentResourcesXml == null || currentResourcesXml.getTimestamp() == null
+//        || currentResourcesXml.getTimestamp().isEmpty()) {
+//      return null;
+//    }
+//    DateFormat dateFormat = new SimpleDateFormat("E, dd MMMM yyyy HH:mm:ss Z");
+//    try {
+//      return dateFormat.parse(currentResourcesXml.getTimestamp());
+//    } catch (ParseException e) {
+//      e.printStackTrace();
+//    }
+//    return null;
 //  }
-//
-//  private InputStream getListTypeStream(String listType) throws IOException {
-//    return createInputStreamFromBaseUrl("getList.py?listType=" + listType);
-//  }
-////
-////  @Override
-////  public Date getCurrentResourcesTimestamp() {
-////    if (currentResourcesXml == null || currentResourcesXml.getTimestamp() == null
-////        || currentResourcesXml.getTimestamp().isEmpty()) {
-////      return null;
-////    }
-////    DateFormat dateFormat = new SimpleDateFormat("E, dd MMMM yyyy HH:mm:ss Z");
-////    try {
-////      return dateFormat.parse(currentResourcesXml.getTimestamp());
-////    } catch (ParseException e) {
-////      e.printStackTrace();
-////    }
-////    return null;
-////  }
-//
+
 //  protected void downloadResourceTrees(@NotNull HashMap<String, ResourceType> typeMap, @NotNull HashMap<String, List<String>> groupMap)
 //      throws IOException {
 //    try {

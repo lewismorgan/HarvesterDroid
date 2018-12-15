@@ -1,4 +1,4 @@
-package com.lewisjmorgan.harvesterdroid.provider.galaxyharvester
+package com.lewisjmorgan.harvesterdroid.provider.gh
 
 import com.lewisjmorgan.harvesterdroid.AbstractDataProvider
 
