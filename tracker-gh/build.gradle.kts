@@ -11,11 +11,7 @@ dependencies {
 
   testImplementation(kotlin("reflect", kotlinVersion))
   testImplementation(kotlin("test-junit", kotlinVersion))
-//
-//  testCompile("org.junit.jupiter:junit-jupiter-api:5.3.2")
-//  testCompile("org.junit.jupiter:junit-jupiter-params:5.3.2")
-//  testRuntime("org.junit.jupiter:junit-jupiter-engine:5.3.2")
-
+  testImplementation("com.nhaarman.mockitokotlin2:mockito-kotlin:2.0.0")
   testImplementation ("org.spekframework.spek2:spek-dsl-jvm:$spekVersion")  {
     exclude("org.jetbrains.kotlin")
   }

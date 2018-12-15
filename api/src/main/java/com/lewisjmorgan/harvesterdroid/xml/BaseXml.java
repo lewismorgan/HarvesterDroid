@@ -35,6 +35,9 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+// TODO Refactor how loading of XML's is handled
+
+@Deprecated
 public abstract class BaseXml {
 
   protected DocumentBuilder documentBuilder;

@@ -21,10 +21,10 @@ package com.lewisjmorgan.harvesterdroid.app;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import com.lewisjmorgan.harvesterdroid.AbstractDataProvider;
 import com.lewisjmorgan.harvesterdroid.Galaxy;
 import com.lewisjmorgan.harvesterdroid.GalaxyResource;
 import com.lewisjmorgan.harvesterdroid.JsonDataFactory;
+import com.lewisjmorgan.harvesterdroid.Tracker;
 import com.lewisjmorgan.harvesterdroid.data.resources.InventoryResource;
 import com.lewisjmorgan.harvesterdroid.data.schematics.Schematic;
 import java.io.ByteArrayInputStream;
@@ -41,6 +41,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
+import javax.sound.midi.Track;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -53,7 +54,7 @@ public class HarvesterDroid {
   private final Set<GalaxyResource> resources;
   private final List<Schematic> schematics;
   private final JsonDataFactory dataFactory = new JsonDataFactory();
-  private AbstractDataProvider provider;
+  private Tracker provider;
   private Map<String, String> galaxies;
   private Map<String, String> themes;
 
@@ -63,7 +64,7 @@ public class HarvesterDroid {
   private String activeGalaxy;
   private String activeTheme;
 
-  public HarvesterDroid(AbstractDataProvider provider) {
+  public HarvesterDroid(Tracker provider) {
     this.provider = provider;
     this.data = new HarvesterDroidData();
     this.inventory = Collections.synchronizedSet(new HashSet<>(0));
@@ -129,7 +130,7 @@ public class HarvesterDroid {
   }
 
   public List<GalaxyResource> findGalaxyResourcesById(String id) {
-    List<String> resourceGroups = provider.getResourceGroups(id);
+    List<String> resourceGroups = new ArrayList<>();//provider.getResourceGroups(id);
     if (!resourceGroups.isEmpty()) {
       // ID that was entered is a group of resources
       List<GalaxyResource> master = new ArrayList<>();
@@ -207,7 +208,7 @@ public class HarvesterDroid {
       return existing;
     }
     // TODO: Refactor
-    GalaxyResource galaxyResource = provider.provideGalaxyResource(new Galaxy("48", "SWG Legends"), resource);
+    GalaxyResource galaxyResource = null; //provider.provideGalaxyResource(new Galaxy("48", "SWG Legends"), resource);
     if (galaxyResource == null) {
       return null;
     }
@@ -348,7 +349,7 @@ public class HarvesterDroid {
   }
 
   public String getTracker() {
-    return provider.getName();
+    return provider.getId();
   }
 
   public String getActiveGalaxy() {

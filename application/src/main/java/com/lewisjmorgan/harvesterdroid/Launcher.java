@@ -27,6 +27,7 @@ import com.lewisjmorgan.harvesterdroid.app.HarvesterDroid;
 import com.lewisjmorgan.harvesterdroid.app.Watcher;
 import com.lewisjmorgan.harvesterdroid.loader.LauncherPreloader;
 import com.lewisjmorgan.harvesterdroid.loader.PreloaderStatusNotification;
+import com.lewisjmorgan.harvesterdroid.provider.gh.GalaxyHarvesterTracker;
 import com.lewisjmorgan.harvesterdroid.ui.dialog.ExceptionDialog;
 import com.lewisjmorgan.harvesterdroid.ui.main.MainView;
 import com.lewisjmorgan.harvesterdroid.xml.ThemesXml;
@@ -167,7 +168,7 @@ public class Launcher extends MvvmfxEasyDIApplication {
     // TODO "Blank Slate" state where no tracker is loaded, will help abstract away GalaxyHarvester dependencies
     // TODO Use separate threads for each loading task
 
-    //Downloader downloader = new GalaxyHarvesterDownloader(ROOT_DIR, DroidProperties.getString(DroidProperties.GALAXY));
+    //Tracker downloader = new GalaxyHarvesterTracker(ROOT_DIR, DroidProperties.getString(DroidProperties.GALAXY));
     //app.setDownloader(downloader);
     app.setLastUpdateTimestamp(Long.parseLong(DroidProperties.getString(DroidProperties.LAST_UPDATE)));
     updateLoadingProgress("Retrieving resource data...", -1);
@@ -193,7 +194,7 @@ public class Launcher extends MvvmfxEasyDIApplication {
   @Override
   protected void initEasyDi(EasyDI context) throws Exception {
     // Allow injection of HarvesterDroid
-    app = new HarvesterDroid(null);
+    app = new HarvesterDroid(new GalaxyHarvesterTracker());
     context.bindInstance(HarvesterDroid.class, app);
   }
 
