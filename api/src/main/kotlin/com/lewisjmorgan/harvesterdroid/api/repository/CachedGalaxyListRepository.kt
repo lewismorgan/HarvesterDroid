@@ -3,19 +3,15 @@ package com.lewisjmorgan.harvesterdroid.api.repository
 import com.lewisjmorgan.harvesterdroid.api.Galaxy
 import io.reactivex.Flowable
 
-/**
- * Repository for the Galaxy List that is stored in a cache.
- * @property galaxies MutableList<Galaxy>
- */
-class CachedGalaxyListRepository : GalaxyListRepository {
-  val galaxies: MutableList<Galaxy> = arrayListOf()
+class CachedGalaxyListRepository : GalaxyListRepository, CachedRepository<Galaxy>() {
+  override val cache: MutableList<Galaxy> = arrayListOf()
 
   override fun add(galaxy: Galaxy) {
-    galaxies.add(galaxy)
+    cache.add(galaxy)
   }
 
   override fun getAll(): Flowable<Galaxy> {
-    return Flowable.fromIterable(galaxies)
+    return Flowable.fromIterable(cache)
   }
 
 }

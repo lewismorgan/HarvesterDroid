@@ -6,14 +6,15 @@ import com.lewisjmorgan.harvesterdroid.api.repository.GalaxyListRepository
 import io.reactivex.Flowable
 
 class GalaxyListService(private val repository: GalaxyListRepository, private val tracker: Tracker) {
-  private var recentlyUpdated = true
+  private var updated = false
   fun getGalaxies(): Flowable<Galaxy> {
-    return if (recentlyUpdated) {
-      repository.getAll()
-    } else {
-      tracker.downloadGalaxies()
-        .doOnNext { resource -> repository.add(resource) }
-        .doOnComplete { recentlyUpdated = true }
-    }
+    return repository.getAll()
   }
+  fun downloadGalaxies(): Flowable<Galaxy> {
+    return tracker.downloadGalaxies()
+      .doOnNext { resource -> repository.add(resource) }
+      .doOnComplete { updated = true }
+  }
+
+  fun hasUpdatedGalaxies() =  updated
 }

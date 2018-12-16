@@ -2,7 +2,6 @@ plugins {
   base
   kotlin("jvm") version "1.3.11"
   java
-  idea
   checkstyle
 }
 

@@ -9,29 +9,51 @@ import io.reactivex.Flowable
 import io.reactivex.subscribers.TestSubscriber
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
+import kotlin.test.assertTrue
 import kotlin.test.todo
 
 class GalaxyListServiceTest : Spek({
   describe("GalaxyListService") {
-    val testGalaxies = listOf(Galaxy("0", "Testing Galaxy"))
+    val repoGalaxy = Galaxy("0", "Testing Galaxy")
+    val trackerGalaxy = Galaxy("1337", "Overpowered")
 
     val repository by memoized { mock<GalaxyListRepository> {
-      on { getAll() } doReturn Flowable.fromIterable(testGalaxies)
+      on { getAll() } doReturn Flowable.just(repoGalaxy)
+    }}
+    val tracker by memoized { mock<Tracker> {
+      on { downloadGalaxies() } doReturn Flowable.just(trackerGalaxy)
     }}
 
-    val tracker by memoized { mock<Tracker>() }
     val service by memoized { GalaxyListService(repository, tracker) }
 
-    describe("getGalaxies()") {
-      val testSubscriber by memoized { TestSubscriber<Galaxy>() }
+    describe("getting galaxies") {
+      val subscriber by memoized { TestSubscriber<Galaxy>() }
 
-      it("emits galaxies from a tracker") {
+      it("emits a repository galaxy") {
         val galaxies = service.getGalaxies()
-        galaxies.subscribe(testSubscriber)
-        testSubscriber.assertResult(testGalaxies[0])
+        galaxies.subscribe(subscriber)
+        subscriber.assertValue(repoGalaxy)
       }
-      it("returns repository galaxies after update") {
-        todo { TODO("Add test") }
+    }
+
+    describe("downloading galaxies") {
+      val subscriber by memoized { TestSubscriber<Galaxy>() }
+
+      it("emits tracker galaxies") {
+        val downloaded = service.downloadGalaxies()
+        downloaded.subscribe(subscriber)
+        subscriber.assertValue(trackerGalaxy)
+        subscriber.assertComplete()
+      }
+      it("adds galaxies to repository") {
+        val galaxies = service.getGalaxies()
+        galaxies.subscribe(subscriber)
+        subscriber.assertValue(repoGalaxy)
+        subscriber.assertComplete()
+      }
+      it("sets updated to true") {
+        service.downloadGalaxies().subscribe().dispose()
+        assertTrue(service.hasUpdatedGalaxies())
       }
     }
   }
