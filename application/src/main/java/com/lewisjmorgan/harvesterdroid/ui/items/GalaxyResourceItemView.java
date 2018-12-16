@@ -18,9 +18,9 @@
 
 package com.lewisjmorgan.harvesterdroid.ui.items;
 
-import com.lewisjmorgan.harvesterdroid.GalaxyResource;
-import com.lewisjmorgan.harvesterdroid.resource.Attributes;
-import com.lewisjmorgan.harvesterdroid.resource.ResourceType;
+import com.lewisjmorgan.harvesterdroid.api.GalaxyResource;
+import com.lewisjmorgan.harvesterdroid.api.resource.Attributes;
+import com.lewisjmorgan.harvesterdroid.api.resource.ResourceType;
 import de.saxsys.mvvmfx.FxmlView;
 import de.saxsys.mvvmfx.InjectViewModel;
 import java.net.URL;

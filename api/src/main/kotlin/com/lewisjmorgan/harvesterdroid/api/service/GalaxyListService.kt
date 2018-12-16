@@ -1,8 +1,8 @@
-package com.lewisjmorgan.harvesterdroid.service
+package com.lewisjmorgan.harvesterdroid.api.service
 
-import com.lewisjmorgan.harvesterdroid.Galaxy
-import com.lewisjmorgan.harvesterdroid.Tracker
-import com.lewisjmorgan.harvesterdroid.repository.GalaxyListRepository
+import com.lewisjmorgan.harvesterdroid.api.Galaxy
+import com.lewisjmorgan.harvesterdroid.api.Tracker
+import com.lewisjmorgan.harvesterdroid.api.repository.GalaxyListRepository
 import io.reactivex.Flowable
 
 class GalaxyListService(private val repository: GalaxyListRepository, private val tracker: Tracker) {

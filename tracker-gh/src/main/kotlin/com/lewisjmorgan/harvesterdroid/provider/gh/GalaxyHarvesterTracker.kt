@@ -1,8 +1,8 @@
 package com.lewisjmorgan.harvesterdroid.provider.gh
 
-import com.lewisjmorgan.harvesterdroid.Galaxy
-import com.lewisjmorgan.harvesterdroid.GalaxyResource
-import com.lewisjmorgan.harvesterdroid.Tracker
+import com.lewisjmorgan.harvesterdroid.api.Galaxy
+import com.lewisjmorgan.harvesterdroid.api.GalaxyResource
+import com.lewisjmorgan.harvesterdroid.api.Tracker
 import com.lewisjmorgan.harvesterdroid.trackers.galaxyharvester.HarvesterGalaxyListXml
 import io.reactivex.BackpressureStrategy
 import io.reactivex.Flowable

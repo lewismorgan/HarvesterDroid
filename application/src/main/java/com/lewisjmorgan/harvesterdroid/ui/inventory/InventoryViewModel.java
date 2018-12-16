@@ -18,7 +18,7 @@
 
 package com.lewisjmorgan.harvesterdroid.ui.inventory;
 
-import com.lewisjmorgan.harvesterdroid.GalaxyResource;
+import com.lewisjmorgan.harvesterdroid.api.GalaxyResource;
 import com.lewisjmorgan.harvesterdroid.app.HarvesterDroid;
 import com.lewisjmorgan.harvesterdroid.data.resources.InventoryResource;
 import com.lewisjmorgan.harvesterdroid.ui.dialog.resource.ResourceDialog;

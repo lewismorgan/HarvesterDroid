@@ -18,7 +18,7 @@
 
 package com.lewisjmorgan.harvesterdroid.ui.resources;
 
-import com.lewisjmorgan.harvesterdroid.GalaxyResource;
+import com.lewisjmorgan.harvesterdroid.api.GalaxyResource;
 import com.lewisjmorgan.harvesterdroid.app.HarvesterDroid;
 import com.lewisjmorgan.harvesterdroid.data.schematics.Schematic;
 import com.lewisjmorgan.harvesterdroid.ui.dialog.resource.NewSpawnsDialog;

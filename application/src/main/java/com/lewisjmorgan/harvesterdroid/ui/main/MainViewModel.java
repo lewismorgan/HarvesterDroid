@@ -24,8 +24,8 @@ import static com.lewisjmorgan.harvesterdroid.app.HarvesterDroidData.JSON_SCHEMA
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lewisjmorgan.harvesterdroid.DroidProperties;
-import com.lewisjmorgan.harvesterdroid.JsonDataFactory;
-import com.lewisjmorgan.harvesterdroid.GalaxyResource;
+import com.lewisjmorgan.harvesterdroid.api.JsonDataFactory;
+import com.lewisjmorgan.harvesterdroid.api.GalaxyResource;
 import com.lewisjmorgan.harvesterdroid.app.HarvesterDroid;
 import com.lewisjmorgan.harvesterdroid.data.schematics.Schematic;
 import com.lewisjmorgan.harvesterdroid.ui.dialog.about.AboutDialog;

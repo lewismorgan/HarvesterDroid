@@ -1,4 +1,4 @@
-package com.lewisjmorgan.harvesterdroid
+package com.lewisjmorgan.harvesterdroid.api
 
 import com.fasterxml.jackson.core.JsonFactory
 import com.fasterxml.jackson.core.type.TypeReference

@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.lewisjmorgan.harvesterdroid.xml;
+package com.lewisjmorgan.harvesterdroid.api.xml;
 
 import java.io.File;
 import java.io.IOException;

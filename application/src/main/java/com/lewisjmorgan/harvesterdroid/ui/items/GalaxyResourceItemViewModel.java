@@ -18,7 +18,7 @@
 
 package com.lewisjmorgan.harvesterdroid.ui.items;
 
-import com.lewisjmorgan.harvesterdroid.GalaxyResource;
+import com.lewisjmorgan.harvesterdroid.api.GalaxyResource;
 import de.saxsys.mvvmfx.ViewModel;
 import java.io.InputStream;
 import javafx.beans.property.ReadOnlyMapProperty;

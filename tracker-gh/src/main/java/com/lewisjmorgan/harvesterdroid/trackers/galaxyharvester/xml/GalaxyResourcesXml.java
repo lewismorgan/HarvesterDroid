@@ -18,7 +18,7 @@
 
 package com.lewisjmorgan.harvesterdroid.trackers.galaxyharvester.xml;
 
-import com.lewisjmorgan.harvesterdroid.GalaxyResource;
+import com.lewisjmorgan.harvesterdroid.api.GalaxyResource;
 import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;

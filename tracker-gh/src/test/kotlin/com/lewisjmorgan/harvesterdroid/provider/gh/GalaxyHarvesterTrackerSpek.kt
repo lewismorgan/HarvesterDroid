@@ -1,6 +1,6 @@
 package com.lewisjmorgan.harvesterdroid.provider.gh
 
-import com.lewisjmorgan.harvesterdroid.Galaxy
+import com.lewisjmorgan.harvesterdroid.api.Galaxy
 import io.reactivex.subscribers.TestSubscriber
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe

@@ -1,6 +1,6 @@
-package com.lewisjmorgan.harvesterdroid.repository
+package com.lewisjmorgan.harvesterdroid.api.repository
 
-import com.lewisjmorgan.harvesterdroid.Galaxy
+import com.lewisjmorgan.harvesterdroid.api.Galaxy
 import io.reactivex.Flowable
 
 /**

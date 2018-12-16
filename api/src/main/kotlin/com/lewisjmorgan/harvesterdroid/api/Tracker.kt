@@ -1,4 +1,4 @@
-package com.lewisjmorgan.harvesterdroid
+package com.lewisjmorgan.harvesterdroid.api
 
 import io.reactivex.Flowable
 import io.reactivex.Single

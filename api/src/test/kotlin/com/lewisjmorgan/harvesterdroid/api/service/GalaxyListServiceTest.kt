@@ -1,8 +1,8 @@
-package com.lewisjmorgan.harvesterdroid.service
+package com.lewisjmorgan.harvesterdroid.api.service
 
-import com.lewisjmorgan.harvesterdroid.Galaxy
-import com.lewisjmorgan.harvesterdroid.Tracker
-import com.lewisjmorgan.harvesterdroid.repository.GalaxyListRepository
+import com.lewisjmorgan.harvesterdroid.api.Galaxy
+import com.lewisjmorgan.harvesterdroid.api.Tracker
+import com.lewisjmorgan.harvesterdroid.api.repository.GalaxyListRepository
 import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.mock
 import io.reactivex.Flowable
