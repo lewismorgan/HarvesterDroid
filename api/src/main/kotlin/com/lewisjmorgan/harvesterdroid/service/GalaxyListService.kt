@@ -11,7 +11,9 @@ class GalaxyListService(private val repository: GalaxyListRepository, private va
     return if (recentlyUpdated) {
       repository.getAll()
     } else {
-      tracker.downloadGalaxies().doOnNext { resource -> repository.add(resource) }
+      tracker.downloadGalaxies()
+        .doOnNext { resource -> repository.add(resource) }
+        .doOnComplete { recentlyUpdated = true }
     }
   }
 }
