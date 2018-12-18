@@ -1,29 +1,42 @@
+import net.thauvin.erik.gradle.semver.SemverConfig
 import java.io.ByteArrayOutputStream
 import net.thauvin.erik.gradle.semver.SemverIncrementBuildMetaTask
 import net.thauvin.erik.gradle.semver.SemverIncrementTask
+import net.thauvin.erik.gradle.semver.semver
+import java.io.OutputStream
 
 plugins {
   base
   kotlin("jvm") version "1.3.11"
   java
   checkstyle
-  id("net.thauvin.erik.gradle.semver") version "0.9.8-beta"
+  distribution
 }
 
 val spekVersion = "2.0.0-rc.1"
 val junitVersion = "5.3.2"
 
+buildscript {
+  repositories {
+      mavenLocal()
+  }
+  dependencies {
+      classpath("net.thauvin.erik.gradle:semver:0.9.9-SNAPSHOT")
+  }
+}
+
 allprojects {
   apply(plugin = "java")
   apply(plugin = "org.jetbrains.kotlin.jvm")
   apply(plugin = "net.thauvin.erik.gradle.semver")
-
-  java {
-    this.sourceCompatibility = JavaVersion.VERSION_1_8
-    this.sourceCompatibility = JavaVersion.VERSION_1_8
-  }
+  apply(plugin = "distribution")
 
   group = "com.lewisjmorgan.harvesterdroid"
+
+  configure<SemverConfig> {
+    preReleasePrefixKey = "SNAPSHOT"
+    saveAfterProjectEvaluate = false
+  }
 
   repositories {
     jcenter()
@@ -39,28 +52,29 @@ allprojects {
 
     addHarvesterDroidTestDependencies(this)
   }
-
-  java.sourceCompatibility = JavaVersion.VERSION_1_8
-  java.targetCompatibility = JavaVersion.VERSION_1_8
-
+  
   tasks {
+    withType<Jar> {
+      baseName = "harvesterdroid"
+      appendix = project.name
+    }
     val incrementBuildMetaTask = withType<SemverIncrementBuildMetaTask> {
       //println("Current build metadata: ${this.buildMeta}")
       doFirst {
         buildMeta = acquireCurrentGitCommitHash(true)
       }
     }
-
-    withType<Jar> {
-      baseName = "harvesterdroid"
-      appendix = project.name
-      // Only want the jar's to increment build meta since that's what the user will be running.
-      dependsOn(incrementBuildMetaTask)
-      doLast {
-        println("VERSION: ${project.version}")
+    withType<SemverIncrementTask> {
+      doFirst {
+        version.buildMeta = ""
       }
     }
-
+    register("distribute") {
+      group = "distribution"
+      description = "Creates a distributable build"
+      dependsOn(incrementBuildMetaTask)
+      finalizedBy("build", "assembleDist")
+    }
     withType<Test> {
       maxParallelForks = (Runtime.getRuntime().availableProcessors() / 2).takeIf { it > 0 } ?: 1
       useJUnitPlatform {
@@ -70,6 +84,11 @@ allprojects {
     withType<Checkstyle> {
       configFile = File(rootDir, "checkstyle.xml")
     }
+  }
+
+  java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
   }
 }
 
@@ -99,8 +118,12 @@ fun addHarvesterDroidTestDependencies(scope: DependencyHandlerScope) {
 fun acquireCurrentGitCommitHash(short: Boolean): String {
   val stdout = ByteArrayOutputStream()
   exec {
-    commandLine("git", "rev-parse", if (short) "--short" else null, "HEAD")
-    standardOutput = stdout
+    if (short) {
+      commandLine("git", "rev-parse", "--short", "HEAD")
+    } else {
+      commandLine("git", "rev-parse", "HEAD")
+    }
+    standardOutput = stdout as OutputStream?
   }
   return stdout.toString().trim()
 }
