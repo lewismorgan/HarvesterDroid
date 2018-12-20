@@ -2,7 +2,6 @@ import net.thauvin.erik.gradle.semver.SemverConfig
 import java.io.ByteArrayOutputStream
 import net.thauvin.erik.gradle.semver.SemverIncrementBuildMetaTask
 import net.thauvin.erik.gradle.semver.SemverIncrementTask
-import net.thauvin.erik.gradle.semver.semver
 import java.io.OutputStream
 
 plugins {
@@ -11,32 +10,33 @@ plugins {
   java
   checkstyle
   distribution
+  id("nebula.release") version "9.1.2"
+}
+
+buildscript {
+  repositories {
+    mavenLocal()
+    jcenter()
+  }
+  dependencies {
+    classpath("net.thauvin.erik.gradle:semver:0.9.9-SNAPSHOT")
+  }
+}
+
+repositories {
+  jcenter()
 }
 
 val spekVersion = "2.0.0-rc.1"
 val junitVersion = "5.3.2"
 
-buildscript {
-  repositories {
-      mavenLocal()
-  }
-  dependencies {
-      classpath("net.thauvin.erik.gradle:semver:0.9.9-SNAPSHOT")
-  }
-}
-
-allprojects {
+subprojects {
   apply(plugin = "java")
   apply(plugin = "org.jetbrains.kotlin.jvm")
-  apply(plugin = "net.thauvin.erik.gradle.semver")
   apply(plugin = "distribution")
+  apply(plugin = "nebula.release")
 
   group = "com.lewisjmorgan.harvesterdroid"
-
-  configure<SemverConfig> {
-    preReleasePrefixKey = "SNAPSHOT"
-    saveAfterProjectEvaluate = false
-  }
 
   repositories {
     jcenter()
@@ -58,23 +58,11 @@ allprojects {
       baseName = "harvesterdroid"
       appendix = project.name
     }
-    val incrementBuildMetaTask = withType<SemverIncrementBuildMetaTask> {
-      //println("Current build metadata: ${this.buildMeta}")
-      doFirst {
-        buildMeta = acquireCurrentGitCommitHash(true)
-      }
-    }
-    withType<SemverIncrementTask> {
-      doFirst {
-        version.buildMeta = ""
-      }
-    }
-    register("distribute") {
-      group = "distribution"
-      description = "Creates a distributable build"
-      dependsOn(incrementBuildMetaTask)
-      finalizedBy("build", "assembleDist")
-    }
+//    register("distribute") {
+//      group = "distribution"
+//      description = "Creates a distributable build"
+//      finalizedBy("build", "assembleDist")
+//    }
     withType<Test> {
       maxParallelForks = (Runtime.getRuntime().availableProcessors() / 2).takeIf { it > 0 } ?: 1
       useJUnitPlatform {
@@ -84,6 +72,9 @@ allprojects {
     withType<Checkstyle> {
       configFile = File(rootDir, "checkstyle.xml")
     }
+//    register("release") {
+//      dependsOn(Nebula)
+//    }
   }
 
   java {
