@@ -1,5 +1,3 @@
-//import groovy.lang.Closure
-
 plugins {
   application
 }
@@ -36,17 +34,22 @@ distributions {
   }
 }
 
-tasks.withType<Jar> {
-  archiveName = "harvesterdroid-${project.version}.jar"
-//  manifest {
-//    attributes(
-//      "Main-Class" to mainClass,
-//      "implementation-title" to "HarvesterDroid",
-//      "implementation-version" to project.version,
-//      "implementation-vendor" to "Waverunner",
-//      "JavaFX-Preloader-Class" to "com.lewisjmorgan.harvesterdroid.LauncherPreloader",
-//      "JavaFX-Fallback-Class" to "com.javafx.main.NoJavaFXFallback",
-//      "JavaFX-Application-Class" to mainClass
-//    )
-//  }
+tasks {
+  withType<Jar> {
+    appendix = ""
+    manifest {
+      attributes(
+        "Main-Class" to mainClass,
+        "implementation-title" to "HarvesterDroid",
+        "implementation-version" to project.version,
+        "implementation-vendor" to "Waverunner",
+        "JavaFX-Preloader-Class" to "com.lewisjmorgan.harvesterdroid.LauncherPreloader",
+        "JavaFX-Application-Class" to mainClass,
+        "JavaFX-Fallback-Class" to "com.javafx.main.NoJavaFXFallback"
+      )
+    }
+  }
+  withType<CreateStartScripts> {
+    dependsOn("addRuntimeLibs")
+  }
 }

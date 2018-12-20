@@ -58,11 +58,6 @@ subprojects {
       baseName = "harvesterdroid"
       appendix = project.name
     }
-//    register("distribute") {
-//      group = "distribution"
-//      description = "Creates a distributable build"
-//      finalizedBy("build", "assembleDist")
-//    }
     withType<Test> {
       maxParallelForks = (Runtime.getRuntime().availableProcessors() / 2).takeIf { it > 0 } ?: 1
       useJUnitPlatform {
@@ -72,9 +67,12 @@ subprojects {
     withType<Checkstyle> {
       configFile = File(rootDir, "checkstyle.xml")
     }
-//    register("release") {
-//      dependsOn(Nebula)
-//    }
+    register<Copy>("addRuntimeLibs") {
+      group = "distribution"
+      description = "Places the runtime libraries into buildDir/libs"
+      into("$buildDir/libs")
+      from(configurations.runtime)
+    }
   }
 
   java {
@@ -104,17 +102,4 @@ fun addHarvesterDroidTestDependencies(scope: DependencyHandlerScope) {
 
     testRuntime("org.junit.platform:junit-platform-launcher:1.3.2")
   }
-}
-
-fun acquireCurrentGitCommitHash(short: Boolean): String {
-  val stdout = ByteArrayOutputStream()
-  exec {
-    if (short) {
-      commandLine("git", "rev-parse", "--short", "HEAD")
-    } else {
-      commandLine("git", "rev-parse", "HEAD")
-    }
-    standardOutput = stdout as OutputStream?
-  }
-  return stdout.toString().trim()
 }
