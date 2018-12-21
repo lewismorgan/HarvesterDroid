@@ -1,4 +1,4 @@
-package com.lewisjmorgan.harvesterdroid.provider.gh
+package com.lewisjmorgan.harvesterdroid.galaxyharvester
 
 import com.lewisjmorgan.harvesterdroid.api.Galaxy
 import com.lewisjmorgan.harvesterdroid.api.GalaxyResource
@@ -73,10 +73,4 @@ class GalaxyHarvesterTracker: Tracker {
       .toURL()
       .openStream()
   }
-
-//
-//  override fun createGalaxyListResourceStream(): InputStream {
-//    return createInputStreamFromBaseUrl("$getListType=galaxy")
-//  }
-
 }

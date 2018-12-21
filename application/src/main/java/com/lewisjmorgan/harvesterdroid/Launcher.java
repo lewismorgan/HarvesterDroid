@@ -27,7 +27,7 @@ import com.lewisjmorgan.harvesterdroid.app.HarvesterDroid;
 import com.lewisjmorgan.harvesterdroid.app.Watcher;
 import com.lewisjmorgan.harvesterdroid.loader.LauncherPreloader;
 import com.lewisjmorgan.harvesterdroid.loader.PreloaderStatusNotification;
-import com.lewisjmorgan.harvesterdroid.provider.gh.GalaxyHarvesterTracker;
+import com.lewisjmorgan.harvesterdroid.galaxyharvester.GalaxyHarvesterTracker;
 import com.lewisjmorgan.harvesterdroid.ui.dialog.ExceptionDialog;
 import com.lewisjmorgan.harvesterdroid.ui.main.MainView;
 import com.lewisjmorgan.harvesterdroid.api.xml.ThemesXml;
