@@ -52,7 +52,7 @@ subprojects {
 
     addHarvesterDroidTestDependencies(this)
   }
-  
+
   tasks {
     withType<Jar> {
       baseName = "harvesterdroid"
@@ -67,6 +67,8 @@ subprojects {
     withType<Checkstyle> {
       configFile = File(rootDir, "checkstyle.xml")
     }
+
+    // Custom Tasks
     register<Copy>("addRuntimeLibs") {
       group = "distribution"
       description = "Places the runtime libraries into buildDir/libs"
@@ -79,6 +81,10 @@ subprojects {
     sourceCompatibility = JavaVersion.VERSION_1_8
     targetCompatibility = JavaVersion.VERSION_1_8
   }
+}
+
+tasks.getByName("postRelease") {
+  finalizedBy("distNative")
 }
 
 fun addHarvesterDroidTestDependencies(scope: DependencyHandlerScope) {

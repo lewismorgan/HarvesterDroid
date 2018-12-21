@@ -1,8 +1,22 @@
+import de.dynamicfiles.projects.gradle.plugins.javafx.JavaFXGradlePluginExtension
+import de.dynamicfiles.projects.gradle.plugins.javafx.tasks.JfxJarTask
+
 plugins {
   application
 }
 
-val mainClass = "com.lewisjmorgan.harvesterdroid.Launcher"
+buildscript {
+  dependencies {
+    classpath("de.dynamicfiles.projects.gradle.plugins:javafx-gradle-plugin:8.8.2")
+  }
+  repositories {
+    jcenter()
+  }
+}
+
+apply(plugin = "javafx-gradle-plugin")
+
+val launcherClass = "com.lewisjmorgan.harvesterdroid.Launcher"
 description = "Manage your resources across a number of Star Wars Galaxies resource trackers"
 
 dependencies {
@@ -25,7 +39,7 @@ dependencies {
 
 application {
   applicationName = "harvesterdroid"
-  mainClassName = mainClass
+  mainClassName = launcherClass
 }
 
 distributions {
@@ -34,22 +48,54 @@ distributions {
   }
 }
 
+val commonManifestAttribs = mutableMapOf(
+  "Implementation-Title" to "HarvesterDroid",
+  "Implementation-Version" to project.version,
+  "Implementation-Vendor" to "Waverunner"
+)
+
 tasks {
   withType<Jar> {
     appendix = ""
+    archiveName = "harvesterdroid-${project.version}.jar"
+
     manifest {
       attributes(
-        "Main-Class" to mainClass,
-        "implementation-title" to "HarvesterDroid",
-        "implementation-version" to project.version,
-        "implementation-vendor" to "Waverunner",
-        "JavaFX-Preloader-Class" to "com.lewisjmorgan.harvesterdroid.LauncherPreloader",
-        "JavaFX-Application-Class" to mainClass,
-        "JavaFX-Fallback-Class" to "com.javafx.main.NoJavaFXFallback"
+        commonManifestAttribs.apply {
+          putAll(mapOf(
+            "Main-Class" to launcherClass,
+            "Class-Path" to project.configurations.runtime.get().files.joinToString(" ") { it.name }
+          ))
+        }
       )
     }
   }
   withType<CreateStartScripts> {
     dependsOn("addRuntimeLibs")
   }
+  register("distNative") {
+    dependsOn("jfxNative")
+    group = "distribution"
+    description = "Bundles the project as a native distribution"
+  }
+}
+
+configure<JavaFXGradlePluginExtension> {
+  appName = "HarvesterDroid"
+  nativeReleaseVersion = sanitizeVersionString(project.version.toString())
+  bundler = "mac.app"
+  mainClass = launcherClass
+  vendor = "Waverunner"
+  isSkipJNLP = true
+
+  jfxMainAppJarName = "harvesterdroid-${project.version}.jar"
+}
+
+fun sanitizeVersionString(str: String): String {
+  val regex = Regex("[^-]+")
+  val result = regex.find(str, 0)
+  result?.value?.let {
+    return it
+  }
+  return "0.1.0"
 }
