@@ -2,8 +2,10 @@ package com.lewisjmorgan.harvesterdroid.api
 
 import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.databind.DeserializationFeature
+import com.fasterxml.jackson.databind.Module
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.SerializationFeature
+import com.fasterxml.jackson.databind.module.SimpleModule
 import com.fasterxml.jackson.dataformat.xml.XmlMapper
 import com.fasterxml.jackson.module.kotlin.KotlinModule
 import com.fasterxml.jackson.module.kotlin.readValue
@@ -14,6 +16,7 @@ import java.io.OutputStream
 
 class DataFactory {
   private val bsonFactory by lazy { createBsonFactory() }
+  val modules = mutableListOf<Module>()
 
   fun serialize(outputStream: OutputStream, toSerialize: Any, outputAs: MappingType): OutputStream {
     val mapper = createObjectMapper(outputAs)
@@ -39,6 +42,7 @@ class DataFactory {
       MappingType.BSON -> createBsonObjectMapper()
     }
     mapper.registerModule(KotlinModule())
+    modules.forEach { mapper.registerModule(it) }
     return mapper
   }
 
@@ -58,8 +62,4 @@ class DataFactory {
     objectMapper.enable(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT)
     return objectMapper
   }
-}
-
-enum class MappingType {
-  JSON, XML, BSON
 }

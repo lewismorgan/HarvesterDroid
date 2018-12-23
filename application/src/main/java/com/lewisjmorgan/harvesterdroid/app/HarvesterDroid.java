@@ -19,8 +19,6 @@
 package com.lewisjmorgan.harvesterdroid.app;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
 import com.lewisjmorgan.harvesterdroid.api.GalaxyResource;
 import com.lewisjmorgan.harvesterdroid.api.DataFactory;
 import com.lewisjmorgan.harvesterdroid.api.MappingType;

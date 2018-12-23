@@ -1,7 +1,9 @@
 package com.lewisjmorgan.harvesterdroid.galaxyharvester
 
+import com.lewisjmorgan.harvesterdroid.api.DataFactory
 import com.lewisjmorgan.harvesterdroid.api.Galaxy
 import com.lewisjmorgan.harvesterdroid.api.GalaxyResource
+import com.lewisjmorgan.harvesterdroid.api.MappingType
 import com.lewisjmorgan.harvesterdroid.api.Tracker
 import io.reactivex.BackpressureStrategy
 import io.reactivex.Flowable
@@ -12,6 +14,8 @@ import java.io.IOException
 import java.io.InputStream
 import java.net.URI
 import java.net.URL
+import java.text.SimpleDateFormat
+import java.util.*
 import javax.xml.parsers.ParserConfigurationException
 
 
@@ -20,21 +24,18 @@ class GalaxyHarvesterTracker: Tracker {
   override val id: String = "GalaxyHarvester"
   private val getListType = "getList.py?listType"
 
+  private val dataFactory by lazy { createDataFactory() }
+
   override fun downloadGalaxies(): Flowable<Galaxy> {
     return Observable.create<Galaxy> { emitter ->
       val inputStream = createInputStreamFromBaseUrl("$getListType=galaxy")
       try {
-        // TODO Add deserialization from XML
-        //val galaxyListXml = xmlFactory.parse<GalaxyHarvesterGalaxyList>(InputStreamReader(inputStream))
-        //galaxyListXml.getGalaxies().forEach { emitter.onNext(it) }
-      } catch (e: ParserConfigurationException) {
-        emitter.onError(e)
-      } catch (e: SAXException) {
-        emitter.onError(e)
-      } catch (e: IOException) {
-        emitter.onError(e)
+        val galaxyListXml = dataFactory.deserialize<GalaxyHarvesterGalaxyList>(inputStream, MappingType.XML)
+        galaxyListXml.getGalaxies().forEach { emitter.onNext(it) }
+        emitter.onComplete()
+      } catch (e: Throwable) {
+        emitter.tryOnError(e)
       }
-      emitter.onComplete()
     }.toFlowable(BackpressureStrategy.BUFFER)
   }
 
@@ -42,24 +43,31 @@ class GalaxyHarvesterTracker: Tracker {
     return Single.create { emitter ->
       val inputStream = createInputStreamFromBaseUrl("getResourceByName.py?name=$resource&galaxy=$galaxyId")
       try {
-        emitter.onSuccess(GalaxyResource())
-        // TODO Add deserialization from XML
-        //val resourceXml = xmlFactory.parse<HarvesterResourceXml>(InputStreamReader(inputStream))
-        //if (resourceXml.galaxyResource != null)
-          //emitter.onSuccess(resourceXml.galaxyResource)
-        //else emitter.onError(Throwable("Failed parsing resource $resource"))
-      } catch (e1: ParserConfigurationException) {
-        emitter.onError(e1)
-      } catch (e1: SAXException) {
-        emitter.onError(e1)
-      } catch (e1: IOException) {
-        emitter.onError(e1)
+        val resourceXml = dataFactory.deserialize<GalaxyResource>(inputStream, MappingType.XML)
+        emitter.onSuccess(resourceXml)
+      } catch (e: Throwable) {
+        emitter.tryOnError(e)
       }
     }
   }
 
-  override fun downloadGalaxyResources(): Flowable<GalaxyResource> {
-    TODO("Not implemented :[")
+  override fun downloadGalaxyResources(galaxyId: String): Flowable<GalaxyResource> {
+    return Observable.create<GalaxyResource> { emitter ->
+      val inputStream = createInputStreamFromBaseUrl("exports/current$galaxyId.xml")
+      try {
+        val currentResources = dataFactory.deserialize<List<GalaxyResource>>(inputStream, MappingType.XML)
+        currentResources.forEach { emitter.onNext(it) }
+        emitter.onComplete()
+      } catch(e: Throwable) {
+        emitter.tryOnError(e)
+      }
+    }.toFlowable(BackpressureStrategy.BUFFER)
+  }
+
+  override fun createDataFactory(): DataFactory {
+    val dataFactory = DataFactory()
+    dataFactory.modules.add(GalaxyHarvesterDataModule())
+    return dataFactory
   }
 
   @Throws(IOException::class)

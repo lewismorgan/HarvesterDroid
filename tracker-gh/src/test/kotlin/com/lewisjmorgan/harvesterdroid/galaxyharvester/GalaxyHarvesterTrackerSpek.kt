@@ -11,36 +11,38 @@ import kotlin.test.todo
 
 class GalaxyHarvesterTrackerSpek: Spek({
   describe("GalaxyHarvesterTracker") {
-    todo {
-      // TODO Remove from todo scope when deserializing is implemented
-      context("downloading galaxy list") {
-        val tracker by memoized { GalaxyHarvesterTracker() }
-        it("it emits parsed galaxies") {
-          val testSubscriber = TestSubscriber<Galaxy>()
-          tracker.downloadGalaxies().subscribe(testSubscriber)
-          testSubscriber.assertNoErrors()
-          testSubscriber.assertComplete()
-        }
+    val tracker by memoized { GalaxyHarvesterTracker() }
+
+    context("downloading galaxy list") {
+      it("it emits parsed galaxies") {
+        val testSubscriber = TestSubscriber<Galaxy>()
+        tracker.downloadGalaxies().subscribe(testSubscriber)
+        testSubscriber.assertNoErrors()
+        testSubscriber.assertComplete()
       }
-      context("downloading a resource") {
-        val tracker by memoized { GalaxyHarvesterTracker() }
-        val testSubscriber by memoized { TestSubscriber<GalaxyResource>() }
-        it("emits a valid resource") {
-          tracker.downloadGalaxyResource("48", "desrio").toFlowable()
-            .subscribe(testSubscriber)
-          testSubscriber.assertValue { it.name == "desrio" }
-        }
+    }
+    context("downloading a resource") {
+      val testSubscriber by memoized { TestSubscriber<GalaxyResource>() }
+      it("emits a valid resource") {
+        tracker.downloadGalaxyResource("48", "desrio").toFlowable()
+          .subscribe(testSubscriber)
+        testSubscriber.assertValue { it.name == "desrio" }
+        testSubscriber.assertComplete()
+      }
+      todo {
         it("emits an error for an invalid resource") {
           tracker.downloadGalaxyResource("48", "a").toFlowable()
             .subscribe(testSubscriber)
           testSubscriber.assertError { true }
         }
       }
-      context("downloading a list of recent resources") {
-        it("emits a flow of galaxy resources") {
-        }
-        it("emits an error if a resource could not be parsed") {
-        }
+    }
+    context("downloading a list of recent resources") {
+      val testSubscriber by memoized { TestSubscriber<GalaxyResource>() }
+      it("emits a flow of galaxy resources") {
+        tracker.downloadGalaxyResources("48").subscribe(testSubscriber)
+        testSubscriber.assertNoErrors()
+        testSubscriber.assertComplete()
       }
     }
   }

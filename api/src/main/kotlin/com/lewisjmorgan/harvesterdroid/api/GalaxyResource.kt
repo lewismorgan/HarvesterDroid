@@ -4,7 +4,9 @@ import com.lewisjmorgan.harvesterdroid.api.resource.Attributes
 import com.lewisjmorgan.harvesterdroid.api.resource.ResourceType
 import java.util.*
 
-class GalaxyResource {
+class GalaxyResource(var partial: Boolean) {
+  constructor(): this(false)
+
   var name: String = ""
   var container: String = ""
 
@@ -12,7 +14,7 @@ class GalaxyResource {
   var despawnDate: Date = Date()
 
   val planets = ArrayList<String>()
-  val attributes = HashMap<String, Int>(Attributes.size())
+  val attributes = HashMap<String, Int>()
 
   var resourceType: ResourceType = ResourceType()
 
@@ -20,12 +22,6 @@ class GalaxyResource {
   var resourceTypeString: String = ""
 
   val isActive = despawnDate != Date()
-
-  init {
-    // Initialize all attribute values with -1
-    // TODO Refactor so there is no init method
-    Attributes.forEach { primary, _ -> attributes[primary] = -1}
-  }
 
   fun getAttribute(name: String): Int {
     return attributes.getOrDefault(name, -1)
