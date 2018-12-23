@@ -24,8 +24,9 @@ import static com.lewisjmorgan.harvesterdroid.app.HarvesterDroidData.JSON_SCHEMA
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lewisjmorgan.harvesterdroid.DroidProperties;
-import com.lewisjmorgan.harvesterdroid.api.JsonDataFactory;
+import com.lewisjmorgan.harvesterdroid.api.DataFactory;
 import com.lewisjmorgan.harvesterdroid.api.GalaxyResource;
+import com.lewisjmorgan.harvesterdroid.api.MappingType;
 import com.lewisjmorgan.harvesterdroid.app.HarvesterDroid;
 import com.lewisjmorgan.harvesterdroid.data.schematics.Schematic;
 import com.lewisjmorgan.harvesterdroid.ui.dialog.about.AboutDialog;
@@ -183,9 +184,8 @@ public class MainViewModel implements ViewModel {
     for (File file : schematicsFiles) {
       try {
 
-        JsonDataFactory dataFactory = new JsonDataFactory();
-        ObjectMapper objectMapper = dataFactory.createJsonObjectMapper();
-        Set<Schematic> saved = objectMapper.readValue(new FileInputStream(file),
+        DataFactory dataFactory = new DataFactory();
+        Set<Schematic> saved = dataFactory.deserialize(new FileInputStream(file), MappingType.JSON,
             new TypeReference<Set<Schematic>>() {
             }); // Prevent type erasing
 

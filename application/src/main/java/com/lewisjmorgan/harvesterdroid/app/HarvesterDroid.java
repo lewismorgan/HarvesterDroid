@@ -22,7 +22,8 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.lewisjmorgan.harvesterdroid.api.GalaxyResource;
-import com.lewisjmorgan.harvesterdroid.api.JsonDataFactory;
+import com.lewisjmorgan.harvesterdroid.api.DataFactory;
+import com.lewisjmorgan.harvesterdroid.api.MappingType;
 import com.lewisjmorgan.harvesterdroid.api.Tracker;
 import com.lewisjmorgan.harvesterdroid.data.resources.InventoryResource;
 import com.lewisjmorgan.harvesterdroid.data.schematics.Schematic;
@@ -51,7 +52,7 @@ public class HarvesterDroid {
   private final Set<InventoryResource> inventory;
   private final Set<GalaxyResource> resources;
   private final List<Schematic> schematics;
-  private final JsonDataFactory dataFactory = new JsonDataFactory();
+  private final DataFactory dataFactory = new DataFactory();
   private Tracker provider;
   private Map<String, String> galaxies;
   private Map<String, String> themes;
@@ -268,24 +269,17 @@ public class HarvesterDroid {
   }
 
   public void saveAsJson(OutputStream outputStream) {
-    ObjectMapper objectMapper = dataFactory.createJsonObjectMapper();
-    objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
-
-    try {
-      objectMapper.writeValue(outputStream, schematics);
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
+    dataFactory.serialize(outputStream, schematics, MappingType.JSON);
   }
 
   public void saveResources(OutputStream outputStream) throws IOException {
-    dataFactory.save(outputStream, resources);
+    dataFactory.serialize(outputStream, resources, MappingType.BSON);
     outputStream.close();
   }
 
   public void loadResources(byte[] data) throws IOException {
     ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(data);
-    HashSet<GalaxyResource> saved = dataFactory.openBinaryCollection(byteArrayInputStream,
+    HashSet<GalaxyResource> saved = dataFactory.deserialize(byteArrayInputStream, MappingType.BSON,
         new TypeReference<HashSet<GalaxyResource>>() {
         });
 
@@ -299,8 +293,7 @@ public class HarvesterDroid {
   }
 
   public void loadSchematics(InputStream inputStream) throws IOException {
-    ObjectMapper objectMapper = dataFactory.createJsonObjectMapper();
-    List<Schematic> saved = objectMapper.readValue(inputStream, new TypeReference<List<Schematic>>() {
+    List<Schematic> saved = dataFactory.deserialize(inputStream, MappingType.JSON, new TypeReference<List<Schematic>>() {
     });
 
     schematics.clear();
@@ -310,8 +303,7 @@ public class HarvesterDroid {
   }
 
   public void loadInventory(InputStream inputStream) throws IOException {
-    ObjectMapper objectMapper = dataFactory.createJsonObjectMapper();
-    Set<InventoryResource> saved = objectMapper.readValue(inputStream, new TypeReference<Set<InventoryResource>>() {
+    Set<InventoryResource> saved = dataFactory.deserialize(inputStream, MappingType.JSON, new TypeReference<Set<InventoryResource>>() {
     });
 
     inventory.clear();

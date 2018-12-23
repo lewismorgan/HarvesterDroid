@@ -3,7 +3,6 @@ package com.lewisjmorgan.harvesterdroid.galaxyharvester
 import com.lewisjmorgan.harvesterdroid.api.Galaxy
 import com.lewisjmorgan.harvesterdroid.api.GalaxyResource
 import com.lewisjmorgan.harvesterdroid.api.Tracker
-import com.lewisjmorgan.harvesterdroid.trackers.galaxyharvester.HarvesterGalaxyListXml
 import io.reactivex.BackpressureStrategy
 import io.reactivex.Flowable
 import io.reactivex.Observable
@@ -11,11 +10,9 @@ import io.reactivex.Single
 import org.xml.sax.SAXException
 import java.io.IOException
 import java.io.InputStream
-import javax.xml.parsers.DocumentBuilderFactory
-import javax.xml.parsers.ParserConfigurationException
-import com.lewisjmorgan.harvesterdroid.trackers.galaxyharvester.HarvesterResourceXml
 import java.net.URI
 import java.net.URL
+import javax.xml.parsers.ParserConfigurationException
 
 
 class GalaxyHarvesterTracker: Tracker {
@@ -23,16 +20,13 @@ class GalaxyHarvesterTracker: Tracker {
   override val id: String = "GalaxyHarvester"
   private val getListType = "getList.py?listType"
 
-  val xmlFactory by lazy { DocumentBuilderFactory.newInstance() }
-
   override fun downloadGalaxies(): Flowable<Galaxy> {
     return Observable.create<Galaxy> { emitter ->
       val inputStream = createInputStreamFromBaseUrl("$getListType=galaxy")
       try {
-        val galaxyListXml = HarvesterGalaxyListXml(xmlFactory.newDocumentBuilder())
-        galaxyListXml.load(inputStream)
-        // TODO Emit elements as they're parsed will be much better, will require XML refactor.
-        galaxyListXml.galaxyList.forEach { (k, v) -> emitter.onNext(Galaxy(k, v)) }
+        // TODO Add deserialization from XML
+        //val galaxyListXml = xmlFactory.parse<GalaxyHarvesterGalaxyList>(InputStreamReader(inputStream))
+        //galaxyListXml.getGalaxies().forEach { emitter.onNext(it) }
       } catch (e: ParserConfigurationException) {
         emitter.onError(e)
       } catch (e: SAXException) {
@@ -48,11 +42,12 @@ class GalaxyHarvesterTracker: Tracker {
     return Single.create { emitter ->
       val inputStream = createInputStreamFromBaseUrl("getResourceByName.py?name=$resource&galaxy=$galaxyId")
       try {
-        val resourceXml = HarvesterResourceXml(xmlFactory.newDocumentBuilder())
-        resourceXml.load(inputStream)
-        if (resourceXml.galaxyResource != null)
-          emitter.onSuccess(resourceXml.galaxyResource)
-        else emitter.onError(Throwable("Failed parsing resource $resource"))
+        emitter.onSuccess(GalaxyResource())
+        // TODO Add deserialization from XML
+        //val resourceXml = xmlFactory.parse<HarvesterResourceXml>(InputStreamReader(inputStream))
+        //if (resourceXml.galaxyResource != null)
+          //emitter.onSuccess(resourceXml.galaxyResource)
+        //else emitter.onError(Throwable("Failed parsing resource $resource"))
       } catch (e1: ParserConfigurationException) {
         emitter.onError(e1)
       } catch (e1: SAXException) {
