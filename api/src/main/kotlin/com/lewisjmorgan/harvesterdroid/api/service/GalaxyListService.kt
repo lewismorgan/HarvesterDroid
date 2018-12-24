@@ -16,22 +16,22 @@ class GalaxyListService(private val repository: GalaxyListRepository, private va
   private val dataFactory by lazy { DataFactory() }
 
   fun getGalaxies(): Flowable<Galaxy> {
-    return if (!updated)
+    return if (updated)
       repository.getAll()
     else downloadGalaxies()
   }
 
   private fun downloadGalaxies(): Flowable<Galaxy> {
+    updated = true
     return tracker.downloadGalaxies()
       .doOnNext { resource -> repository.add(resource) }
-      .doOnComplete { updated = true }
   }
 
-  fun saveGalaxies(outputStream: OutputStream): OutputStream {
+  fun save(outputStream: OutputStream): OutputStream {
     return dataFactory.serialize(outputStream, getGalaxies().toList().blockingGet(), MappingType.JSON)
   }
 
-  fun loadGalaxies(inputStream: InputStream): Flowable<Galaxy> {
+  fun load(inputStream: InputStream): Flowable<Galaxy> {
     return Observable.create<Galaxy> { emitter ->
       val galaxies = dataFactory.deserialize<List<Galaxy>>(inputStream, MappingType.JSON)
       galaxies.forEach {

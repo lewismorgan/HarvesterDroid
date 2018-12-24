@@ -9,12 +9,9 @@ import io.reactivex.Flowable
 import io.reactivex.subscribers.TestSubscriber
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
-import java.io.BufferedOutputStream
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
-import kotlin.test.assertEquals
 import kotlin.test.assertTrue
-import kotlin.test.todo
 
 class GalaxyListServiceTest : Spek({
   describe("GalaxyListService") {
@@ -33,9 +30,15 @@ class GalaxyListServiceTest : Spek({
     describe("getting galaxies") {
       val subscriber by memoized { TestSubscriber<Galaxy>() }
 
-      it("emits a repository galaxy") {
+      it("emits a downloaded galaxy") {
         val galaxies = service.getGalaxies()
         galaxies.subscribe(subscriber)
+        subscriber.assertValue(trackerGalaxy)
+      }
+
+      it("emits a repo galaxy") {
+        service.getGalaxies().subscribe()
+        service.getGalaxies().subscribe(subscriber)
         subscriber.assertValue(repoGalaxy)
       }
     }
@@ -46,7 +49,7 @@ class GalaxyListServiceTest : Spek({
       it("adds galaxies to repository") {
         val galaxies = service.getGalaxies()
         galaxies.subscribe(subscriber)
-        subscriber.assertValue(repoGalaxy)
+        subscriber.assertValue(trackerGalaxy)
         subscriber.assertComplete()
       }
       it("sets updated to true") {
@@ -57,16 +60,16 @@ class GalaxyListServiceTest : Spek({
 
     describe("saving galaxies") {
       it("saves galaxy to an OutputStream") {
-        val result = service.saveGalaxies(ByteArrayOutputStream(0)) as ByteArrayOutputStream
+        val result = service.save(ByteArrayOutputStream(0)) as ByteArrayOutputStream
         assertTrue(result.toByteArray().isNotEmpty())
       }
     }
     describe("loading galaxies") {
       it("loads from an InputStream") {
         val testSubscriber = TestSubscriber<Galaxy>()
-        val stream = service.saveGalaxies(ByteArrayOutputStream(0)) as ByteArrayOutputStream
-        service.loadGalaxies(ByteArrayInputStream(stream.toByteArray())).subscribe(testSubscriber)
-        testSubscriber.assertValue { it.id == repoGalaxy.id && it.name == repoGalaxy.name }
+        val stream = service.save(ByteArrayOutputStream(0)) as ByteArrayOutputStream
+        service.load(ByteArrayInputStream(stream.toByteArray())).subscribe(testSubscriber)
+        testSubscriber.assertValue { it.id == trackerGalaxy.id && it.name == trackerGalaxy.name }
         testSubscriber.assertComplete()
       }
     }
