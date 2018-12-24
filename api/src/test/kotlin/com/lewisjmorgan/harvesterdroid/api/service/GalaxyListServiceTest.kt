@@ -9,6 +9,10 @@ import io.reactivex.Flowable
 import io.reactivex.subscribers.TestSubscriber
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
+import java.io.BufferedOutputStream
+import java.io.ByteArrayInputStream
+import java.io.ByteArrayOutputStream
+import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 import kotlin.test.todo
 
@@ -39,12 +43,6 @@ class GalaxyListServiceTest : Spek({
     describe("downloading galaxies") {
       val subscriber by memoized { TestSubscriber<Galaxy>() }
 
-      it("emits tracker galaxies") {
-        val downloaded = service.downloadGalaxies()
-        downloaded.subscribe(subscriber)
-        subscriber.assertValue(trackerGalaxy)
-        subscriber.assertComplete()
-      }
       it("adds galaxies to repository") {
         val galaxies = service.getGalaxies()
         galaxies.subscribe(subscriber)
@@ -52,8 +50,24 @@ class GalaxyListServiceTest : Spek({
         subscriber.assertComplete()
       }
       it("sets updated to true") {
-        service.downloadGalaxies().subscribe().dispose()
+        service.getGalaxies().subscribe().dispose()
         assertTrue(service.hasUpdatedGalaxies())
+      }
+    }
+
+    describe("saving galaxies") {
+      it("saves galaxy to an OutputStream") {
+        val result = service.saveGalaxies(ByteArrayOutputStream(0)) as ByteArrayOutputStream
+        assertTrue(result.toByteArray().isNotEmpty())
+      }
+    }
+    describe("loading galaxies") {
+      it("loads from an InputStream") {
+        val testSubscriber = TestSubscriber<Galaxy>()
+        val stream = service.saveGalaxies(ByteArrayOutputStream(0)) as ByteArrayOutputStream
+        service.loadGalaxies(ByteArrayInputStream(stream.toByteArray())).subscribe(testSubscriber)
+        testSubscriber.assertValue { it.id == repoGalaxy.id && it.name == repoGalaxy.name }
+        testSubscriber.assertComplete()
       }
     }
   }

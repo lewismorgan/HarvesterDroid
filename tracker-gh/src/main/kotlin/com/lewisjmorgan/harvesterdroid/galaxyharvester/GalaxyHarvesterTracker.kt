@@ -18,7 +18,6 @@ import java.text.SimpleDateFormat
 import java.util.*
 import javax.xml.parsers.ParserConfigurationException
 
-
 class GalaxyHarvesterTracker: Tracker {
   private val baseUri: URI = URL("https://galaxyharvester.net/").toURI()
   override val id: String = "GalaxyHarvester"

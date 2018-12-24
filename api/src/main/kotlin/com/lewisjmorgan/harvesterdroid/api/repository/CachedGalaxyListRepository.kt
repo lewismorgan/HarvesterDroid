@@ -4,7 +4,7 @@ import com.lewisjmorgan.harvesterdroid.api.Galaxy
 import io.reactivex.Flowable
 
 class CachedGalaxyListRepository : GalaxyListRepository, CachedRepository<Galaxy>() {
-  override val cache: MutableList<Galaxy> = arrayListOf()
+  override val cache: MutableList<Galaxy> = mutableListOf()
 
   override fun add(galaxy: Galaxy) {
     cache.add(galaxy)
