@@ -8,38 +8,33 @@ import com.lewisjmorgan.harvesterdroid.api.repository.GalaxyListRepository
 import io.reactivex.BackpressureStrategy
 import io.reactivex.Flowable
 import io.reactivex.Observable
+import io.reactivex.Single
 import java.io.InputStream
 import java.io.OutputStream
 
 class GalaxyListService(private val repository: GalaxyListRepository, private val tracker: Tracker) {
   private var updated = false
-  private val dataFactory by lazy { DataFactory() }
 
   fun getGalaxies(): Flowable<Galaxy> {
-    return if (updated)
-      repository.getAll()
-    else downloadGalaxies()
+    return repository.getAll()
   }
 
-  private fun downloadGalaxies(): Flowable<Galaxy> {
-    updated = true
+  fun downloadGalaxies(): Flowable<Galaxy> {
     return tracker.downloadGalaxies()
       .doOnNext { resource -> repository.add(resource) }
+      .doOnComplete { updated = true }
   }
 
-  fun save(outputStream: OutputStream): OutputStream {
-    return dataFactory.serialize(outputStream, getGalaxies().toList().blockingGet(), MappingType.JSON)
+  fun save(outputStream: OutputStream, dataFactory: DataFactory, mappingType: MappingType): Single<OutputStream> {
+    return getGalaxies().toList().map { dataFactory.serialize(outputStream, it, mappingType) }
   }
 
-  fun load(inputStream: InputStream): Flowable<Galaxy> {
+  fun load(inputStream: InputStream, dataFactory: DataFactory, mappingType: MappingType): Flowable<Galaxy> {
     return Observable.create<Galaxy> { emitter ->
-      val galaxies = dataFactory.deserialize<List<Galaxy>>(inputStream, MappingType.JSON)
-      galaxies.forEach {
-        repository.add(it)
-        emitter.onNext(it)
-      }
+      val galaxies = dataFactory.deserialize<List<Galaxy>>(inputStream, mappingType)
+      galaxies.forEach { emitter.onNext(it) }
       emitter.onComplete()
-    }.toFlowable(BackpressureStrategy.BUFFER)
+    }.doOnNext { repository.add(it) }.toFlowable(BackpressureStrategy.BUFFER)
   }
 
   fun hasUpdatedGalaxies() = updated

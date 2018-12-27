@@ -11,6 +11,7 @@ import com.fasterxml.jackson.module.kotlin.KotlinModule
 import com.fasterxml.jackson.module.kotlin.readValue
 import de.undercouch.bson4jackson.BsonFactory
 import de.undercouch.bson4jackson.BsonGenerator
+import de.undercouch.bson4jackson.BsonParser
 import java.io.InputStream
 import java.io.OutputStream
 
@@ -42,6 +43,9 @@ class DataFactory {
       MappingType.BSON -> createBsonObjectMapper()
     }
     mapper.registerModule(KotlinModule())
+    mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
+    mapper.enable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
+    mapper.enable(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT)
     modules.forEach { mapper.registerModule(it) }
     return mapper
   }
@@ -58,8 +62,6 @@ class DataFactory {
 
   private fun createJsonObjectMapper(): ObjectMapper {
     val objectMapper = ObjectMapper()
-    objectMapper.enable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
-    objectMapper.enable(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT)
     return objectMapper
   }
 }
