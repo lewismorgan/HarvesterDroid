@@ -16,31 +16,27 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.lewisjmorgan.harvesterdroid.trackers.galaxyharvester.xml;
+package com.lewisjmorgan.harvesterdroid.app.ui.schematics;
 
-import com.lewisjmorgan.harvesterdroid.api.GalaxyResource;
-import com.lewisjmorgan.harvesterdroid.app.xml.BaseXml;
-import javax.xml.parsers.DocumentBuilder;
-import org.w3c.dom.Document;
+import javafx.scene.control.TreeCell;
 
-public abstract class ResourceXml extends BaseXml {
+/**
+ * Created by Waverunner on 3/23/2017.
+ */
+public class SchematicsTreeCellFactory extends TreeCell<SchematicsTreeItem> {
 
-  private GalaxyResource galaxyResource;
-
-  public ResourceXml(DocumentBuilder documentBuilder) {
-    super(documentBuilder);
-  }
-
-  public GalaxyResource getGalaxyResource() {
-    return galaxyResource;
-  }
-
-  protected void setGalaxyResource(GalaxyResource galaxyResource) {
-    this.galaxyResource = galaxyResource;
-  }
-
+  // TODO Context menus
   @Override
-  protected final void write(Document document) {
-    throw new UnsupportedOperationException();
+  protected void updateItem(SchematicsTreeItem item, boolean empty) {
+    super.updateItem(item, empty);
+
+    if (item != null) {
+      setText(item.getName());
+    } else {
+      setGraphic(null);
+      setText(null);
+    }
   }
+
+
 }

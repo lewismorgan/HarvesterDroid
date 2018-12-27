@@ -1,5 +1,6 @@
 import de.dynamicfiles.projects.gradle.plugins.javafx.JavaFXGradlePluginExtension
 import de.dynamicfiles.projects.gradle.plugins.javafx.tasks.JfxJarTask
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
   application
@@ -16,13 +17,14 @@ buildscript {
 
 apply(plugin = "javafx-gradle-plugin")
 
-val launcherClass = "com.lewisjmorgan.harvesterdroid.Launcher"
+val mainAppClass = "com.lewisjmorgan.harvesterdroid.app2.HarvesterDroidKt"
 description = "Manage your resources across a number of Star Wars Galaxies resource trackers"
 
 dependencies {
   compile(project(":api"))
   compile(project(":loader"))
   compile(project(":tracker-gh"))
+  // OLD DEPS
   compile("de.saxsys:mvvmfx:1.6.0")
   compile("de.saxsys:mvvmfx-easydi:1.6.0")
   compile("org.controlsfx:controlsfx:8.40.13")
@@ -33,13 +35,15 @@ dependencies {
   compile("org.apache.logging.log4j:log4j-core:2.8.2")
   compile("org.apache.logging.log4j:log4j-slf4j-impl:2.8.2")
 
+  // NEW DEPS
+  compile("no.tornado:tornadofx:1.7.17")
   // Use JUnit test framework
   testCompile("org.jetbrains.kotlin:kotlin-test-junit")
 }
 
 application {
   applicationName = "harvesterdroid"
-  mainClassName = launcherClass
+  mainClassName = mainAppClass
 }
 
 distributions {
@@ -54,7 +58,17 @@ val commonManifestAttribs = mutableMapOf(
   "Implementation-Vendor" to "Waverunner"
 )
 
+val jfxManifestAttribs = mutableMapOf(
+  "JavaFX-Preloader-Class" to "com.lewisjmorgan.harvesterdroid.loader.LauncherPreloader",
+  "JavaFX-Application-Class" to "com.lewisjmorgan.harvesterdroid.app2.HarvesterDroidKt"
+)
+
 tasks {
+  withType<KotlinCompile> {
+    kotlinOptions {
+      jvmTarget = "1.8"
+    }
+  }
   withType<Jar> {
     appendix = ""
     archiveName = "harvesterdroid-${project.version}.jar"
@@ -63,9 +77,10 @@ tasks {
       attributes(
         commonManifestAttribs.apply {
           putAll(mapOf(
-            "Main-Class" to launcherClass,
+            "Main-Class" to mainAppClass,
             "Class-Path" to project.configurations.runtime.get().files.joinToString(" ") { it.name }
           ))
+          putAll(jfxManifestAttribs)
         }
       )
     }
@@ -84,7 +99,7 @@ configure<JavaFXGradlePluginExtension> {
   appName = "HarvesterDroid"
   nativeReleaseVersion = sanitizeVersionString(project.version.toString())
   bundler = "mac.app"
-  mainClass = launcherClass
+  mainClass = mainAppClass
   vendor = "Waverunner"
   isSkipJNLP = true
 

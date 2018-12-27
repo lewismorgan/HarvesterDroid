@@ -19,7 +19,7 @@
 package com.lewisjmorgan.harvesterdroid.trackers.galaxyharvester;
 
 import com.lewisjmorgan.harvesterdroid.api.resource.ResourceType;
-import com.lewisjmorgan.harvesterdroid.api.xml.BaseXml;
+import com.lewisjmorgan.harvesterdroid.app.xml.BaseXml;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;

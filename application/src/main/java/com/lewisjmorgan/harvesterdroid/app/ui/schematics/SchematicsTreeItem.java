@@ -16,31 +16,40 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.lewisjmorgan.harvesterdroid.trackers.galaxyharvester.xml;
+package com.lewisjmorgan.harvesterdroid.app.ui.schematics;
 
-import com.lewisjmorgan.harvesterdroid.api.GalaxyResource;
-import com.lewisjmorgan.harvesterdroid.app.xml.BaseXml;
-import javax.xml.parsers.DocumentBuilder;
-import org.w3c.dom.Document;
+/**
+ * Created by Waverunner on 3/23/2017.
+ */
+public class SchematicsTreeItem {
 
-public abstract class ResourceXml extends BaseXml {
+  private String name;
+  private String identifier;
+  private boolean group;
 
-  private GalaxyResource galaxyResource;
-
-  public ResourceXml(DocumentBuilder documentBuilder) {
-    super(documentBuilder);
+  public SchematicsTreeItem(String name, String identifier, boolean isGroup) {
+    this.name = name;
+    this.identifier = identifier;
+    this.group = isGroup;
   }
 
-  public GalaxyResource getGalaxyResource() {
-    return galaxyResource;
+  public String getName() {
+    return name;
   }
 
-  protected void setGalaxyResource(GalaxyResource galaxyResource) {
-    this.galaxyResource = galaxyResource;
+  public String getIdentifier() {
+    return identifier;
+  }
+
+  public boolean isGroup() {
+    return group;
   }
 
   @Override
-  protected final void write(Document document) {
-    throw new UnsupportedOperationException();
+  public String toString() {
+    return "SchematicsTreeItem{"
+        + "name='" + name + '\''
+        + ", identifier='" + identifier + '\''
+        + ", group=" + group + '}';
   }
 }

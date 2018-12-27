@@ -16,31 +16,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.lewisjmorgan.harvesterdroid.trackers.galaxyharvester.xml;
+package com.lewisjmorgan.harvesterdroid.app.ui.scopes;
 
-import com.lewisjmorgan.harvesterdroid.api.GalaxyResource;
-import com.lewisjmorgan.harvesterdroid.app.xml.BaseXml;
-import javax.xml.parsers.DocumentBuilder;
-import org.w3c.dom.Document;
+import de.saxsys.mvvmfx.Scope;
 
-public abstract class ResourceXml extends BaseXml {
+/**
+ * Created by Waverunner on 4/3/2017.
+ */
+public class ResourceScope implements Scope {
 
-  private GalaxyResource galaxyResource;
-
-  public ResourceXml(DocumentBuilder documentBuilder) {
-    super(documentBuilder);
-  }
-
-  public GalaxyResource getGalaxyResource() {
-    return galaxyResource;
-  }
-
-  protected void setGalaxyResource(GalaxyResource galaxyResource) {
-    this.galaxyResource = galaxyResource;
-  }
-
-  @Override
-  protected final void write(Document document) {
-    throw new UnsupportedOperationException();
-  }
+  public static final String FAVORITE = "ResourceScope.Favorite";
+  public static final String IMPORT_ADDED = "ResourceScope.Imported";
+  public static final String IMPORT_REMOVED = "ResourceScope.Removed";
+  public static final String UPDATED_LIST = "ResourceScope.Updated";
 }

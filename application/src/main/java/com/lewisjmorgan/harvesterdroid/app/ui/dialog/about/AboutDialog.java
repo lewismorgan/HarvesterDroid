@@ -16,31 +16,26 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.lewisjmorgan.harvesterdroid.trackers.galaxyharvester.xml;
+package com.lewisjmorgan.harvesterdroid.app.ui.dialog.about;
 
-import com.lewisjmorgan.harvesterdroid.api.GalaxyResource;
-import com.lewisjmorgan.harvesterdroid.app.xml.BaseXml;
-import javax.xml.parsers.DocumentBuilder;
-import org.w3c.dom.Document;
+import com.lewisjmorgan.harvesterdroid.app.ui.dialog.BaseDialog;
+import javafx.scene.control.ButtonType;
 
-public abstract class ResourceXml extends BaseXml {
+public class AboutDialog extends BaseDialog {
 
-  private GalaxyResource galaxyResource;
-
-  public ResourceXml(DocumentBuilder documentBuilder) {
-    super(documentBuilder);
-  }
-
-  public GalaxyResource getGalaxyResource() {
-    return galaxyResource;
-  }
-
-  protected void setGalaxyResource(GalaxyResource galaxyResource) {
-    this.galaxyResource = galaxyResource;
+  public AboutDialog() {
+    super("About");
   }
 
   @Override
-  protected final void write(Document document) {
-    throw new UnsupportedOperationException();
+  protected ButtonType[] getButtonTypes() {
+    return new ButtonType[] {
+        ButtonType.CLOSE
+    };
+  }
+
+  @Override
+  protected boolean isController() {
+    return false;
   }
 }

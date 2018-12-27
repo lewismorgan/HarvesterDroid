@@ -16,31 +16,29 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.lewisjmorgan.harvesterdroid.trackers.galaxyharvester.xml;
+package com.lewisjmorgan.harvesterdroid.app.ui.converters;
 
-import com.lewisjmorgan.harvesterdroid.api.GalaxyResource;
-import com.lewisjmorgan.harvesterdroid.app.xml.BaseXml;
-import javax.xml.parsers.DocumentBuilder;
-import org.w3c.dom.Document;
+import javafx.util.StringConverter;
 
-public abstract class ResourceXml extends BaseXml {
+public class ResourceValueConverter extends StringConverter<Number> {
 
-  private GalaxyResource galaxyResource;
-
-  public ResourceXml(DocumentBuilder documentBuilder) {
-    super(documentBuilder);
-  }
-
-  public GalaxyResource getGalaxyResource() {
-    return galaxyResource;
-  }
-
-  protected void setGalaxyResource(GalaxyResource galaxyResource) {
-    this.galaxyResource = galaxyResource;
+  @Override
+  public String toString(Number object) {
+    int value = object.intValue();
+    return value == -1 ? "--" : String.valueOf(value);
   }
 
   @Override
-  protected final void write(Document document) {
-    throw new UnsupportedOperationException();
+  public Integer fromString(String string) {
+    if (!"0123456789".contains(string)) {
+      return -1;
+    }
+
+    int value = Integer.parseInt(string);
+    if (value > 1000 || value <= 0) {
+      return -1;
+    }
+
+    return value;
   }
 }
