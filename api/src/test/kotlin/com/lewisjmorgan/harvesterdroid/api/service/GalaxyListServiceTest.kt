@@ -72,7 +72,7 @@ class GalaxyListServiceTest : Spek({
         val subscriber by memoized { TestSubscriber<Galaxy>() }
         val stream by memoized { dataFactory.serialize(ByteArrayOutputStream(), galaxies, MappingType.BSON) as ByteArrayOutputStream }
         it("loads from an InputStream") {
-          service.load(ByteArrayInputStream(stream.toByteArray()), dataFactory, MappingType.JSON)
+          service.load(ByteArrayInputStream(stream.toByteArray()), dataFactory, MappingType.BSON)
             .subscribe(subscriber)
           subscriber.assertValueSet(galaxies)
           subscriber.assertComplete()
@@ -84,7 +84,7 @@ class GalaxyListServiceTest : Spek({
 
 private val random by lazy { Random(1337L) }
 fun createGalaxy(): Galaxy {
-  return createGalaxy("Test", random.nextInt().toString())
+  return createGalaxy("Test", random.nextInt(500).toString())
 }
 fun createGalaxy(name: String, id: String): Galaxy {
   return Galaxy(id, name)
