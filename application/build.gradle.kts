@@ -27,7 +27,6 @@ dependencies {
   // OLD DEPS
   compile("de.saxsys:mvvmfx:1.6.0")
   compile("de.saxsys:mvvmfx-easydi:1.6.0")
-  compile("org.controlsfx:controlsfx:8.40.13")
   compile("javax.persistence:persistence-api:1.0.2")
   compile("com.vladsch.flexmark:flexmark:0.22.22")
   compile("org.mongodb:mongodb-driver:3.5.0")
@@ -36,7 +35,9 @@ dependencies {
   compile("org.apache.logging.log4j:log4j-slf4j-impl:2.8.2")
 
   // NEW DEPS
+  compile("org.controlsfx:controlsfx:8.40.14")
   compile("no.tornado:tornadofx:1.7.18")
+  compile("no.tornado:tornadofx-controlsfx:0.1")
   // Use JUnit test framework
   testCompile("org.jetbrains.kotlin:kotlin-test-junit")
 }

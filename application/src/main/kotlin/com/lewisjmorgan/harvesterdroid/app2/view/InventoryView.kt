@@ -1,28 +1,27 @@
 package com.lewisjmorgan.harvesterdroid.app2.view
 
-import javafx.beans.property.SimpleIntegerProperty
-import javafx.beans.property.SimpleStringProperty
+import com.lewisjmorgan.harvesterdroid.app2.viewmodel.InventoryItemModel
+import com.lewisjmorgan.harvesterdroid.app2.viewmodel.InventoryViewModel
+import javafx.geometry.Pos
+import javafx.scene.control.TableView
+import javafx.scene.transform.Transform
 import tornadofx.*
 
-class InventoryView: View() {
-  // TODO Inventory View Functionality
+class InventoryView: View("Inventory") {
+  private val model: InventoryViewModel by inject()
   override val root = vbox {
     label("Inventory")
-    tableview(listOf(InventoryItem("smetho", 1337)).observable()) {
-      column("Name", InventoryItem::name)
-      column("Amount", InventoryItem::count)
+    tableview(model.inventory) {
+      columnResizePolicy = TableView.CONSTRAINED_RESIZE_POLICY
+      column("Resource", InventoryItemModel::resource)
+      column("Amount", InventoryItemModel::amount)
+    }
+    buttonbar {
+      transforms.add(Transform.translate(10.0, 0.0))
+      button("Add") {
+
+      }
+      button("Remove")
     }
   }
-}
-
-@Suppress("HasPlatformType", "MemberVisibilityCanBePrivate")
-class InventoryItem {
-  constructor(name: String, count: Int) {
-    this.count = count
-    this.name = name
-  }
-  val countProperty = SimpleIntegerProperty()
-  var count by countProperty
-  val nameProperty = SimpleStringProperty()
-  var name by nameProperty
 }
