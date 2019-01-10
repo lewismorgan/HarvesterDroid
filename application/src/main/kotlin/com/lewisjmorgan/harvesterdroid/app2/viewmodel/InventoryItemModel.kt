@@ -1,6 +1,6 @@
 package com.lewisjmorgan.harvesterdroid.app2.viewmodel
 
-import com.lewisjmorgan.harvesterdroid.app2.InventoryItem
+import com.lewisjmorgan.harvesterdroid.api.InventoryItem
 import tornadofx.*
 
 class InventoryItemModel(item: InventoryItem?): ItemViewModel<InventoryItem>(item) {
