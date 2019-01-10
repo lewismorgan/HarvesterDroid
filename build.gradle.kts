@@ -1,7 +1,4 @@
-import net.thauvin.erik.gradle.semver.SemverConfig
 import java.io.ByteArrayOutputStream
-import net.thauvin.erik.gradle.semver.SemverIncrementBuildMetaTask
-import net.thauvin.erik.gradle.semver.SemverIncrementTask
 import java.io.OutputStream
 
 plugins {
@@ -17,9 +14,6 @@ buildscript {
   repositories {
     mavenLocal()
     jcenter()
-  }
-  dependencies {
-    classpath("net.thauvin.erik.gradle:semver:0.9.9-SNAPSHOT")
   }
 }
 
