@@ -4,7 +4,10 @@ import com.lewisjmorgan.harvesterdroid.api.DataFactory
 import com.lewisjmorgan.harvesterdroid.api.InventoryItem
 import com.lewisjmorgan.harvesterdroid.api.MappingType
 import com.lewisjmorgan.harvesterdroid.api.repository.InventoryRepository
+import com.sun.tools.corba.se.idl.toJavaPortable.Util.typeOf
+import io.reactivex.BackpressureStrategy
 import io.reactivex.Flowable
+import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.subjects.PublishSubject
 import java.io.InputStream
@@ -47,6 +50,17 @@ class InventoryService(private val repository: InventoryRepository): IInventoryS
   }
 
   override fun loadInventory(storedJsonData: InputStream): Flowable<InventoryItem> {
-    TODO("return repository.load(storedJsonData, dataFactory, MappingType.JSON)")
+    return Observable.create<InventoryItem> { emitter ->
+      try {
+        val result = dataFactory.deserialize(storedJsonData, MappingType.JSON) as List<InventoryItem>
+        result.forEach {
+          emitter.onNext(it)
+        }
+        emitter.onComplete()
+      } catch (t: Throwable) {
+        emitter.onError(t)
+      }
+
+    }.toFlowable(BackpressureStrategy.BUFFER)
   }
 }

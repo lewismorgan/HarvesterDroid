@@ -24,7 +24,6 @@ class InventoryController : Controller() {
   val filteredInventory = SortedFilteredList<InventoryItemModel>()
 
   init {
-    setupFilteredInventory()
     subscribe<AppStateEvent> {
       when(it.type) {
         AppStateEventType.SAVE -> onAppStateSaved()
@@ -43,12 +42,20 @@ class InventoryController : Controller() {
   private fun setupFilteredInventory() {
     filteredInventory.items.additions().map { it.item }
       .concatMap { item -> service.addItem(item).toObservable() }
-      .doOnNext { println("Got an item to add") }
       .subscribe()
   }
 
   private fun onAppStateLoad() {
-    TODO("Not implemented :[")
+    provider.inventoryInputStream().flatMap {
+      service.loadInventory(it)
+        .onErrorReturnItem(InventoryItem("smetho", 1337))
+        .map { item -> InventoryItemModel(item) }.toList()
+    }.subscribe { list, _ ->
+        list.forEach {
+          addItem(it)
+        }
+      }
+    setupFilteredInventory()
   }
 
   fun onAppStateSaved() {
@@ -66,7 +73,8 @@ class InventoryController : Controller() {
   }
 
   fun addItem(item: InventoryItemModel) {
-    filteredInventory.add(item)
+    if (!filteredInventory.contains(item))
+      filteredInventory.add(item)
   }
 
   fun removeItem(item: InventoryItemModel) {
