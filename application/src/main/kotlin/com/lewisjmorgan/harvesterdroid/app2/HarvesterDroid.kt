@@ -15,6 +15,7 @@ import org.kodein.di.generic.provider
 import org.kodein.di.generic.singleton
 import tornadofx.*
 import java.io.File
+import java.io.FileOutputStream
 import java.io.InputStream
 import java.io.OutputStream
 import kotlin.properties.ReadOnlyProperty
@@ -30,6 +31,10 @@ class HarvesterDroidProvider: InventoryDataProvider {
   override fun inventoryOutputStream(): Single<OutputStream> {
     // TODO Change to user's home directory, proper file handling
     return Single.just(File("inventory.json").outputStream())
+      .map { stream -> stream as OutputStream }
+      .doAfterSuccess {
+        it.close()
+      }
   }
 }
 
