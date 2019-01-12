@@ -3,7 +3,6 @@ package com.lewisjmorgan.harvesterdroid.api.repository
 import com.lewisjmorgan.harvesterdroid.api.InventoryItem
 import io.reactivex.Flowable
 import io.reactivex.Single
-import java.io.OutputStream
 
 interface InventoryRepository {
   fun getAll(): Flowable<InventoryItem>

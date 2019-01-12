@@ -35,6 +35,7 @@ dependencies {
   compile("org.apache.logging.log4j:log4j-slf4j-impl:2.8.2")
 
   // NEW DEPS
+  implementation("org.kodein.di:kodein-di-generic-jvm:6.0.1")
   compile("com.github.thomasnield:rxkotlinfx:2.0.2")
   compile("org.controlsfx:controlsfx:8.40.14")
   compile("no.tornado:tornadofx:1.7.18")

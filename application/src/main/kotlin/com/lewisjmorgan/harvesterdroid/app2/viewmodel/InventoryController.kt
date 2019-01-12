@@ -1,11 +1,11 @@
 package com.lewisjmorgan.harvesterdroid.app2.viewmodel
 
-import com.lewisjmorgan.harvesterdroid.api.repository.CachedInventoryRepository
+import com.lewisjmorgan.harvesterdroid.api.service.IInventoryService
 import com.lewisjmorgan.harvesterdroid.api.service.InventoryService
-import com.lewisjmorgan.harvesterdroid.app2.HarvesterDroidProvider
 import com.lewisjmorgan.harvesterdroid.app2.events.AppStateSavedEvent
 import com.lewisjmorgan.harvesterdroid.app2.events.InventoryItemEvent
 import com.lewisjmorgan.harvesterdroid.app2.events.InventoryItemEventType
+import com.lewisjmorgan.harvesterdroid.app2.kdi
 import com.lewisjmorgan.harvesterdroid.app2.provider.InventoryFileProvider
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
@@ -15,10 +15,8 @@ import java.io.OutputStream
 // TODO Unit Testing for InventoryController's public methods
 
 class InventoryController : Controller() {
-  // TODO Inject InventoryService using Guice
-  private val service: InventoryService = InventoryService(CachedInventoryRepository())
-  // TODO Inject using Guice
-  private val provider: InventoryFileProvider = HarvesterDroidProvider()
+  private val service: IInventoryService by kdi()
+  private val provider: InventoryFileProvider by kdi()
 
   init {
     subscribe<AppStateSavedEvent> {
@@ -34,22 +32,18 @@ class InventoryController : Controller() {
   }
 
   private fun onAppStateSaved() {
-    saveToFile().subscribeOn(Schedulers.io()).subscribe { _, _ -> print("Saved to file :)") }
+    saveToProvider().subscribeOn(Schedulers.io()).subscribe { _, _ -> print("Saved.") }
   }
 
-  private fun saveToFile(): Single<OutputStream> {
+  private fun saveToProvider(): Single<OutputStream> {
     return provider.getInventoryFile().flatMap { service.saveInventory(it.outputStream()) }.doAfterSuccess { it.close() }
   }
 
   fun addItem(item: InventoryItemModel): Single<Boolean> {
-    return service.repository.add(item.item)
+    return service.addItem(item.item)
   }
 
   fun removeItem(item: InventoryItemModel): Single<Boolean> {
-    return service.repository.remove(item.resource.toString())
-  }
-
-  fun editItem(item: InventoryItemModel): Single<InventoryItemModel> {
-    TODO("Return result of edited inventory item")
+    return service.removeItem(item.item)
   }
 }
