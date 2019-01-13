@@ -40,8 +40,13 @@ class InventoryController : Controller() {
   }
 
   private fun setupFilteredInventory() {
-    filteredInventory.items.additions().map { it.item }
+    filteredInventory.items.additions()
+      .map { it.item }
       .concatMap { item -> service.addItem(item).toObservable() }
+      .doOnError {
+        println("setupFilteredInventory: An error occurred when adding to the filteredInventory!")
+        it.printStackTrace()
+      }
       .subscribe()
   }
 
