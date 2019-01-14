@@ -1,16 +1,10 @@
 package com.lewisjmorgan.harvesterdroid.api.repository
 
 import com.lewisjmorgan.harvesterdroid.api.InventoryItem
-import com.nhaarman.mockitokotlin2.mock
-import com.nhaarman.mockitokotlin2.whenever
 import io.reactivex.subscribers.TestSubscriber
-import org.junit.jupiter.params.shadow.com.univocity.parsers.common.fields.FieldSet
 import org.mockito.internal.util.reflection.FieldSetter
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
-import kotlin.reflect.full.declaredMemberProperties
-import kotlin.reflect.jvm.javaField
-import kotlin.test.todo
 
 class CachedInventoryRepositoryTest: Spek({
   describe("CachedInventoryRepository") {

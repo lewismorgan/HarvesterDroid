@@ -5,7 +5,6 @@ import com.lewisjmorgan.harvesterdroid.api.GalaxyResource
 import com.lewisjmorgan.harvesterdroid.api.MappingType
 import com.lewisjmorgan.harvesterdroid.api.Tracker
 import com.lewisjmorgan.harvesterdroid.api.repository.GalaxyResourceRepository
-import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.mock
 import io.reactivex.Flowable

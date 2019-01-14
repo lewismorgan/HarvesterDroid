@@ -5,13 +5,11 @@ import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.Module
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.SerializationFeature
-import com.fasterxml.jackson.databind.module.SimpleModule
 import com.fasterxml.jackson.dataformat.xml.XmlMapper
 import com.fasterxml.jackson.module.kotlin.KotlinModule
 import com.fasterxml.jackson.module.kotlin.readValue
 import de.undercouch.bson4jackson.BsonFactory
 import de.undercouch.bson4jackson.BsonGenerator
-import de.undercouch.bson4jackson.BsonParser
 import java.io.InputStream
 import java.io.OutputStream
 

@@ -23,13 +23,13 @@ import static com.lewisjmorgan.harvesterdroid.app.HarvesterDroidData.JSON_SCHEMA
 import static com.lewisjmorgan.harvesterdroid.app.HarvesterDroidData.ROOT_DIR;
 import static com.lewisjmorgan.harvesterdroid.app.HarvesterDroidData.XML_THEMES;
 
-import com.lewisjmorgan.harvesterdroid.loader.LauncherPreloader;
-import com.lewisjmorgan.harvesterdroid.loader.PreloaderStatusNotification;
-import com.lewisjmorgan.harvesterdroid.galaxyharvester.GalaxyHarvesterTracker;
 import com.lewisjmorgan.harvesterdroid.app.ui.dialog.ExceptionDialog;
 import com.lewisjmorgan.harvesterdroid.app.ui.main.MainView;
 import com.lewisjmorgan.harvesterdroid.app.xml.ThemesXml;
 import com.lewisjmorgan.harvesterdroid.app.xml.XmlFactory;
+import com.lewisjmorgan.harvesterdroid.galaxyharvester.GalaxyHarvesterTracker;
+import com.lewisjmorgan.harvesterdroid.loader.LauncherPreloader;
+import com.lewisjmorgan.harvesterdroid.loader.PreloaderStatusNotification;
 import com.sun.javafx.application.LauncherImpl;
 import de.saxsys.mvvmfx.FluentViewLoader;
 import de.saxsys.mvvmfx.easydi.MvvmfxEasyDIApplication;

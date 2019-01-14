@@ -9,14 +9,10 @@ import io.reactivex.BackpressureStrategy
 import io.reactivex.Flowable
 import io.reactivex.Observable
 import io.reactivex.Single
-import org.xml.sax.SAXException
 import java.io.IOException
 import java.io.InputStream
 import java.net.URI
 import java.net.URL
-import java.text.SimpleDateFormat
-import java.util.*
-import javax.xml.parsers.ParserConfigurationException
 
 class GalaxyHarvesterTracker: Tracker {
   private val baseUri: URI = URL("https://galaxyharvester.net/").toURI()

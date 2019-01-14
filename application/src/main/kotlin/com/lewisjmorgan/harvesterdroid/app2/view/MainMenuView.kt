@@ -1,7 +1,6 @@
 package com.lewisjmorgan.harvesterdroid.app2.view
 
 import tornadofx.*
-import javafx.scene.control.MenuBar
 
 class MainMenuView: View() {
   override val root = menubar {

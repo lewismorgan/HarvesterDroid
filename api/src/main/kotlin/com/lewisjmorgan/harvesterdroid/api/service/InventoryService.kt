@@ -4,7 +4,6 @@ import com.lewisjmorgan.harvesterdroid.api.DataFactory
 import com.lewisjmorgan.harvesterdroid.api.InventoryItem
 import com.lewisjmorgan.harvesterdroid.api.MappingType
 import com.lewisjmorgan.harvesterdroid.api.repository.InventoryRepository
-import com.sun.tools.corba.se.idl.toJavaPortable.Util.typeOf
 import io.reactivex.BackpressureStrategy
 import io.reactivex.Flowable
 import io.reactivex.Observable

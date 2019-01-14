@@ -6,8 +6,6 @@ import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer
 import com.lewisjmorgan.harvesterdroid.api.GalaxyResource
 import com.lewisjmorgan.harvesterdroid.api.resource.Attributes
-import java.text.SimpleDateFormat
-import java.util.*
 
 class GalaxyHarvesterResourceDeserializer: StdDeserializer<GalaxyResource> {
   constructor(vc: Class<Any>?): super(vc)

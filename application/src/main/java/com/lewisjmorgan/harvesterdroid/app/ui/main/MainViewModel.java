@@ -22,10 +22,10 @@ import static com.lewisjmorgan.harvesterdroid.app.HarvesterDroidData.JSON_INVENT
 import static com.lewisjmorgan.harvesterdroid.app.HarvesterDroidData.JSON_SCHEMATICS;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.lewisjmorgan.harvesterdroid.app.DroidProperties;
 import com.lewisjmorgan.harvesterdroid.api.DataFactory;
 import com.lewisjmorgan.harvesterdroid.api.GalaxyResource;
 import com.lewisjmorgan.harvesterdroid.api.MappingType;
+import com.lewisjmorgan.harvesterdroid.app.DroidProperties;
 import com.lewisjmorgan.harvesterdroid.app.HarvesterDroid;
 import com.lewisjmorgan.harvesterdroid.app.data.schematics.Schematic;
 import com.lewisjmorgan.harvesterdroid.app.ui.dialog.about.AboutDialog;

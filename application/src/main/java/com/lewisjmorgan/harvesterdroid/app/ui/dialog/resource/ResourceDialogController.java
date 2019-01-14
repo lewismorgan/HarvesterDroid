@@ -18,9 +18,9 @@
 
 package com.lewisjmorgan.harvesterdroid.app.ui.dialog.resource;
 
-import com.lewisjmorgan.harvesterdroid.app.Launcher;
 import com.lewisjmorgan.harvesterdroid.api.GalaxyResource;
 import com.lewisjmorgan.harvesterdroid.api.resource.Attributes;
+import com.lewisjmorgan.harvesterdroid.app.Launcher;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.beans.property.ObjectProperty;

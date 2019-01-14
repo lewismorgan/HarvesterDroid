@@ -19,8 +19,8 @@
 package com.lewisjmorgan.harvesterdroid.app;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.lewisjmorgan.harvesterdroid.api.GalaxyResource;
 import com.lewisjmorgan.harvesterdroid.api.DataFactory;
+import com.lewisjmorgan.harvesterdroid.api.GalaxyResource;
 import com.lewisjmorgan.harvesterdroid.api.MappingType;
 import com.lewisjmorgan.harvesterdroid.api.Tracker;
 import com.lewisjmorgan.harvesterdroid.app.data.resources.InventoryResource;

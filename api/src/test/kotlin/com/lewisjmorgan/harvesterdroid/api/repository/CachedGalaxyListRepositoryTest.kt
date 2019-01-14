@@ -4,7 +4,6 @@ import com.lewisjmorgan.harvesterdroid.api.Galaxy
 import io.reactivex.subscribers.TestSubscriber
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
-import kotlin.test.todo
 
 class CachedGalaxyListRepositoryTest: Spek({
   describe("CachedGalaxyListRepository") {
